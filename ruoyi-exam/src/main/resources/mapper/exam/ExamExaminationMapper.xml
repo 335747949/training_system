@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.exam.mapper.ExamExaminationMapper">
+    
+    <resultMap type="ExamExaminationVO" id="ExamExaminationResult">
+        <result property="id"    column="id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="examPaperId"    column="exam_paper_id"    />
+        <result property="trainCourseId"    column="train_course_id"    />
+        <result property="trainCourseName"    column="traincourse_name"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+        <result property="enableControlTime"    column="enable_control_time"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="timeLength"    column="time_length"    />
+        <result property="examNumber"    column="exam_number"    />
+        <result property="passMark"    column="pass_mark"    />
+        <result property="questionDisorder"    column="question_disorder"    />
+        <result property="finishedPaper"    column="finished_paper"    />
+        <result property="examEnd"    column="exam_end"    />
+        <result property="examinationUserLimit"    column="examination_user_limit"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="examExaminationUserVipUserId"    column="examExaminationUserVipUserId"    />
+
+    </resultMap>
+	
+	<sql id="selectExamExaminationVo">
+         exam_examination.id,
+         exam_examination.dept_id,
+         exam_examination.exam_paper_id,
+         exam_examination.train_course_id,
+         exam_examination.name,
+         exam_examination.type,
+         exam_examination.enable_control_time,
+         exam_examination.start_time,
+         exam_examination.end_time,
+         exam_examination.time_length,
+         exam_examination.exam_number,
+         exam_examination.pass_mark,
+         exam_examination.question_disorder,
+         exam_examination.finished_paper,
+         exam_examination.exam_end,
+         exam_examination.examination_user_limit,
+         exam_examination.create_by,
+         exam_examination.create_date,
+         exam_examination.update_by,
+         exam_examination.update_date,
+         exam_examination.remarks,
+         exam_examination.del_flag    </sql>
+	
+    <select id="selectExamExaminationList" parameterType="ExamExamination" resultMap="ExamExaminationResult">
+        select
+        <include refid="selectExamExaminationVo"/>
+        from exam_examination
+        <where>
+            <if test="id != null "> and exam_examination.id = #{ination.id}</if>
+            <if test="deptId != null "> and exam_examination.dept_id = #{ination.deptId}</if>
+            <if test="examPaperId != null "> and exam_examination.exam_paper_id = #{ination.examPaperId}</if>
+            <if test="trainCourseId != null "> and exam_examination.train_course_id = #{ination.trainCourseId}</if>
+            <if test="name != null  and name != '' "> and exam_examination.name = #{ination.name}</if>
+            <if test="type != null  and type != '' "> and exam_examination.type = #{ination.type}</if>
+            <if test="enableControlTime != null  and enableControlTime != '' "> and exam_examination.enable_control_time = #{ination.enableControlTime}</if>
+            <if test="startTime != null "> and exam_examination.start_time = #{ination.startTime}</if>
+            <if test="endTime != null "> and exam_examination.end_time = #{ination.endTime}</if>
+            <if test="timeLength != null "> and exam_examination.time_length = #{ination.timeLength}</if>
+            <if test="examNumber != null "> and exam_examination.exam_number = #{ination.examNumber}</if>
+            <if test="passMark != null "> and exam_examination.pass_mark = #{ination.passMark}</if>
+            <if test="questionDisorder != null  and questionDisorder != '' "> and exam_examination.question_disorder = #{ination.questionDisorder}</if>
+            <if test="finishedPaper != null  and finishedPaper != '' "> and exam_examination.finished_paper = #{ination.finishedPaper}</if>
+            <if test="examEnd != null  and examEnd != '' "> and exam_examination.exam_end = #{ination.examEnd}</if>
+            <if test="examinationUserLimit != null  and examinationUserLimit != '' "> and exam_examination.examination_user_limit = #{ination.examinationUserLimit}</if>
+            <if test="createBy != null  and createBy != '' "> and exam_examination.create_by = #{ination.createBy}</if>
+            <if test="createDate != null "> and exam_examination.create_date = #{ination.createDate}</if>
+            <if test="updateBy != null  and updateBy != '' "> and exam_examination.update_by = #{ination.updateBy}</if>
+            <if test="updateDate != null "> and exam_examination.update_date = #{ination.updateDate}</if>
+            <if test="remarks != null  and remarks != '' "> and exam_examination.remarks = #{ination.remarks}</if>
+            <if test="delFlag != null  and delFlag != '' "> and exam_examination.del_flag = #{ination.delFlag}</if>
+         </where>
+    </select>
+
+
+    <select id="selectListFromWeb" resultMap="ExamExaminationResult">
+        select
+        DISTINCT <include refid="selectExamExaminationVo"/>
+        ,tc.name as traincourse_name,eeu.vip_user_id examExaminationUserVipUserId
+        from exam_examination exam_examination
+        INNER JOIN train_course tc ON exam_examination.train_course_id = tc.id
+        LEFT JOIN exam_examination_user eeu ON eeu.exam_examination_id = exam_examination.id
+        LEFT join train_course_user tcu on tcu.train_course_id=exam_examination.train_course_id
+        <where>
+            <![CDATA[((eeu.vip_user_id = #{userId} and exam_examination.type = '2')
+            or exam_examination.type = '1')]]>
+            and
+            <![CDATA[((enable_control_time = '1' and end_time > NOW() and start_time < NOW())
+            or enable_control_time = '0')]]>
+            <if test="id != null "> and exam_examination.id = #{ination.id}</if>
+            <if test="deptId != null "> and exam_examination.dept_id = #{ination.deptId}</if>
+            <if test="examPaperId != null "> and exam_examination.exam_paper_id = #{ination.examPaperId}</if>
+            <if test="name != null  and name != '' "> and exam_examination.name = #{ination.name}</if>
+            <if test="type != null  and type != '' "> and exam_examination.type = #{ination.type}</if>
+            <if test="enableControlTime != null  and enableControlTime != '' "> and exam_examination.enable_control_time = #{ination.enableControlTime}</if>
+            <if test="startTime != null "> and exam_examination.start_time = #{ination.startTime}</if>
+            <if test="endTime != null "> and exam_examination.end_time = #{ination.endTime}</if>
+            <if test="timeLength != null "> and exam_examination.time_length = #{ination.timeLength}</if>
+            <if test="examNumber != null "> and exam_examination.exam_number = #{ination.examNumber}</if>
+            <if test="passMark != null "> and exam_examination.pass_mark = #{ination.passMark}</if>
+            <if test="questionDisorder != null  and questionDisorder != '' "> and exam_examination.question_disorder = #{ination.questionDisorder}</if>
+            <if test="finishedPaper != null  and finishedPaper != '' "> and exam_examination.finished_paper = #{ination.finishedPaper}</if>
+            <if test="examEnd != null  and examEnd != '' "> and exam_examination.exam_end = #{ination.examEnd}</if>
+            <if test="examinationUserLimit != null  and examinationUserLimit != '' "> and exam_examination.examination_user_limit = #{ination.examinationUserLimit}</if>
+            <if test="createBy != null  and createBy != '' "> and exam_examination.create_by = #{ination.createBy}</if>
+            <if test="createDate != null "> and exam_examination.create_date = #{ination.createDate}</if>
+            <if test="updateBy != null  and updateBy != '' "> and exam_examination.update_by = #{ination.updateBy}</if>
+            <if test="updateDate != null "> and exam_examination.update_date = #{ination.updateDate}</if>
+            <if test="remarks != null  and remarks != '' "> and exam_examination.remarks = #{ination.remarks}</if>
+            <if test="delFlag != null  and delFlag != '' "> and exam_examination.del_flag = #{ination.delFlag}</if>
+        </where>
+
+    </select>
+
+
+    <select id="selectEnterNameListFromWeb" resultMap="ExamExaminationResult">
+        select
+        <include refid="selectExamExaminationVo"/>,tc.name as traincourse_name
+        from exam_examination exam_examination
+        INNER JOIN train_course tc ON exam_examination.train_course_id = tc.id
+        left JOIN vip_user_orders vuo ON tc.id = vuo.train_course_id
+        <where>
+            IF
+            (
+            tc.price > 0,
+            vuo.vip_user_id = #{userId} and
+            vuo.del_flag =1 and
+            exam_examination.type = '2' and
+            exam_examination.id not in (select exam_examination_id from exam_examination_user where vip_user_id = #{userId})
+            and
+            <![CDATA[((enable_control_time = '1' and end_time > NOW() and start_time < NOW())
+            or enable_control_time = '0')  ]]>,
+            exam_examination.type = '2' and
+            exam_examination.id not in (select exam_examination_id from exam_examination_user where vip_user_id = #{userId})
+            and
+            <![CDATA[((enable_control_time = '1' and end_time > NOW() and start_time < NOW())
+            or enable_control_time = '0')  ]]>
+            )
+            <if test="id != null "> and exam_examination.id = #{ination.id}</if>
+            <if test="deptId != null "> and exam_examination.dept_id = #{ination.deptId}</if>
+            <if test="examPaperId != null "> and exam_examination.exam_paper_id = #{ination.examPaperId}</if>
+            <if test="name != null  and name != '' "> and exam_examination.name = #{ination.name}</if>
+            <if test="type != null  and type != '' "> and exam_examination.type = #{ination.type}</if>
+            <if test="enableControlTime != null  and enableControlTime != '' "> and exam_examination.enable_control_time = #{ination.enableControlTime}</if>
+            <if test="startTime != null "> and exam_examination.start_time = #{ination.startTime}</if>
+            <if test="endTime != null "> and exam_examination.end_time = #{ination.endTime}</if>
+            <if test="timeLength != null "> and exam_examination.time_length = #{ination.timeLength}</if>
+            <if test="examNumber != null "> and exam_examination.exam_number = #{ination.examNumber}</if>
+            <if test="passMark != null "> and exam_examination.pass_mark = #{ination.passMark}</if>
+            <if test="questionDisorder != null  and questionDisorder != '' "> and exam_examination.question_disorder = #{ination.questionDisorder}</if>
+            <if test="finishedPaper != null  and finishedPaper != '' "> and exam_examination.finished_paper = #{ination.finishedPaper}</if>
+            <if test="examEnd != null  and examEnd != '' "> and exam_examination.exam_end = #{ination.examEnd}</if>
+            <if test="examinationUserLimit != null  and examinationUserLimit != '' "> and exam_examination.examination_user_limit = #{ination.examinationUserLimit}</if>
+            <if test="createBy != null  and createBy != '' "> and exam_examination.create_by = #{ination.createBy}</if>
+            <if test="createDate != null "> and exam_examination.create_date = #{ination.createDate}</if>
+            <if test="updateBy != null  and updateBy != '' "> and exam_examination.update_by = #{ination.updateBy}</if>
+            <if test="updateDate != null "> and exam_examination.update_date = #{ination.updateDate}</if>
+            <if test="remarks != null  and remarks != '' "> and exam_examination.remarks = #{ination.remarks}</if>
+            <if test="delFlag != null  and delFlag != '' "> and exam_examination.del_flag = #{ination.delFlag}</if>
+        </where>
+
+    </select>
+
+
+</mapper>

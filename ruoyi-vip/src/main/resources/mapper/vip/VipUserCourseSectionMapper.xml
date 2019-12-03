@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.vip.mapper.VipUserCourseSectionMapper">
+    
+    <resultMap type="VipUserCourseSectionVO" id="VipUserCourseSectionResult">
+        <result property="id"    column="id"    />
+        <result property="vipUserId"    column="vip_user_id"    />
+        <result property="trainCourseId"    column="train_course_id"    />
+        <result property="trainCourseSectionId"    column="train_course_section_id"    />
+        <result property="duration"    column="duration"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="userName"    column="user_name"    />
+        <result property="trainCourseName"    column="trainCourseName"    />
+        <result property="trainCourseSectionName"    column="trainCourseSectionName"    />
+    </resultMap>
+	
+	<sql id="selectVipUserCourseSectionVo">
+         vucs.id, vucs.vip_user_id, vucs.train_course_id, vucs.train_course_section_id, vucs.duration, vucs.create_by, vucs.create_date,
+         vucs.update_by, vucs.update_date, vucs.remarks, vucs.del_flag    </sql>
+	
+    <select id="selectVipUserCourseSectionList" parameterType="VipUserCourseSectionVO" resultMap="VipUserCourseSectionResult">
+        select
+        <include refid="selectVipUserCourseSectionVo"/>
+        ,su.user_name,tc.name trainCourseName,tcs.name trainCourseSectionName
+        from vip_user_course_section vucs
+        LEFT  join sys_user su on su.user_id=vucs.vip_user_id
+        left join train_course tc on tc.id=vucs.train_course_id
+        left join train_course_section tcs on tcs.id =vucs.train_course_section_id
+        <where>  
+            <if test="id != null "> and vucs.id = #{id}</if>
+             <if test="vipUserId != null "> and vucs.vip_user_id = #{vipUserId}</if>
+             <if test="trainCourseId != null "> and vucs.train_course_id = #{trainCourseId}</if>
+             <if test="trainCourseSectionId != null "> and vucs.train_course_section_id = #{trainCourseSectionId}</if>
+             <if test="delFlag != null  and delFlag != '' "> and vucs.del_flag = #{delFlag}</if>
+
+            <if test="userName != null "> and
+                (
+                su.user_name like CONCAT('%', #{userName},'%')
+                or su.login_name like CONCAT('%', #{userName},'%')
+                )
+            </if>
+            <if test="trainCourseName != null  and trainCourseName != ''"> and tc.name like CONCAT('%',#{trainCourseName},'%') </if>
+            <if test="trainCourseSectionName != null  and trainCourseSectionName != ''"> and tcs.name like CONCAT('%',#{trainCourseSectionName},'%') </if>
+
+        </where>
+    </select>
+
+    
+</mapper>

@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="web/index::cmsHeader">
+</head>
+<body>
+
+<div class="fly-header layui-bg-black" th:replace="web/index::top">
+</div>
+
+<div class="layui-container fly-marginTop fly-user-main">
+    <div th:replace="web/user/set::userinfo">
+    </div>
+
+    <div class="fly-panel fly-panel-user" pad20>
+        <div class="layui-tab layui-tab-brief" lay-filter="user" id="LAY_msg" style="margin-top: 15px;">
+            <div class="layui-container">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md15">
+                        <div class="fly-panel">
+
+                            <div class="layui-col-md15">
+                                <div class="layui-col-md12">
+                                    <div class="layui-card" th:each="item:${data}">
+                                        <div class="layui-card-header">[[${itemStat.index+1}]]:<span
+                                                th:text="${item.question.title}"></span>
+                                            <span th:if="${item.question.type=='1'}">(单选)</span>
+                                            <span th:if="${item.question.type=='2'}">(多选)</span>
+                                            <span th:if="${item.question.type=='3'}">(判断)</span>
+                                        </div>
+                                        <div class="layui-card-body" th:each="qItem:${item.question.questionItem}">
+                                            [[${qItem.number}]]:
+                                            <span th:text="${qItem.content}"></span>
+                                        </div>
+                                        <div class="layui-card-body" th:id="${item.question.id}+'answer'">
+                                            解析:正确答案[[${item.question.answer}]]<br>
+                                            [[${item.question.label}]]
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="fly-footer" th:replace="web/index::cmsBottom">
+</div>
+
+<script>
+    $(function () {
+        $("#message").addClass("layui-this")
+    })
+
+</script>
+
+</body>
+</html>
