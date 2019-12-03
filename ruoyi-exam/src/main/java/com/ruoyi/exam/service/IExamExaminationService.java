@@ -51,4 +51,5 @@ public interface IExamExaminationService extends AbstractBaseService<ExamExamina
 
     Integer countScore(List<ExamUserExaminationQuestionVO> examUserExaminationQuestion, Integer examinationId);
 
+    List<ExamExaminationResultVo> selectExamExaminationResultById(Integer examId);
 }

@@ -1,13 +1,19 @@
 package com.ruoyi.exam.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.github.pagehelper.PageInfo;
+import com.ruoyi.exam.domain.ExamExaminationResultVo;
 import com.ruoyi.framework.web.util.ShiroUtils;
+import com.ruoyi.system.domain.SysUser;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -131,5 +137,45 @@ public class ExamExaminationController extends BaseController
 	{		
 		return toAjax(examExaminationService.deleteByIds(ids));
 	}
-	
+
+	/**
+	 * 考试成绩
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping("/examinationResult/{id}")
+	@GetMapping()
+	public String resultList(@PathVariable("id") Integer id,ModelMap map) {
+		map.put( "user", ShiroUtils.getSysUser() );
+		map.put("examId",id);
+		return prefix + "/examResultList";
+	}
+
+	/**
+	 * 考试成绩列表
+	 * @param examId 考试id
+	 * @return
+	 */
+	@PostMapping("/resultList/{examId}")
+	@ResponseBody
+	public TableDataInfo resultList(@PathVariable("examId") Integer examId) {
+		List<ExamExaminationResultVo> list = examExaminationService.selectExamExaminationResultById(examId);
+		return getDataTable(list);
+	}
+
+	/**
+	 * 导出考试结果列表
+	 */
+	@PostMapping("/resultExport/{examId}")
+	@ResponseBody
+	public AjaxResult resultExport(@PathVariable("examId") Integer examId)
+	{
+		if (ObjectUtils.isEmpty(examId)){
+			return AjaxResult.error("暂无数据");
+		}
+		List<ExamExaminationResultVo> list = examExaminationService.selectExamExaminationResultById(examId);
+		ExcelUtil<ExamExaminationResultVo> util = new ExcelUtil<ExamExaminationResultVo>(ExamExaminationResultVo.class);
+		return util.exportExcel(list, "examExaminationResult");
+	}
+
 }

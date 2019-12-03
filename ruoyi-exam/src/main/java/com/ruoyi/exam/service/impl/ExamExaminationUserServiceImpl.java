@@ -1,6 +1,8 @@
 package com.ruoyi.exam.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.exam.domain.ExamExaminationResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.exam.mapper.ExamExaminationUserMapper;
@@ -51,4 +53,10 @@ public class ExamExaminationUserServiceImpl extends AbstractBaseServiceImpl<Exam
         return examExaminationUserMapper.selectExamExaminationUserList(examExaminationUser);
     }
 
+
+    @Override
+    public List<ExamExaminationResultVo> selectExamExaminationResultByExamId(Integer examId) {
+        startPage();
+        return examExaminationUserMapper.selectExamExaminationResultByExamId(examId);
+    }
 }

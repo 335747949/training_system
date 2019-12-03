@@ -77,7 +77,7 @@
 				},
 				{
 					field : 'enableControlTime',
-					title : '是否控制考试日期',
+					title : '控制考试日期',
 					formatter: function(value, item, index) {
 
 				return $.table.selectDictLabel([[${@dict.getType('exam_ination_enableControlTime')}]], item.type);
@@ -104,30 +104,30 @@
 					field : 'passMark', 
 					title : '及格分数',
 				},
-				{
-					field : 'questionDisorder',
-					title : '题目乱序',
-					formatter: function(value, item, index) {
-
-						return $.table.selectDictLabel([[${@dict.getType('exam_ination_questionDisorder')}]], item.type);
-					}
-				},
-				{
-					field : 'finishedPaper',
-					title : '交卷后',
-					formatter: function(value, item, index) {
-
-						return $.table.selectDictLabel([[${@dict.getType('exam_ination_finishedPaper')}]], item.type);
-					}
-				},
-				{
-					field : 'examEnd',
-					title : '考试结束后',
-					formatter: function(value, item, index) {
-
-						return $.table.selectDictLabel([[${@dict.getType('exam_ination_examEnd')}]], item.type);
-					}
-				},
+				// {
+				// 	field : 'questionDisorder',
+				// 	title : '题目乱序',
+				// 	formatter: function(value, item, index) {
+				//
+				// 		return $.table.selectDictLabel([[${@dict.getType('exam_ination_questionDisorder')}]], item.type);
+				// 	}
+				// },
+				// {
+				// 	field : 'finishedPaper',
+				// 	title : '交卷后',
+				// 	formatter: function(value, item, index) {
+				//
+				// 		return $.table.selectDictLabel([[${@dict.getType('exam_ination_finishedPaper')}]], item.type);
+				// 	}
+				// },
+				// {
+				// 	field : 'examEnd',
+				// 	title : '考试结束后',
+				// 	formatter: function(value, item, index) {
+				//
+				// 		return $.table.selectDictLabel([[${@dict.getType('exam_ination_examEnd')}]], item.type);
+				// 	}
+				// },
                     {
                         field : 'type',
                         title : '考试类型',
@@ -178,14 +178,22 @@
 		            align: 'center',
 		            formatter: function(value, row, index) {
 		            	var actions = [];
+						if(row.type=='2'){
+							actions.push('<a class="btn btn-info btn-xs ' + editFlag + '" href="#" onclick="toExaminationResult(\'' + row.id + '\')"><i class="fa fa-search"></i>成绩查看</a> ');
+						}
 		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+		            	actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
 						return actions.join('');
 		            }
 		        }]
             };
             $.table.init(options);
         });
+
+		function toExaminationResult(id) {
+			var url = prefix + "/examinationResult/"+id;
+			createMenuItem(url, "成绩查看");
+		}
     </script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.ruoyi.exam.service;
 
+import com.ruoyi.exam.domain.ExamExaminationResultVo;
 import com.ruoyi.exam.domain.ExamExaminationUser;
 import java.util.List;
 import com.ruoyi.framework.web.base.AbstractBaseService;
@@ -28,4 +29,6 @@ public interface IExamExaminationUserService extends AbstractBaseService<ExamExa
 
 
     int insertOne(ExamExaminationUser examExaminationUser);
+
+    List<ExamExaminationResultVo> selectExamExaminationResultByExamId(Integer examId);
 }

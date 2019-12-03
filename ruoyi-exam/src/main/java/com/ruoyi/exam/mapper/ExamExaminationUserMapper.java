@@ -1,8 +1,10 @@
 package com.ruoyi.exam.mapper;
 
+import com.ruoyi.exam.domain.ExamExaminationResultVo;
 import com.ruoyi.exam.domain.ExamExaminationUser;
 import java.util.List;
 import com.ruoyi.framework.web.base.MyMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 考试对象 数据层
@@ -19,6 +21,7 @@ public interface ExamExaminationUserMapper  extends MyMapper<ExamExaminationUser
      * @param examExaminationUser 考试对象信息
      * @return 考试对象集合
      */
-	public List<ExamExaminationUser> selectExamExaminationUserList(ExamExaminationUser examExaminationUser);
-	
+	List<ExamExaminationUser> selectExamExaminationUserList(ExamExaminationUser examExaminationUser);
+
+	List<ExamExaminationResultVo> selectExamExaminationResultByExamId(@Param("examId") Integer examId);
 }

@@ -36,5 +36,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </where>
     </select>
 
-    
+    <select id="selectExamExaminationResultByExamId"
+            resultType="com.ruoyi.exam.domain.ExamExaminationResultVo">
+        SELECT
+            eue.id AS userExamId,
+            su.user_id AS vipUserId,
+            su.user_name AS vipUserName,
+            su.phonenumber AS vipUserMobile,
+            MAX( eue.score ) AS score,
+            eue.create_date AS finshTime,
+            ep.id AS examPaperId,
+            ep.`name` AS examPaperName,
+            ee.`name` AS examName,
+            ep.type AS examPaperType,
+            ee.pass_mark AS passScore
+        FROM
+            exam_user_examination eue
+            LEFT JOIN exam_examination ee ON eue.exam_examination_id = ee.id
+            LEFT JOIN exam_paper ep ON eue.exam_paper_id = ep.id
+            LEFT JOIN sys_user su ON eue.vip_user_id = su.user_id
+        WHERE
+            eue.del_flag = 0
+            AND ee.del_flag = 0
+            AND ep.del_flag = 0
+            AND su.del_flag = 0
+            AND eue.exam_examination_id = #{examId}
+        GROUP BY
+            eue.vip_user_id
+        ORDER BY
+            eue.create_date
+    </select>
+
+
 </mapper>

@@ -5,15 +5,12 @@ import java.util.*;
 import cn.hutool.core.util.StrUtil;
 import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.*;
-import com.ruoyi.framework.web.exception.base.BaseException;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Service;
 import com.ruoyi.exam.mapper.ExamExaminationMapper;
-import com.ruoyi.common.support.Convert;
 import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
 
 /**
@@ -284,5 +281,10 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
             }
         }
         return score;
+    }
+
+    @Override
+    public List<ExamExaminationResultVo> selectExamExaminationResultById(Integer examId) {
+        return examExaminationUserService.selectExamExaminationResultByExamId(examId);
     }
 }

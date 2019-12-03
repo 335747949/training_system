@@ -188,6 +188,4 @@ public class CmsExaminationController {
         success.put("id",id);
         return success;
     }
-
-
 }
