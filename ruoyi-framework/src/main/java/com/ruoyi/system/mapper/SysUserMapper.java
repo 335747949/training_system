@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ruoyi.framework.web.base.MyMapper;
 import com.ruoyi.system.domain.SysUser;
+import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
 /**
@@ -27,23 +28,23 @@ public interface SysUserMapper extends MyMapper<SysUser>
      * @param userName 用户名
      * @return 用户对象信息
      */
-    public SysUser selectUserByLoginName(String userName);
+    public SysUser selectUserByLoginName(@Param("userName") String userName, @Param("type") String type);
 
     /**
      * 通过手机号码查询用户
-     * 
+     *
      * @param phoneNumber 手机号码
      * @return 用户对象信息
      */
-    public SysUser selectUserByPhoneNumber(String phoneNumber);
+    public SysUser selectUserByPhoneNumber(@Param("phoneNumber") String phoneNumber, @Param("type") String type);
 
     /**
      * 通过邮箱查询用户
-     * 
+     *
      * @param email 邮箱
      * @return 用户对象信息
      */
-    public SysUser selectUserByEmail(String email);
+    public SysUser selectUserByEmail(@Param("email") String email, @Param("type") String type);
 
     /**
      * 通过用户ID查询用户
@@ -91,7 +92,7 @@ public interface SysUserMapper extends MyMapper<SysUser>
      * @param loginName 登录名称
      * @return 结果
      */
-    public int checkLoginNameUnique(String loginName);
+    public int checkLoginNameUnique(@Param("loginName") String loginName,@Param("type") String type);
 
     /**
      * 校验手机号码是否唯一
@@ -99,7 +100,7 @@ public interface SysUserMapper extends MyMapper<SysUser>
      * @param phonenumber 手机号码
      * @return 结果
      */
-    public SysUser checkPhoneUnique(String phonenumber);
+    public SysUser checkPhoneUnique(@Param("phonenumber") String phonenumber,@Param("type") String type);
 
     /**
      * 校验email是否唯一
@@ -107,6 +108,6 @@ public interface SysUserMapper extends MyMapper<SysUser>
      * @param email 用户邮箱
      * @return 结果
      */
-    public SysUser checkEmailUnique(String email);
+    public SysUser checkEmailUnique(@Param("email") String email,@Param("type") String type);
 
 }

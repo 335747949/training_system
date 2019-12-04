@@ -3,6 +3,7 @@ package com.ruoyi.train.course.controller;
 import cn.hutool.json.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.base.BaseController;
@@ -71,7 +72,7 @@ public class ApiTrainCourseController extends BaseController {
      */
     @GetMapping("/trainCourse/myList")
     public AjaxResult myList(TrainCourseVO trainCourse) {
-        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(), UserConstants.USER_VIP );
         trainCourse.setUserId( sysUser.getUserId().intValue() );
         List<TrainCourseVO> list = trainCourseService.selectTrainCoursePage( trainCourse );
         AjaxResult success = success( "查询成功" );
@@ -89,7 +90,7 @@ public class ApiTrainCourseController extends BaseController {
         String courseDays = configService.selectConfigByKey( "course.days" );
         String loginName = JwtUtil.getLoginName();
         if (StringUtils.isNotEmpty( loginName )) {
-            SysUser sysUser = sysUserService.selectUserByLoginName( loginName );
+            SysUser sysUser = sysUserService.selectUserByLoginName( loginName,UserConstants.USER_VIP );
             if (sysUser != null) {
                 courseAuth = trainCourseUserService.authority( sysUser.getUserId(), id );
             }

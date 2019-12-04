@@ -1,6 +1,7 @@
 package com.ruoyi.vip.controller;
 
 import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.base.BaseController;
 import com.ruoyi.system.domain.SysUser;
@@ -37,7 +38,7 @@ public class ApiVipUserOrdersController extends BaseController {
     @GetMapping("/v1/user/orders/page")
     public AjaxResult get() {
         AjaxResult success = success( "获取我的订单" );
-        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(), UserConstants.USER_VIP );
         VipUserOrdersVO vipUserOrders = new VipUserOrdersVO();
         vipUserOrders.setVipUserId( sysUser.getUserId().intValue() );
         List<VipUserOrdersVO> ordersVOS = vipUserOrdersService.selectVipUserOrdersPage( vipUserOrders );

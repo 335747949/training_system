@@ -120,7 +120,7 @@ public class UserConstants {
     /**
      * 手机号码格式限制
      */
-    public static final String MOBILE_PHONE_NUMBER_PATTERN = "^0{0,1}(13[0-9]|15[0-9]|14[0-9]|18[0-9])[0-9]{8}$";
+    public static final String MOBILE_PHONE_NUMBER_PATTERN = "1[34857][\\d]{9}";
 
     /**
      * 邮箱格式限制

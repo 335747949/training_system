@@ -11,6 +11,10 @@
   <link rel="stylesheet" th:href="@{/web/res/css/global.css}">
   <script th:src="@{/js/jquery.min.js}"></script>
 
+  <script>
+    if(window.top!==window.self){window.top.location=window.location};
+  </script>
+
   <!-- jquery-validate 表单验证插件 -->
   <script th:src="@{/ajax/libs/validate/jquery.validate.min.js}"></script>
   <script th:src="@{/ajax/libs/validate/messages_zh.min.js}"></script>

@@ -59,9 +59,9 @@ public class SysUserServiceImpl extends AbstractBaseServiceImpl<SysUserMapper, S
      * @return 用户对象信息
      */
     @Override
-    public SysUser selectUserByLoginName(String userName) {
+    public SysUser selectUserByLoginName(String userName, String type) {
 
-        return userMapper.selectUserByLoginName( userName );
+        return userMapper.selectUserByLoginName( userName, type );
     }
 
 
@@ -72,8 +72,8 @@ public class SysUserServiceImpl extends AbstractBaseServiceImpl<SysUserMapper, S
      * @return 用户对象信息
      */
     @Override
-    public SysUser selectUserByPhoneNumber(String phoneNumber) {
-        return userMapper.selectUserByPhoneNumber( phoneNumber );
+    public SysUser selectUserByPhoneNumber(String phoneNumber, String type) {
+        return userMapper.selectUserByPhoneNumber( phoneNumber, type );
     }
 
     /**
@@ -83,8 +83,8 @@ public class SysUserServiceImpl extends AbstractBaseServiceImpl<SysUserMapper, S
      * @return 用户对象信息
      */
     @Override
-    public SysUser selectUserByEmail(String email) {
-        return userMapper.selectUserByEmail( email );
+    public SysUser selectUserByEmail(String email, String type) {
+        return userMapper.selectUserByEmail( email, type );
     }
 
     /**
@@ -240,8 +240,8 @@ public class SysUserServiceImpl extends AbstractBaseServiceImpl<SysUserMapper, S
      * @return
      */
     @Override
-    public String checkLoginNameUnique(String loginName) {
-        int count = userMapper.checkLoginNameUnique( loginName );
+    public String checkLoginNameUnique(String loginName, String type) {
+        int count = userMapper.checkLoginNameUnique( loginName , type);
         if (count > 0) {
             return UserConstants.USER_NAME_NOT_UNIQUE;
         }
@@ -257,7 +257,7 @@ public class SysUserServiceImpl extends AbstractBaseServiceImpl<SysUserMapper, S
     @Override
     public String checkPhoneUnique(SysUser user) {
         Long userId = StringUtils.isNull( user.getUserId() ) ? -1L : user.getUserId();
-        SysUser info = userMapper.checkPhoneUnique( user.getPhonenumber() );
+        SysUser info = userMapper.checkPhoneUnique( user.getPhonenumber(), user.getUserType() );
         if (StringUtils.isNotNull( info ) && info.getUserId().longValue() != userId.longValue()) {
             return UserConstants.USER_PHONE_NOT_UNIQUE;
         }
@@ -273,7 +273,7 @@ public class SysUserServiceImpl extends AbstractBaseServiceImpl<SysUserMapper, S
     @Override
     public String checkEmailUnique(SysUser user) {
         Long userId = StringUtils.isNull( user.getUserId() ) ? -1L : user.getUserId();
-        SysUser info = userMapper.checkEmailUnique( user.getEmail() );
+        SysUser info = userMapper.checkEmailUnique( user.getEmail(), user.getUserType());
         if (StringUtils.isNotNull( info ) && info.getUserId().longValue() != userId.longValue()) {
             return UserConstants.USER_EMAIL_NOT_UNIQUE;
         }

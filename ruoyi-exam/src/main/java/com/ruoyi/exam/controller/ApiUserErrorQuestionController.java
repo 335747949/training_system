@@ -1,6 +1,7 @@
 package com.ruoyi.exam.controller;
 
 import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.*;
 import com.ruoyi.framework.jwt.JwtUtil;
@@ -54,7 +55,7 @@ public class ApiUserErrorQuestionController extends BaseController {
     @PostMapping("/v1/practice/answer")
     public AjaxResult answer(@RequestBody List<String> questionIds) {
         for (String questionId : questionIds) {
-            SysUser sysUser = sysUserService.selectUserByLoginName(JwtUtil.getLoginName());
+            SysUser sysUser = sysUserService.selectUserByLoginName(JwtUtil.getLoginName(), UserConstants.USER_VIP);
 
             int insert = examUserErrorQuestionService.insertError(questionId,sysUser );
         }
@@ -70,7 +71,7 @@ public class ApiUserErrorQuestionController extends BaseController {
     @GetMapping("/v1/practice/error")
     public AjaxResult queryError() {
         ExamUserErrorQuestion examUserErrorQuestion = new ExamUserErrorQuestion();
-        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(),UserConstants.USER_VIP );
         examUserErrorQuestion.setVipUserId(sysUser.getUserId().intValue());
         List<ExamUserErrorQuestionVO> list = examUserErrorQuestionService.selectExamUserErrorQuestionDetailPage(examUserErrorQuestion);
         AjaxResult success = success("查询成功");
@@ -85,7 +86,7 @@ public class ApiUserErrorQuestionController extends BaseController {
     @GetMapping("/v1/question/error/list")
     public AjaxResult queryErrorList() {
         ExamUserErrorQuestion examUserErrorQuestion = new ExamUserErrorQuestion();
-        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(),UserConstants.USER_VIP );
         examUserErrorQuestion.setVipUserId(sysUser.getUserId().intValue());
         List<ExamUserErrorQuestionVO> list = examUserErrorQuestionService.selectExamUserErrorQuestionDetailList(examUserErrorQuestion);
         AjaxResult success = success("查询成功");

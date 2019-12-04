@@ -3,6 +3,7 @@ package com.ruoyi.exam.controller;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.*;
 import com.ruoyi.framework.jwt.JwtUtil;
@@ -61,7 +62,7 @@ public class ApiExaminationController extends BaseController {
     @GetMapping("/v1/examination/list")
     public AjaxResult list(ExamExamination examExamination) {
 
-        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(), UserConstants.USER_VIP );
         Map<String, Object> map = new HashMap<>();
         map.put( "ination", examExamination );
         map.put( "userId", sysUser.getUserId() );
@@ -82,7 +83,7 @@ public class ApiExaminationController extends BaseController {
     @GetMapping("/v1/examination/start/{inationId}")
     public AjaxResult start(@PathVariable("inationId") String inationId) {
         ExamExamination examExamination = examExaminationService.selectById( inationId );
-        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() ,UserConstants.USER_VIP);
         Integer userId = Integer.parseInt( sysUser.getUserId().toString() );
         //考试类型
         String type = examExamination.getType();
@@ -199,7 +200,7 @@ public class ApiExaminationController extends BaseController {
      */
     @GetMapping("/v1/examination/entername/list")
     public AjaxResult enterNameList(ExamExamination examExamination) {
-        SysUser sysUser = sysUserService.selectUserByLoginName(JwtUtil.getLoginName() );
+        SysUser sysUser = sysUserService.selectUserByLoginName(JwtUtil.getLoginName(),UserConstants.USER_VIP );
 
         Map<String, Object> map = new HashMap<>();
         map.put( "ination", examExamination );
@@ -220,7 +221,7 @@ public class ApiExaminationController extends BaseController {
      */
     @PostMapping("/v1/examination/entername")
     public AjaxResult enterName(SysUser sysUser, String inationId) {
-        SysUser user = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        SysUser user = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(),UserConstants.USER_VIP );
         Long userId = user.getUserId();
         sysUser.setUserId( userId );
         sysUserService.updateSelectiveById( sysUser );
@@ -252,7 +253,7 @@ public class ApiExaminationController extends BaseController {
                              @PathVariable Integer examUserExaminationId, @PathVariable Integer examinationId, @PathVariable Integer paperId,@PathVariable Long time) {
 
 
-        SysUser user = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        SysUser user = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(),UserConstants.USER_VIP );
         Long userId = user.getUserId();
         //交卷后返回的数据
         ArrayList<Map<String, String>> data = new ArrayList<>();
@@ -332,7 +333,7 @@ public class ApiExaminationController extends BaseController {
      */
     @GetMapping("/v1/user/examination/page")
     public AjaxResult userexamination(ExamUserExaminationVO bean) {
-        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(),UserConstants.USER_VIP );
         bean.setVipUserId( sysUser.getUserId().intValue() );
         List<ExamUserExaminationVO> data = examUserExaminationService.selectMyExamUserExamination( bean );
         AjaxResult success = success( "查询列表成功" );

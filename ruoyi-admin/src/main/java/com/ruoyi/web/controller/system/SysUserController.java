@@ -164,7 +164,7 @@ public class SysUserController extends BaseController {
     @PostMapping("/checkLoginNameUnique")
     @ResponseBody
     public String checkLoginNameUnique(SysUser user) {
-        return userService.checkLoginNameUnique( user.getLoginName() );
+        return userService.checkLoginNameUnique( user.getLoginName(),user.getUserType() );
     }
 
     /**

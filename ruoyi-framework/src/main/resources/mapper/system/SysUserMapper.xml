@@ -87,29 +87,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="selectUserByLoginName" parameterType="String" resultMap="SysUserResult">
 	    <include refid="selectUserVo"/>
-		where u.login_name = #{userName}
+		where u.login_name = #{userName} AND u.user_type = #{type}
 	</select>
 
 	<select id="selectUserByPhoneNumber" parameterType="String" resultMap="SysUserResult">
 		<include refid="selectUserVo"/>
-		where u.phonenumber = #{phonenumber}
+		where u.phonenumber = #{phonenumber} AND u.user_type = #{type}
 	</select>
-	
+
 	<select id="selectUserByEmail" parameterType="String" resultMap="SysUserResult">
 	    <include refid="selectUserVo"/>
-		where u.email = #{email}
+		where u.email = #{email} AND u.user_type = #{type}
 	</select>
 	
 	<select id="checkLoginNameUnique" parameterType="String" resultType="int">
-		select count(1) from sys_user where login_name=#{loginName}
+		select count(1) from sys_user where login_name=#{loginName} and user_type = #{type}
 	</select>
 	
 	<select id="checkPhoneUnique" parameterType="String" resultMap="SysUserResult">
-		select user_id, phonenumber from sys_user where phonenumber=#{phonenumber}
+		select user_id, phonenumber from sys_user where phonenumber=#{phonenumber} and user_type = #{type}
 	</select>
 	
 	<select id="checkEmailUnique" parameterType="String" resultMap="SysUserResult">
-		select user_id, email from sys_user where email=#{email}
+		select user_id, email from sys_user where email=#{email} and user_type = #{type}
 	</select>
 	
 	<select id="selectUserById" parameterType="Long" resultMap="SysUserResult">

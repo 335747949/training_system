@@ -2,6 +2,7 @@ package com.ruoyi.vip.controller;
 
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.ExcelUtil;
 import com.ruoyi.framework.jwt.JwtUtil;
@@ -41,7 +42,7 @@ public class ApiVipUserCourseSectionController extends BaseController
 	@PostMapping("/v1/user/course/study")
 	public AjaxResult courseSections(@RequestBody VipUserCourseSection trainCourseSection, ModelMap map) {
 
-		SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+		SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(), UserConstants.USER_VIP );
 		trainCourseSection.setVipUserId( sysUser.getUserId().intValue() );
 		vipUserCourseSectionService.updateStudy( trainCourseSection );
 		return success("增加学习进度");

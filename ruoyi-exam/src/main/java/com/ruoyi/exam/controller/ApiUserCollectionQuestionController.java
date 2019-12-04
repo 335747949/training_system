@@ -1,6 +1,7 @@
 package com.ruoyi.exam.controller;
 
 import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.*;
 import com.ruoyi.framework.jwt.JwtUtil;
@@ -39,7 +40,7 @@ public class ApiUserCollectionQuestionController extends BaseController {
     @GetMapping("/v1/question/collection/{id}")
     public AjaxResult answer(@PathVariable("id") Integer id) {
 
-        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(), UserConstants.USER_VIP );
         ExamUserCollectionQuestionVO examUserCollectionQuestionVO = new ExamUserCollectionQuestionVO();
         examUserCollectionQuestionVO.setVipUserId( sysUser.getUserId().intValue() );
         examUserCollectionQuestionVO.setExamQuestionId( id );
@@ -63,7 +64,7 @@ public class ApiUserCollectionQuestionController extends BaseController {
     @GetMapping("/v1/question/collection/page")
     public AjaxResult collectionPage() {
         ExamUserCollectionQuestionVO examUserCollectionQuestion = new ExamUserCollectionQuestionVO();
-        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(),UserConstants.USER_VIP );
         examUserCollectionQuestion.setVipUserId( sysUser.getUserId().intValue() );
         List<ExamUserCollectionQuestionVO> list = examUserCollectionQuestionService.selectExamUserCollectionQuestionPage( examUserCollectionQuestion );
         AjaxResult success = success( "查询我的收藏成功" );
@@ -79,7 +80,7 @@ public class ApiUserCollectionQuestionController extends BaseController {
     @GetMapping("/v1/question/collection/list")
     public AjaxResult collectionList() {
         ExamUserCollectionQuestionVO examUserCollectionQuestion = new ExamUserCollectionQuestionVO();
-        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(),UserConstants.USER_VIP );
         examUserCollectionQuestion.setVipUserId( sysUser.getUserId().intValue() );
         List<ExamUserCollectionQuestionVO> list = examUserCollectionQuestionService.selectExamUserCollectionQuestionList( examUserCollectionQuestion );
         AjaxResult success = success( "查询我的收藏成功" );

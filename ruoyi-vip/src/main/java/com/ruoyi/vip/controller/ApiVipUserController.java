@@ -59,7 +59,7 @@ public class ApiVipUserController extends BaseController {
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);
-            SysUser sysUser = loginService.login(user.getUserName(), user.getPassword());
+            SysUser sysUser = loginService.login(user.getUserName(), user.getPassword(),UserConstants.USER_VIP);
             if (sysUser == null) {
                 return error("用户或密码错误");
             }
@@ -83,7 +83,7 @@ public class ApiVipUserController extends BaseController {
     @GetMapping("/member/user/info")
     public AjaxResult get() {
         AjaxResult success = success("获取用户信息成功");
-        SysUser sysUser = sysUserService.selectUserByLoginName(JwtUtil.getLoginName());
+        SysUser sysUser = sysUserService.selectUserByLoginName(JwtUtil.getLoginName(),UserConstants.USER_VIP);
         success.put("data", sysUser);
         return success;
     }
@@ -97,7 +97,7 @@ public class ApiVipUserController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     public AjaxResult addSave(@RequestBody SysUser user) {
-        String s = sysUserService.checkLoginNameUnique(user.getLoginName());
+        String s = sysUserService.checkLoginNameUnique(user.getLoginName(),user.getUserType());
         //用户名不唯一
         if (s.equals(UserConstants.USER_NAME_NOT_UNIQUE)) {
             return error("用户名已经注册");
@@ -144,7 +144,7 @@ public class ApiVipUserController extends BaseController {
     @PostMapping("/member/user/checkLoginNameUnique")
     @ResponseBody
     public String checkLoginNameUnique(SysUser user) {
-        return sysUserService.checkLoginNameUnique(user.getLoginName());
+        return sysUserService.checkLoginNameUnique(user.getLoginName(),user.getUserType());
     }
 
     /**

@@ -47,7 +47,7 @@ public class ApiVipUserCertificationController extends BaseController {
     @GetMapping("/user/cerificate/page")
     public AjaxResult get() {
         AjaxResult success = success( "获取我的证书成功" );
-        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(),UserConstants.USER_VIP );
         VipUserCertificateVO certificateVO = new VipUserCertificateVO();
         certificateVO.setVipUserId( sysUser.getUserId().intValue() );
         List<VipUserCertificateVO> list = vipUserCertificateService.selectVipUserCertificatePage( certificateVO );

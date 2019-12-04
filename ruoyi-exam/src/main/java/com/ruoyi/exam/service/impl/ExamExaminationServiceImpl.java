@@ -3,6 +3,7 @@ package com.ruoyi.exam.service.impl;
 import java.util.*;
 
 import cn.hutool.core.util.StrUtil;
+import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.*;
 import com.ruoyi.framework.web.util.ShiroUtils;
@@ -79,7 +80,7 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
     public Map<String,Object> queryExaminationQuestion(ExamExamination examExamination, ExamUserExamination eue) {
         Map<String,Object> result = new HashMap<>();
         String id = examExamination.getId().toString();
-        SysUser sysUser = sysUserService.selectUserByLoginName(ShiroUtils.getLoginName());
+        SysUser sysUser = sysUserService.selectUserByLoginName(ShiroUtils.getLoginName(), UserConstants.USER_VIP);
         Integer userId = Integer.parseInt(sysUser.getUserId().toString());
         //考试类型
         String type = examExamination.getType();

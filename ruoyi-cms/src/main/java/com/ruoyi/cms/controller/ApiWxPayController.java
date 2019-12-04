@@ -12,6 +12,7 @@ import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.IpUtils;
 import com.ruoyi.framework.jwt.JwtUtil;
@@ -189,7 +190,7 @@ public class ApiWxPayController extends BaseController {
         request.setSignType("MD5");
         VipUserOrders userOrders = new VipUserOrders();
         userOrders.setId(request.getOutTradeNo());
-        SysUser sysUser = sysUserService.selectUserByLoginName(JwtUtil.getLoginName());
+        SysUser sysUser = sysUserService.selectUserByLoginName(JwtUtil.getLoginName(), UserConstants.USER_VIP);
         userOrders.setVipUserId(sysUser.getUserId().intValue());
         userOrders.setTrainCourseId(Integer.parseInt(request.getProductId()));
         userOrders.setPrice(new BigDecimal(request.getTotalFee().intValue()).divide(new BigDecimal(100)));

@@ -2,6 +2,7 @@ package com.ruoyi.exam.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.*;
 import com.ruoyi.framework.jwt.JwtUtil;
@@ -42,7 +43,7 @@ public class ApiPracticeController extends BaseController {
      */
     @GetMapping("/v1/practice/list")
     public AjaxResult list(ExamPracticeVO examPractice) {
-        SysUser sysUser = sysUserService.selectUserByLoginName(JwtUtil.getLoginName());
+        SysUser sysUser = sysUserService.selectUserByLoginName(JwtUtil.getLoginName(), UserConstants.USER_VIP);
         examPractice.setVipUserId(sysUser.getUserId().toString());
         List<ExamPracticeVO> list = examPracticeService.selectListFromWeb(examPractice);
         AjaxResult success = success("查询成功");
@@ -71,7 +72,7 @@ public class ApiPracticeController extends BaseController {
         for (ExamPracticeQuestionVO question : examPracticeQuestionVOS) {
             questionIds.add(question.getExamQuestionId());
         }
-        SysUser sysUser = sysUserService.selectUserByLoginName(JwtUtil.getLoginName());
+        SysUser sysUser = sysUserService.selectUserByLoginName(JwtUtil.getLoginName(),UserConstants.USER_VIP);
         map.put("vipUserId", sysUser.getUserId());
         map.put("questionIds", questionIds);
         //根据问题id集合查询问题详情

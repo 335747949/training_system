@@ -20,14 +20,20 @@
         <div class="layui-tab-item layui-show">
           <div class="layui-form layui-form-pane">
 <!--              <input name="deptId"  type="hidden" id="treeId"/>-->
+<!--              <div class="layui-form-item">-->
+<!--                  <label for="L_loginname" class="layui-form-label" >账号</label>-->
+<!--                  <div class="layui-input-inline">-->
+<!--                      <input type="text" id="L_loginname" name="loginName" required lay-verify="required" autocomplete="off" class="layui-input" placeholder = "请输入账号">-->
+<!--                  </div>-->
+<!--                  <strong style="color: red">*</strong>-->
+<!--              </div>-->
               <div class="layui-form-item">
-                  <label for="L_loginname" class="layui-form-label" >账号</label>
+                  <label for="L_Mobile" class="layui-form-label">手机号</label>
                   <div class="layui-input-inline">
-                      <input type="text" id="L_loginname" name="loginName" required lay-verify="required" autocomplete="off" class="layui-input" placeholder = "请输入账号">
+                      <input type="text" id="L_Mobile" name="phonenumber" required lay-verify="required|phone" autocomplete="off" class="layui-input"  placeholder = "请输入手机号">
                   </div>
                   <strong style="color: red">*</strong>
               </div>
-
               <div class="layui-form-item">
                   <label for="L_username" class="layui-form-label" >姓名</label>
                   <div class="layui-input-inline">
@@ -49,13 +55,6 @@
 <!--                      <input class="layui-input" type="text" name="deptName" required lay-verify="required" onclick="selectDeptTree()" readonly="true" id="treeName">-->
 <!--                  </div>-->
 <!--              </div>-->
-              <div class="layui-form-item">
-                  <label for="L_Mobile" class="layui-form-label">手机号</label>
-                  <div class="layui-input-inline">
-                      <input type="text" id="L_Mobile" name="phonenumber" required lay-verify="required|phone" autocomplete="off" class="layui-input"  placeholder = "请输入手机号">
-                  </div>
-                  <strong style="color: red">*</strong>
-              </div>
               <div class="layui-form-item">
                 <label for="L_pass" class="layui-form-label">密码</label>
                 <div class="layui-input-inline">
@@ -95,22 +94,26 @@
     })
 
     function regAccount() {
-        var loginName = $.common.trim($("input[name='loginName']").val());
+        var loginName = $.common.trim($("input[name='phonenumber']").val());
         var email = $.common.trim($("input[name='email']").val());
         var userName = $.common.trim($("input[name='userName']").val());
         // var deptId = $.common.trim($("input[name='deptId']").val());
         var phonenumber = $.common.trim($("input[name='phonenumber']").val());
         var password = $.common.trim($("input[name='password']").val());
         var repassword = $.common.trim($("input[name='repassword']").val());
-        if(password.length<5){
+        if(password.length < 5 || password.length > 20){
             layer.msg("密码长度不正确,密码长度5-20位", {icon: 2});
+            return;
+        }
+        if(loginName.length < 2 || loginName.length > 20){
+            layer.msg("用户名长度不正确,用户名长度5-20位", {icon: 2});
             return;
         }
         if(password != repassword){
             layer.msg("密码不一致", {icon: 2});
             return;
         }
-        if(phonenumber.length != 11){
+        if(!phonenumber.match("1[34857][\\d]{9}")){
             layer.msg("电话号码不正确", {icon: 2});
             return;
         }
