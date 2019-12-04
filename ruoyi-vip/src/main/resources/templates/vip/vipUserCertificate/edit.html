@@ -29,7 +29,7 @@
 					<div class="layui-upload">
 						<button type="button" class="layui-btn" id="test1">上传图片</button>
 						<div class="layui-upload-list">
-							<img class="layui-upload-img" id="demo1" th:src="@{/profile/avatar/}+*{image}">
+							<img class="layui-upload-img" id="demo1" th:src="*{image}">
 							<p id="demoText"></p>
 						</div>
 					</div>

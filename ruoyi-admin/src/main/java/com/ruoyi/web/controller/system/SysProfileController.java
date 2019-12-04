@@ -1,5 +1,7 @@
 package com.ruoyi.web.controller.system;
 
+import com.ruoyi.web.controller.system.cloud.CloudStorageService;
+import com.ruoyi.web.controller.system.cloud.OSSFactory;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -131,8 +133,13 @@ public class SysProfileController extends BaseController {
     public AjaxResult updateAvatar(SysUser user, @RequestParam("avatarfile") MultipartFile file) {
         try {
             if (!file.isEmpty()) {
-                String avatar = FileUploadUtils.upload( Global.getAvatarPath(), file );
-                user.setAvatar( avatar );
+//                String avatar = FileUploadUtils.upload( Global.getAvatarPath(), file );
+                // TODO 修改为七牛云上传
+                String contentType = file.getContentType();
+                String suffix = contentType.substring(contentType.lastIndexOf("/"));
+                CloudStorageService storage = OSSFactory.build();
+                String avatar = storage.uploadSuffix(file.getBytes(), suffix);
+                user.setAvatar(avatar);
                 if (userService.updateUserInfo( user ) > 0) {
                     setSysUser( userService.selectUserById( user.getUserId() ) );
                     return success();

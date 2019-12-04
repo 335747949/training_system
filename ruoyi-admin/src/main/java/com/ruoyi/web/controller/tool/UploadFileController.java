@@ -58,16 +58,22 @@ public class UploadFileController extends BaseController {
     public AjaxResult updateAvatar(@RequestParam("file") MultipartFile file, String module) {
         try {
             if (!file.isEmpty()) {
-                String originalFileName = file.getOriginalFilename();
-                originalFileName.substring( originalFileName.lastIndexOf( "." ) );
-                String filePath = "";
-                //上传文件路径由模块参数（module）和上传的当天日期组成
-                if (null != module) {
-                    filePath = module + "/" + DateUtil.today() + "/";
-                }
-                String fileName = FileUploadUtils.upload( Global.getAvatarPath() + filePath, file, false, originalFileName );
+//                String originalFileName = file.getOriginalFilename();
+//                originalFileName.substring( originalFileName.lastIndexOf( "." ) );
+//                String filePath = "";
+//                //上传文件路径由模块参数（module）和上传的当天日期组成
+//                if (null != module) {
+//                    filePath = module + "/" + DateUtil.today() + "/";
+//                }
+//                String fileName = FileUploadUtils.upload( Global.getAvatarPath() + filePath, file, false, originalFileName );
+                // TODO 修改为七牛云上传
+                String contentType = file.getContentType();
+                String suffix = contentType.substring(contentType.lastIndexOf("/"));
+                CloudStorageService storage = OSSFactory.build();
+                String avatar = storage.uploadSuffix(file.getBytes(), suffix);
+
                 AjaxResult ajaxResult = new AjaxResult();
-                ajaxResult.put( "fileName", filePath + fileName );
+                ajaxResult.put( "fileName", avatar );
                 ajaxResult.put( "code", "200" );
                 ajaxResult.put( "msg", "上传成功" );
                 return ajaxResult;
