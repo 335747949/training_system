@@ -49,12 +49,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             ep.`name` AS examPaperName,
             ee.`name` AS examName,
             ep.type AS examPaperType,
-            ee.pass_mark AS passScore
+            ee.pass_mark AS passScore,
+            sd.dept_name AS deptName
         FROM
             exam_user_examination eue
             LEFT JOIN exam_examination ee ON eue.exam_examination_id = ee.id
             LEFT JOIN exam_paper ep ON eue.exam_paper_id = ep.id
             LEFT JOIN sys_user su ON eue.vip_user_id = su.user_id
+            LEFT JOIN sys_dept sd ON su.dept_id = sd.id
         WHERE
             eue.del_flag = 0
             AND ee.del_flag = 0

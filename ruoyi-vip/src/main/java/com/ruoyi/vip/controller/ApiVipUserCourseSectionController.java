@@ -1,27 +1,18 @@
 package com.ruoyi.vip.controller;
 
-import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.constant.UserConstants;
-import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.utils.ExcelUtil;
 import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.base.BaseController;
-import com.ruoyi.framework.web.page.TableDataInfo;
-import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
 import com.ruoyi.vip.domain.VipUserCourseSection;
-import com.ruoyi.vip.domain.vo.VipUserCourseSectionVO;
 import com.ruoyi.vip.service.IVipUserCourseSectionService;
 import io.swagger.annotations.Api;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 /**
  * 我的课程学习 信息操作处理

@@ -34,15 +34,21 @@ public class ExamExaminationResultVo{
     private String vipUserMobile;
 
     /**
+     * 部门
+     */
+    @Excel(name = "部门", order = 7)
+    private String deptName;
+
+    /**
      * 参考人成绩
      */
-    @Excel(name = "成绩", order = 7)
+    @Excel(name = "成绩", order = 8)
     private Integer score;
 
     /**
      * 考试结束时间
      */
-    @Excel(name = "交卷时间", order = 8,dateFormat = "yyyy-MM-dd hh:mm:ss")
+    @Excel(name = "交卷时间", order = 9,dateFormat = "yyyy-MM-dd hh:mm:ss")
     private Date finshTime;
 
     /**
@@ -72,6 +78,7 @@ public class ExamExaminationResultVo{
      * 及格分数线
      */
     private Integer passScore;
+
 
     public Integer getUserExamId() {
         return userExamId;
@@ -159,5 +166,13 @@ public class ExamExaminationResultVo{
 
     public void setExamName(String examName) {
         this.examName = examName;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
     }
 }

@@ -196,12 +196,16 @@
 <!--          <img th:if="${#strings.isEmpty(session.user.avatar)}" th:src="@{/web/res/images/avatar/default.png}" th:alt="${session.user.userName}">-->
 <!--          <img th:if="${not #strings.isEmpty(session.user.avatar)}" th:src="${session.user.avatar}" th:alt="${session.user.avatar}">-->
           <cite class="layui-hide-xs" th:text="${session.user.userName}"></cite>
+          <i>(
+          <cite class="layui-hide-xs" th:text="${session.user.dept.deptName}"></cite>
+          )
+          </i>
         </a>
         <dl class="layui-nav-child">
           <!--<dd><a th:href="@{/web/user/message.html}"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>-->
           <!--<dd><a th:href="@{/web/user/home.html}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>-->
           <dd><a th:href="@{/web/user/set.html}"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
-          <dd><a th:href="@{/web/user/set.html}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe63c;</i>更多...</a></dd>
+<!--          <dd><a th:href="@{/web/user/set.html}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe63c;</i>更多...</a></dd>-->
           <!--<dd><a th:href="@{/web/user/collectquestion.html}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe600;</i>我的收藏</a></dd>-->
             <dd><a th:href="@{/web/user/userlogout.html}" style="text-align: center;">退出</a></dd>
         </dl>

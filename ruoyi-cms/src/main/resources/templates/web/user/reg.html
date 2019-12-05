@@ -19,7 +19,7 @@
       <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
         <div class="layui-tab-item layui-show">
           <div class="layui-form layui-form-pane">
-<!--              <input name="deptId"  type="hidden" id="treeId"/>-->
+              <input name="deptId"  type="hidden" id="treeId"/>
 <!--              <div class="layui-form-item">-->
 <!--                  <label for="L_loginname" class="layui-form-label" >账号</label>-->
 <!--                  <div class="layui-input-inline">-->
@@ -41,7 +41,13 @@
                   </div>
                   <strong style="color: red">*</strong>
               </div>
-
+              <div class="layui-form-item">
+                  <label  for="treeName" class="layui-form-label">部门名称</label>
+                  <div class="layui-input-inline">
+                      <input type="text" name="deptName" required lay-verify="required" onclick="selectDeptTree()" class="layui-input" style= "background-color: #dddddd" readonly="true" id="treeName">
+                  </div>
+                  <strong style="color: red">*</strong>
+              </div>
               <div class="layui-form-item">
                 <label for="L_email" class="layui-form-label">邮箱</label>
                 <div class="layui-input-inline">
@@ -49,12 +55,6 @@
               </div>
                   <strong style="color: red">*</strong>
               </div>
-<!--              <div class="layui-form-item">-->
-<!--                  <label for="L_deptname" class="layui-form-label">部门名称：</label>-->
-<!--                  <div class="layui-input-inline">-->
-<!--                      <input class="layui-input" type="text" name="deptName" required lay-verify="required" onclick="selectDeptTree()" readonly="true" id="treeName">-->
-<!--                  </div>-->
-<!--              </div>-->
               <div class="layui-form-item">
                 <label for="L_pass" class="layui-form-label">密码</label>
                 <div class="layui-input-inline">
@@ -97,7 +97,7 @@
         var loginName = $.common.trim($("input[name='phonenumber']").val());
         var email = $.common.trim($("input[name='email']").val());
         var userName = $.common.trim($("input[name='userName']").val());
-        // var deptId = $.common.trim($("input[name='deptId']").val());
+        var deptId = $.common.trim($("input[name='deptId']").val());
         var phonenumber = $.common.trim($("input[name='phonenumber']").val());
         var password = $.common.trim($("input[name='password']").val());
         var repassword = $.common.trim($("input[name='repassword']").val());
@@ -124,13 +124,14 @@
                 "loginName": loginName,
                 "userName": userName,
                 "email":email,
-                // "deptId":deptId,
+                "deptId":deptId,
                 "password":password,
                 "phonenumber":phonenumber
             },
             success: function(r) {
 
                 if (r.code == 200) {
+                    layer.msg("注册成功", {icon: 1});
                     location.href = ctx + 'web/user/login.html';
                 } else {
                     layer.msg(r.msg, {icon: 2});
@@ -142,21 +143,20 @@
 
     /*用户管理-新增-选择部门树*/
     function selectDeptTree() {
-        debugger
+
         var treeId = $("#treeId").val();
         var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        var url = ctx + "/web/dept/selectDeptTree/" + deptId;
+        var url = ctx + "web/dept/selectDeptTree/" + deptId;
         var options = {
             title: '选择部门',
             width: "380",
-            url: ctx + "/web/dept/selectDeptTree/" + deptId,
+            url: ctx + "web/dept/selectDeptTree/" + deptId,
             callBack: doSubmit
         };
         $.modal.openOptions(options);
     }
 
     function doSubmit(index, layero){
-        debugger
         var tree = layero.find("iframe")[0].contentWindow.$._tree;
         if ($.tree.notAllowParents(tree)) {
             var body = layer.getChildFrame('body', index);

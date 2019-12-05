@@ -107,7 +107,7 @@ public class CmsUserController {
     @RequestMapping("/user/regaccount")
     @ResponseBody
     public AjaxResult reg(SysUser user) {
-        String s = sysUserService.checkLoginNameUnique(user.getLoginName(),user.getUserType());
+        String s = sysUserService.checkLoginNameUnique(user.getLoginName(),UserConstants.USER_VIP);
 
         //用户名不唯一
         if (s.equals(UserConstants.USER_NAME_NOT_UNIQUE)) {

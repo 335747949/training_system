@@ -10,18 +10,6 @@
 
 <div class="layui-container fly-marginTop fly-user-main" >
   <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user" th:fragment="userinfo">
-    <!-- <li class="layui-nav-item" id="home">
-       <a href="home.html">
-         <i class="layui-icon">&#xe609;</i>
-         我的主页
-       </a>
-     </li>-->
-    <!--<li class="layui-nav-item" id="index">-->
-    <!--<a href="index.html">-->
-    <!--<i class="layui-icon">&#xe612;</i>-->
-    <!--用户中心-->
-    <!--</a>-->
-    <!--</li>-->
     <li class="layui-nav-item" id="set">
       <a th:href="@{/web/user/set.html}">
         <i class="layui-icon">&#xe620;</i>
@@ -99,19 +87,14 @@
               <div class="layui-input-inline">
                 <input type="text" id="userName" name="userName" th:value="${user.userName}" required lay-verify="required" autocomplete="off" value="" class="layui-input">
               </div>
-              <div class="layui-inline">
-                <div class="layui-input-inline">
-                  <input type="radio" name="sex" value="0" th:checked="${user.sex==1?'checked':''}" title="男">
-                  <input type="radio" name="sex" value="1" th:checked="${user.sex==0?'checked':''}" title="女">
-                </div>
+            </div>
+
+            <div class="layui-form-item">
+              <label for="deptname" class="layui-form-label">部门名称</label>
+              <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="deptName" th:value="${user.dept.deptName}" readonly="true">
               </div>
             </div>
-<!--            <div class="layui-form-item">-->
-<!--              <label for="deptname" class="layui-form-label">部门名称：</label>-->
-<!--              <div class="layui-input-inline">-->
-<!--                <input class="layui-input" type="text" name="deptName" th:value="${user.dept.deptName}" readonly="true">-->
-<!--              </div>-->
-<!--            </div>-->
             <div class="layui-form-item">
               <label for="phonenumber" class="layui-form-label" disabled="">手机号</label>
               <div class="layui-input-inline">
@@ -130,18 +113,18 @@
           </form>
         </div>
 
-        <div class="layui-form layui-form-pane layui-tab-item">
-          <div class="layui-form-item">
-            <div class="avatar-add">
-              <p>建议尺寸168*168，支持jpg、png、gif，最大不能超过50KB</p>
-              <button type="button" class="layui-btn upload-img" id="upload">
-                <i class="layui-icon">&#xe67c;</i>上传头像
-              </button>
-              <img id="avatar" th:src="${user.avatar}">
-              <span class="loading"></span>
-            </div>
-          </div>
-        </div>
+<!--        <div class="layui-form layui-form-pane layui-tab-item">-->
+<!--          <div class="layui-form-item">-->
+<!--            <div class="avatar-add">-->
+<!--              <p>建议尺寸168*168，支持jpg、png、gif，最大不能超过50KB</p>-->
+<!--              <button type="button" class="layui-btn upload-img" id="upload">-->
+<!--                <i class="layui-icon">&#xe67c;</i>上传头像-->
+<!--              </button>-->
+<!--              <img id="avatar" th:src="${user.avatar}">-->
+<!--              <span class="loading"></span>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
 
         <div class="layui-form layui-form-pane layui-tab-item">
           <div class="layui-form-item">
@@ -304,7 +287,8 @@
                 $.modal.alertError("系统错误");
             },
             success : function(data) {
-                return layer.msg('修改成功');
+              layer.msg('修改成功');
+              window.location.href = "/web/user/login"
             }
         });
     }
