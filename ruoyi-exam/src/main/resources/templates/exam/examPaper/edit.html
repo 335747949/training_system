@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-examPaper-edit" th:object="${examPaper}">
+        <input id="id" name="id" th:field="*{id}" type="hidden">
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">名称：</label>
+            <div class="col-sm-8">
+                <input id="name" name="name" th:field="*{name}" class="form-control" type="text">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">试卷类型：</label>
+            <div class="col-sm-8">
+                <select id="type" name="type" class="form-control m-b" th:field="*{type}"
+                        th:with="type=${@dict.getType('exam_paper_type')}">
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group type">
+            <label class="col-sm-3 control-label">单选题数量：</label>
+            <div class="col-sm-8">
+                <input onkeyup="this.value=this.value.replace(/\D/g,'')" id="choiceNumber" name="choiceNumber" th:field="*{choiceNumber}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+
+        <div class="form-group type">
+            <label class="col-sm-3 control-label">多选题数量：</label>
+            <div class="col-sm-8">
+                <input onkeyup="this.value=this.value.replace(/\D/g,'')" id="moreChoiceNumber" name="moreChoiceNumber" th:field="*{moreChoiceNumber}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+
+        <div class="form-group type">
+            <label class="col-sm-3 control-label">判断题数量：</label>
+            <div class="col-sm-8">
+                <input onkeyup="this.value=this.value.replace(/\D/g,'')" id="judgeNumber" name="judgeNumber" th:field="*{judgeNumber}" class="form-control" type="text">
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">备注信息：</label>
+            <div class="col-sm-8">
+                <textarea id="remarks" name="remarks" th:field="*{remarks}" class="form-control" type="text"></textarea>
+            </div>
+        </div>
+
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "exam/examPaper"
+    $("#form-examPaper-edit").validate({
+        rules:{
+            name:{
+                required:true,
+            },
+            choiceNumber:{
+                required:true,
+            },
+            moreChoiceNumber:{
+                required:true,
+            },
+            moreChoiceNumber:{
+                required:true,
+            },
+        }
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-examPaper-edit').serialize());
+        }
+    }
+
+    $(function () {
+        if ($("#type").val().toString() == "1") {
+            $(".type").hide()
+        } else {
+            $(".type").show()
+        }
+
+        $("#type").change(function () {
+            if ($("#type").val().toString() == "1") {
+                $(".type").hide()
+            } else {
+                $(".type").show()
+            }
+        })
+
+    })
+</script>
+</body>
+</html>

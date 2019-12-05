@@ -1,0 +1,330 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ruoyi/css/ry-ui.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/datapicker/bootstrap-datetimepicker.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/layui/css/layui.css}" rel="stylesheet"/>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-examExamination-edit" th:object="${examExamination}">
+        <input id="id" name="id" th:field="*{id}" type="hidden">
+        <input id="paperId" name="paperId" th:value="${examExamination.examPaperId}" type="hidden">
+        <input id="trainId" name="trainId" th:value="${examExamination.trainCourseId}" type="hidden">
+        <div class="form-group">
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">考试名称：</label>
+                <div class="col-sm-8">
+                    <input id="name" name="name" th:field="*{name}" class="form-control" type="text">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">考试试卷：</label>
+                <div class="col-sm-3">
+                    <input id="treeName" name="treeName" value="试卷分类" onclick="selectExamPaperCategoryTree()"
+                           class="form-control" type="text" readonly="true">
+                </div>
+                <div class="col-sm-5">
+                    <select id="examPaperId" name="examPaperId" class="form-control m-b">
+                        <option value="">---请选择---</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">课程选择：</label>
+                <div class="col-sm-3">
+                    <input id="trainCateGoryName" name="trainCateGoryName" value="课程分类"
+                           onclick="selectTrainCategoryTree()" class="form-control" type="text" readonly="true">
+                </div>
+                <div class="col-sm-5">
+                    <select id="trainCourseId" name="trainCourseId" class="form-control m-b">
+                        <option>---请选择---</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">考试类型</label>
+
+                <div class="col-sm-8">
+                    <select id="type" name="type" class="form-control m-b" th:field="*{type}"
+                            th:with="type=${@dict.getType('exam_ination_type')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">是否控制考试日期：</label>
+
+                <div class="col-sm-8">
+                    <select id="enableControlTime" name="enableControlTime" th:field="*{enableControlTime}"
+                            class="form-control m-b" th:with="type=${@dict.getType('exam_ination_enableControlTime')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group enableControlTime">
+                <label class="col-sm-3 control-label enableControlTime">开始时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date enableControlTime"><span class="input-group-addon"><i
+                            class="fa fa-calendar"></i></span>
+                        <input type="text" th:value="*{#dates.format(startTime, 'yyyy-MM-dd hh:mm:ss')}" id="startTime"
+                               name="startTime" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group enableControlTime">
+                <label class="col-sm-3 control-label enableControlTime">结束时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date enableControlTime"><span class="input-group-addon"><i
+                            class="fa fa-calendar"></i></span>
+                        <input type="text" th:value="*{#dates.format(endTime, 'yyyy-MM-dd hh:mm:ss')}" id="endTime"
+                               name="endTime" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">考试时长（分钟）：</label>
+                <div class="col-sm-8">
+                    <input id="timeLength" name="timeLength" th:field="*{timeLength}" class="form-control" type="number">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">及格分数：</label>
+                <div class="col-sm-8">
+                    <input id="passMark" name="passMark" th:field="*{passMark}" class="form-control" type="number">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">考试次数：</label>
+                <div class="col-sm-8">
+                    <input  id="examNumber" name="examNumber" th:field="*{examNumber}" class="form-control" type="number">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">题目乱序：</label>
+                <div class="col-sm-8">
+                    <select id="questionDisorder" name="questionDisorder" th:field="*{questionDisorder}"
+                            class="form-control m-b" th:with="type=${@dict.getType('exam_ination_questionDisorder')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">交卷后：</label>
+                <div class="col-sm-8">
+                    <select id="finishedPaper" name="finishedPaper" th:field="*{finishedPaper}" class="form-control m-b"
+                            th:with="type=${@dict.getType('exam_ination_finishedPaper')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">考试结束后：</label>
+                <div class="col-sm-8">
+                    <select id="examEnd" name="examEnd" class="form-control m-b" th:field="*{examEnd}"
+                            th:with="type=${@dict.getType('exam_ination_examEnd')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-3 control-label">考试对象：</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<select id="examinationUserLimit" name="examinationUserLimit" th:field="*{examinationUserLimit}"-->
+                            <!--class="form-control m-b"-->
+                            <!--th:with="type=${@dict.getType('exam_ination_examinationUserLimit')}">-->
+                        <!--<option th:each="dict : ${type}" th:text="${dict.dictLabel}"-->
+                                <!--th:value="${dict.dictValue}"></option>-->
+                    <!--</select>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="form-group">
+                <label class="col-sm-3 control-label">考试说明：</label>
+                <div class="col-sm-8">
+                    <textarea id="remarks" name="remarks" th:field="*{remarks}" placeholder="请输入考试说明"
+                              class="layui-textarea"></textarea>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/js/jquery-ui-1.10.4.min.js}"></script>
+<script th:src="@{/ajax/libs/iCheck/icheck.min.js}"></script>
+<script th:src="@{/ajax/libs//datapicker/bootstrap-datetimepicker.js}"></script>
+<script th:src="@{/ajax/libs/beautifyhtml/beautifyhtml.js}"></script>
+<script type="text/javascript">
+    $(".input-group.date").datetimepicker({
+        format: 'yyyy-mm-dd hh:mm:ss',
+        language: "zh-Cn", todayBtn: "linked", keyboardNavigation: !1, forceParse: !1, calendarWeeks: !0, autoclose: !0
+    });
+
+    var prefix = ctx + "exam/examExamination"
+    $(function () {
+        var config = {
+            url: ctx + "exam/examPaper" + "/list",
+            type: "post",
+            dataType: "json",
+            data: {examPaperCategoryId: 1},
+//                contentType:"application/json",
+            success: function (result) {
+
+                var id = $("#paperId").val();
+                $("#examPaperId").html("<option value=''>---请选择---</option>");
+                var rows = result.rows;
+                for (var i in rows) {
+                    $("#examPaperId").append("<option value='" + rows[i].id + "'>" + rows[i].name + "</option>");
+                }
+                $("#examPaperId").val(id);
+            }
+        };
+
+        var config2 = {
+            url: ctx + "train/trainCourse" + "/list",
+            type: "post",
+            dataType: "json",
+            data: {trainCourseCategoryId: 100},
+//                contentType:"application/json",
+            success: function (result) {
+                $("#trainCourseId").html("<option value=''>---请选择---</option>");
+                var id = $("#trainId").val();
+                var rows = result.rows;
+                for (var i in rows) {
+                    $("#trainCourseId").append("<option value='" + rows[i].id + "'>" + rows[i].name + "</option>");
+                }
+                $("#trainCourseId").val(id);
+            }
+        };
+        $.ajax(config2)
+        $.ajax(config)
+
+        if ($("#enableControlTime").val().toString() == "0") {
+            $(".enableControlTime").hide()
+        } else {
+            $(".enableControlTime").show()
+        }
+
+        $("#enableControlTime").change(function () {
+            if ($("#enableControlTime").val().toString() == "0") {
+                $(".enableControlTime").hide()
+            } else {
+                $(".enableControlTime").show()
+            }
+        })
+    })
+
+
+    $("#form-examExamination-edit").validate({
+        rules: {
+            name: {
+                required: true,
+            },
+            examPaperId: {
+                required: true,
+            },
+            startTime: {
+                required: true,
+            },
+            endTime: {
+                required: true,
+            },
+            passMark: {
+                required: true,
+            },
+            timeLength: {
+                required: true
+            },
+            examNumber: {
+                required: true
+            }
+
+        }
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-examExamination-edit').serialize());
+        }
+    }
+
+    var id = 1;
+    function selectExamPaperCategoryTree() {
+        var options = {
+            title: '分类选择',
+            width: "380",
+            url: ctx + "exam/examPaperCategory" + "/selectExamPaperCategoryTree/" + id,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+
+    function doSubmit(index, layero) {
+        var body = layer.getChildFrame('body', index);
+        id = body.find('#treeId').val()
+        $("#treeName").val(body.find('#treeName').val());
+        layer.close(index);
+
+        var config = {
+            url: ctx + "exam/examPaper" + "/list",
+            type: "post",
+            dataType: "json",
+            data: {examPaperCategoryId: id},
+//                contentType:"application/json",
+            success: function (result) {
+                $("#examPaperId").html("<option  value=''>---请选择---</option>");
+                var rows = result.rows;
+                for (var i in rows) {
+                    $("#examPaperId").append("<option value='" + rows[i].id + "'>" + rows[i].name + "</option>");
+                }
+            }
+        };
+        $.ajax(config)
+    }
+
+    var trainCategoryId = 100;
+    function selectTrainCategoryTree() {
+        var options = {
+            title: '课程分类选择',
+            width: "380",
+            url: ctx + "train/course/category" + "/selectCategoryTree/" + trainCategoryId,
+            callBack: doSubmitForTrainCategory
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmitForTrainCategory(index, layero) {
+        var body = layer.getChildFrame('body', index);
+        trainCategoryId = body.find('#treeId').val()
+        $("#trainCateGoryName").val(body.find('#treeName').val());
+        layer.close(index);
+
+        var config = {
+            url: ctx + "train/trainCourse" + "/list",
+            type: "post",
+            dataType: "json",
+            data: {trainCourseCategoryId: trainCategoryId},
+//                contentType:"application/json",
+            success: function (result) {
+                $("#trainCourseId").html("<option value=''>---请选择---</option>");
+                var rows = result.rows;
+                for (var i in rows) {
+                    $("#trainCourseId").append("<option value='" + rows[i].id + "'>" + rows[i].name + "</option>");
+                }
+            }
+        };
+        $.ajax(config)
+    }
+</script>
+</body>
+</html>
