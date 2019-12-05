@@ -36,6 +36,7 @@ import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -127,47 +128,71 @@ public class CmsUserController {
 
     @RequestMapping("/user/index.html")
     public String webUserIndex(ModelMap map) {
-        map.put("user", ShiroUtils.getSysUser());
+        SysUser user = ShiroUtils.getSysUser();
+        if (ObjectUtils.isEmpty(user)){
+            return prefix + "/user/login";
+        }
+        map.put("user", user);
         map.addAttribute("user", ShiroUtils.getSysUser());
         return prefix + "/user/set";
     }
 
     @RequestMapping("/user/home.html")
     public String webUserHome(ModelMap map) {
-        map.put("user", ShiroUtils.getSysUser());
+        SysUser user = ShiroUtils.getSysUser();
+        if (ObjectUtils.isEmpty(user)){
+            return prefix + "/user/login";
+        }
+        map.put("user", user);
         return prefix + "/user/home";
     }
 
     @RequestMapping("/user/set.html")
     public String webUserSet(ModelMap map) {
-        map.put("user", ShiroUtils.getSysUser());
+        SysUser user = ShiroUtils.getSysUser();
+        if (ObjectUtils.isEmpty(user)){
+            return prefix + "/user/login";
+        }
+        map.put("user", user);
         return prefix + "/user/set";
     }
 
     @RequestMapping("/user/message.html")
     public String webUserMessage(ModelMap map) {
-        map.put("user", ShiroUtils.getSysUser());
+        SysUser user = ShiroUtils.getSysUser();
+        if (ObjectUtils.isEmpty(user)){
+            return prefix + "/user/login";
+        }
+        map.put("user", user);
         return prefix + "/user/message";
     }
 
     @RequestMapping("/user/errorquestion.html")
     public String errorquestion(ModelMap map) {
+        SysUser user = ShiroUtils.getSysUser();
+        if (ObjectUtils.isEmpty(user)){
+            return prefix + "/user/login";
+        }
         ExamUserErrorQuestion examUserErrorQuestion = new ExamUserErrorQuestion();
         examUserErrorQuestion.setVipUserId(ShiroUtils.getSysUser().getUserId().intValue());
         List<ExamUserErrorQuestionVO> list = examUserErrorQuestionService.selectExamUserErrorQuestionDetailList(examUserErrorQuestion);
         map.put("data", list);
-        map.put("user", ShiroUtils.getSysUser());
+        map.put("user", user);
         return prefix + "/user/errorquestion";
     }
 
     @RequestMapping("/user/collectquestion.html")
     public String collectQuestion(ModelMap map) {
+        SysUser user = ShiroUtils.getSysUser();
+        if (ObjectUtils.isEmpty(user)){
+            return prefix + "/user/login";
+        }
         ExamUserCollectionQuestionVO examUserCollectionQuestion = new ExamUserCollectionQuestionVO();
         SysUser sysUser = ShiroUtils.getSysUser();
         examUserCollectionQuestion.setVipUserId(sysUser.getUserId().intValue());
         List<ExamUserCollectionQuestionVO> list = examUserCollectionQuestionService.selectExamUserCollectionQuestionList(examUserCollectionQuestion);
         map.put("data", list);
-        map.put("user", ShiroUtils.getSysUser());
+        map.put("user", user);
         return prefix + "/user/collectquestion";
     }
 
@@ -222,7 +247,11 @@ public class CmsUserController {
 
     @RequestMapping("/user/userexamination.html")
     public String userExamquestion(ModelMap map) {
-        map.put("user", ShiroUtils.getSysUser());
+        SysUser user = ShiroUtils.getSysUser();
+        if (ObjectUtils.isEmpty(user)){
+            return prefix + "/user/login";
+        }
+        map.put("user", user);
         return prefix + "/user/userexamination";
     }
 
@@ -254,8 +283,11 @@ public class CmsUserController {
      */
     @RequestMapping("/user/myuserexamination/detail/{id}")
     public String userExamquestion(@PathVariable Integer id, ModelMap map) {
-
-        map.put("user", ShiroUtils.getSysUser());
+        SysUser user = ShiroUtils.getSysUser();
+        if (ObjectUtils.isEmpty(user)){
+            return prefix + "/user/login";
+        }
+        map.put("user", user);
         ExamUserExaminationVO data = examUserExaminationService.selectDetailById(id);
         List<ExamUserExaminationQuestionVO> questions = data.getExamUserExaminationQuestions();
         int score = 0;
@@ -288,7 +320,11 @@ public class CmsUserController {
 
     @RequestMapping("/user/orders.html")
     public String orders(ModelMap map) {
-        map.put("user", ShiroUtils.getSysUser());
+        SysUser user = ShiroUtils.getSysUser();
+        if (ObjectUtils.isEmpty(user)){
+            return prefix + "/user/login";
+        }
+        map.put("user", user);
         return prefix + "/user/orders";
     }
 
@@ -328,6 +364,11 @@ public class CmsUserController {
 
     @RequestMapping("/user/usercertificate.html")
     public String userCertificate(ModelMap map) {
+        SysUser user = ShiroUtils.getSysUser();
+        if (ObjectUtils.isEmpty(user)){
+            return prefix + "/user/login";
+        }
+        map.put("user", user);
         return prefix + "/user/usercertificate";
     }
 

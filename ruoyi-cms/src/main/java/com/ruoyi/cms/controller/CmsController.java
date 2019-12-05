@@ -118,6 +118,10 @@ public class CmsController  extends BaseController {
     @RequestMapping("/course/courseInfo.html/{id}")
     @GetMapping()
     public String courseInfo(@PathVariable("id") Integer id, ModelMap map) {
+        SysUser user = ShiroUtils.getSysUser();
+        if (ObjectUtils.isEmpty(user)){
+            return prefix + "/user/login";
+        }
         TrainCourse trainCourse = trainCourseService.selectById( id );
         TrainCourseSection trainCourseSection = new TrainCourseSection();
         trainCourseSection.setTrainCourseId( id );
@@ -143,6 +147,10 @@ public class CmsController  extends BaseController {
     @RequestMapping("/course/courseSections.html/{id}")
     @GetMapping()
     public String courseSections(@PathVariable("id") Integer id, ModelMap map) {
+        SysUser user = ShiroUtils.getSysUser();
+        if (ObjectUtils.isEmpty(user)){
+            return prefix + "/user/login";
+        }
         TrainCourseSection tcs = trainCourseSectionService.selectById( id );
         TrainCourseSection trainCourseSection = new TrainCourseSection();
         trainCourseSection.setTrainCourseId( tcs.getTrainCourseId() );

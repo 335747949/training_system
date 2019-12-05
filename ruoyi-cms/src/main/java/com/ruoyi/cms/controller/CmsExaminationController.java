@@ -61,7 +61,11 @@ public class CmsExaminationController {
     @RequestMapping("/examination")
     @GetMapping()
     public String list(ModelMap map) {
-        map.put( "user", ShiroUtils.getSysUser() );
+        SysUser user = ShiroUtils.getSysUser();
+        if (ObjectUtils.isEmpty(user)){
+            return prefix + "/user/login";
+        }
+        map.put( "user", user);
         return prefix + "list";
     }
 
@@ -146,6 +150,11 @@ public class CmsExaminationController {
     @RequestMapping("/examination/start/{id}")
     @GetMapping()
     public String start(@PathVariable String id, ModelMap mmap) {
+        SysUser user = ShiroUtils.getSysUser();
+        if (ObjectUtils.isEmpty(user)){
+            return prefix + "/user/login";
+        }
+
         ExamExamination examExamination = examExaminationService.selectById(id);
 
         ExamUserExamination eue = new ExamUserExamination();

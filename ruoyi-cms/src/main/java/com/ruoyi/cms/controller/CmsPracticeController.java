@@ -41,8 +41,11 @@ public class CmsPracticeController {
     @RequestMapping("/practice")
     @GetMapping()
     public String list(ModelMap map) {
-
-        map.put( "user", ShiroUtils.getSysUser() );
+        SysUser user = ShiroUtils.getSysUser();
+        if (ObjectUtils.isEmpty(user)){
+            return prefix + "/user/login";
+        }
+        map.put( "user", user);
         return prefix + "list";
     }
 
@@ -70,6 +73,10 @@ public class CmsPracticeController {
     @RequestMapping("/practice/start/{id}")
     @GetMapping()
     public String start(@PathVariable String id, ModelMap mmap) {
+        SysUser user = ShiroUtils.getSysUser();
+        if (ObjectUtils.isEmpty(user)){
+            return prefix + "/user/login";
+        }
         HashMap<String, Object> map = new HashMap<>();
         map.put("practiceId", id);
         List<ExamQuestionVO> result = examQuestionService.selectQuestionListByPracticeId(map);
