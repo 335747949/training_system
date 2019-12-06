@@ -75,8 +75,8 @@ public class SysIndexController extends BaseController
         mmap.put("trainCourseNum", trainCourseNum);
         Long aLong = examExaminationService.selectCount( null );
         mmap.put("examExaminationNum",aLong);
-        Long examNum = examPaperService.selectCount( null );
-        mmap.put("examNum", examNum);
+        Long examPaperNum = examPaperService.selectCount( null );
+        mmap.put("examPaperNum", examPaperNum);
         Long examPractice = examPracticeService.selectCount( null );
         mmap.put("examPractice",examPractice);
         mmap.put("version", Global.getVersion());

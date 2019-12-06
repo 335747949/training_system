@@ -1,5 +1,6 @@
 package com.ruoyi.train.course.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.ruoyi.train.course.domain.TrainCourse;
@@ -90,6 +91,7 @@ public class TrainCourseController extends BaseController
 	@ResponseBody
 	public AjaxResult addSave(TrainCourse trainCourse)
 	{
+		trainCourse.setPrice(BigDecimal.ZERO);
 		return toAjax(trainCourseService.insert(trainCourse));
 	}
 
