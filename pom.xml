@@ -4,16 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.ruoyi</groupId>
-    <artifactId>ruoyi</artifactId>
-    <version>3.1</version>
+    <groupId>com.weiye</groupId>
+    <artifactId>training_system</artifactId>
+    <version>0.1</version>
 
-    <name>ruoyi</name>
-	<url>http://www.ruoyi.vip</url>
+    <name>weiye</name>
+	<url>#</url>
     <description>管理系统</description>
 
     <properties>
-	    <ruoyi.version>3.1</ruoyi.version>
+	    <weiye.version>0.1</weiye.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
@@ -44,17 +44,17 @@
     </dependencyManagement>
 
     <modules>
-	    <module>ruoyi-admin</module>
-		<module>ruoyi-framework</module>
-		<module>ruoyi-quartz</module>
-		<module>ruoyi-generator</module>
-        <module>ruoyi-common</module>
-		<module>ruoyi-exam</module>
-		<module>ruoyi-vip</module>
-		<module>ruoyi-train</module>
-        <module>ruoyi-cms</module>
-        <module>ruoyi-weixin</module>
-        <!--<module>tuoyi-test</module>-->
+	    <module>weiye-admin</module>
+		<module>weiye-framework</module>
+		<module>weiye-quartz</module>
+		<module>weiye-generator</module>
+        <module>weiye-common</module>
+		<module>weiye-exam</module>
+		<module>weiye-vip</module>
+		<module>weiye-train</module>
+        <module>weiye-cms</module>
+        <module>weiye-weixin</module>
+        <!--<module>weiye-test</module>-->
     </modules>
     <packaging>pom</packaging>
 
