@@ -1,7 +1,7 @@
 package com.ruoyi.web.controller.system;
 
 import com.alibaba.fastjson.JSON;
-import com.google.gson.Gson;
+import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.framework.web.base.BaseController;
 import com.ruoyi.framework.web.exception.user.OssException;
@@ -104,7 +104,7 @@ public class SysOssController extends BaseController
             // 校验腾讯云数据
             ValidatorUtils.validateEntity(config, QcloudGroup.class);
         }
-        return toAjax(sysConfigService.updateValueByKey(KEY, new Gson().toJson(config)));
+        return toAjax(sysConfigService.updateValueByKey(KEY, JSONObject.toJSONString(config)));
     }
 
     /**

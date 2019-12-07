@@ -53,7 +53,7 @@
 		<module>weiye-vip</module>
 		<module>weiye-train</module>
         <module>weiye-cms</module>
-        <module>weiye-weixin</module>
+<!--        <module>weiye-weixin</module>-->
         <!--<module>weiye-test</module>-->
     </modules>
     <packaging>pom</packaging>

@@ -39,10 +39,10 @@
             <artifactId>weiye-vip</artifactId>
             <version>${weiye.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.weiye</groupId>
-            <artifactId>weiye-weixin</artifactId>
-            <version>${weiye.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.weiye</groupId>-->
+<!--            <artifactId>weiye-weixin</artifactId>-->
+<!--            <version>${weiye.version}</version>-->
+<!--        </dependency>-->
     </dependencies>
 </project>

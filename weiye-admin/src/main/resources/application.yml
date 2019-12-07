@@ -56,7 +56,7 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
 
   profiles: 
-    active: druid,weixin
+    active: dev
   # 文件上传
   servlet:
      multipart:
@@ -133,7 +133,3 @@ gen:
   autoRemovePre: false
   # 表前缀(类名不会包含表前缀)
   tablePrefix: sys_
-
-default:
-  user:
-    avatar: https://nrqiniu.tairanmall.com///20191205/92c6c9f0464747449022d8f0940214a8/png
