@@ -97,6 +97,11 @@ public class ExamExaminationController extends BaseController
 		examExamination.setDelFlag("0");
 		examExamination.setCreateDate(new Date());
 		examExamination.setCreateBy(ShiroUtils.getLoginName());
+		// 若不控制时间，考试开始结束时间为空
+		if ("0".equals(examExamination.getEnableControlTime())){
+			examExamination.setStartTime(null);
+			examExamination.setEndTime(null);
+		}
 		return toAjax(examExaminationService.insert(examExamination));
 	}
 
@@ -123,6 +128,11 @@ public class ExamExaminationController extends BaseController
 		examExamination.setDelFlag("0");
 		examExamination.setUpdateDate(new Date());
 		examExamination.setUpdateBy(ShiroUtils.getLoginName());
+		// 若不控制时间，考试开始结束时间为空
+		if ("0".equals(examExamination.getEnableControlTime())){
+			examExamination.setStartTime(null);
+			examExamination.setEndTime(null);
+		}
 		return toAjax(examExaminationService.updateSelectiveById(examExamination));
 	}
 	

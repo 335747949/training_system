@@ -32,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="id != null "> and id = #{id}</if>
              <if test="deptId != null "> and dept_id = #{deptId}</if>
              <if test="examPaperCategoryId != null "> and exam_paper_category_id = #{examPaperCategoryId}</if>
-             <if test="name != null  and name != '' "> and name = #{name}</if>
+             <if test="name != null  and name != '' "> and name like concat('%', #{name}, '%')</if>
              <if test="type != null  and type != '' "> and type = #{type}</if>
              <if test="score != null "> and score = #{score}</if>
              <if test="questionNumber != null "> and question_number = #{questionNumber}</if>
@@ -56,7 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="examPaperCategoryId != null "> and (exam_paper_category_id in
                 (select id from exam_paper_category  where FIND_IN_SET(#{examPaperCategoryId},parent_ids))
                 or exam_paper_category_id = #{examPaperCategoryId} )</if>
-            <if test="name != null  and name != '' "> and name = #{name}</if>
+            <if test="name != null  and name != '' "> and name like concat('%', #{name}, '%')</if>
             <if test="type != null  and type != '' "> and type = #{type}</if>
             <if test="score != null "> and score = #{score}</if>
             <if test="questionNumber != null "> and question_number = #{questionNumber}</if>

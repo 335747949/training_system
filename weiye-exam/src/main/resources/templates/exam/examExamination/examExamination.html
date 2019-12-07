@@ -80,7 +80,7 @@
 					title : '控制考试日期',
 					formatter: function(value, item, index) {
 
-				return $.table.selectDictLabel([[${@dict.getType('exam_ination_enableControlTime')}]], item.type);
+				return $.table.selectDictLabel([[${@dict.getType('exam_ination_enableControlTime')}]], item.enableControlTime);
 				}
 				},
 				{
@@ -109,7 +109,7 @@
 				// 	title : '题目乱序',
 				// 	formatter: function(value, item, index) {
 				//
-				// 		return $.table.selectDictLabel([[${@dict.getType('exam_ination_questionDisorder')}]], item.type);
+				// 		return $.table.selectDictLabel([[${@dict.getType('exam_ination_questionDisorder')}]], item.questionDisorder);
 				// 	}
 				// },
 				// {
@@ -117,7 +117,7 @@
 				// 	title : '交卷后',
 				// 	formatter: function(value, item, index) {
 				//
-				// 		return $.table.selectDictLabel([[${@dict.getType('exam_ination_finishedPaper')}]], item.type);
+				// 		return $.table.selectDictLabel([[${@dict.getType('exam_ination_finishedPaper')}]], item.finishedPaper);
 				// 	}
 				// },
 				// {
@@ -125,7 +125,7 @@
 				// 	title : '考试结束后',
 				// 	formatter: function(value, item, index) {
 				//
-				// 		return $.table.selectDictLabel([[${@dict.getType('exam_ination_examEnd')}]], item.type);
+				// 		return $.table.selectDictLabel([[${@dict.getType('exam_ination_examEnd')}]], item.examEnd);
 				// 	}
 				// },
                     {

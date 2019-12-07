@@ -64,7 +64,7 @@ public class ApiExaminationController extends BaseController {
 
         SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(), UserConstants.USER_VIP );
         Map<String, Object> map = new HashMap<>();
-        map.put( "ination", examExamination );
+        map.put( "examExamination", examExamination );
         map.put( "userId", sysUser.getUserId() );
         List<ExamExamination> list = examExaminationService.selectListFromWeb( map );
         AjaxResult success = success( "查询成功" );
@@ -80,8 +80,8 @@ public class ApiExaminationController extends BaseController {
      * @param inationId
      * @return
      */
-    @GetMapping("/v1/examination/start/{inationId}")
-    public AjaxResult start(@PathVariable("inationId") String inationId) {
+    @GetMapping("/v1/examination/start/{examExamination}")
+    public AjaxResult start(@PathVariable("examExamination") String inationId) {
         ExamExamination examExamination = examExaminationService.selectById( inationId );
         SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() ,UserConstants.USER_VIP);
         Integer userId = Integer.parseInt( sysUser.getUserId().toString() );
@@ -203,7 +203,7 @@ public class ApiExaminationController extends BaseController {
         SysUser sysUser = sysUserService.selectUserByLoginName(JwtUtil.getLoginName(),UserConstants.USER_VIP );
 
         Map<String, Object> map = new HashMap<>();
-        map.put( "ination", examExamination );
+        map.put( "examExamination", examExamination );
         map.put( "userId", sysUser.getUserId() );
         List<ExamExamination> list = examExaminationService.selectEnterNameListFromWeb( map );
         AjaxResult success = success( "查询成功" );

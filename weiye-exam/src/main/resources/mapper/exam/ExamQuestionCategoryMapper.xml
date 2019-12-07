@@ -26,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectExamQuestionCategoryVo"/>
         <where>  
             <if test="id != null  and id != '' "> and id = #{id}</if>
-             <if test="name != null  and name != '' "> and name = #{name}</if>
+             <if test="name != null  and name != '' "> and name like concat('%', #{name}, '%')</if>
              <if test="parentId != null  and parentId != '' "> and parent_id = #{parentId}</if>
              <if test="parentIds != null  and parentIds != '' "> and parent_ids = #{parentIds}</if>
              <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
