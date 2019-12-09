@@ -63,7 +63,7 @@ public class CmsExaminationController {
     public String list(ModelMap map) {
         SysUser user = ShiroUtils.getSysUser();
         if (ObjectUtils.isEmpty(user)){
-            return prefix + "/user/login";
+            return "web/user/login";
         }
         map.put( "user", user);
         return prefix + "list";
@@ -152,7 +152,7 @@ public class CmsExaminationController {
     public String start(@PathVariable String id, ModelMap mmap) {
         SysUser user = ShiroUtils.getSysUser();
         if (ObjectUtils.isEmpty(user)){
-            return prefix + "/user/login";
+            return "web/user/login";
         }
 
         ExamExamination examExamination = examExaminationService.selectById(id);
@@ -190,6 +190,10 @@ public class CmsExaminationController {
     public AjaxResult finish(@RequestBody List<ExamUserExaminationQuestion> examUserExaminationQuestion,
                              @PathVariable Integer examUserExaminationId, @PathVariable Integer examinationId, @PathVariable Integer paperId,ModelMap map) {
         SysUser sysUser = ShiroUtils.getSysUser();
+        if (ObjectUtils.isEmpty(sysUser)){
+            AjaxResult fail = AjaxResult.error("请登录");
+            return fail;
+        }
         //交卷然后返回考试记录id
         Integer id = examExaminationService.finshExamination(examUserExaminationQuestion,sysUser,examUserExaminationId,examinationId,paperId);
         ExamUserExaminationVO data = examUserExaminationService.selectDetailById( id );

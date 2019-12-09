@@ -43,7 +43,7 @@ public class CmsPracticeController {
     public String list(ModelMap map) {
         SysUser user = ShiroUtils.getSysUser();
         if (ObjectUtils.isEmpty(user)){
-            return prefix + "/user/login";
+            return "web/user/login";
         }
         map.put( "user", user);
         return prefix + "list";
@@ -75,7 +75,7 @@ public class CmsPracticeController {
     public String start(@PathVariable String id, ModelMap mmap) {
         SysUser user = ShiroUtils.getSysUser();
         if (ObjectUtils.isEmpty(user)){
-            return prefix + "/user/login";
+            return "web/user/login";
         }
         HashMap<String, Object> map = new HashMap<>();
         map.put("practiceId", id);
