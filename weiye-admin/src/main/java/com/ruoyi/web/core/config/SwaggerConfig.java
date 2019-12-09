@@ -47,7 +47,7 @@ public class SwaggerConfig
         // 用ApiInfoBuilder进行定制
         return new ApiInfoBuilder()
                 .title("标题：伟业医药培训考试系统_接口文档")
-                .description("描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块...")
+                .description("描述：...")
                 .contact(new Contact(Global.getName(), null, null))
                 .version("版本号:" + Global.getVersion())
                 .build();

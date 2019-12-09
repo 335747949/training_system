@@ -80,12 +80,12 @@
             <!--<artifactId>weiye-test</artifactId>-->
             <!--<version>${weiye.version}</version>-->
         <!--</dependency>-->
-        <!-- 定时任务
+        <!-- 定时任务-->
         <dependency>
             <groupId>com.weiye</groupId>
             <artifactId>weiye-quartz</artifactId>
             <version>${weiye.version}</version>
-        </dependency>-->
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.dom4j/dom4j -->
         <dependency>
             <groupId>org.dom4j</groupId>

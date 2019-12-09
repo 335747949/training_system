@@ -7,6 +7,8 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.base.BaseEntity;
 import com.ruoyi.common.constant.ScheduleConstants;
 
+import javax.persistence.Id;
+
 /**
  * 定时任务调度表 sys_job
  * 
@@ -18,6 +20,7 @@ public class SysJob extends BaseEntity implements Serializable
 
     /** 任务ID */
     @Excel(name = "任务序号")
+    @Id
     private Long jobId;
 
     /** 任务名称 */
