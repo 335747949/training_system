@@ -36,11 +36,11 @@ public class SysOssServiceImpl extends AbstractBaseServiceImpl<SysOssMapper, Sys
         }
         if (StringUtils.isNotBlank(sysOss.getFileSuffix()))
         {
-            criteria.andEqualTo("fileSuffix", sysOss.getFileSuffix());
+            criteria.andLike("fileSuffix", "%" + sysOss.getFileSuffix() + "%");
         }
         if (StringUtils.isNotBlank(sysOss.getCreateBy()))
         {
-            criteria.andLike("createBy", sysOss.getCreateBy());
+            criteria.andLike("createBy", "%" + sysOss.getCreateBy() + "%");
         }
 
         startPage();

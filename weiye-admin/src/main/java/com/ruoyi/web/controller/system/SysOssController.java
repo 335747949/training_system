@@ -36,7 +36,7 @@ import java.util.List;
 @RequestMapping("system/oss")
 public class SysOssController extends BaseController
 {
-    private String              prefix = "system/oss";
+    private String prefix = "system/oss";
 
     private final static String KEY    = CloudConstant.CLOUD_STORAGE_CONFIG_KEY;
 
@@ -83,7 +83,7 @@ public class SysOssController extends BaseController
      * 保存云存储配置信息
      */
     @RequestMapping("saveConfig")
-    @RequiresPermissions("sys:oss:config")
+    @RequiresPermissions("sys:oss:add")
     @ResponseBody
     public AjaxResult saveConfig(CloudStorageConfig config)
     {
@@ -147,7 +147,7 @@ public class SysOssController extends BaseController
     }
 
     @GetMapping("editor")
-    @RequiresPermissions("sys:oss:add")
+    @RequiresPermissions("sys:oss:edit")
     public String editor()
     {
         return prefix + "/editor";

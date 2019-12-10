@@ -39,9 +39,9 @@
 		        <a class="btn btn-primary" onclick="javascript:ossfig()" shiro:hasPermission="system:dict:config">
 		            <i class="fa fa-cogs"></i> 云储存配置
 		        </a>
-		        <a class="btn btn-warning" onclick="javascript:osseditor()" shiro:hasPermission="system:dict:add">
-		            <i class="fa fa-image"></i> 结合editor
-		        </a>
+<!--		        <a class="btn btn-warning" onclick="javascript:osseditor()" shiro:hasPermission="system:dict:add">-->
+<!--		            <i class="fa fa-image"></i> 结合editor-->
+<!--		        </a>-->
 	        </div>
 	        
 	        <div class="col-sm-12 select-table table-striped">
@@ -80,14 +80,20 @@
 						title: '文件名'
 					},
 					{
-						field: 'fileSuffix',
-						title: '文件后缀'
+						field: 'url',
+						title: '地址'
 					},
 					{
 						title: '文件预览',
 						formatter:function(value,row,index){
-		                    var s = '<a class = "view"  href="javascript:void(0)"><img style="width:30;height:30px;"  src="'+row.url+'" /></a>';
-		                    return s;
+							if (row.fileSuffix == ".png" || row.fileSuffix == ".jpg" || row.fileSuffix == ".gif"){
+								var s = '<a class = "view"  href="javascript:void(0)"><img style="width:30px;height:30px;"  src="'+row.url+'" /></a>';
+								return s;
+							}else {
+								return "-";
+							}
+
+
 		                },
 		                events: 'operateEvents'
 						

@@ -152,7 +152,43 @@ document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Csc
             layer.closeAll();
         });
 
+    }
+        function endPaper1() {
+            var data = [];
+            var i = 0;
+            var index = 0;
+            var str = '';
+            $(".question").each(function () {
+                var examQuestionId = $(this).find(".questionId").eq(0).val()
+                var userAnswer = "";
+                $(this).find("." + examQuestionId + "useranswer:checked").each(function () {
+                    userAnswer += $(this).val() + ",";
+                })
+                userAnswer = userAnswer.substring(0, userAnswer.length - 1)
+                i++;
+                if (userAnswer == '') {
+                    str += i + ",";
+                    index++
+                }
 
+                data.push({examQuestionId: examQuestionId, userAnswer: userAnswer});
+            });
+            $.ajax({
+                type: 'post',
+                url: "/web/examination/finish/" + [[${examUserExaminationId}]] + "/" + [[${examExamination.id}]] + "/" + [[${paperId}]],
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (result) {
+                    if (result.code != web_status.SUCCESS) {
+                        layer.msg(result.msg, {icon: 2})
+                    } else {
+                        layer.msg("已交卷", {icon: 1})
+                        location.href = "/web/user/myuserexamination/detail/" + result.id;
+                    }
+                }
+
+            });
+            layer.closeAll();
     }
 
     function checkbox(value) {
@@ -217,10 +253,12 @@ document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Csc
             },
             afterAction: function (options) {
                 //父容器显示，特定文字
-                $(options.daySelector).parent().html("考试结束,请交卷");
+                // $(options.daySelector).parent().html("考试结束,请交卷");
                 $(":checkbox").attr("disabled", "disabled")
                 $(":radio").attr("disabled", "disabled")
                 $(".ck").removeAttr("onclick");
+                endPaper1();
+
             }
 
         });
