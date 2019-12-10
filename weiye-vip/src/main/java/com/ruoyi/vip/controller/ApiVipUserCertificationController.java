@@ -45,6 +45,7 @@ public class ApiVipUserCertificationController extends BaseController {
     @Autowired
     private IVipUserCertificateService vipUserCertificateService;
     @GetMapping("/user/cerificate/page")
+    @ApiOperation(value = "获取用户证书", notes = "", httpMethod = "GET")
     public AjaxResult get() {
         AjaxResult success = success( "获取我的证书成功" );
         SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(),UserConstants.USER_VIP );

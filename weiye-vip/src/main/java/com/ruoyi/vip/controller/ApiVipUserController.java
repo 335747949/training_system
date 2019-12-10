@@ -1,44 +1,35 @@
 package com.ruoyi.vip.controller;
 
-import com.auth0.jwt.JWTVerifier;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.json.JSONObject;
-import com.ruoyi.common.utils.ExcelUtil;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.shiro.service.SysLoginService;
 import com.ruoyi.framework.shiro.service.SysPasswordService;
 import com.ruoyi.framework.web.base.BaseController;
-import com.ruoyi.framework.web.page.TableDataInfo;
-import com.ruoyi.framework.web.util.ServletUtils;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
-import com.ruoyi.vip.domain.vo.VipUserCertificateVO;
-import com.ruoyi.vip.service.IVipUserCertificateService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * 用户信息
  *
  * @author ruoyi
  */
-@Api("用户信息管理")
+@Api(value = "用户信息管理",tags = { "用户信息接口"},description ="App相关操作接口定义类")
 @RestController
 @RequestMapping("/api/v1")
 public class ApiVipUserController extends BaseController {
@@ -50,9 +41,10 @@ public class ApiVipUserController extends BaseController {
     @Autowired
     private SysLoginService loginService;
 
-    @ApiOperation("用户登陆")
     @Log(title = "用户登陆", businessType = BusinessType.EXPORT)
     @RequestMapping(value = "/user/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ApiOperation(value = "用户登陆", notes = "登录用户实体", httpMethod = "POST")
+    @ApiImplicitParam(name = "user", value = "登录用户实体", required = true, dataType = "SysUser")
     public AjaxResult login(@RequestBody SysUser user) {
         boolean rememberMe = false;
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(), user.getPassword(), rememberMe);

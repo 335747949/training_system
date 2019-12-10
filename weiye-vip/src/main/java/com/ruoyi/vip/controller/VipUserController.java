@@ -13,6 +13,7 @@ import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysPostService;
 import com.ruoyi.system.service.ISysRoleService;
 import com.ruoyi.system.service.ISysUserService;
+import io.swagger.annotations.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,7 @@ import java.util.List;
  *
  * @author ruoyi
  */
+@Api(value = "会员用户信息",tags = { "会员信息接口"},description ="会员用户信息接口")
 @Controller
 @RequestMapping("/vip/user")
 public class VipUserController extends BaseController {
@@ -46,6 +48,7 @@ public class VipUserController extends BaseController {
 
     @RequiresPermissions("system:user:view")
     @GetMapping()
+    @ApiOperation(value = "用户页面", notes = "", httpMethod = "GET")
     public String user() {
         return prefix + "/user";
     }
@@ -53,8 +56,9 @@ public class VipUserController extends BaseController {
     @RequiresPermissions("system:user:list")
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(SysUser user) {
-
+    @ApiOperation(value = "用户登陆", notes = "登录用户实体", httpMethod = "POST")
+    @ApiImplicitParam(name = "user", value = "用户对象", required =true, dataType ="SysUser")
+    public TableDataInfo list(@RequestBody SysUser user) {
         List<SysUser> list = userService.selectUserList( user );
         return getDataTable( list );
     }

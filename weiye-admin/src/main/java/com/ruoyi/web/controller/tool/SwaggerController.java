@@ -8,7 +8,7 @@ import com.ruoyi.framework.web.base.BaseController;
 
 /**
  * swagger 接口
- * 
+ *
  * @author ruoyi
  */
 @Controller

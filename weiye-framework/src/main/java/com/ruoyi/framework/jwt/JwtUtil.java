@@ -18,7 +18,7 @@ import java.util.Date;
  **/
 public class JwtUtil {
  
-    private static final long EXPIRE_TIME = 5 * 60 * 1000;
+    private static final long EXPIRE_TIME = 10 * 60 * 1000;
  
     /**
      * 校验token是否正确
@@ -66,7 +66,7 @@ public class JwtUtil {
     }
  
     /**
-     * 生成签名,5min后过期
+     * 生成签名,10min后过期
      *
      * @param loginName 用户名
      * @param secret   用户的密码

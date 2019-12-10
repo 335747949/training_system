@@ -5,6 +5,7 @@ import com.ruoyi.system.domain.SysOss;
 
 /**
  * 文件上传
+ * @author Administrator
  */
 public interface SysOssMapper extends MyMapper<SysOss>
 {
