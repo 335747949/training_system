@@ -20,6 +20,7 @@
 		<commons.fileupload.version>1.3.3</commons.fileupload.version>
 		<jsoup.version>1.11.3</jsoup.version>
 		<poi.version>3.17</poi.version>
+		<jodconverter.version>4.2.2</jodconverter.version>
     </properties>
 
     <dependencies>
@@ -86,6 +87,31 @@
 			<groupId>tk.mybatis</groupId>
 			<artifactId>mapper-spring-boot-starter</artifactId>
 			<version>2.1.0</version>
+		</dependency>
+
+		<!--jodconverter 核心包 -->
+		<!-- https://mvnrepository.com/artifact/org.jodconverter/jodconverter-core -->
+		<dependency>
+			<groupId>org.jodconverter</groupId>
+			<artifactId>jodconverter-core</artifactId>
+			<version>${jodconverter.version}</version>
+		</dependency>
+
+		<!--springboot支持包，里面包括了自动配置类 -->
+		<!-- https://mvnrepository.com/artifact/org.jodconverter/jodconverter-spring-boot-starter -->
+		<dependency>
+			<groupId>org.jodconverter</groupId>
+			<artifactId>jodconverter-spring-boot-starter</artifactId>
+			<version>${jodconverter.version}</version>
+		</dependency>
+
+
+		<!--jodconverter 本地支持包 -->
+		<!-- https://mvnrepository.com/artifact/org.jodconverter/jodconverter-local -->
+		<dependency>
+			<groupId>org.jodconverter</groupId>
+			<artifactId>jodconverter-local</artifactId>
+			<version>${jodconverter.version}</version>
 		</dependency>
 
 	</dependencies>

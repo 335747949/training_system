@@ -54,7 +54,6 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
-
   profiles: 
     active: dev
   # 文件上传
@@ -62,6 +61,7 @@ spring:
      multipart:
        max-file-size:  30000MB
        max-request-size:  30000MB
+       location: ${user.dir}/multipartUpload
   # 服务模块
   devtools:
     restart:
@@ -133,3 +133,19 @@ gen:
   autoRemovePre: false
   # 表前缀(类名不会包含表前缀)
   tablePrefix: sys_
+
+
+# word 包含格式
+office:
+  suffix: .doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt
+
+# openoffice配置
+jodconverter:
+  local:
+    enabled: true
+  #home:安装地址
+   #  office-home: C:/Program Files (x86)/OpenOffice 4  # linux
+    office-home: C:/Program Files (x86)/OpenOffice 4   # windows
+    max-tasks-per-process: 10
+    port-numbers: 8100
+

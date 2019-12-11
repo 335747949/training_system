@@ -1,39 +1,30 @@
 package com.ruoyi.web.controller.tool;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.io.FileUtil;
+
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.base.AjaxResult;
-import com.ruoyi.common.config.Global;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.utils.ExcelUtil;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.framework.shiro.service.SysPasswordService;
 import com.ruoyi.framework.web.base.BaseController;
 import com.ruoyi.framework.web.exception.user.OssException;
-import com.ruoyi.framework.web.page.TableDataInfo;
-import com.ruoyi.framework.web.util.FileUploadUtils;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysOss;
-import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysOssService;
-import com.ruoyi.system.service.ISysPostService;
-import com.ruoyi.system.service.ISysRoleService;
-import com.ruoyi.system.service.ISysUserService;
-import com.ruoyi.web.controller.system.SysProfileController;
 import com.ruoyi.web.controller.system.cloud.CloudStorageService;
 import com.ruoyi.web.controller.system.cloud.OSSFactory;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.commons.io.FileUtils;
+import org.jodconverter.DocumentConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.ModelMap;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -48,8 +39,19 @@ public class UploadFileController extends BaseController {
 
     private static final Logger log = LoggerFactory.getLogger( UploadFileController.class );
 
+
+    @Value("${office.suffix}")
+    private String officeSuffix;
+
+    @Value("${spring.servlet.multipart.location}")
+    private String filePath;
+
     @Autowired
     private ISysOssService sysOssService;
+
+    @Autowired
+    private DocumentConverter documentConverter;
+
     /**
      * 上传文件
      */
@@ -58,14 +60,6 @@ public class UploadFileController extends BaseController {
     public AjaxResult updateAvatar(@RequestParam("file") MultipartFile file, String module) {
         try {
             if (!file.isEmpty()) {
-//                String originalFileName = file.getOriginalFilename();
-//                originalFileName.substring( originalFileName.lastIndexOf( "." ) );
-//                String filePath = "";
-//                //上传文件路径由模块参数（module）和上传的当天日期组成
-//                if (null != module) {
-//                    filePath = module + "/" + DateUtil.today() + "/";
-//                }
-//                String fileName = FileUploadUtils.upload( Global.getAvatarPath() + filePath, file, false, originalFileName );
                 // TODO 修改为七牛云上传
                 String contentType = file.getContentType();
                 String suffix = contentType.substring(contentType.lastIndexOf("/"));
@@ -94,23 +88,82 @@ public class UploadFileController extends BaseController {
     @Log(title = "OSS上传文件", businessType = BusinessType.INSERT)
     @PostMapping("/oss")
     public AjaxResult upload(@RequestParam("file") MultipartFile file, String module) throws Exception {
-        if (file.isEmpty()) {
-            throw new OssException( "上传文件不能为空" );
+        if (file.isEmpty())
+        {
+            throw new OssException("上传文件不能为空");
         }
         // 上传文件
         String fileName = file.getOriginalFilename();
         String suffix = fileName.substring( fileName.lastIndexOf( "." ) );
+        // 如果文件为office文件，统一转换为pdf
+        List<String> suffixNames = Arrays.asList(officeSuffix.split(","));
         CloudStorageService storage = OSSFactory.build();
-        String url = storage.uploadSuffix( file.getBytes(), suffix );
+        String url;
+        String originUrl;
+        File pdflOutputFile = null;
         // 保存文件信息
         SysOss ossEntity = new SysOss();
-        ossEntity.setUrl( url );
-        ossEntity.setFileSuffix( suffix );
-        ossEntity.setCreateBy( ShiroUtils.getLoginName() );
-        ossEntity.setFileName( fileName );
-        ossEntity.setCreateTime( new Date() );
-        ossEntity.setService( storage.getService() );
-        log.info("AliOSS上传结束");
-        return toAjax( sysOssService.save( ossEntity ) ).put( "data", ossEntity.getUrl() );
+
+        // 获取后缀,若为office文件，直接转换成pdf
+        if (suffixNames.contains(suffix)){
+            File f = new File(fileName);
+            FileUtils.copyInputStreamToFile(file.getInputStream(),f);
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+            String timesuffix = sdf.format(date);
+            String pdfFileName = null;
+            String name = fileName.substring(0,fileName.lastIndexOf( "." ));
+            if(".doc".equals(suffix)){
+                pdfFileName = name + "_" + timesuffix + ".pdf";
+            }else if(".docx".equals(suffix)){
+                pdfFileName = name + "_" + timesuffix + ".pdf";
+            }else if(".xls".equals(suffix)){
+                pdfFileName = name + "_" + timesuffix + ".pdf";
+            }else if(".xlsx".equals(suffix)){
+                pdfFileName = name + "_" + timesuffix + ".pdf";
+            }else if(".ppt".equals(suffix)){
+                pdfFileName = name + "_" + timesuffix + ".pdf";
+            }else if(".pptx".equals(suffix)){
+                pdfFileName = name + "_" + timesuffix + ".pdf";
+            }else if(".txt".equals(suffix)){
+                pdfFileName = name + "_" + timesuffix + ".pdf";
+            }else{
+                return null;
+            }
+
+            // 若文件目录不存在，创建文件目录
+            File file1 = new File(filePath);
+            if (!file1.exists()){
+                file1.createNewFile();
+            }
+
+            pdflOutputFile =  new File(filePath + File.separatorChar +pdfFileName);
+            if (!pdflOutputFile.exists()) {
+                // 文件转换为pdf
+                documentConverter.convert(f).to(pdflOutputFile).execute();
+            }
+            FileInputStream fis = new FileInputStream(pdflOutputFile);
+            url = storage.uploadSuffix(fis, ".pdf" );
+            originUrl = storage.uploadSuffix( file.getBytes(), suffix );
+            ossEntity.setFileName( fileName.substring(0,fileName.lastIndexOf( "." )) + ".pdf");
+            ossEntity.setFileSuffix(".pdf");
+        }else {
+            url = storage.uploadSuffix( file.getBytes(), suffix );
+            originUrl = url;
+        }
+        ossEntity.setUrl(url);
+        ossEntity.setOriginUrl(originUrl);
+        ossEntity.setFileSuffix(suffix);
+        ossEntity.setCreateBy(ShiroUtils.getLoginName());
+        ossEntity.setFileName( fileName);
+        ossEntity.setCreateTime(new Date());
+        ossEntity.setService(storage.getService());
+
+        if (pdflOutputFile.exists()){
+            FileUtils.deleteQuietly(pdflOutputFile);
+        }
+
+        return toAjax(sysOssService.save(ossEntity)).put("data", ossEntity.getUrl());
     }
+
 }

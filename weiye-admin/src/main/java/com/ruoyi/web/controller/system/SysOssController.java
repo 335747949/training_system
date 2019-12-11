@@ -19,13 +19,20 @@ import com.ruoyi.web.controller.system.cloud.OSSFactory;
 import com.ruoyi.web.controller.system.cloud.valdator.AliyunGroup;
 import com.ruoyi.web.controller.system.cloud.valdator.QcloudGroup;
 import com.ruoyi.web.controller.system.cloud.valdator.QiniuGroup;
+import org.apache.commons.io.FileUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.jodconverter.DocumentConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -38,10 +45,19 @@ public class SysOssController extends BaseController
 {
     private String prefix = "system/oss";
 
-    private final static String KEY    = CloudConstant.CLOUD_STORAGE_CONFIG_KEY;
+    @Value("${office.suffix}")
+    private String officeSuffix;
+
+    @Value("${spring.servlet.multipart.location}")
+    private String filePath;
 
     @Autowired
-    private ISysOssService      sysOssService;
+    private DocumentConverter documentConverter;
+
+    private final static String KEY = CloudConstant.CLOUD_STORAGE_CONFIG_KEY;
+
+    @Autowired
+    private ISysOssService sysOssService;
 
     @Autowired
     private ISysConfigService sysConfigService;
@@ -120,17 +136,72 @@ public class SysOssController extends BaseController
         }
         // 上传文件
         String fileName = file.getOriginalFilename();
-        String suffix = fileName.substring(fileName.lastIndexOf("."));
+        String suffix = fileName.substring( fileName.lastIndexOf( "." ) );
+        // 如果文件为office文件，统一转换为pdf
+        List<String> suffixNames = Arrays.asList(officeSuffix.split(","));
         CloudStorageService storage = OSSFactory.build();
-        String url = storage.uploadSuffix(file.getBytes(), suffix);
-        // 保存文件信息
+        String url;
+        String originUrl;
+        File pdflOutputFile = null;
+        // 保存文件信息实体
         SysOss ossEntity = new SysOss();
+        // 获取后缀,若为office文件，直接转换成pdf
+        if (suffixNames.contains(suffix)){
+            File f = new File(fileName);
+            FileUtils.copyInputStreamToFile(file.getInputStream(),f);
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+            String timesuffix = sdf.format(date);
+            String pdfFileName = null;
+            String name = fileName.substring(0,fileName.lastIndexOf( "." ));
+            if(".doc".equals(suffix)){
+                pdfFileName = name + "_" + timesuffix + ".pdf";
+            }else if(".docx".equals(suffix)){
+                pdfFileName = name + "_" + timesuffix + ".pdf";
+            }else if(".xls".equals(suffix)){
+                pdfFileName = name + "_" + timesuffix + ".pdf";
+            }else if(".xlsx".equals(suffix)){
+                pdfFileName = name + "_" + timesuffix + ".pdf";
+            }else if(".ppt".equals(suffix)){
+                pdfFileName = name + "_" + timesuffix + ".pdf";
+            }else if(".pptx".equals(suffix)){
+                pdfFileName = name + "_" + timesuffix + ".pdf";
+            }else if(".txt".equals(suffix)){
+                pdfFileName = name + "_" + timesuffix + ".pdf";
+            }else{
+                return null;
+            }
+
+            File file1 = new File(filePath);
+            if (!file1.exists()){
+                file1.createNewFile();
+            }
+
+            pdflOutputFile =  new File(filePath + File.separatorChar +pdfFileName);
+            if (!pdflOutputFile.exists()) {
+                // 文件转换为pdf
+                documentConverter.convert(f).to(pdflOutputFile).execute();
+            }
+            FileInputStream fis = new FileInputStream(pdflOutputFile);
+            url = storage.uploadSuffix(fis, ".pdf" );
+            originUrl = storage.uploadSuffix( file.getBytes(), suffix );
+            ossEntity.setFileName( fileName.substring(0,fileName.lastIndexOf( "." )) + ".pdf");
+            ossEntity.setFileSuffix(".pdf");
+        }else {
+            url = storage.uploadSuffix( file.getBytes(), suffix );
+            originUrl = url;
+        }
         ossEntity.setUrl(url);
+        ossEntity.setOriginUrl(originUrl);
         ossEntity.setFileSuffix(suffix);
         ossEntity.setCreateBy(ShiroUtils.getLoginName());
-        ossEntity.setFileName(fileName);
+        ossEntity.setFileName( fileName);
         ossEntity.setCreateTime(new Date());
         ossEntity.setService(storage.getService());
+
+        if (pdflOutputFile.exists()){
+            FileUtils.deleteQuietly(pdflOutputFile);
+        }
         return toAjax(sysOssService.save(ossEntity)).put("data", ossEntity.getUrl());
     }
 

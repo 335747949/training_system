@@ -25,6 +25,12 @@
 				</div>
 			</div>
 			<div class="form-group">
+				<label class="col-sm-3 control-label ">源文件地址：</label>
+				<div class="col-sm-8">
+					<p class="form-control-static" th:text="*{originUrl}"></p>
+				</div>
+			</div>
+			<div class="form-group">
 				<label class="col-sm-3 control-label ">上传时间：</label>
 				<div class="col-sm-8">
             		<p class="form-control-static" th:text="*{#dates.format(createTime, 'yyyy-MM-dd HH:mm:ss')}"></p>

@@ -25,7 +25,7 @@ public class TrainCourseSection
     private String name;
     /** 显示顺序 */
     private Integer orderNum;
-    /** 课件类型 (1、視頻 2、課件 3、音頻)*/
+    /** 课件类型 (1、音/視頻 2、課件)*/
     private Integer type;
     /** 课件 */
     private String courseware;
@@ -171,6 +171,7 @@ public class TrainCourseSection
         this.type = type;
     }
 
+    @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
                 .append("id", getId())

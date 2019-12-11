@@ -62,26 +62,20 @@
 </style>
 <div class="container-fluid video-box layui-container">
     <div class="layui-row">
-        <div class="layui-col-md2">1
+        <div class="layui-col-md2">
         </div>
         <!--視頻-->
-        <div class="layui-col-md6" th:if="${trainCourseSection.type} == 1">
-            <video id="myVideo" onplay="playVideo()" onpause="stop()" th:src="${trainCourseSection.courseware}" autoplay="autoplay" width="95%" height="600px"
-                   controls="controls">
-            </video>
+        <div class="layui-col-md6">
+            <div th:if="${trainCourseSection.type} == 1">
+                <video id="myVideo" onplay="playVideo()" onpause="stop()" th:src="${trainCourseSection.courseware}" autoplay="autoplay" width="95%" height="600px"
+                       controls="controls">
+                </video>
+            </div>
+            <div th:if="${trainCourseSection.type} == 2">
+                <iframe th:src="${trainCourseSection.courseware}" width="95%" height="600px"/>
+            </div>
         </div>
-<!--        &lt;!&ndash;文本&ndash;&gt;-->
-<!--        <div class="layui-col-md6" th:if="${trainCourseSection.type} == 2">-->
-<!--            <video id="myDoc" onplay="playVideo()" onpause="stop()" th:src="${trainCourseSection.courseware}" autoplay="autoplay" width="95%" height="600px"-->
-<!--                   controls="controls">-->
-<!--            </video>-->
-<!--        </div>-->
-<!--        &lt;!&ndash; 音頻&ndash;&gt;-->
-<!--        <div class="layui-col-md6" th:if="${trainCourseSection.type} == 3">-->
-<!--            <video id="myAudio" onplay="playVideo()" onpause="stop()" th:src="${trainCourseSection.courseware}" autoplay="autoplay" width="95%" height="600px"-->
-<!--                   controls="controls">-->
-<!--            </video>-->
-<!--        </div>-->
+
         <div class="layui-col-md2">
             <div class="play-list">
                 <ul>
