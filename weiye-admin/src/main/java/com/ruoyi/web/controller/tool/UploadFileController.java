@@ -159,7 +159,7 @@ public class UploadFileController extends BaseController {
         ossEntity.setCreateTime(new Date());
         ossEntity.setService(storage.getService());
 
-        if (pdflOutputFile.exists()){
+        if (!ObjectUtils.isEmpty(pdflOutputFile) && pdflOutputFile.exists()){
             FileUtils.deleteQuietly(pdflOutputFile);
         }
 

@@ -157,7 +157,7 @@ public class CmsController  extends BaseController {
         if (ObjectUtils.isEmpty(user)){
             return prefix + "/user/login";
         }
-        TrainCourseSection tcs = trainCourseSectionService.selectById( id );
+            TrainCourseSection tcs = trainCourseSectionService.selectById( id );
         TrainCourseSection trainCourseSection = new TrainCourseSection();
         trainCourseSection.setTrainCourseId( tcs.getTrainCourseId() );
         List<TrainCourseSection> trainCourseSections = trainCourseSectionService.selectTrainCourseSectionList( trainCourseSection );

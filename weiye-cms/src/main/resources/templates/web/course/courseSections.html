@@ -60,27 +60,27 @@
     }
 
 </style>
-<div class="container-fluid video-box layui-container">
+<div class="container-fluid video-box layui-container" style="height: 850px">
     <div class="layui-row">
-        <div class="layui-col-md2">
+        <div class="layui-col-md2">1
         </div>
-        <!--視頻-->
         <div class="layui-col-md6">
+            <!--視頻-->
             <div th:if="${trainCourseSection.type} == 1">
                 <video id="myVideo" onplay="playVideo()" onpause="stop()" th:src="${trainCourseSection.courseware}" autoplay="autoplay" width="95%" height="600px"
                        controls="controls">
                 </video>
             </div>
             <div th:if="${trainCourseSection.type} == 2">
-                <iframe th:src="${trainCourseSection.courseware}" width="95%" height="600px"/>
+                <embed th:src="${trainCourseSection.courseware}" width="95%" height="800px" type="application/pdf">
             </div>
         </div>
 
-        <div class="layui-col-md2">
-            <div class="play-list">
+        <div class="layui-col-md3">
+            <div class="play-list"  style="height: 800px">
                 <ul>
                     <a th:each="section,obj:${trainCourseSections}"
-                       th:href="@{'/web/course/courseSections.html/'+${section.id}}">
+                        th:href="@{'/web/course/courseSections.html/'+${section.id}}">
                         <li class="section">
                             <div class="section-index" th:text="${obj.index+1}"></div>
                             <div class="section-info">
@@ -99,7 +99,6 @@
     </div>
 </div>
 
-<span id="show">333</span>
 <div class="fly-footer" th:replace="web/index::cmsBottom">
 </div>
 <script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
@@ -136,7 +135,7 @@
             clearInterval(timeInterval.timer);
         }
     }
-    
+
     function studyUpdate() {
         $.ajax({
             type: "post",

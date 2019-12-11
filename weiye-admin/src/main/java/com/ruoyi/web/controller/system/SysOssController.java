@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -199,7 +200,7 @@ public class SysOssController extends BaseController
         ossEntity.setCreateTime(new Date());
         ossEntity.setService(storage.getService());
 
-        if (pdflOutputFile.exists()){
+        if (!ObjectUtils.isEmpty(pdflOutputFile) && pdflOutputFile.exists()){
             FileUtils.deleteQuietly(pdflOutputFile);
         }
         return toAjax(sysOssService.save(ossEntity)).put("data", ossEntity.getUrl());
