@@ -101,5 +101,5 @@ jodconverter:
     #home:安装地址
     #  office-home: C:/Program Files (x86)/OpenOffice 4  # linux
     office-home: C:/Program Files (x86)/OpenOffice 4   # windows
-    max-tasks-per-process: 200
+    max-tasks-per-process: 10
     port-numbers: 8100

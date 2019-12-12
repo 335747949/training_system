@@ -93,6 +93,30 @@
             <version>2.1.1</version>
         </dependency>
 
+<!--        &lt;!&ndash;jodconverter 核心包 &ndash;&gt;-->
+<!--         https://mvnrepository.com/artifact/org.jodconverter/jodconverter-core-->
+        		<dependency>
+        			<groupId>org.jodconverter</groupId>
+        			<artifactId>jodconverter-core</artifactId>
+        			<version>4.2.2</version>
+        		</dependency>
+
+<!--        springboot支持包，里面包括了自动配置类-->
+<!--         https://mvnrepository.com/artifact/org.jodconverter/jodconverter-spring-boot-starter-->
+        		<dependency>
+        			<groupId>org.jodconverter</groupId>
+        			<artifactId>jodconverter-spring-boot-starter</artifactId>
+        			<version>4.2.2</version>
+        		</dependency>
+
+<!--        jodconverter 本地支持包-->
+<!--         https://mvnrepository.com/artifact/org.jodconverter/jodconverter-local-->
+        		<dependency>
+        			<groupId>org.jodconverter</groupId>
+        			<artifactId>jodconverter-local</artifactId>
+        			<version>4.2.2</version>
+        		</dependency>
+
     </dependencies>
 
     <build>
@@ -103,6 +127,7 @@
                 <version>2.1.7.RELEASE</version>
                 <configuration>
 					<fork>true</fork> <!-- 如果没有该配置，devtools不会生效 -->
+                    <includeSystemScope>true</includeSystemScope>
 				</configuration>
                 <executions>
                     <execution>

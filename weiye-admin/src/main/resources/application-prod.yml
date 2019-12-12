@@ -101,5 +101,5 @@ jodconverter:
     enabled: true
     #home:安装地址
     office-home: /opt/openoffice4  # linux
-    max-tasks-per-process: 200
+    max-tasks-per-process: 10
     port-numbers: 8100

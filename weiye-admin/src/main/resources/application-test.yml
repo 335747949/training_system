@@ -20,7 +20,7 @@ spring:
     druid:
       # 主库数据源
       master:
-        url: jdbc:mysql://rm-m5e5905g322yqnjm9.mysql.rds.aliyuncs.com/:3306/exam?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true
+        url: jdbc:mysql://rm-m5e5905g322yqnjm9.mysql.rds.aliyuncs.com:3306/exam?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true
         username: gm_exam
         password: B5Qwheb1IdAiM
       # 从库数据源
@@ -103,5 +103,5 @@ jodconverter:
     #home:安装地址
     office-home: /opt/openoffice4  # linux
     #每个office进程可执行的最大task数, 超过将重启
-    max-tasks-per-process: 200
+    max-tasks-per-process: 10
     port-numbers: 8100
