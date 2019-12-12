@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ruoyi/css/ry-ui.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/datapicker/datepicker3.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/layui/css/layui.css}" rel="stylesheet"/>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-vipUserCertificate-add">
+			<div class="form-group">
+				<label class="col-sm-3 control-label">会员名称：</label>
+				<div class="col-sm-8">
+					<input id="userName" name="userName" th:field="*{user.userName}" class="form-control" disabled type="text">
+					<input id="vipUserId" name="vipUserId" th:value="*{user.userId}" class="form-control" type="hidden">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">证书名称：</label>
+				<div class="col-sm-8">
+					<input id="name" name="name" class="form-control" type="text">
+				</div>
+			</div>
+
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">证书照片：</label>
+				<div class="col-sm-8">
+					<input id="image" name="image" class="form-control" type="hidden">
+					<div class="layui-upload">
+						<button type="button" class="layui-btn" id="test1">上传图片</button>
+						<div class="layui-upload-list">
+							<img class="layui-upload-img" id="demo1">
+							<p id="demoText"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">生效日期：</label>
+				<div class="col-sm-8">
+					<div class="input-group date"> <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						<input type="text"  id="startDate" name="startDate" class="form-control" >
+					</div>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">截止日期：</label>
+				<div class="col-sm-8">
+
+					<div class="input-group date"> <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						<input type="text"  id="endDate" name="endDate" class="form-control" >
+					</div>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">备注信息：</label>
+				<div class="col-sm-8">
+					<textarea id="remarks" name="remarks" placeholder="请输入备注信息" class="layui-textarea"></textarea>
+				</div>
+			</div>
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+	<script th:src="@{/js/jquery-ui-1.10.4.min.js}"></script>
+	<script th:src="@{/ajax/libs/iCheck/icheck.min.js}"></script>
+	<script th:src="@{/ajax/libs//datapicker/bootstrap-datepicker.js}"></script>
+	<script th:src="@{/ajax/libs/beautifyhtml/beautifyhtml.js}"></script>
+    <script type="text/javascript">
+		var prefix = ctx + "vip/vipUserCertificate"
+		$("#form-vipUserCertificate-add").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			}
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/add", $('#form-vipUserCertificate-add').serialize());
+	        }
+	    }
+        $(".input-group.date").datepicker({todayBtn: "linked",keyboardNavigation: !1,forceParse: !1,calendarWeeks: !0,autoclose: !0});
+
+
+        layui.use('upload', function() {
+            var $ = layui.jquery
+                , upload = layui.upload;
+            //普通图片上传
+            var uploadInst = upload.render({
+                elem: '#test1'
+                ,url: '/upload/files'
+                ,data:{module:"vip/user/certificate"}//文件存放路径
+                ,before: function(obj){
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function(index, file, result){
+                        $('#demo1').attr('src', result); //图片链接（base64）
+                    });
+                }
+                ,done: function(res){
+                    //如果上传失败
+                    if(res.code !=200){
+                        return layer.msg('上传失败');
+                    }
+                    //上传成功
+                    if(res.code ==200){
+                        $("#image").val(res.fileName)
+                        return layer.msg('上传成功');
+                    }
+                }
+                ,error: function(){
+                    //演示失败状态，并实现重传
+                    var demoText = $('#demoText');
+                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function(){
+                        uploadInst.upload();
+                    });
+                }
+            });
+        });
+	</script>
+</body>
+</html>

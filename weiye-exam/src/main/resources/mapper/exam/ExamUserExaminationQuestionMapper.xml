@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.exam.mapper.ExamUserExaminationQuestionMapper">
+    
+    <resultMap type="ExamUserExaminationQuestion" id="ExamUserExaminationQuestionResult">
+        <result property="id"    column="id"    />
+        <result property="examUserExaminationId"    column="exam_user_examination_id"    />
+        <result property="userAnswer"    column="user_answer"    />
+        <result property="examQuestionId"    column="exam_question_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+	
+	<sql id="selectExamUserExaminationQuestionVo">
+         id, exam_user_examination_id, exam_question_id,user_answer, create_by, create_date, update_by, update_date, remarks, del_flag    </sql>
+	
+    <select id="selectExamUserExaminationQuestionList" parameterType="ExamUserExaminationQuestion" resultMap="ExamUserExaminationQuestionResult">
+        select
+        <include refid="selectExamUserExaminationQuestionVo"/>
+        from exam_user_examination_question
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="examUserExaminationId != null "> and exam_user_examination_id = #{examUserExaminationId}</if>
+             <if test="examQuestionId != null "> and exam_question_id = #{examQuestionId}</if>
+             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+             <if test="createDate != null "> and create_date = #{createDate}</if>
+             <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+             <if test="updateDate != null "> and update_date = #{updateDate}</if>
+             <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+             <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+         </where>
+    </select>
+
+    
+</mapper>

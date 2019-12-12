@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>training_system</artifactId>
+        <groupId>com.weiye</groupId>
+        <version>0.1</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>weiye-cms</artifactId>
+
+    <dependencies>
+        <!-- spring-boot-devtools -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>false</optional> <!-- 表示依赖不会传递 -->
+        </dependency>
+        <dependency>
+            <groupId>com.weiye</groupId>
+            <artifactId>weiye-framework</artifactId>
+            <version>${weiye.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.weiye</groupId>
+            <artifactId>weiye-train</artifactId>
+            <version>${weiye.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.weiye</groupId>
+            <artifactId>weiye-exam</artifactId>
+            <version>${weiye.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.weiye</groupId>
+            <artifactId>weiye-vip</artifactId>
+            <version>${weiye.version}</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.weiye</groupId>-->
+<!--            <artifactId>weiye-weixin</artifactId>-->
+<!--            <version>${weiye.version}</version>-->
+<!--        </dependency>-->
+    </dependencies>
+</project>

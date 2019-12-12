@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.vip.mapper.VipUserOrdersMapper">
+    
+    <resultMap type="VipUserOrdersVO" id="VipUserOrdersResult">
+        <result property="id"    column="id"    />
+        <result property="vipUserId"    column="vip_user_id"    />
+        <result property="trainCourseId"    column="train_course_id"    />
+        <result property="price"    column="price"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="vipUserName"    column="vipUserName"    />
+        <result property="trainCourseName"    column="trainCourseName"    />
+        <result property="trainCourseCover"    column="trainCourseCover"    />
+
+    </resultMap>
+	
+	<sql id="selectVipUserOrdersVo">
+         o.id, o.vip_user_id, o.train_course_id, o.price, o.create_by, o.create_date, o.update_by, o.update_date, o.remarks, o.del_flag
+    </sql>
+	
+    <select id="selectVipUserOrdersList" parameterType="VipUserOrdersVO" resultMap="VipUserOrdersResult">
+        select
+        <include refid="selectVipUserOrdersVo"/>,
+        u.user_name vipUserName,c.name trainCourseName,c.cover trainCourseCover
+        from vip_user_orders o
+        join sys_user u on u.user_id=o.vip_user_id
+        join train_course c on  c.id=o.train_course_id
+        <where>  
+            <if test="id != null  and id != '' "> and o.id = #{id}</if>
+            <if test="vipUserId != null  and vipUserId != '' "> and o.vip_user_id = #{vipUserId}</if>
+             <if test="vipUserName != null "> and u.user_name like CONCAT('%',#{vipUserName},'%')</if>
+             <if test="trainCourseName != null "> and c.name like CONCAT('%',#{trainCourseName},'%')</if>
+             <if test="delFlag != null  and delFlag != '' "> and o.del_flag = #{delFlag}</if>
+
+        </where>
+        order by o.update_date desc
+    </select>
+
+    
+</mapper>

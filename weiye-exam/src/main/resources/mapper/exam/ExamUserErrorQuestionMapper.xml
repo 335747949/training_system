@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.exam.mapper.ExamUserErrorQuestionMapper">
+    
+    <resultMap type="ExamUserErrorQuestion" id="ExamUserErrorQuestionResult">
+        <result property="id"    column="id"    />
+        <result property="vipUserId"    column="vip_user_id"    />
+        <result property="examQuestionId"    column="exam_question_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <resultMap type="ExamUserErrorQuestionVO" id="ExamUserErrorQuestionResultVO">
+        <result property="id"    column="id"    />
+        <result property="vipUserId"    column="vip_user_id"    />
+        <result property="examQuestionId"    column="exam_question_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+        <association property="question" javaType="com.ruoyi.exam.domain.ExamQuestionVO">
+            <result property="id"    column="eq_id"    />
+            <result property="title"    column="eq_title"    />
+            <result property="answer"    column="eq_answer"    />
+            <result property="type"    column="eq_type"    />
+            <result property="label"    column="eq_label"    />
+            <result property="categoryId"    column="eq_category_id"    />
+            <result property="createBy"    column="eq_create_by"    />
+            <result property="createDate"    column="eq_create_date"    />
+            <result property="updateBy"    column="eq_update_by"    />
+            <result property="updateDate"    column="eq_update_date"    />
+            <result property="remarks"    column="eq_remarks"    />
+            <result property="delFlag"    column="eq_del_flag"    />
+        </association>
+    </resultMap>
+    <resultMap type="ExamUserErrorQuestionVO" id="ExamUserErrorQuestionResultDetailVO">
+        <result property="id"    column="id"    />
+        <result property="vipUserId"    column="vip_user_id"    />
+        <result property="examQuestionId"    column="exam_question_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+        <association property="question" javaType="com.ruoyi.exam.domain.ExamQuestionVO">
+            <result property="id"    column="eq_id"    />
+            <result property="title"    column="eq_title"    />
+            <result property="answer"    column="eq_answer"    />
+            <result property="type"    column="eq_type"    />
+            <result property="label"    column="eq_label"    />
+            <result property="categoryId"    column="eq_category_id"    />
+            <result property="createBy"    column="eq_create_by"    />
+            <result property="createDate"    column="eq_create_date"    />
+            <result property="updateBy"    column="eq_update_by"    />
+            <result property="updateDate"    column="eq_update_date"    />
+            <result property="remarks"    column="eq_remarks"    />
+            <result property="delFlag"    column="eq_del_flag"    />
+            <collection property="questionItem" ofType="com.ruoyi.exam.domain.ExamQuestionItem">
+                <result property="id"    column="item_id"    />
+                <result property="content"    column="item_content"    />
+                <result property="number"    column="item_number"    />
+                <result property="examQuestionId"    column="item_exam_question_id"    />
+                <result property="remarks"    column="item_remarks"    />
+                <result property="delFlag"    column="item_del_flag"    />
+            </collection>
+        </association>
+    </resultMap>
+	<sql id="selectExamUserErrorQuestionVo">
+         euq.id, euq.vip_user_id, euq.exam_question_id, euq.create_by, euq.create_date, euq.update_by, euq.update_date, euq.remarks, euq.del_flag    </sql>
+	
+    <select id="selectExamUserErrorQuestionList" parameterType="ExamUserErrorQuestion" resultMap="ExamUserErrorQuestionResult">
+        select
+        <include refid="selectExamUserErrorQuestionVo"/>
+        from exam_user_error_question
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="vipUserId != null "> and vip_user_id = #{vipUserId}</if>
+             <if test="examQuestionId != null "> and exam_question_id = #{examQuestionId}</if>
+             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+             <if test="createDate != null "> and create_date = #{createDate}</if>
+             <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+             <if test="updateDate != null "> and update_date = #{updateDate}</if>
+             <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+             <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+         </where>
+    </select>
+    <select id="selectExamUserErrorQuestionDetailPage" resultMap="ExamUserErrorQuestionResultVO">
+        select
+        <include refid="selectExamUserErrorQuestionVo"/>,
+        eq.id as eq_id,
+        eq.title as eq_title,
+        eq.answer as eq_answer,
+        eq.type as eq_type,
+        eq.label as eq_label,
+        eq.category_id as eq_category_id,
+        eq.create_by as eq_create_by,
+        eq.create_date as eq_create_date,
+        eq.update_by as eq_update_by,
+        eq.update_date as eq_update_date,
+        eq.remarks as eq_remarks,
+        eq.del_flag as eq_del_flag
+        from exam_user_error_question euq
+        INNER JOIN exam_question eq ON eq.id = euq.exam_question_id
+        <where>
+            <if test="id != null "> and id = #{id}</if>
+            <if test="vipUserId != null "> and vip_user_id = #{vipUserId}</if>
+            <if test="examQuestionId != null "> and exam_question_id = #{examQuestionId}</if>
+            <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+            <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+            <if test="updateDate != null "> and update_date = #{updateDate}</if>
+            <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+            <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+        </where>
+    </select>
+
+    <select id="selectExamUserErrorQuestionDetailList" resultMap="ExamUserErrorQuestionResultDetailVO">
+        select
+        <include refid="selectExamUserErrorQuestionVo"/>,
+        eq.id as eq_id,
+        eq.title as eq_title,
+        eq.answer as eq_answer,
+        eq.type as eq_type,
+        eq.label as eq_label,
+        eq.category_id as eq_category_id,
+        eq.create_by as eq_create_by,
+        eq.create_date as eq_create_date,
+        eq.update_by as eq_update_by,
+        eq.update_date as eq_update_date,
+        eq.remarks as eq_remarks,
+        eq.del_flag as eq_del_flag,
+        eqi.id AS item_id,
+        eqi.content AS item_content,
+        eqi.number AS item_number,
+        eqi.exam_question_id AS item_exam_question_id,
+        eqi.remarks AS item_remarks
+        from exam_user_error_question euq
+        INNER JOIN exam_question eq ON eq.id = euq.exam_question_id
+        INNER JOIN exam_question_item eqi ON eqi.exam_question_id = eq.id
+        <where>
+            <if test="id != null "> and id = #{id}</if>
+            <if test="vipUserId != null "> and vip_user_id = #{vipUserId}</if>
+            <if test="examQuestionId != null "> and exam_question_id = #{examQuestionId}</if>
+            <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+            <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+            <if test="updateDate != null "> and update_date = #{updateDate}</if>
+            <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+            <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+        </where>
+    </select>
+</mapper>

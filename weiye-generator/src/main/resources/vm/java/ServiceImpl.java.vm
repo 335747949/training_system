@@ -1,0 +1,48 @@
+package ${package}.service.impl;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ${package}.mapper.${className}Mapper;
+import ${package}.domain.${className};
+import ${package}.service.I${className}Service;
+import com.ruoyi.common.support.Convert;
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+/**
+ * ${tableComment} 服务层实现
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Service
+public class ${className}ServiceImpl extends AbstractBaseServiceImpl<${className}Mapper,${className}> implements I${className}Service
+{
+	@Autowired
+	private ${className}Mapper ${classname}Mapper;
+
+	
+	/**
+     * 查询${tableComment}列表
+     * 
+     * @param ${classname} ${tableComment}信息
+     * @return ${tableComment}集合
+     */
+	@Override
+	public List<${className}> select${className}List(${className} ${classname})
+	{
+        return ${classname}Mapper.select${className}List(${classname});
+	}
+    /**
+     * 查询${tableComment}分页列表
+     *
+     * @param ${classname} ${tableComment}信息
+     * @return ${tableComment}集合
+     */
+    @Override
+    public List<${className}> select${className}Page(${className} ${classname})
+    {
+        startPage();
+        return ${classname}Mapper.select${className}List(${classname});
+    }
+
+}

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.exam.mapper.ExamPracticeQuestionMapper">
+    
+    <resultMap type="ExamPracticeQuestionVO" id="ExamPracticeQuestionResult">
+        <result property="id"    column="id"    />
+        <result property="examPracticeId"    column="exam_practice_id"    />
+        <result property="examQuestionId"    column="exam_question_id"    />
+        <result property="score"    column="score"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="questionName" column="name"/>
+        <result property="questionType" column="type"/>
+    </resultMap>
+	
+	<sql id="selectExamPracticeQuestionVo">
+         epq.id, epq.exam_practice_id, epq.exam_question_id, epq.score, epq.order_num, epq.create_by, epq.create_date, epq.update_by, epq.update_date, epq.remarks, epq.del_flag    </sql>
+	
+    <select id="selectExamPracticeQuestionList" parameterType="ExamPracticeQuestion" resultMap="ExamPracticeQuestionResult">
+        select
+        <include refid="selectExamPracticeQuestionVo"/>,eq.title as name,eq.type as type
+        from exam_practice_question epq
+        INNER JOIN exam_question eq on epq.exam_question_id = eq.id
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="examPracticeId != null "> and exam_practice_id = #{examPracticeId}</if>
+             <if test="examQuestionId != null "> and exam_question_id = #{examQuestionId}</if>
+             <if test="score != null "> and score = #{score}</if>
+             <if test="orderNum != null "> and order_num = #{orderNum}</if>
+             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+             <if test="createDate != null "> and create_date = #{createDate}</if>
+             <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+             <if test="updateDate != null "> and update_date = #{updateDate}</if>
+             <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+             <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+         </where>
+        order by order_num
+    </select>
+
+    <select id="selectquestionByIds" resultMap="ExamPracticeQuestionResult">
+        select
+        <include refid="selectExamPracticeQuestionVo"/>,eq.title as name,eq.type as type
+        from exam_practice_question epq
+        INNER JOIN exam_question eq on epq.exam_question_id = eq.id
+        where epq.exam_question_id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    
+</mapper>

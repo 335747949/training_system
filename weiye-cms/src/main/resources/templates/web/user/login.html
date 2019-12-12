@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="web/index::cmsHeader">
+</head>
+<body>
+
+<div class="fly-header layui-bg-black" th:replace="web/index:: top">
+
+</div>
+
+<div class="layui-container fly-marginTop">
+  <div class="fly-panel fly-panel-user" pad20>
+    <div class="layui-tab layui-tab-brief" lay-filter="user">
+      <ul class="layui-tab-title">
+        <li class="layui-this">登入</li>
+        <li><a th:href="@{/web/user/reg.html}">注册</a></li>
+      </ul>
+      <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
+        <div class="layui-tab-item layui-show">
+          <div class="layui-form layui-form-pane">
+              <div class="layui-form-item">
+                <label for="L_loginName" class="layui-form-label">手机号</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="L_loginName" name="loginName" required lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label for="L_pass" class="layui-form-label">密码</label>
+                <div class="layui-input-inline">
+                  <input type="password" id="L_pass" name="password" required lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <button id="btnSubmit" class="layui-btn" lay-filter="*" onclick="login()" >立即登录</button>
+                <!--<span style="padding-left:20px;">-->
+                  <!--<a href="forget.html">忘记密码？</a>-->
+                <!--</span>-->
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="fly-footer" th:replace="web/index::cmsBottom">
+</div>
+<script>
+    var layer;
+    $(function () {
+        layui.use('layer', function () {
+            layer = layui.layer;
+        });
+
+    })
+
+    function login() {
+        var loginName = $.common.trim($("input[name='loginName']").val());
+        var password = $.common.trim($("input[name='password']").val());
+        $.ajax({
+            type: "post",
+            url: ctx + "login",
+            data: {
+                "username": loginName,
+                "password": password,
+                "type": 10,
+                "rememberMe":false,
+                "isAdmin":false
+            },
+            success: function(r) {
+
+                if (r.code == 200) {
+                    layer.msg(r.msg, {icon: 1});
+                    location.href = ctx + "web/index"
+                } else {
+                    layer.msg(r.msg, {icon: 2});
+                }
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

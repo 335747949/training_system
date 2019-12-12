@@ -1,0 +1,158 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:include="web/index::cmsHeader">
+</head>
+<body onblur="stopActive()">
+<div class="fly-header layui-bg-black" th:replace="web/index:: top">
+</div>
+
+<style type="text/css">
+    .video-box {
+        background-color: #000000;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .container-fluid {
+        width: 100%;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+        height: 650px;
+    }
+
+    .play-list {
+        padding: 0;
+        background-color: #202026;
+        height: 630px;
+        overflow-y: auto;
+        line-height: 40px;
+    }
+
+    .play-list .section {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .play-list .section-index {
+        font-size: 2rem;
+        text-align: center;
+        width: 50px;
+        color: #d0d0d6;
+        margin-top: 15px;
+    }
+
+    .play-list .section-info {
+        margin-top: 5px;
+        color: #d0d0d6;
+    }
+
+    .play-list .section-time {
+        font-size: 10px;
+        line-height: 12px;
+        color: #909096;
+        margin-bottom: 10px;
+    }
+
+    a:hover .section-index, a:hover .section-info-name {
+        color: #2692ff;
+    }
+
+</style>
+<div class="container-fluid video-box layui-container" style="height: 850px">
+    <div class="layui-row">
+        <div class="layui-col-md2">1
+        </div>
+        <div class="layui-col-md6">
+            <!--視頻-->
+            <div th:if="${trainCourseSection.type} == 1">
+                <video id="myVideo" onplay="playVideo()" onpause="stop()" th:src="${trainCourseSection.courseware}" autoplay="autoplay" width="95%" height="600px"
+                       controls="controls">
+                </video>
+            </div>
+            <div th:if="${trainCourseSection.type} == 2">
+                <embed th:src="${trainCourseSection.courseware}" width="95%" height="800px" type="application/pdf">
+            </div>
+        </div>
+
+        <div class="layui-col-md3">
+            <div class="play-list"  style="height: 800px">
+                <ul>
+                    <a th:each="section,obj:${trainCourseSections}"
+                        th:href="@{'/web/course/courseSections.html/'+${section.id}}">
+                        <li class="section">
+                            <div class="section-index" th:text="${obj.index+1}"></div>
+                            <div class="section-info">
+                                <div class="section-info-name" th:text="${section.name}"></div>
+                                <div class="section-time"
+                                     th:text="'创建于：'+*{#dates.format(section.createTime,'yyyy-MM-dd HH:mm:ss')}"></div>
+                            </div>
+                            <hr>
+                        </li>
+                    </a>
+                </ul>
+            </div>
+        </div>
+        <div class="layui-col-md2">4
+        </div>
+    </div>
+</div>
+
+<div class="fly-footer" th:replace="web/index::cmsBottom">
+</div>
+<script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+<script type="text/javascript">
+    var trainCourseSectionId="[[${trainCourseSection?.id}]]";
+    var trainCourseId="[[${trainCourseSection?.trainCourseId}]]";
+    var myVideo=document.getElementById("myVideo");
+    function playVideo() {
+        console.log("play")
+        $("#show").html("play");
+        timeInterval.start();
+    }
+    function stop() {
+        timeInterval.stop();
+        $("#show").html("stop");
+    }
+    function stopActive() {
+        // layer.msg('离开页面会停止计算学时',{
+        //     time: 2000, //20s后自动关闭
+        //     btn: ['明白了']
+        // });
+        myVideo.pause();//暂停
+    }
+
+    var timeInterval= {
+        timer: null,
+        start:function(){
+            timeInterval.timer= setInterval(function () {
+                studyUpdate();
+            }, 1000*5) //1000*60*5 5分钟
+        }
+        ,
+        stop:function(){
+            clearInterval(timeInterval.timer);
+        }
+    }
+
+    function studyUpdate() {
+        $.ajax({
+            type: "post",
+            url: "/web/user/course/study",
+            data: {
+                "trainCourseSectionId": trainCourseSectionId,
+                "trainCourseId": trainCourseId,
+            },
+            success: function(r) {
+                if (r.code == 200) {
+                    console.log("增加学习记录")
+                } else {
+                    layer.msg(r.msg, {icon: 2});
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

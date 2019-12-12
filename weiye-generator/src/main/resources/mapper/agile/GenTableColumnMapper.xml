@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.agile.mapper.GenTableColumnAllMapper">
+    
+    <resultMap type="GenTableColumn" id="GenTableColumnResult">
+        <result property="id"    column="id"    />
+        <result property="tableName"    column="table_name"    />
+        <result property="columnName"    column="column_name"    />
+        <result property="columnSort"    column="column_sort"    />
+        <result property="columnType"    column="column_type"    />
+        <result property="columnLabel"    column="column_label"    />
+        <result property="comments"    column="comments"    />
+        <result property="attrName"    column="attr_name"    />
+        <result property="attrType"    column="attr_type"    />
+        <result property="isPk"    column="is_pk"    />
+        <result property="isNull"    column="is_null"    />
+        <result property="isInsert"    column="is_insert"    />
+        <result property="isUpdate"    column="is_update"    />
+        <result property="isList"    column="is_list"    />
+        <result property="isQuery"    column="is_query"    />
+        <result property="queryType"    column="query_type"    />
+        <result property="isEdit"    column="is_edit"    />
+        <result property="showType"    column="show_type"    />
+        <result property="options"    column="options"    />
+    </resultMap>
+	
+	<sql id="selectGenTableColumnVo">
+        select id, table_name, column_name, column_sort, column_type, column_label, comments, attr_name, attr_type, is_pk, is_null, is_insert, is_update, is_list, is_query, query_type, is_edit, show_type, options from gen_table_column
+    </sql>
+	
+    <select id="selectGenTableColumnList" parameterType="GenTableColumn" resultMap="GenTableColumnResult">
+        <include refid="selectGenTableColumnVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and id = #{id}</if>
+             <if test="tableName != null  and tableName != '' "> and table_name = #{tableName}</if>
+             <if test="columnName != null  and columnName != '' "> and column_name = #{columnName}</if>
+             <if test="columnSort != null "> and column_sort = #{columnSort}</if>
+             <if test="columnType != null  and columnType != '' "> and column_type = #{columnType}</if>
+             <if test="columnLabel != null  and columnLabel != '' "> and column_label = #{columnLabel}</if>
+             <if test="comments != null  and comments != '' "> and comments = #{comments}</if>
+             <if test="attrName != null  and attrName != '' "> and attr_name = #{attrName}</if>
+             <if test="attrType != null  and attrType != '' "> and attr_type = #{attrType}</if>
+             <if test="isPk != null  and isPk != '' "> and is_pk = #{isPk}</if>
+             <if test="isNull != null  and isNull != '' "> and is_null = #{isNull}</if>
+             <if test="isInsert != null  and isInsert != '' "> and is_insert = #{isInsert}</if>
+             <if test="isUpdate != null  and isUpdate != '' "> and is_update = #{isUpdate}</if>
+             <if test="isList != null  and isList != '' "> and is_list = #{isList}</if>
+             <if test="isQuery != null  and isQuery != '' "> and is_query = #{isQuery}</if>
+             <if test="queryType != null  and queryType != '' "> and query_type = #{queryType}</if>
+             <if test="isEdit != null  and isEdit != '' "> and is_edit = #{isEdit}</if>
+             <if test="showType != null  and showType != '' "> and show_type = #{showType}</if>
+             <if test="options != null  and options != '' "> and options = #{options}</if>
+         </where>
+    </select>
+    
+    <select id="selectGenTableColumnById" parameterType="String" resultMap="GenTableColumnResult">
+        <include refid="selectGenTableColumnVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGenTableColumn" parameterType="GenTableColumn">
+        insert into gen_table_column
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="tableName != null  and tableName != ''  ">table_name,</if>
+			<if test="columnName != null  and columnName != ''  ">column_name,</if>
+			<if test="columnSort != null  ">column_sort,</if>
+			<if test="columnType != null  and columnType != ''  ">column_type,</if>
+			<if test="columnLabel != null  and columnLabel != ''  ">column_label,</if>
+			<if test="comments != null  and comments != ''  ">comments,</if>
+			<if test="attrName != null  and attrName != ''  ">attr_name,</if>
+			<if test="attrType != null  and attrType != ''  ">attr_type,</if>
+			<if test="isPk != null  and isPk != ''  ">is_pk,</if>
+			<if test="isNull != null  and isNull != ''  ">is_null,</if>
+			<if test="isInsert != null  and isInsert != ''  ">is_insert,</if>
+			<if test="isUpdate != null  and isUpdate != ''  ">is_update,</if>
+			<if test="isList != null  and isList != ''  ">is_list,</if>
+			<if test="isQuery != null  and isQuery != ''  ">is_query,</if>
+			<if test="queryType != null  and queryType != ''  ">query_type,</if>
+			<if test="isEdit != null  and isEdit != ''  ">is_edit,</if>
+			<if test="showType != null  and showType != ''  ">show_type,</if>
+			<if test="options != null  and options != ''  ">options,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="tableName != null  and tableName != ''  ">#{tableName},</if>
+			<if test="columnName != null  and columnName != ''  ">#{columnName},</if>
+			<if test="columnSort != null  ">#{columnSort},</if>
+			<if test="columnType != null  and columnType != ''  ">#{columnType},</if>
+			<if test="columnLabel != null  and columnLabel != ''  ">#{columnLabel},</if>
+			<if test="comments != null  and comments != ''  ">#{comments},</if>
+			<if test="attrName != null  and attrName != ''  ">#{attrName},</if>
+			<if test="attrType != null  and attrType != ''  ">#{attrType},</if>
+			<if test="isPk != null  and isPk != ''  ">#{isPk},</if>
+			<if test="isNull != null  and isNull != ''  ">#{isNull},</if>
+			<if test="isInsert != null  and isInsert != ''  ">#{isInsert},</if>
+			<if test="isUpdate != null  and isUpdate != ''  ">#{isUpdate},</if>
+			<if test="isList != null  and isList != ''  ">#{isList},</if>
+			<if test="isQuery != null  and isQuery != ''  ">#{isQuery},</if>
+			<if test="queryType != null  and queryType != ''  ">#{queryType},</if>
+			<if test="isEdit != null  and isEdit != ''  ">#{isEdit},</if>
+			<if test="showType != null  and showType != ''  ">#{showType},</if>
+			<if test="options != null  and options != ''  ">#{options},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateGenTableColumn" parameterType="GenTableColumn">
+        update gen_table_column
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="tableName != null  and tableName != ''  ">table_name = #{tableName},</if>
+            <if test="columnName != null  and columnName != ''  ">column_name = #{columnName},</if>
+            <if test="columnSort != null  ">column_sort = #{columnSort},</if>
+            <if test="columnType != null  and columnType != ''  ">column_type = #{columnType},</if>
+            <if test="columnLabel != null  and columnLabel != ''  ">column_label = #{columnLabel},</if>
+            <if test="comments != null  and comments != ''  ">comments = #{comments},</if>
+            <if test="attrName != null  and attrName != ''  ">attr_name = #{attrName},</if>
+            <if test="attrType != null  and attrType != ''  ">attr_type = #{attrType},</if>
+            <if test="isPk != null  and isPk != ''  ">is_pk = #{isPk},</if>
+            <if test="isNull != null  and isNull != ''  ">is_null = #{isNull},</if>
+            <if test="isInsert != null  and isInsert != ''  ">is_insert = #{isInsert},</if>
+            <if test="isUpdate != null  and isUpdate != ''  ">is_update = #{isUpdate},</if>
+            <if test="isList != null  and isList != ''  ">is_list = #{isList},</if>
+            <if test="isQuery != null  and isQuery != ''  ">is_query = #{isQuery},</if>
+            <if test="queryType != null  and queryType != ''  ">query_type = #{queryType},</if>
+            <if test="isEdit != null  and isEdit != ''  ">is_edit = #{isEdit},</if>
+            <if test="showType != null  and showType != ''  ">show_type = #{showType},</if>
+            <if test="options != null  and options != ''  ">options = #{options},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteGenTableColumnById" parameterType="String">
+        delete from gen_table_column where id = #{id}
+    </delete>
+	
+    <delete id="deleteGenTableColumnByIds" parameterType="String">
+        delete from gen_table_column where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

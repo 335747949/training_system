@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            登陆名称：<input type="text" name="loginName"/>
+                        </li>
+
+                        <li>
+                            课程名称：<input type="text" name="trainCourseName"/>
+                        </li>
+
+                        <li>
+                            试卷名称：<input type="text" name="examPaperName"/>
+                        </li>
+
+                        <li>
+                            考试类型：<select name="type" th:with="type=${@dict.getType('exam_ination_type')}">
+                            <option value="">所有</option>
+                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                    th:value="${dict.dictValue}"></option>
+                        </select>
+                        </li>
+
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+        <!--<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="exam:examUserExamination:add">-->
+        <!--<i class="fa fa-plus"></i> 添加-->
+        <!--</a>-->
+        <!--<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="exam:examUserExamination:edit">-->
+        <!--<i class="fa fa-edit"></i> 修改-->
+        <!--</a>-->
+        <!--<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="exam:examUserExamination:remove">-->
+        <!--<i class="fa fa-remove"></i> 删除-->
+        <!--</a>-->
+        <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="exam:examUserExamination:export">
+        <i class="fa fa-download"></i> 导出
+        </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('exam:examUserExamination:edit')}]];
+    var view = [[${@permission.hasPermi('exam:examUserExamination:view')}]];
+    var removeFlag = [[${@permission.hasPermi('exam:examUserExamination:remove')}]];
+    var prefix = ctx + "exam/examUserExamination";
+    var type =[[${@dict.getType('exam_ination_type')}]];
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "我的考试记录",
+            search: false,
+            showExport: true,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'id',
+                    title: '考试记录编码',
+                    visible: false
+                },
+                {
+                    field: 'loginName',
+                    title: '登陆名称',
+                    sortable: true
+                },
+                {
+                    field: 'userName',
+                    title: '用户名称',
+                    sortable: true
+                },
+                {
+                    field: 'examExaminationVO.trainCourseName',
+                    title: '课程名称',
+                    sortable: true
+                },
+                {
+                    field: 'examPaperName',
+                    title: '试卷名称',
+                    sortable: true
+                },
+
+                {
+                    field: 'examExaminationVO.name',
+                    title: '考试名称',
+                    sortable: true
+                },
+                {
+                    field: 'examExaminationVO.type',
+                    title: '考试类型',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(type, item.examExaminationVO.type);
+                    }
+                },
+                {
+                    field: 'createDate',
+                    title: '开始时间',
+                    sortable: true
+                },
+                {
+                    field: 'updateDate',
+                    title: '结束时间',
+                    sortable: true
+                },{
+                    field: 'score',
+                    title: '考试得分',
+                    sortable: true
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        //&&row.examExaminationVO.type==2 //正式考试                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick=queryInfo(\'' + row.id + '\')><i class="fa fa-edit"></i>查看</a> ');
+                        actions.push('<a class="btn btn-success btn-xs ' + view + '" href="#" onclick=queryInfo(\'' + row.id + '\')><i class="fa fa-edit"></i>查看</a> ');
+                        if(row.examExaminationVO&&row.examExaminationVO.passMark&&row.score>=row.examExaminationVO.passMark){
+                            actions.push('<a class="btn btn-success btn-xs" href="#" onclick=" toCerificate(\'' + row.vipUserId + '\')"><i class="fa fa-edit"></i>'+'发证书</a> ');
+                        }
+                        return actions.join('');
+                    }
+                }
+            ]
+        };
+        $.table.init(options);
+    });
+    function toCerificate(id) {
+        var url = ctx + "vip/vipUserCertificate/add?vipUserId="+id;
+        $.modal.open("发证书", url);
+    }
+
+    function queryInfo(id) {
+        var url = ctx + "exam/examUserExamination/info/"+id;
+        createMenuItem(url, "考试详情");
+    }
+</script>
+</body>
+</html>
+

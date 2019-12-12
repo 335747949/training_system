@@ -1,0 +1,24 @@
+package ${package}.mapper;
+
+import ${package}.domain.${className};
+import java.util.List;
+import com.ruoyi.framework.web.base.MyMapper;
+
+/**
+ * ${tableComment} 数据层
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+public interface ${className}Mapper  extends MyMapper<${className}>
+{
+
+	/**
+     * 查询${tableComment}列表
+     * 
+     * @param ${classname} ${tableComment}信息
+     * @return ${tableComment}集合
+     */
+	public List<${className}> select${className}List(${className} ${classname});
+	
+}

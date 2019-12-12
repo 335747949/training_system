@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>training_system</artifactId>
+        <groupId>com.weiye</groupId>
+        <version>0.1</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>weiye-vip</artifactId>
+	
+	<description>
+	    会员管理
+	</description>
+	
+	<properties>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.weiye</groupId>
+            <artifactId>weiye-framework</artifactId>
+            <version>${weiye.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.5.19</version>
+        </dependency>
+    </dependencies>
+	
+</project>

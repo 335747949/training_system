@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="web/index::cmsHeader">
+</head>
+<body>
+
+<div class="fly-header layui-bg-black" th:replace="web/index::top">
+</div>
+
+<div class="layui-container fly-marginTop fly-user-main">
+    <div th:replace="web/user/set::userinfo">
+    </div>
+
+    <div class="fly-panel fly-panel-user" pad20>
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend>我的收藏</legend>
+        </fieldset>
+        <div class="layui-card"  th:each="item:${data}">
+            <div class="layui-card-header" >[[${itemStat.index+1}]]:<span
+                    th:text="${item.question.title}"></span>
+                <span th:if="${item.question.type=='1'}">(单选)</span>
+                <span th:if="${item.question.type=='2'}">(多选)</span>
+                <span th:if="${item.question.type=='3'}">(判断)</span>
+            </div>
+            <div class="layui-card-body" th:each="qitem:${item.question.questionItem}">
+                <input th:class="${item.question.id}+'useranswer'" th:if="${item.question.type=='2'}" type="checkbox"
+                       th:name="${item.question.id}" th:value="${qitem.number}">
+                <input th:class="${item.question.id}+'useranswer'" th:if="${item.question.type != '2'}" type="radio"
+                       th:name="${item.question.id}" th:value="${qitem.number}">
+                [[${qitem.number}]]:
+                <span th:text="${qitem.content}" onclick="checkbox(this)"></span>
+            </div>
+            <div class="layui-card-body" >
+                <button class="layui-btn layui-btn-warm"
+                        th:onclick="'analysis('+${item.question.id}+',\''+${item.question.answer}+'\')'">解析
+                </button>
+                <button class="layui-btn layui-btn-err" th:onclick="'del('+${item.question.id}+')'">删除</button>
+                </button>
+            </div>
+
+            <div class="layui-card-body"  hidden th:id="${item.question.id}+'answer'">
+                解析:正确答案[[${item.question.answer}]]<br>
+                [[${item.question.label}]]
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+<div class="fly-footer" th:replace="web/index::cmsBottom">
+</div>
+
+<script src="/web/res/layui/layui.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/c.php%3Fid%3D30088308' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<script type="text/javascript">
+    $(function(){
+        $("#collectquestion").addClass("layui-this")
+    })
+
+    function del(id) {
+        $.ajax({
+            type: 'post',
+            url: "/web/user/delcollectquestion",
+            data: {questionId:id},
+            success: function (result) {
+                if (result.code != web_status.SUCCESS) {
+                    layer.msg(result.msg, {icon: 2});
+                }else{
+                    window.location="/web/user/collectquestion.html"
+                }
+            }
+        });
+    }
+    var layer;
+    $(function () {
+        layui.use('layer', function () {
+            layer = layui.layer;
+        });
+
+    })
+
+
+    function analysis(id, answer) {
+        var userAnswer = ""
+        $("." + id + "useranswer:checked").each(function () {
+            userAnswer+=$(this).val()+","
+        });
+        if (userAnswer != (answer+",")) {
+            layer.msg('回答错误', {icon: 2});
+
+            $.ajax({
+                type: 'post',
+                url: "/web/user/adderrorquestion",
+                data: {questionId:id},
+                success: function (result) {
+                    if (result.code != web_status.SUCCESS) {
+                        layer.msg(result.msg, {icon: 2});
+                    }
+                }
+            });
+
+
+        }else{
+            layer.msg('回答正确', {icon: 1})
+        }
+        $("#" + id + "answer").show()
+    }
+
+    function checkbox(value) {
+        $(value).prev().prop("checked", !$(value).prev().prop("checked"));
+    }
+
+
+
+</script>
+
+
+</body>
+</html>
