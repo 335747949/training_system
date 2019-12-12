@@ -94,3 +94,12 @@ spring:
           token: #微信小程序消息服务器配置的token
           aesKey: #微信小程序消息服务器配置的EncodingAESKey
           msgDataFormat: JSON
+# openoffice配置
+jodconverter:
+  local:
+    enabled: true
+    #home:安装地址
+    #  office-home: C:/Program Files (x86)/OpenOffice 4  # linux
+    office-home: C:/Program Files (x86)/OpenOffice 4   # windows
+    max-tasks-per-process: 200
+    port-numbers: 8100

@@ -137,15 +137,6 @@ gen:
 
 # word 包含格式
 office:
-  suffix: .doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt
+  suffix: .doc,.docx,.ppt,.pptx,.xls,.xlsx
 
-# openoffice配置
-jodconverter:
-  local:
-    enabled: true
-  #home:安装地址
-   #  office-home: C:/Program Files (x86)/OpenOffice 4  # linux
-    office-home: C:/Program Files (x86)/OpenOffice 4   # windows
-    max-tasks-per-process: 10
-    port-numbers: 8100
 

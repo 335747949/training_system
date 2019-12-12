@@ -153,7 +153,7 @@ public class SysOssController extends BaseController
             Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
             String timesuffix = sdf.format(date);
-            String pdfFileName = null;
+            String pdfFileName;
             String name = fileName.substring(0,fileName.lastIndexOf( "." ));
             if(".doc".equals(suffix)){
                 pdfFileName = name + "_" + timesuffix + ".pdf";
@@ -186,6 +186,9 @@ public class SysOssController extends BaseController
             FileInputStream fis = new FileInputStream(pdflOutputFile);
             url = storage.uploadSuffix(fis, ".pdf" );
             originUrl = storage.uploadSuffix( file.getBytes(), suffix );
+            // 关闭文件流，删除pdf文件
+            fis.close();
+            FileUtils.deleteQuietly(pdflOutputFile);
             ossEntity.setFileName( fileName.substring(0,fileName.lastIndexOf( "." )) + ".pdf");
             ossEntity.setFileSuffix(".pdf");
         }else {
@@ -200,9 +203,6 @@ public class SysOssController extends BaseController
         ossEntity.setCreateTime(new Date());
         ossEntity.setService(storage.getService());
 
-        if (!ObjectUtils.isEmpty(pdflOutputFile) && pdflOutputFile.exists()){
-            FileUtils.deleteQuietly(pdflOutputFile);
-        }
         return toAjax(sysOssService.save(ossEntity)).put("data", ossEntity.getUrl());
     }
 
