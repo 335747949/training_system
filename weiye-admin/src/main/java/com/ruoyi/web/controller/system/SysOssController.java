@@ -147,11 +147,6 @@ public class SysOssController extends BaseController
         SysOss ossEntity = new SysOss();
         // 获取后缀,若为office文件，直接转换成pdf
         if (suffixNames.contains(suffix)){
-            // 暂不支持office07
-            if (suffix.endsWith("x")){
-                return AjaxResult.error("暂不支持07版office，请转化为较低版本");
-            }
-
             File f = new File(fileName);
             FileUtils.copyInputStreamToFile(file.getInputStream(),f);
             Date date = new Date();
