@@ -1,8 +1,3 @@
-# 开发环境配置
-server:
-  # 服务端口
-  port: 8080
- 
 # 日志配置
 logging:
   level:
@@ -12,6 +7,17 @@ logging:
 
 # 数据源配置
 spring:
+  application:
+    name: training_system
+  cloud:
+    nacos:
+      discovery:
+        #nacos配置中心集群地址，后面会接入配置中心
+        server-addr: 192.168.0.165:8848
+        #服务启动可加载本地缓存服务信息，避免注册中心发生分区场景，服务不可用
+        namingLoadCacheAtStart: true
+        #服务空间隔离
+  #          namespace: d8a7ce04-b1d4-478c-ae58-fe72b830d5be
   jmx:
     default-domain: exam
   datasource:
@@ -61,6 +67,24 @@ spring:
           config:
             multi-statement-allow: true
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+  security:
+    enabled: false
+endpoints:
+  metrics:
+    sensitive: false   #actuator的metrics接口是否需要安全保证
+    enabled: true
+  health:
+    sensitive: false  #actuator的health接口是否需要安全保证
+    enabled: true
+
 # 默认头像配置
   default:
     user:
@@ -94,3 +118,15 @@ spring:
           token: #微信小程序消息服务器配置的token
           aesKey: #微信小程序消息服务器配置的EncodingAESKey
           msgDataFormat: JSON
+
+
+# libreoffice配置
+jodconverter:
+  local:
+    enabled: true
+    #home:安装地址
+    #  office-home: C:/Program Files (x86)/OpenOffice 4  # linux
+    office-home: C:/Program Files/LibreOffice   # windows
+    max-tasks-per-process: 10
+    port-numbers: 8100
+
