@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-genTable-edit" th:object="${genTable}">
+            <input id="tableName" name="tableName" th:field="*{tableName}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">实体类名称：</label>
+				<div class="col-sm-8">
+					<input id="className" name="className" th:field="*{className}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">表说明：</label>
+				<div class="col-sm-8">
+					<input id="comments" name="comments" th:field="*{comments}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">关联父表的表名：</label>
+				<div class="col-sm-8">
+					<input id="parentTableName" name="parentTableName" th:field="*{parentTableName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">本表关联父表的外键名：</label>
+				<div class="col-sm-8">
+					<input id="parentTableFkName" name="parentTableFkName" th:field="*{parentTableFkName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">数据源名称：</label>
+				<div class="col-sm-8">
+					<input id="dataSourceName" name="dataSourceName" th:field="*{dataSourceName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">使用的模板：</label>
+				<div class="col-sm-8">
+					<input id="tplCategory" name="tplCategory" th:field="*{tplCategory}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">生成包路径：</label>
+				<div class="col-sm-8">
+					<input id="packageName" name="packageName" th:field="*{packageName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">生成模块名：</label>
+				<div class="col-sm-8">
+					<input id="moduleName" name="moduleName" th:field="*{moduleName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">生成子模块名：</label>
+				<div class="col-sm-8">
+					<input id="subModuleName" name="subModuleName" th:field="*{subModuleName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">生成功能名：</label>
+				<div class="col-sm-8">
+					<input id="functionName" name="functionName" th:field="*{functionName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">生成功能名（简写）：</label>
+				<div class="col-sm-8">
+					<input id="functionNameSimple" name="functionNameSimple" th:field="*{functionNameSimple}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">生成功能作者：</label>
+				<div class="col-sm-8">
+					<input id="functionAuthor" name="functionAuthor" th:field="*{functionAuthor}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">生成基础路径：</label>
+				<div class="col-sm-8">
+					<input id="genBaseDir" name="genBaseDir" th:field="*{genBaseDir}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">其它生成选项：</label>
+				<div class="col-sm-8">
+					<input id="options" name="options" th:field="*{options}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">创建者：</label>
+				<div class="col-sm-8">
+					<input id="createBy" name="createBy" th:field="*{createBy}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">创建时间：</label>
+				<div class="col-sm-8">
+					<input id="createDate" name="createDate" th:field="*{createDate}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">更新者：</label>
+				<div class="col-sm-8">
+					<input id="updateBy" name="updateBy" th:field="*{updateBy}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">更新时间：</label>
+				<div class="col-sm-8">
+					<input id="updateDate" name="updateDate" th:field="*{updateDate}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">备注信息：</label>
+				<div class="col-sm-8">
+					<input id="remarks" name="remarks" th:field="*{remarks}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "agile/genTable"
+		$("#form-genTable-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			}
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-genTable-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

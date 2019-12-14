@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.exam.mapper.ExamQuestionMapper">
+
+    <resultMap type="ExamQuestion" id="ExamQuestionResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="answer"    column="answer"    />
+        <result property="type"    column="type"    />
+        <result property="label"    column="label"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+
+    <resultMap type="ExamQuestionVO" id="ExamQuestionResultVO">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="answer"    column="answer"    />
+        <result property="type"    column="type"    />
+        <result property="label"    column="label"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="examUserCollectionQuestionId"    column="examUserCollectionQuestionId"    />
+
+        <collection property="questionItem" ofType="com.ruoyi.exam.domain.ExamQuestionItem">
+            <result property="id"    column="item_id"    />
+            <result property="content"    column="item_content"    />
+            <result property="number"    column="item_number"    />
+            <result property="examQuestionId"    column="item_exam_question_id"    />
+            <result property="createBy"    column="item_create_by"    />
+            <result property="createDate"    column="item_create_date"    />
+            <result property="updateBy"    column="item_update_by"    />
+            <result property="updateDate"    column="item_update_date"    />
+            <result property="remarks"    column="item_remarks"    />
+            <result property="delFlag"    column="item_del_flag"    />
+        </collection>
+    </resultMap>
+	
+	<sql id="selectExamQuestionVo">
+        select id, title, answer, type, label, category_id, create_by, create_date, update_by, update_date, remarks, del_flag from exam_question
+    </sql>
+	
+    <select id="selectExamQuestionList" parameterType="ExamQuestion" resultMap="ExamQuestionResult">
+        <include refid="selectExamQuestionVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and id = #{id}</if>
+             <if test="title != null  and title != '' "> and title = #{title}</if>
+             <if test="answer != null  and answer != '' "> and answer = #{answer}</if>
+             <if test="type != null  and type != '' "> and type = #{type}</if>
+             <if test="label != null  and label != '' "> and label = #{label}</if>
+             <if test="categoryId != null  and categoryId != '' "> and category_id = #{categoryId}</if>
+             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+             <if test="createDate != null "> and create_date = #{createDate}</if>
+             <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+             <if test="updateDate != null "> and update_date = #{updateDate}</if>
+             <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+             <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+         </where>
+    </select>
+
+    <select id="selectExamQuestionById"  resultMap="ExamQuestionResult">
+        <include refid="selectExamQuestionVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectListBycategory" parameterType="ExamQuestion" resultMap="ExamQuestionResult">
+        select id, title, answer, type, label, category_id, create_by, create_date, update_by, update_date, remarks, del_flag from exam_question
+        <where>
+            <if test="id != null  and id != '' "> and id = #{id}</if>
+            <if test="title != null  and title != '' "> and title like CONCAT('%',#{title},'%')</if>
+            <if test="answer != null  and answer != '' "> and answer = #{answer}</if>
+            <if test="type != null  and type != '' "> and type = #{type}</if>
+            <if test="label != null  and label != '' "> and label = #{label}</if>
+            <if test="categoryId != null  and categoryId != '' "> and (category_id in
+                (select id from exam_question_category  where FIND_IN_SET(#{categoryId},parent_ids))
+                or category_id = #{categoryId} )</if>
+            <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+            <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+            <if test="updateDate != null "> and update_date = #{updateDate}</if>
+            <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+            <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+        </where>
+    </select>
+
+    <select id="selectQuestionListByPracticeId" resultMap="ExamQuestionResultVO">
+          select eq.id, eq.title, eq.answer, eq.type, eq.label, eq.category_id,
+          eq.create_by, eq.create_date, eq.update_by, eq.update_date, eq.remarks, eq.del_flag ,
+          eqi.id AS item_id,
+          eqi.content AS item_content,
+          eqi.number AS item_number,
+          eqi.exam_question_id AS item_exam_question_id,
+          eqi.remarks AS item_remarks
+
+        <if test="vipUserId != null  and vipUserId != '' "> ,eucq.id as examUserCollectionQuestionId</if>
+
+          from exam_question eq
+
+        <if test="vipUserId != null  and vipUserId != '' ">
+            left join exam_user_collection_question eucq on eucq.exam_question_id=eq.id and eucq.vip_user_id=#{vipUserId}
+        </if>
+
+          INNER JOIN exam_practice_question epq ON eq.id = epq.exam_question_id
+          INNER JOIN exam_question_item eqi ON eqi.exam_question_id = eq.id
+          where epq.exam_practice_id = #{practiceId}
+          <if test="questionIds != null  and questionIds.size>0 ">
+             and  eq.id in
+              <foreach item="id" collection="questionIds" open="(" separator="," close=")">
+                    #{id}
+              </foreach>
+          </if>
+          order by epq.order_num,eqi.number
+    </select>
+    <select id="selectQuestionListByUserError" resultMap="ExamQuestionResultVO">
+        select eq.id, eq.title, eq.answer, eq.type, eq.label, eq.category_id,
+        eq.create_by, eq.create_date, eq.update_by, eq.update_date, eq.remarks, eq.del_flag ,
+        eqi.id AS item_id,
+        eqi.content AS item_content,
+        eqi.number AS item_number,
+        eqi.exam_question_id AS item_exam_question_id,
+        eqi.remarks AS item_remarks
+        from exam_user_error_question eueq
+        INNER JOIN exam_question eq  ON eq.id = eueq.exam_question_id
+        INNER JOIN exam_question_item eqi ON eqi.exam_question_id = eq.id
+        where eueq.vip_user_id = #{vipUserId}
+        order by eueq.update_date
+    </select>
+    <select id="selectQuestionListByUserCollection" resultMap="ExamQuestionResultVO">
+        select eq.id, eq.title, eq.answer, eq.type, eq.label, eq.category_id,
+        eq.create_by, eq.create_date, eq.update_by, eq.update_date, eq.remarks, eq.del_flag ,
+        eqi.id AS item_id,
+        eqi.content AS item_content,
+        eqi.number AS item_number,
+        eqi.exam_question_id AS item_exam_question_id,
+        eqi.remarks AS item_remarks
+        from exam_user_collection_question eueq
+        INNER JOIN exam_question eq  ON eq.id = eueq.exam_question_id
+        INNER JOIN exam_question_item eqi ON eqi.exam_question_id = eq.id
+        where eueq.vip_user_id = #{vipUserId}
+        order by eueq.update_date
+    </select>
+    <select id="selectQuestionDetail" resultMap="ExamQuestionResultVO">
+        select eq.id, eq.title, eq.answer, eq.type, eq.label, eq.category_id,
+          eq.create_by, eq.create_date, eq.update_by, eq.update_date, eq.remarks, eq.del_flag ,
+          eqi.id AS item_id,
+          eqi.content AS item_content,
+          eqi.number AS item_number,
+          eqi.exam_question_id AS item_exam_question_id,
+          eqi.remarks AS item_remarks
+          from exam_question eq
+          INNER JOIN exam_question_item eqi ON eqi.exam_question_id = eq.id
+          where eq.id = #{questionId}
+
+    </select>
+    <select id="selectQuestionListByPaperId" resultMap="ExamQuestionResultVO">
+          select eq.id, eq.title, eq.answer, eq.type, eq.label, eq.category_id,
+          eq.create_by, eq.create_date, eq.update_by, eq.update_date, eq.remarks, eq.del_flag ,
+          eqi.id AS item_id,
+          eqi.content AS item_content,
+          eqi.number AS item_number,
+          eqi.exam_question_id AS item_exam_question_id,
+          eqi.remarks AS item_remarks
+          from exam_question eq
+          INNER JOIN exam_paper_question epq ON eq.id = epq.exam_question_id
+          INNER JOIN exam_question_item eqi ON eqi.exam_question_id = eq.id
+          where epq.exam_paper_id = #{examPaperId}
+          order by epq.order_num,eqi.number
+    </select>
+
+    <select id="selectExamQuestionListForExcel" resultType="com.ruoyi.exam.domain.ExcelQuestion">
+        select eq.title,eq.type,eq.answer,eq.remarks,
+        MAX(if(eqi.number='A',eqi.content,'')) as answerA,
+        MAX(if(eqi.number='B',eqi.content,'')) as answerB
+        ,MAX(if(eqi.number='C',eqi.content,'')) as answerC,
+        MAX(if(eqi.number='D',eqi.content,'')) as answerD
+        from exam_question eq
+        INNER JOIN exam_question_item eqi ON eq.id=eqi.exam_question_id
+        <where>
+            <if test="categoryId != null  and categoryId != '' ">  eq.category_id in
+                (select id from exam_question_category  where FIND_IN_SET(#{categoryId},parent_ids))
+                or eq.category_id = #{categoryId} </if>
+        </where>
+        GROUP BY eq.id
+
+
+
+    </select>
+
+    <insert id="insertExamQuestion" keyProperty="id" useGeneratedKeys="true" parameterType="ExamQuestion">
+        insert into exam_question
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="title != null  and title != ''  ">title,</if>
+			<if test="answer != null  and answer != ''  ">answer,</if>
+			<if test="type != null  and type != ''  ">type,</if>
+			<if test="label != null  and label != ''  ">label,</if>
+			<if test="categoryId != null  and categoryId != ''  ">category_id,</if>
+			<if test="createBy != null  and createBy != ''  ">create_by,</if>
+			<if test="createDate != null  ">create_date,</if>
+			<if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+			<if test="updateDate != null  ">update_date,</if>
+			<if test="remarks != null  and remarks != ''  ">remarks,</if>
+			<if test="delFlag != null  and delFlag != ''  ">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="title != null  and title != ''  ">#{title},</if>
+			<if test="answer != null  and answer != ''  ">#{answer},</if>
+			<if test="type != null  and type != ''  ">#{type},</if>
+			<if test="label != null  and label != ''  ">#{label},</if>
+			<if test="categoryId != null  and categoryId != ''  ">#{categoryId},</if>
+			<if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+			<if test="createDate != null  ">#{createDate},</if>
+			<if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+			<if test="updateDate != null  ">#{updateDate},</if>
+			<if test="remarks != null  and remarks != ''  ">#{remarks},</if>
+			<if test="delFlag != null  and delFlag != ''  ">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateExamQuestion" parameterType="ExamQuestion">
+        update exam_question
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null  and title != ''  ">title = #{title},</if>
+            <if test="answer != null  and answer != ''  ">answer = #{answer},</if>
+            <if test="type != null  and type != ''  ">type = #{type},</if>
+            <if test="label != null  and label != ''  ">label = #{label},</if>
+            <if test="categoryId != null  and categoryId != ''  ">category_id = #{categoryId},</if>
+            <if test="createBy != null  and createBy != ''  ">create_by = #{createBy},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''  ">update_by = #{updateBy},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="remarks != null  and remarks != ''  ">remarks = #{remarks},</if>
+            <if test="delFlag != null  and delFlag != ''  ">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteExamQuestionById" parameterType="String">
+        delete from exam_question where id = #{id}
+    </delete>
+
+    <delete id="deleteExamQuestionByIds" parameterType="String">
+        delete from exam_question where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link rel="stylesheet" th:href="@{/web/res/layui/css/layui.css}">
+<body class="gray-bg">
+
+
+<div class="layui-container" style="width: 100%;padding: 0px">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md15">
+            <div class="fly-panel">
+
+                <div class="layui-col-md15" style="width: 100%">
+
+
+
+
+                    <div class="layui-col-md15">
+                        <div class="layui-col-md15" >
+                            <div class="layui-card question">
+                                <div class="layui-card-header" style="display: inline-block">
+                                    <span style="display: inline-block;font-size: 20px;color: #999999">得分:[[${data.score}]]</span>
+                                </div>
+
+                            </div>
+                            <div class="layui-card question" th:each="question:${data.examUserExaminationQuestions}">
+                                <div class="layui-card-header" style="display: inline-block">
+                                    <span style="display: inline-block">([[${questionStat.index+1}]])题目:[[${question.title}]]</span>
+                                </div>
+                                <div class="layui-card-body" th:if="${question.type=='1' or question.type=='2' or question.type=='3' }" th:each="item:${question.questionItems}">
+                                    <span >[[${item.number}]]:[[${item.content}]]</span>
+                                </div>
+                                <div class="layui-card-body">
+                                    答案:[[${question.answer}]]<br>
+                                    用户回答:[[${question.userAnswer}]]<br>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<div th:include="include :: footer"></div>
+
+<script th:inline="javascript">
+    var prefix = ctx + "exam/examUserExamination";
+    var nomarkScore = 0;
+    $(function () {
+        var total = 0;
+        $(".score").each(function () {
+            total += parseInt($(this).val());
+        })
+
+        nomarkScore = [[${totalScore}]] - total;
+    })
+
+    function marked() {
+        $(".active.menuTab .fa.fa-times-circle").click()
+        var examUserExaminationId = $("#examUserExaminationId").val();
+        var data = []
+        var flag = true
+        var str = '';
+        $(".question").each(function () {
+            if(flag){
+
+                 var score = $(this).find(".score").eq(0).val()
+                 var paperScore = $(this).find(".paperScore").eq(0).val()
+                 var title = $(this).find(".questionTitle").eq(0).val()
+                 var id = $(this).find(".questionId").eq(0).val()
+                 if(score == null ||score == ''||parseInt(score)>parseInt(paperScore)){
+                     str = title+":阅卷分数不能为空,并且不能大于该题总分"
+                     flag = false;
+                 }
+                 data.push({score: score, id: id})
+            }
+           
+        })
+
+        if(!flag){
+            layer.msg(str, {icon: 2})
+            return;
+        }
+
+        $.modal.confirm("确定完成阅卷吗？", function () {
+
+            $.ajax({
+                type: 'post',
+                url: prefix + "/marked/" + examUserExaminationId + "/" + nomarkScore,
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (result) {
+                    if (result.code != web_status.SUCCESS) {
+                        layer.msg(result.msg, {icon: 2})
+                    } else {
+                        $("#marked").prop('disabled', 'disabled');
+                    }
+                }
+
+            });
+        })
+
+
+    }
+
+</script>
+</body>
+</html>

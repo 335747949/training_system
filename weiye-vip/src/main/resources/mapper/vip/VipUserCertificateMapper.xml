@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.vip.mapper.VipUserCertificateMapper">
+    
+    <resultMap type="VipUserCertificateVO" id="VipUserCertificateResult">
+        <result property="id"    column="id"    />
+        <result property="vipUserId"    column="vip_user_id"    />
+        <result property="name"    column="name"    />
+        <result property="image"    column="image"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="user.userName"    column="user_name"    />
+    </resultMap>
+	
+	<sql id="selectVipUserCertificateVo">
+         vip_user_certificate.id, vip_user_certificate.vip_user_id, vip_user_certificate.name, vip_user_certificate.image, vip_user_certificate.start_date, vip_user_certificate.end_date,
+          vip_user_certificate.create_by, vip_user_certificate.create_date, vip_user_certificate.update_by, vip_user_certificate.update_date, vip_user_certificate.remarks, vip_user_certificate.del_flag    </sql>
+	
+    <select id="selectVipUserCertificateList" parameterType="VipUserCertificateVO" resultMap="VipUserCertificateResult">
+        select
+        <include refid="selectVipUserCertificateVo"/>
+        ,suser.user_name
+        from vip_user_certificate
+        left join sys_user suser on suser.user_id=vip_user_certificate.vip_user_id
+        <where>
+            <if test="user != null and user.userName != null and user.userName != ''">
+                and suser.user_name like CONCAT('%',#{user.userName},'%') </if>
+            <if test="id != null "> and vip_user_certificate.id = #{id}</if>
+             <if test="vipUserId != null "> and vip_user_certificate.vip_user_id = #{vipUserId}</if>
+             <if test="name != null  and name != '' "> and name like CONCAT('%',#{name},'%')</if>
+
+             <if test="startDate != null "> <![CDATA[ and vip_user_certificate.start_date >= #{startDate}]]></if>
+             <if test="endDate != null "> <![CDATA[ and vip_user_certificate.end_date <= #{endDate}]]></if>
+             <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+         </where>
+    </select>
+
+    <select id="selectVipUserCertificateListFroExcel"
+            resultType="com.ruoyi.vip.controller.ExcelVipUserCertification">
+        select
+
+        suser.user_name as userName,
+        vip_user_certificate.name as name,
+        vip_user_certificate.start_date as startDate,
+        vip_user_certificate.end_date as endDate
+        from vip_user_certificate
+        left join sys_user suser on suser.user_id=vip_user_certificate.vip_user_id
+        <where>
+            <if test="user != null and user.userName != null and user.userName != ''">
+                and suser.user_name like CONCAT('%',#{user.userName},'%') </if>
+            <if test="id != null "> and vip_user_certificate.id = #{id}</if>
+            <if test="vipUserId != null "> and vip_user_certificate.vip_user_id = #{vipUserId}</if>
+            <if test="name != null  and name != '' "> and name like CONCAT('%',#{name},'%')</if>
+
+            <if test="startDate != null "> <![CDATA[ and vip_user_certificate.start_date >= #{startDate}]]></if>
+            <if test="endDate != null "> <![CDATA[ and vip_user_certificate.end_date <= #{endDate}]]></if>
+            <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+        </where>
+
+
+    </select>
+
+
+</mapper>

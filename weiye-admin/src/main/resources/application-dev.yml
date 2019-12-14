@@ -1,0 +1,132 @@
+# 日志配置
+logging:
+  level:
+    com.ruoyi: debug
+    org.springframework: WARN
+    org.spring.springboot.dao: debug
+
+# 数据源配置
+spring:
+  application:
+    name: training_system
+  cloud:
+    nacos:
+      discovery:
+        #nacos配置中心集群地址，后面会接入配置中心
+        server-addr: 192.168.0.165:8848
+        #服务启动可加载本地缓存服务信息，避免注册中心发生分区场景，服务不可用
+        namingLoadCacheAtStart: true
+        #服务空间隔离
+  #          namespace: d8a7ce04-b1d4-478c-ae58-fe72b830d5be
+  jmx:
+    default-domain: exam
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    druid:
+      # 主库数据源
+      master:
+        url: jdbc:mysql://rm-m5ep4xwgv5279wemqno.mysql.rds.aliyuncs.com:3306/exam?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true
+        username: gm_exam
+        password: YEbG1RyyRfQiI
+      # 从库数据源
+      slave:
+        # 从数据源开关/默认关闭
+        enabled: false
+        url:
+        username:
+        password:
+      # 初始连接数
+      initial-size: 10
+      # 最大连接池数量
+      max-active: 100
+      # 最小连接池数量
+      min-idle: 10
+      # 配置获取连接等待超时的时间
+      max-wait: 60000
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /monitor/druid/*
+      filter:
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: false
+        wall:
+          config:
+            multi-statement-allow: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+  security:
+    enabled: false
+endpoints:
+  metrics:
+    sensitive: false   #actuator的metrics接口是否需要安全保证
+    enabled: true
+  health:
+    sensitive: false  #actuator的health接口是否需要安全保证
+    enabled: true
+
+# 默认头像配置
+  default:
+    user:
+      avatar: https://nrqiniu.tairanmall.com///20191205/92c6c9f0464747449022d8f0940214a8/png
+
+# 微信相关配置
+  wechat:
+    cp:
+      corpId:
+      appConfigs:
+        - agentId:
+          secret:
+          token:
+          aesKey:
+        - agentId:
+          secret:
+          token:
+          aesKey:
+    pay:
+      appId:   #wxd67baf702dad665c #微信公众号或者小程序等的appid #wx6b73f1161cbfd5f3
+      mchId:   #微信支付商户号 #1518466961
+      mchKey:   #微信支付商户密钥 #nantonghanhaixinxijishuyouxian88
+      subAppId: #服务商模式下的子商户公众账号ID
+      subMchId: #服务商模式下的子商户号
+      keyPath: # p12证书的位置，可以指定绝对路径，也可以指定类路径（以classpath:开头）
+      notifyUrl:
+    miniapp:
+      configs:
+        - appid:  #微信小程序的appid
+          secret:  #微信小程序的Secret
+          token: #微信小程序消息服务器配置的token
+          aesKey: #微信小程序消息服务器配置的EncodingAESKey
+          msgDataFormat: JSON
+
+
+# libreoffice配置
+jodconverter:
+  local:
+    enabled: true
+    #home:安装地址
+    #  office-home: C:/Program Files (x86)/OpenOffice 4  # linux
+    office-home: C:/Program Files/LibreOffice   # windows
+    max-tasks-per-process: 10
+    port-numbers: 8100
+

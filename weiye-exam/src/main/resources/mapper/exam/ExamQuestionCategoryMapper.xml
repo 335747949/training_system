@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.exam.mapper.ExamQuestionCategoryMapper">
+    
+    <resultMap type="ExamQuestionCategory" id="ExamQuestionCategoryResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="parentIds"    column="parent_ids"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="orderNum"    column="order_num"    />
+    </resultMap>
+	
+	<sql id="selectExamQuestionCategoryVo">
+        select id, name, parent_id, parent_ids, create_by, create_date, update_by, update_date, remarks, del_flag,order_num from exam_question_category
+    </sql>
+	
+    <select id="selectExamQuestionCategoryList" parameterType="ExamQuestionCategory" resultMap="ExamQuestionCategoryResult">
+        <include refid="selectExamQuestionCategoryVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and id = #{id}</if>
+             <if test="name != null  and name != '' "> and name like concat('%', #{name}, '%')</if>
+             <if test="parentId != null  and parentId != '' "> and parent_id = #{parentId}</if>
+             <if test="parentIds != null  and parentIds != '' "> and parent_ids = #{parentIds}</if>
+             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+             <if test="createDate != null "> and create_date = #{createDate}</if>
+             <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+             <if test="updateDate != null "> and update_date = #{updateDate}</if>
+             <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+             <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+         </where>
+    </select>
+
+    <select id="selectExamQuestionCategoryById" parameterType="String" resultMap="ExamQuestionCategoryResult">
+        <include refid="selectExamQuestionCategoryVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertExamQuestionCategory" parameterType="ExamQuestionCategory">
+        insert into exam_question_category
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="name != null  and name != ''  ">name,</if>
+			<if test="parentId != null  and parentId != ''  ">parent_id,</if>
+			<if test="parentIds != null  and parentIds != ''  ">parent_ids,</if>
+			<if test="createBy != null  and createBy != ''  ">create_by,</if>
+			<if test="createDate != null  ">create_date,</if>
+			<if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+			<if test="updateDate != null  ">update_date,</if>
+			<if test="remarks != null  and remarks != ''  ">remarks,</if>
+			<if test="delFlag != null  and delFlag != ''  ">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="name != null  and name != ''  ">#{name},</if>
+			<if test="parentId != null  and parentId != ''  ">#{parentId},</if>
+			<if test="parentIds != null  and parentIds != ''  ">#{parentIds},</if>
+			<if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+			<if test="createDate != null  ">#{createDate},</if>
+			<if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+			<if test="updateDate != null  ">#{updateDate},</if>
+			<if test="remarks != null  and remarks != ''  ">#{remarks},</if>
+			<if test="delFlag != null  and delFlag != ''  ">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateExamQuestionCategory" parameterType="ExamQuestionCategory">
+        update exam_question_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">name = #{name},</if>
+            <if test="parentId != null  and parentId != ''  ">parent_id = #{parentId},</if>
+            <if test="parentIds != null  and parentIds != ''  ">parent_ids = #{parentIds},</if>
+            <if test="createBy != null  and createBy != ''  ">create_by = #{createBy},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''  ">update_by = #{updateBy},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="remarks != null  and remarks != ''  ">remarks = #{remarks},</if>
+            <if test="delFlag != null  and delFlag != ''  ">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteExamQuestionCategoryById" parameterType="String">
+        delete from exam_question_category where id = #{id}
+    </delete>
+
+    <delete id="deleteExamQuestionCategoryByIds" parameterType="String">
+        delete from exam_question_category where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

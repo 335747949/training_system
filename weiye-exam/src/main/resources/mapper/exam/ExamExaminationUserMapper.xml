@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.exam.mapper.ExamExaminationUserMapper">
+    
+    <resultMap type="ExamExaminationUser" id="ExamExaminationUserResult">
+        <result property="id"    column="id"    />
+        <result property="examExaminationId"    column="exam_examination_id"    />
+        <result property="vipUserId"    column="vip_user_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+	
+	<sql id="selectExamExaminationUserVo">
+         id, exam_examination_id, vip_user_id, create_by, create_date, update_by, update_date, remarks, del_flag    </sql>
+	
+    <select id="selectExamExaminationUserList" parameterType="ExamExaminationUser" resultMap="ExamExaminationUserResult">
+        select
+        <include refid="selectExamExaminationUserVo"/>
+        from exam_examination_user
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="examExaminationId != null "> and exam_examination_id = #{examExaminationId}</if>
+             <if test="vipUserId != null "> and vip_user_id = #{vipUserId}</if>
+             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+             <if test="createDate != null "> and create_date = #{createDate}</if>
+             <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+             <if test="updateDate != null "> and update_date = #{updateDate}</if>
+             <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+             <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+         </where>
+    </select>
+
+    <select id="selectExamExaminationResultByExamId"
+            resultType="com.ruoyi.exam.domain.ExamExaminationResultVo">
+        SELECT
+            eue.id AS userExamId,
+            su.user_id AS vipUserId,
+            su.user_name AS vipUserName,
+            su.phonenumber AS vipUserMobile,
+            MAX( eue.score ) AS score,
+            eue.create_date AS finshTime,
+            ep.id AS examPaperId,
+            ep.`name` AS examPaperName,
+            ee.`name` AS examName,
+            ep.type AS examPaperType,
+            ee.pass_mark AS passScore,
+            sd.dept_name AS deptName
+        FROM
+            exam_user_examination eue
+            LEFT JOIN exam_examination ee ON eue.exam_examination_id = ee.id
+            LEFT JOIN exam_paper ep ON eue.exam_paper_id = ep.id
+            LEFT JOIN sys_user su ON eue.vip_user_id = su.user_id
+            LEFT JOIN sys_dept sd ON su.dept_id = sd.id
+        WHERE
+            eue.del_flag = 0
+            AND ee.del_flag = 0
+            AND ep.del_flag = 0
+            AND su.del_flag = 0
+            AND eue.exam_examination_id = #{examId}
+        GROUP BY
+            eue.vip_user_id
+        ORDER BY
+            eue.create_date
+    </select>
+
+
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>training_system</artifactId>
+        <groupId>com.weiye</groupId>
+        <version>0.1</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>weiye-quartz</artifactId>
+	
+	<description>
+	    quartz定时任务
+	</description>
+
+    <dependencies>
+    
+		<!-- 定时任务 -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>com.mchange</groupId>
+					<artifactId>c3p0</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- 通用工具-->
+        <dependency>
+            <groupId>com.weiye</groupId>
+            <artifactId>weiye-common</artifactId>
+            <version>${weiye.version}</version>
+        </dependency>
+        <!-- 通用框架-->
+        <dependency>
+            <groupId>com.weiye</groupId>
+            <artifactId>weiye-framework</artifactId>
+            <version>${weiye.version}</version>
+        </dependency>
+    </dependencies>
+	
+</project>

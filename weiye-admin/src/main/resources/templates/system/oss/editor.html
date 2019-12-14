@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<form class="form-horizontal m" id="form-oss-edit">
+			<input name="id"   type="hidden"    />
+			<div id="editor">
+		        <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
+		    </div>
+		</form>
+	</div>
+	<div th:include="include::footer"></div>
+	<script th:src="@{/ajax/libs/editor/wangEditor.js}"></script>
+	<script type="text/javascript">
+		var prefix = ctx + "system/oss";
+	
+		
+	    
+	   	var E = window.wangEditor
+        var editor = new E('#editor')
+        // 或者 var editor = new E( document.getElementById('editor') )
+        editor.customConfig.uploadImgServer = prefix+'/upload'
+        editor.create()
+	    
+		function submitHandler() {
+	         var content = editor.txt.html();//获取编辑器内容
+             alert(content);
+	    }
+	    
+	    
+	</script>
+</body>
+</html>
