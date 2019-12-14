@@ -56,11 +56,6 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			<dependency>
-				<groupId>de.codecentric</groupId>
-				<artifactId>spring-boot-admin-starter-client</artifactId>
-				<version>2.1.5</version>
-			</dependency>
         </dependencies>
     </dependencyManagement>
 

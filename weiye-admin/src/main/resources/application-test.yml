@@ -1,17 +1,23 @@
-# 测试环境配置
-server:
-  # 服务端口
-  port: 8080
-
 # 日志配置
 logging:
   level:
-    com.ruoyi: debug
+    com.ruoyi: WARN
     org.springframework: WARN
     org.spring.springboot.dao: debug
 
 # 数据源配置
 spring:
+  application:
+    name: training_system
+  cloud:
+    nacos:
+      discovery:
+        #nacos配置中心集群地址，后面会接入配置中心
+        server-addr: 47.104.219.249:8880,47.104.219.249:8881,47.104.219.249:8882
+        #服务启动可加载本地缓存服务信息，避免注册中心发生分区场景，服务不可用
+        namingLoadCacheAtStart: true
+        #服务空间隔离
+#        namespace: d8a7ce04-b1d4-478c-ae58-fe72b830d5be
   jmx:
     default-domain: exam
   datasource:
@@ -60,7 +66,23 @@ spring:
         wall:
           config:
             multi-statement-allow: true
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+  security:
+    enabled: false
+endpoints:
+  metrics:
+    sensitive: false   #actuator的metrics接口是否需要安全保证
+    enabled: true
+  health:
+    sensitive: false  #actuator的health接口是否需要安全保证
+    enabled: true
 
 default:
   user:
@@ -96,7 +118,7 @@ default:
           msgDataFormat: JSON
 
 
-# openoffice配置
+# libreoffice配置
 jodconverter:
   local:
     enabled: true

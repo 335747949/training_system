@@ -25,13 +25,6 @@ server:
     max-threads: 800
     # Tomcat启动初始化的线程数，默认值25
     min-spare-threads: 30
- 
-# 日志配置
-logging:
-  level:
-    com.ruoyi: debug
-    org.springframework: WARN
-    org.spring.springboot.dao: debug
 
 # 用户配置
 user:
@@ -63,10 +56,10 @@ spring:
        max-request-size:  30000MB
        location: ${user.dir}/multipartUpload
   # 服务模块
-  devtools:
-    restart:
-      # 热部署开关
-      enabled: true
+#  devtools:
+#    restart:
+#      # 热部署开关
+#      enabled: true
 
 # MyBatis
 mybatis:
