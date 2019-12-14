@@ -12,6 +12,17 @@ logging:
 
 # 数据源配置
 spring:
+  application:
+    name: training_system
+    cloud:
+      nacos:
+        discovery:
+          #nacos配置中心集群地址，后面会接入配置中心
+          server-addr: 47.104.219.249:8880,47.104.219.249:8881,47.104.219.249:8882
+          #服务启动可加载本地缓存服务信息，避免注册中心发生分区场景，服务不可用
+          namingLoadCacheAtStart: true
+          #服务空间隔离
+          namespace: d8a7ce04-b1d4-478c-ae58-fe72b830d5be
   jmx:
     default-domain: exam
   datasource:
@@ -61,6 +72,24 @@ spring:
           config:
             multi-statement-allow: true
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+  security:
+    enabled: false
+endpoints:
+  metrics:
+    sensitive: false   #actuator的metrics接口是否需要安全保证
+    enabled: true
+  health:
+    sensitive: false  #actuator的health接口是否需要安全保证
+    enabled: true
+
 # 默认头像配置
   default:
     user:
@@ -103,3 +132,4 @@ jodconverter:
     office-home: C:/Program Files/LibreOffice   # windows
     max-tasks-per-process: 10
     port-numbers: 8100
+

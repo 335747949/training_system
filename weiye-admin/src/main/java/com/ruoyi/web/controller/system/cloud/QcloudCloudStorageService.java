@@ -1,11 +1,11 @@
 package com.ruoyi.web.controller.system.cloud;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.request.UploadFileRequest;
 import com.qcloud.cos.sign.Credentials;
 import com.ruoyi.framework.web.exception.user.OssException;
-import net.sf.json.JSONObject;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -47,8 +47,8 @@ public class QcloudCloudStorageService extends CloudStorageService
         // 上传到腾讯云
         UploadFileRequest request = new UploadFileRequest(config.getQcloudBucketName(), path, data);
         String response = client.uploadFile(request);
-        JSONObject jsonObject = JSONObject.fromObject(response);
-        if (jsonObject.getInt("code") != 0)
+        JSONObject jsonObject = JSONObject.parseObject(response);
+        if (jsonObject.getIntValue("code") != 0)
         {
             throw new OssException("文件上传失败，" + jsonObject.getString("message"));
         }
