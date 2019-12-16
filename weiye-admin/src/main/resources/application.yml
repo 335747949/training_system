@@ -14,7 +14,7 @@ ruoyi:
 # 开发环境配置
 server:
   # 服务端口
-  port: 8080
+  port: {port:8080}
   servlet:
     # 项目contextPath
     context-path: /
