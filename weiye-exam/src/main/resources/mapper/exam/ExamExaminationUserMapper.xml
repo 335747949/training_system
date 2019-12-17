@@ -56,7 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             LEFT JOIN exam_examination ee ON eue.exam_examination_id = ee.id
             LEFT JOIN exam_paper ep ON eue.exam_paper_id = ep.id
             LEFT JOIN sys_user su ON eue.vip_user_id = su.user_id
-            LEFT JOIN sys_dept sd ON su.dept_id = sd.id
+            LEFT JOIN sys_dept sd ON su.dept_id = sd.dept_id
         WHERE
             eue.del_flag = 0
             AND ee.del_flag = 0
