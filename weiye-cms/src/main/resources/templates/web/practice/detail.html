@@ -33,12 +33,12 @@
                         </div>
                         <div class="layui-card-body">
                             <button class="layui-btn layui-btn-warm"
-                                    th:onclick="'confirm('+${question.id}+',\''+${question.answer}+'\')'">确认
+                                    th:onclick="confirm([[${question.id}]],[[${question.answer}]])">确认
                             </button>
                             <button class="layui-btn layui-btn-warm" style="display:none;" th:id="${question.id} + 'analysis'"
-                                    th:onclick="'analysis('+${question.id}+',\''+${question.answer}+'\')'">解析
+                                    th:onclick="analysis([[${question.id}]],[[${question.answer}]])">解析
                             </button>
-                            <button class="layui-btn layui-btn-warm" th:onclick="'shoucang('+${question.id}+')'">收藏
+                            <button class="layui-btn layui-btn-warm" th:onclick="shoucang([[${question.id}]],[[${question.answer}]])">收藏
                             </button>
                         </div>
 

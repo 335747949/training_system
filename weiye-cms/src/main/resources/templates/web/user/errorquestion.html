@@ -34,9 +34,9 @@
             </div>
             <div class="layui-card-body" >
                 <button class="layui-btn layui-btn-warm"
-                        th:onclick="'analysis('+${item.question.id}+',\''+${item.question.answer}+'\')'">解析
+                        th:onclick="analysis([[${item.question.id}]],[[${item.question.answer}]])">解析
                 </button>
-                <button class="layui-btn layui-btn-err" th:onclick="'del('+${item.question.id}+')'">删除</button>
+                <button class="layui-btn layui-btn-err" th:onclick="del([[${item.question.id}]])">删除</button>
                 </button>
             </div>
 

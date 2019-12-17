@@ -56,10 +56,10 @@ spring:
        max-request-size:  30000MB
        location: ${user.dir}/multipartUpload
   # 服务模块
-#  devtools:
-#    restart:
-#      # 热部署开关
-#      enabled: true
+  devtools:
+    restart:
+      # 热部署开关
+      enabled: true
 
 # MyBatis
 mybatis:
