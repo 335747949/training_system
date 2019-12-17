@@ -56,10 +56,10 @@
                     </div>
                 </li>
                  <li class="active">
-                    <a href="index.html"><i class="fa fa-home"></i> <span class="nav-label">主页</span> <span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li class="active"><a class="menuItem" th:href="@{/system/main}">快捷链接</a></li>
-                    </ul>
+                     <a class="menuItem" th:href="@{/system/main}"><i class="fa fa-home"></i> <span class="nav-label">主页</span> <span class="fa arrow"></span></a>
+<!--                    <ul class="nav nav-second-level">-->
+<!--                        <li class="active"><a class="menuItem" th:href="@{/system/main}">快捷链接</a></li>-->
+<!--                    </ul>-->
                 </li>
                 <li th:each="menu : ${menus}">
                 	<a href="#">

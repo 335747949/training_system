@@ -1,5 +1,6 @@
 package com.ruoyi.exam.domain;
 
+import com.ruoyi.common.annotation.Excel;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.base.BaseEntity;
@@ -17,35 +18,41 @@ public class ExamPractice
 {
 private static final long serialVersionUID = 1L;
 
-        /** 练习ID */
-		@Id
+    /** 练习ID */
+    @Id
     private Integer id;
-	        /** 部门ID */
-	    private Integer deptId;
-	        /** 练习名称 */
-	    private String name;
-        /** 课程代码 */
-        private Integer trainCourseId;
-        /** 是否控制开始结束时间（0-不控制,1-控制） */
-	    private String enableControlTime;
-	        /** 开始时间 */
-	    private Date startTime;
-	        /** 结束时间 */
-	    private Date endTime;
-	        /** 练习对象（1-所有人，2-限定对象） */
-	    private String practiceUserLimit;
-	        /** 创建者 */
-	    private String createBy;
-	        /** 创建时间 */
-	    private Date createDate;
-	        /** 更新者 */
-	    private String updateBy;
-	        /** 更新时间 */
-	    private Date updateDate;
-	        /** 考试说明 */
-	    private String remarks;
-	        /** 删除标记 */
-	    private String delFlag;
+    /** 部门ID */
+    private Integer deptId;
+    /** 练习名称 */
+    @Excel(name = "练习名称",order = 2)
+    private String name;
+    /** 课程代码 */
+    private Integer trainCourseId;
+    /** 是否控制开始结束时间（0-不控制,1-控制） */
+    private String enableControlTime;
+    /** 开始时间 */
+    @Excel(name = "开始时间",order = 3, dateFormat = "yyyy-MM-dd hh:mm:ss")
+    private Date startTime;
+    /** 结束时间 */
+    @Excel(name = "结束时间",order = 4, dateFormat = "yyyy-MM-dd hh:mm:ss")
+    private Date endTime;
+    /** 练习对象（1-所有人，2-限定对象） */
+    @Excel(name = "练习对象",order = 5, readConverterExp = "1=所有人,2=限定对象")
+    private String practiceUserLimit;
+    /** 创建者 */
+    @Excel(name = "创建者",order = 6)
+    private String createBy;
+    /** 创建时间 */
+    @Excel(name = "创建时间",order = 7, dateFormat = "yyyy-MM-dd hh:mm:ss")
+    private Date createDate;
+    /** 更新者 */
+    private String updateBy;
+    /** 更新时间 */
+    private Date updateDate;
+    /** 考试说明 */
+    private String remarks;
+    /** 删除标记 */
+    private String delFlag;
 
 
     public Integer getTrainCourseId() {

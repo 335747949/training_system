@@ -2,6 +2,7 @@ package com.ruoyi.cms.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.exam.domain.ExamPracticeVO;
 import com.ruoyi.exam.domain.ExamQuestionVO;
 import com.ruoyi.exam.service.IExamPracticeService;
@@ -42,7 +43,7 @@ public class CmsPracticeController {
     @GetMapping()
     public String list(ModelMap map) {
         SysUser user = ShiroUtils.getSysUser();
-        if (ObjectUtils.isEmpty(user)){
+        if (ObjectUtils.isEmpty(user) || !UserConstants.USER_VIP.equals(user.getUserType())){
             return "web/user/login";
         }
         map.put( "user", user);
@@ -58,7 +59,7 @@ public class CmsPracticeController {
     @ResponseBody
     public AjaxResult list(ExamPracticeVO examPractice) {
         SysUser user = ShiroUtils.getSysUser();
-        if (ObjectUtils.isEmpty(user)){
+        if (ObjectUtils.isEmpty(user) || !UserConstants.USER_VIP.equals(user.getUserType())){
             AjaxResult fail = AjaxResult.error("请登录");
             return fail;
         }
@@ -74,7 +75,7 @@ public class CmsPracticeController {
     @GetMapping()
     public String start(@PathVariable String id, ModelMap mmap) {
         SysUser user = ShiroUtils.getSysUser();
-        if (ObjectUtils.isEmpty(user)){
+        if (ObjectUtils.isEmpty(user) || !UserConstants.USER_VIP.equals(user.getUserType())){
             return "web/user/login";
         }
         HashMap<String, Object> map = new HashMap<>();

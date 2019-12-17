@@ -164,13 +164,13 @@
       <img th:src="@{/weiye.png}" alt="伟业医药" width="45px" height="45px">
     </a>
     <ul class="layui-nav fly-nav layui-hide-xs">
-      <li class="layui-nav-item layui-this" th:if="${session.user}!=null">
+      <li class="layui-nav-item layui-this" th:if="${session.user==null or session.userType!='10'}">
         <a th:href="@{/web}"><i class="iconfont icon-jiaoliu"></i>课程</a>
       </li>
-      <li class="layui-nav-item" th:if="${session.user}!=null">
+      <li class="layui-nav-item" th:if="${session.user==null or session.userType!='10'}">
         <a th:href="@{/web/practice}"><i class="iconfont icon-iconmingxinganli"></i>练习</a>
       </li>
-      <li class="layui-nav-item"  th:if="${session.user}!=null">
+      <li class="layui-nav-item"  th:if="${session.user==null or session.userType!='10'}">
         <a th:href="@{/web/examination}"><i class="iconfont icon-ui"></i>考试</a>
       </li>
     </ul>
@@ -178,7 +178,7 @@
     <ul class="layui-nav fly-nav-user">
 
       <!-- 未登入的状态 -->
-      <li th:if="${session.user}==null" class="layui-nav-item">
+      <li th:if="${session.user==null or session.userType!='10'}" class="layui-nav-item">
         <a class="iconfont icon-touxiang layui-hide-xs" th:href="@{/web/user/login.html}"></a>
       </li>
 <!--      <li th:if="${session.user}==null" class="layui-nav-item">-->
@@ -188,7 +188,7 @@
 <!--        <a th:href="@{/web/user/reg.html}">注册</a>-->
 <!--      </li>-->
       <!-- 登入后的状态 -->
-      <li th:if="${session.user}!=null" class="layui-nav-item">
+      <li th:if="${session.user==null and session.userType=='10'}" class="layui-nav-item">
         <a class="iconfont icon-touxiang layui-hide-xs" th:href="@{/web/user/set.html}">
 <!--        </a>    <a class="fly-nav-avatar" href="javascript:;">-->
 <!--          <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>-->

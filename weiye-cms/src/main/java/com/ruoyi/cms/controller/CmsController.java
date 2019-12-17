@@ -3,6 +3,8 @@ package com.ruoyi.cms.controller;
 import cn.hutool.core.util.StrUtil;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.config.Global;
+import com.ruoyi.common.constant.Constants;
+import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.exam.domain.ExamPractice;
 import com.ruoyi.exam.service.IExamPracticeService;
@@ -77,7 +79,7 @@ public class CmsController  extends BaseController {
     @GetMapping()
     public String index(String parentIds, ModelMap map) {
         SysUser user = ShiroUtils.getSysUser();
-        if (ObjectUtils.isEmpty(user)){
+        if (ObjectUtils.isEmpty(user) || !UserConstants.USER_VIP.equals(user.getUserType())){
             return prefix + "/user/login";
         }
         TrainCourseVO trainCourseVO = new TrainCourseVO();
@@ -125,7 +127,7 @@ public class CmsController  extends BaseController {
     @GetMapping()
     public String courseInfo(@PathVariable("id") Integer id, ModelMap map) {
         SysUser user = ShiroUtils.getSysUser();
-        if (ObjectUtils.isEmpty(user)){
+        if (ObjectUtils.isEmpty(user) || !UserConstants.USER_VIP.equals(user.getUserType())){
             return prefix + "/user/login";
         }
         TrainCourse trainCourse = trainCourseService.selectById( id );
@@ -154,7 +156,7 @@ public class CmsController  extends BaseController {
     @GetMapping()
     public String courseSections(@PathVariable("id") Integer id, ModelMap map) {
         SysUser user = ShiroUtils.getSysUser();
-        if (ObjectUtils.isEmpty(user)){
+        if (ObjectUtils.isEmpty(user) || !UserConstants.USER_VIP.equals(user.getUserType())){
             return prefix + "/user/login";
         }
             TrainCourseSection tcs = trainCourseSectionService.selectById( id );

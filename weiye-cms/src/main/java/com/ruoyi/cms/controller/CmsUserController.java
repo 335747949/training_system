@@ -184,7 +184,7 @@ public class CmsUserController {
     @RequestMapping("/user/collectquestion.html")
     public String collectQuestion(ModelMap map) {
         SysUser user = ShiroUtils.getSysUser();
-        if (ObjectUtils.isEmpty(user)){
+        if (ObjectUtils.isEmpty(user) || !UserConstants.USER_VIP.equals(user.getUserType())){
             return prefix + "/user/login";
         }
         ExamUserCollectionQuestionVO examUserCollectionQuestion = new ExamUserCollectionQuestionVO();
@@ -248,7 +248,7 @@ public class CmsUserController {
     @RequestMapping("/user/userexamination.html")
     public String userExamquestion(ModelMap map) {
         SysUser user = ShiroUtils.getSysUser();
-        if (ObjectUtils.isEmpty(user)){
+        if (ObjectUtils.isEmpty(user) || !UserConstants.USER_VIP.equals(user.getUserType())){
             return prefix + "/user/login";
         }
         map.put("user", user);
@@ -284,7 +284,7 @@ public class CmsUserController {
     @RequestMapping("/user/myuserexamination/detail/{id}")
     public String userExamquestion(@PathVariable Integer id, ModelMap map) {
         SysUser user = ShiroUtils.getSysUser();
-        if (ObjectUtils.isEmpty(user)){
+        if (ObjectUtils.isEmpty(user) || !UserConstants.USER_VIP.equals(user.getUserType())){
             return prefix + "/user/login";
         }
         map.put("user", user);
@@ -321,7 +321,7 @@ public class CmsUserController {
     @RequestMapping("/user/orders.html")
     public String orders(ModelMap map) {
         SysUser user = ShiroUtils.getSysUser();
-        if (ObjectUtils.isEmpty(user)){
+        if (ObjectUtils.isEmpty(user) || !UserConstants.USER_VIP.equals(user.getUserType())){
             return prefix + "/user/login";
         }
         map.put("user", user);
@@ -365,7 +365,7 @@ public class CmsUserController {
     @RequestMapping("/user/usercertificate.html")
     public String userCertificate(ModelMap map) {
         SysUser user = ShiroUtils.getSysUser();
-        if (ObjectUtils.isEmpty(user)){
+        if (ObjectUtils.isEmpty(user) || !UserConstants.USER_VIP.equals(user.getUserType())){
             return prefix + "/user/login";
         }
         map.put("user", user);

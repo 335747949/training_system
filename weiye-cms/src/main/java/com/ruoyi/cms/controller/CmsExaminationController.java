@@ -3,6 +3,7 @@ package com.ruoyi.cms.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.*;
 import com.ruoyi.exam.service.impl.ExamExaminationServiceImpl;
@@ -62,7 +63,7 @@ public class CmsExaminationController {
     @GetMapping()
     public String list(ModelMap map) {
         SysUser user = ShiroUtils.getSysUser();
-        if (ObjectUtils.isEmpty(user)){
+        if (ObjectUtils.isEmpty(user) || !UserConstants.USER_VIP.equals(user.getUserType())){
             return "web/user/login";
         }
         map.put( "user", user);
@@ -71,7 +72,7 @@ public class CmsExaminationController {
 
     /**
      * 考试列表
-     * @param map
+     * @param examExamination
      * @return
      */
     @RequestMapping("/examination/list")
@@ -79,7 +80,7 @@ public class CmsExaminationController {
     @ResponseBody
     public AjaxResult list(ExamExamination examExamination) {
         SysUser sysUser = ShiroUtils.getSysUser();
-        if (ObjectUtils.isEmpty(sysUser)){
+        if (ObjectUtils.isEmpty(sysUser) || !UserConstants.USER_VIP.equals(sysUser.getUserType())){
             AjaxResult fail = AjaxResult.error("请登录");
             return fail;
         }
@@ -95,7 +96,7 @@ public class CmsExaminationController {
 
     /**
      * 报名列表
-     * @param map
+     * @param examExamination
      * @return
      */
     @RequestMapping("/examination/signuplist")
@@ -103,7 +104,7 @@ public class CmsExaminationController {
     @ResponseBody
     public AjaxResult signupist(ExamExamination examExamination) {
         SysUser sysUser = ShiroUtils.getSysUser();
-        if (ObjectUtils.isEmpty(sysUser)){
+        if (ObjectUtils.isEmpty(sysUser) || !UserConstants.USER_VIP.equals(sysUser.getUserType())){
             AjaxResult fail = AjaxResult.error("请登录");
             return fail;
         }
@@ -122,7 +123,7 @@ public class CmsExaminationController {
     @ResponseBody
     public AjaxResult signupist(@PathVariable Integer id) {
         SysUser sysUser = ShiroUtils.getSysUser();
-        if (ObjectUtils.isEmpty(sysUser)){
+        if (ObjectUtils.isEmpty(sysUser) || !UserConstants.USER_VIP.equals(sysUser.getUserType())){
             AjaxResult fail = AjaxResult.error("请登录");
             return fail;
         }
@@ -151,7 +152,7 @@ public class CmsExaminationController {
     @GetMapping()
     public String start(@PathVariable String id, ModelMap mmap) {
         SysUser user = ShiroUtils.getSysUser();
-        if (ObjectUtils.isEmpty(user)){
+        if (ObjectUtils.isEmpty(user) || !UserConstants.USER_VIP.equals(user.getUserType())){
             return "web/user/login";
         }
 
@@ -190,7 +191,7 @@ public class CmsExaminationController {
     public AjaxResult finish(@RequestBody List<ExamUserExaminationQuestion> examUserExaminationQuestion,
                              @PathVariable Integer examUserExaminationId, @PathVariable Integer examinationId, @PathVariable Integer paperId,ModelMap map) {
         SysUser sysUser = ShiroUtils.getSysUser();
-        if (ObjectUtils.isEmpty(sysUser)){
+        if (ObjectUtils.isEmpty(sysUser) || !UserConstants.USER_VIP.equals(sysUser.getUserType())){
             AjaxResult fail = AjaxResult.error("请登录");
             return fail;
         }

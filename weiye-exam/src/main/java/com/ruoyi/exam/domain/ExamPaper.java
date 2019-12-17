@@ -1,5 +1,6 @@
 package com.ruoyi.exam.domain;
 
+import com.ruoyi.common.annotation.Excel;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.base.BaseEntity;
@@ -16,35 +17,42 @@ public class ExamPaper
 {
 private static final long serialVersionUID = 1L;
 
-        /** 试卷ID */
-		@Id
+    /** 试卷ID */
+    @Id
     private Integer id;
-	        /** 部门ID */
-	    private Integer deptId;
-	        /** 试卷分类 */
-	    private Integer examPaperCategoryId;
-	        /** 名称 */
-	    private String name;
-	        /** 试卷类型（1-固定试卷；2-随机试卷） */
-	    private String type;
-	        /** 总分数 */
-	    private Integer score;
-	        /** 试题数量 */
-	    private Integer questionNumber;
-	        /** 显示顺序 */
-	    private Integer orderNum;
-	        /** 创建者 */
-	    private String createBy;
-	        /** 创建时间 */
-	    private Date createDate;
-	        /** 更新者 */
-	    private String updateBy;
-	        /** 更新时间 */
-	    private Date updateDate;
-	        /** 备注信息 */
-	    private String remarks;
-	        /** 删除标记 */
-	    private String delFlag;
+    /** 部门ID */
+    private Integer deptId;
+    /** 试卷分类 */
+    private Integer examPaperCategoryId;
+    /** 名称 */
+    @Excel (name = "试卷名称",order = 2)
+    private String name;
+    /** 试卷类型（1-固定试卷；2-随机试卷） */
+    @Excel(name = "试卷类型", readConverterExp = "1=固定试卷,2=随机试卷",order = 3)
+    private String type;
+    /** 总分数 */
+    @Excel(name = "总分数",order = 4)
+    private Integer score;
+    /** 试题数量 */
+    @Excel(name = "试题数量",order = 5)
+    private Integer questionNumber;
+    /** 显示顺序 */
+    private Integer orderNum;
+    /** 创建者 */
+    @Excel(name = "创建者",order = 6)
+    private String createBy;
+    /** 创建时间 */
+    @Excel(name = "创建时间",order = 7,dateFormat = "yyyy-MM-dd hh:mm:ss")
+    private Date createDate;
+    /** 更新者 */
+    private String updateBy;
+    /** 更新时间 */
+    private Date updateDate;
+    /** 备注信息 */
+    @Excel(name = "备注信息",order = 8)
+    private String remarks;
+    /** 删除标记 */
+    private String delFlag;
 	
 	    /** 设置试卷ID */
     public void setId(Integer id)
