@@ -133,7 +133,7 @@ public class ExamExaminationController extends BaseController
 			examExamination.setStartTime(null);
 			examExamination.setEndTime(null);
 		}
-		return toAjax(examExaminationService.updateSelectiveById(examExamination));
+		return toAjax(examExaminationService.update(examExamination));
 	}
 	
 	/**

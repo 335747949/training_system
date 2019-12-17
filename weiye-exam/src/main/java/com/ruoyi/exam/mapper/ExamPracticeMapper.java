@@ -29,4 +29,6 @@ public interface ExamPracticeMapper  extends MyMapper<ExamPractice>
 	 * @return
 	 */
 	List<ExamPracticeVO> selectListFromWeb(ExamPractice examPractice);
+
+    int update(ExamPractice examPractice);
 }

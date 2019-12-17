@@ -40,7 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<sql id="selectExamPracticeVo">
          exam_practice.id, exam_practice.dept_id, exam_practice.name,exam_practice.train_course_id,exam_practice.enable_control_time,
           exam_practice.start_time, exam_practice.end_time, exam_practice.practice_user_limit, exam_practice.create_by, exam_practice.create_date, exam_practice.update_by, exam_practice.update_date, exam_practice.remarks, exam_practice.del_flag    </sql>
-	
+
     <select id="selectExamPracticeList" parameterType="ExamPractice" resultMap="ExamPracticeResult">
         select
         <include refid="selectExamPracticeVo"/>
@@ -100,5 +100,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     </select>
 
+    <update id="update" parameterType="ExamPractice">
+        update exam_practice
+        <set>
+            <if test="deptId != null "> dept_id = #{deptId},</if>
+            <if test="trainCourseId != null "> train_course_id = #{trainCourseId},</if>
+            <if test="name != null  and name != '' "> name= #{name},</if>
+            <if test="enableControlTime != null  and enableControlTime != '' "> enable_control_time = #{enableControlTime},</if>
+            start_time = #{startTime},
+            end_time = #{endTime},
+            <if test="practiceUserLimit != null  and practiceUserLimit != '' "> practice_user_limit = #{practiceUserLimit},</if>
+            <if test="updateBy != null  and updateBy != '' "> update_by = #{updateBy},</if>
+            <if test="remarks != null  and remarks != '' "> remarks = #{remarks},</if>
+            <if test="delFlag != null  and delFlag != '' "> del_flag = #{delFlag},</if>
+            update_date = sysdate()
+        </set>
+        where id = #{id}
+    </update>
 
 </mapper>

@@ -94,6 +94,11 @@ public class ExamPracticeController extends BaseController
 		examPractice.setDelFlag("0");
 		examPractice.setCreateBy(ShiroUtils.getLoginName());
 		examPractice.setCreateDate(new Date());
+		// 若不控制时间，考试开始结束时间为空
+		if ("0".equals(examPractice.getEnableControlTime())){
+			examPractice.setStartTime(null);
+			examPractice.setEndTime(null);
+		}
 		return toAjax(examPracticeService.insert(examPractice));
 	}
 
@@ -120,7 +125,12 @@ public class ExamPracticeController extends BaseController
 		examPractice.setDelFlag("0");
 		examPractice.setUpdateBy(ShiroUtils.getLoginName());
 		examPractice.setUpdateDate(new Date());
-		return toAjax(examPracticeService.updateSelectiveById(examPractice));
+		// 若不控制时间，考试开始结束时间为空
+		if ("0".equals(examPractice.getEnableControlTime())){
+			examPractice.setStartTime(null);
+			examPractice.setEndTime(null);
+		}
+		return toAjax(examPracticeService.update(examPractice));
 	}
 	
 	/**

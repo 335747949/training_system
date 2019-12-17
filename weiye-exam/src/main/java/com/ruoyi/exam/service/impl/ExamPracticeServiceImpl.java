@@ -54,4 +54,8 @@ public class ExamPracticeServiceImpl extends AbstractBaseServiceImpl<ExamPractic
         return examPracticeMapper.selectExamPracticeList(examPractice);
     }
 
+    @Override
+    public int update(ExamPractice examPractice) {
+        return examPracticeMapper.update(examPractice);
+    }
 }

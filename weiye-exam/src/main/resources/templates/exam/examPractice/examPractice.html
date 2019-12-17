@@ -72,7 +72,14 @@
 					title : '练习名称',
 					sortable: true
 				},
+				{
+					field : 'enableControlTime',
+					title : '控制练习时间',
+					formatter: function(value, item, index) {
+						return $.table.selectDictLabel([[${@dict.getType('exam_ination_enableControlTime')}]], item.enableControlTime);
+					}
 
+				},
 				{
 					field : 'startTime', 
 					title : '开始时间',

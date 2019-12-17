@@ -36,4 +36,6 @@ public interface IExamPracticeService extends AbstractBaseService<ExamPractice>
      * @return
      */
     List<ExamPracticeVO> selectListFromWeb(ExamPractice examPractice);
+
+    int update(ExamPractice examPractice);
 }
