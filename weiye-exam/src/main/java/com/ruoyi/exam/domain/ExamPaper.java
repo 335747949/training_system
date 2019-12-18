@@ -42,7 +42,7 @@ private static final long serialVersionUID = 1L;
     @Excel(name = "创建者",order = 6)
     private String createBy;
     /** 创建时间 */
-    @Excel(name = "创建时间",order = 7,dateFormat = "yyyy-MM-dd hh:mm:ss")
+    @Excel(name = "创建时间",order = 7,dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date createDate;
     /** 更新者 */
     private String updateBy;

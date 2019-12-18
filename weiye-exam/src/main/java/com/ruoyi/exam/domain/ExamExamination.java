@@ -51,7 +51,7 @@ public class ExamExamination {
     /**
      * 开始时间
      */
-    @Excel(name = "开始时间", order = 5,dateFormat = "yyyy-MM-dd hh:mm:ss")
+    @Excel(name = "开始时间", order = 5,dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
     /**
      * 结束时间

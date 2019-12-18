@@ -24,12 +24,12 @@ public class ExcelUserExamination {
     @Excel(name = "考试类型", order = 4, readConverterExp = "1=模拟考试,2=正式考试")
     private String type;
 
-    @Excel(name = "开始时间", order = 5,dateFormat = "yyyy-MM-dd hh:mm:ss")
+    @Excel(name = "开始时间", order = 5,dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
     /**
      * 结束时间
      */
-    @Excel(name = "结束时间", order = 6,dateFormat = "yyyy-MM-dd hh:mm:ss")
+    @Excel(name = "结束时间", order = 6,dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     @Excel(name = "考试得分", order = 7)

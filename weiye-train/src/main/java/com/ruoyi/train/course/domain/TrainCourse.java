@@ -39,18 +39,18 @@ public class TrainCourse {
     /**
      * 价格
      */
-    @Excel(name="价格",order = 1)
     private BigDecimal price;
     /**
      * 课程封面
      */
     private String cover;
     /**  */
-    @Excel(name="课程介绍",order = 2)
+    @Excel(name="课程介绍",order = 1)
     private String description;
     /**
      * 是否公开（默认 1-公开，2-不公开）
      */
+    @Excel(name="课程介绍",order = 2,readConverterExp = "1=公开,2=不公开")
     private String state;
     /**
      * 删除标志（0代表存在 2代表删除）
@@ -59,11 +59,13 @@ public class TrainCourse {
     /**
      * 创建者
      */
+    @Excel(name="课程介绍",order = 3)
     private String createBy;
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name="课程介绍",order = 3,dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
     /**
      * 更新者

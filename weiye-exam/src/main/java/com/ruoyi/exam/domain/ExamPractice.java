@@ -31,10 +31,10 @@ private static final long serialVersionUID = 1L;
     /** 是否控制开始结束时间（0-不控制,1-控制） */
     private String enableControlTime;
     /** 开始时间 */
-    @Excel(name = "开始时间",order = 3, dateFormat = "yyyy-MM-dd hh:mm:ss")
+    @Excel(name = "开始时间",order = 3, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
     /** 结束时间 */
-    @Excel(name = "结束时间",order = 4, dateFormat = "yyyy-MM-dd hh:mm:ss")
+    @Excel(name = "结束时间",order = 4, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
     /** 练习对象（1-所有人，2-限定对象） */
     @Excel(name = "练习对象",order = 5, readConverterExp = "1=所有人,2=限定对象")
@@ -43,7 +43,7 @@ private static final long serialVersionUID = 1L;
     @Excel(name = "创建者",order = 6)
     private String createBy;
     /** 创建时间 */
-    @Excel(name = "创建时间",order = 7, dateFormat = "yyyy-MM-dd hh:mm:ss")
+    @Excel(name = "创建时间",order = 7, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date createDate;
     /** 更新者 */
     private String updateBy;

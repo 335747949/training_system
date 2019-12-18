@@ -48,7 +48,7 @@ public class ExamExaminationResultVo{
     /**
      * 考试结束时间
      */
-    @Excel(name = "交卷时间", order = 9,dateFormat = "yyyy-MM-dd hh:mm:ss")
+    @Excel(name = "交卷时间", order = 9,dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date finshTime;
 
     /**
