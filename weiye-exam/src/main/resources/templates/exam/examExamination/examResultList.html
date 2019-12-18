@@ -6,24 +6,6 @@
 <!--<input id="examId" type="hidden" th:value="${examId}" />-->
 <div class="container-div">
     <div class="row">
-<!--        <div class="col-sm-12 search-collapse">-->
-<!--            <form id="formId">-->
-<!--                <div class="select-list">-->
-<!--                    <ul>-->
-
-<!--                        <li>-->
-<!--                            考试名称：<input type="text" name="name"/>-->
-<!--                        </li>-->
-
-<!--                        <li>-->
-<!--                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>-->
-<!--                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--                </div>-->
-<!--            </form>-->
-<!--        </div>-->
-
         <div class="col-sm-12 select-table table-striped">
             <table id="bootstrap-table" data-mobile-responsive="true"></table>
         </div>
@@ -70,12 +52,10 @@
                     title: '电话'
                 }, {
                     field: 'score',
-                    title: '成绩',
-                    sortable: true
+                    title: '成绩'
                 }, {
                     field: 'finshTime',
-                    title: '交卷时间',
-                    sortable: true
+                    title: '交卷时间'
                 }, {
                     field: 'passScore',
                     title: '是否合格',
@@ -84,7 +64,6 @@
                             return '<span class="label label-success" style="color: white"> 合格</span> ';
                         }
                             return '<span class="label label-warning" style="color: crimson"> 不合格</span> ';
-
                     }
                 }
             ]
