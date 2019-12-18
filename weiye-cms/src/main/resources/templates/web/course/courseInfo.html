@@ -203,7 +203,6 @@
     <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
         <ul  class="layui-tab-title">
             <li class="layui-this">课程目录</li>
-<!--            <li>学员评价(<span id="commentNum">1</span>)</li>-->
             <li>相关题库</li>
         </ul>
         <div class="layui-tab-content">
@@ -211,7 +210,7 @@
                 <ul >
                     <li th:if="trainCourseSections" th:each="sections,obj:${trainCourseSections}" >
                         <a th:if="${trainCourse.price==0 || courseAuth}" th:id="'section'+${obj.index+1}" th:href="@{'/web/course/courseSections.html/'+${sections.id}}">
-                        <span th:text="${sections.name}+'2'"> </span>
+                        <span th:text="${sections.name}"> </span>
                         </a>
 <!--                        <a th:if="!${courseAuth}" onclick="shop()">-->
 <!--                            <span th:text="${sections.name}"> </span>-->
