@@ -2,6 +2,7 @@
 <html  lang="zh" xmlns:th="http://www.thymeleaf.org">
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/datapicker/bootstrap-datetimepicker.css}" rel="stylesheet"/>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-examPractice-edit" th:object="${examPractice}">
@@ -36,9 +37,9 @@
 				</div>
 			</div>
 			<div class="form-group enableControlTime">
-				<label class="col-sm-3 control-label ">开始时间：</label>
+				<label class="col-sm-3 control-label">开始时间：</label>
 				<div class="col-sm-8">
-					<div class="input-group date "> <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+					<div class="input-group date"> <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 						<input id="startTime" th:value="*{#dates.format(startTime, 'yyyy-MM-dd HH:mm:ss')}" name="startTime" class="form-control" type="text">
 					</div>
 				</div>
@@ -51,7 +52,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="form-group">
+			<div class="form-group" >
 				<label class="col-sm-3 control-label">练习对象：</label>
 				<div class="col-sm-8">
 					<select id="practiceUserLimit" name="practiceUserLimit" th:field="*{practiceUserLimit}" class="form-control m-b" th:with="type=${@dict.getType('exam_ination_examinationUserLimit')}">
@@ -77,8 +78,14 @@
     <script type="text/javascript">
 
         $(".input-group.date").datetimepicker({
-            format: 'yyyy-mm-dd hh:mm:ss',
-            language: "zh-Cn", todayBtn: "linked", keyboardNavigation: !1, forceParse: !1, calendarWeeks: !0, autoclose: !0
+			minView: 1,//设置只显示到月份
+            format: 'yyyy-mm-dd hh:00:00',
+            language: "zh-Cn",
+			todayBtn: "linked",
+			keyboardNavigation: !1,
+			forceParse: !1,
+			calendarWeeks: !0,
+			autoclose: !0
         });
 		var prefix = ctx + "exam/examPractice"
 
