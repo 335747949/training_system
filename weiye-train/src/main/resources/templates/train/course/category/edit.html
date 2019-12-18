@@ -29,7 +29,7 @@
 				<label class="col-sm-3 control-label">状态：</label>
 				<div class="col-sm-8">
 					<div class="radio-box" th:each="dict : ${@dict.getType('sys_normal_disable')}">
-						<input type="radio" th:id="${dict.dictCode}" name="delFlag" th:value="${dict.dictValue}" th:field="*{delFlag}">
+						<input type="radio" th:id="${dict.dictCode}" name="status" th:value="${dict.dictValue}" th:field="*{status}">
 						<label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>
 					</div>
 				</div>
@@ -74,6 +74,9 @@
         		phone:{
         			isPhone:true,
         		},
+				status:{
+					required:true
+				},
 			},
 			messages: {
 		        "name": {

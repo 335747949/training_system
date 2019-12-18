@@ -107,7 +107,7 @@ public class ExamExamination {
      */
     private String remarks;
     /**
-     * 删除标记
+     * 删除标记 0.正常 1.删除
      */
     private String delFlag;
 

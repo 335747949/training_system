@@ -29,7 +29,7 @@ public class TrainCourseSection
     private Integer type;
     /** 课件 */
     private String courseware;
-    /** 删除标志（0代表存在 2代表删除） */
+    /** 删除标记 0.正常 1.删除 */
     private String delFlag;
     /** 创建者 */
     private String createBy;
@@ -96,13 +96,13 @@ public class TrainCourseSection
     {
         return orderNum;
     }
-    /** 设置删除标志（0代表存在 2代表删除） */
+    /** 设置删除标记 0.正常 1.删除 */
     public void setDelFlag(String delFlag)
     {
         this.delFlag = delFlag;
     }
 
-    /** 获取删除标志（0代表存在 2代表删除） */
+    /** 获取删除标记 0.正常 1.删除 */
     public String getDelFlag()
     {
         return delFlag;

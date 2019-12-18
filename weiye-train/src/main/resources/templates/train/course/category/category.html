@@ -65,10 +65,17 @@
 		            title: '分类名称',
 		            align: "left"
 		        },
+				{
+					field: 'orderNum',
+					title: '排序',
+					align: "left"
+				},
 		        {
-		            field: 'orderNum',
-		            title: '排序',
-		            align: "left"
+		            field: 'status',
+		            title: '状态',
+					formatter: function(value, item, index) {
+								return $.table.selectDictLabel([[${@dict.getType('sys_normal_disable')}]], item.status);
+							}
 		        },
 		        {
 		            field: 'createTime',

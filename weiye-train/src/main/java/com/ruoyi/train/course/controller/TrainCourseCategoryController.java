@@ -4,6 +4,7 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.framework.web.exception.base.BaseException;
 import com.ruoyi.train.course.domain.TrainCourseCategory;
 import com.ruoyi.train.course.service.ITrainCourseCategoryService;
 import com.ruoyi.framework.web.base.BaseController;
@@ -14,6 +15,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +44,7 @@ public class TrainCourseCategoryController extends BaseController {
     @GetMapping("/list")
     @ResponseBody
     public List<TrainCourseCategory> list(TrainCourseCategory category) {
-        List<TrainCourseCategory> categoryList = trainCourseCategoryService.selectCategoryList( category );
+        List<TrainCourseCategory> categoryList = trainCourseCategoryService.selectAllCategoryList( category );
         return categoryList;
     }
 
@@ -48,8 +52,15 @@ public class TrainCourseCategoryController extends BaseController {
      * 新增课程分类
      */
     @GetMapping("/add/{parentId}")
-    public String add(@PathVariable("parentId") Long parentId, ModelMap mmap) {
-        mmap.put( "category", trainCourseCategoryService.selectCategoryById( parentId ) );
+    public String add(@PathVariable("parentId") Long parentId, ModelMap mmap, HttpServletResponse response) throws IOException {
+        TrainCourseCategory category = trainCourseCategoryService.selectCategoryById( parentId );
+        String ids = category.getParentIds();
+        String[] idsStr = ids.split(",");
+        // 目前前台仅支持三级分类
+        if(idsStr.length > 4){
+            throw new RuntimeException("暂只支持三级分类");
+        }
+        mmap.put( "category",  category);
         return prefix + "/add";
     }
 

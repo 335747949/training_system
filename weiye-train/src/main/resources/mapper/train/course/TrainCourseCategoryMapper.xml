@@ -5,22 +5,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.ruoyi.train.course.mapper.TrainCourseCategoryMapper">
 
 	<resultMap type="TrainCourseCategory" id="TrainCourseCategoryResult">
-		<id     property="id"     column="id"     />
-		<result property="deptId"   column="dept_id"   />
-		<result property="parentId"   column="parent_id"   />
-		<result property="parentIds"  column="parent_ids"   />
-		<result property="name"   column="name"   />
-		<result property="orderNum"   column="order_num"   />
-		<result property="delFlag"    column="del_flag"    />
-		<result property="parentName" column="parent_name" />
-		<result property="createBy"   column="create_by"   />
-		<result property="createTime" column="create_time" />
-		<result property="updateBy"   column="update_by"   />
-		<result property="updateTime" column="update_time" />
+		<id     property="id"     column="id"/>
+		<result property="deptId"   column="dept_id"/>
+		<result property="parentId"   column="parent_id"/>
+		<result property="parentIds"  column="parent_ids"/>
+		<result property="name"   column="name"/>
+		<result property="orderNum"   column="order_num"/>
+		<result property="delFlag"    column="del_flag"/>
+		<result property="parentName" column="parent_name"/>
+		<result property="status" column="status"/>
+		<result property="createBy"   column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy"   column="update_by"/>
+		<result property="updateTime" column="update_time"/>
 	</resultMap>
 	
 	<sql id="selectCategoryVo">
-        select d.id,d.dept_id, d.parent_id, d.parent_ids, d.name, d.order_num, d.del_flag, d.create_by, d.create_time
+        select d.id,d.dept_id, d.parent_id, d.parent_ids, d.name, d.order_num, d.status, d.del_flag, d.create_by, d.create_time
         from train_course_category d
     </sql>
 	<select id="selectRoleCategoryTree" parameterType="Long" resultType="String">
@@ -31,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by d.parent_id, d.order_num
 	</select>
 	
-	<select id="selectCategoryList" parameterType="TrainCourseCategory" resultMap="TrainCourseCategoryResult">
+	<select id="selectAllCategoryList" parameterType="TrainCourseCategory" resultMap="TrainCourseCategoryResult">
         <include refid="selectCategoryVo"/>
         where d.del_flag = '0'
         <if test="parentId != null and parentId != 0">
@@ -44,6 +45,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<!-- 数据范围过滤 -->
 		${params.dataScope}
     </select>
+
+	<select id="selectCategoryList" parameterType="TrainCourseCategory" resultMap="TrainCourseCategoryResult">
+		<include refid="selectCategoryVo"/>
+		where d.del_flag = '0' AND d.status = 0
+		<if test="parentId != null and parentId != 0">
+			AND parent_id = #{parentId}
+		</if>
+		<if test="name != null and name != ''">
+			AND name like concat('%', #{name}, '%')
+		</if>
+
+		<!-- 数据范围过滤 -->
+		${params.dataScope}
+	</select>
 	
 	<select id="checkCategoryExistCourse" parameterType="Long" resultType="int">
 		select count(1) from train_course where train_course_category_id = #{id} and del_flag = '0'
@@ -76,16 +91,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="parentIds != null and parentIds != ''">parent_ids,</if>
  			<if test="orderNum != null and orderNum != ''">order_num,</if>
  			<if test="createBy != null and createBy != ''">create_by,</if>
- 			create_time
+ 			create_time,
+			status
  		)values(
  			<if test="id != null and id != 0">#{id},</if>
  			<if test="parentId != null and parentId != 0">#{parentId},</if>
  			<if test="name != null and name != ''">#{name},</if>
  			<if test="parentIds != null and parentIds != ''">#{parentIds},</if>
  			<if test="orderNum != null and orderNum != ''">#{orderNum},</if>
-
  			<if test="createBy != null and createBy != ''">#{createBy},</if>
- 			sysdate()
+ 			sysdate(),
+			#{status}
  		)
 	</insert>
 	
@@ -96,8 +112,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="name != null and name != ''">name = #{name},</if>
  			<if test="parentIds != null and parentIds != ''">parent_ids = #{parentIds},</if>
  			<if test="orderNum != null and orderNum != ''">order_num = #{orderNum},</if>
-
  			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+			status = #{status},
  			update_time = sysdate()
  		</set>
  		where id = #{id}
@@ -117,7 +133,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 </update>
 
 	<delete id="deleteCategoryById" parameterType="Long">
-		update train_course_category set del_flag = '2' where id = #{id}
+		update train_course_category set del_flag = '1' where id = #{id}
 	</delete>
 
 </mapper> 

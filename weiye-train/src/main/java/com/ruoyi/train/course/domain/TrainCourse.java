@@ -53,7 +53,7 @@ public class TrainCourse {
     @Excel(name="课程介绍",order = 2,readConverterExp = "1=公开,2=不公开")
     private String state;
     /**
-     * 删除标志（0代表存在 2代表删除）
+     * 删除标记 0.正常 1.删除
      */
     private String delFlag;
     /**
@@ -188,14 +188,14 @@ public class TrainCourse {
     }
 
     /**
-     * 设置删除标志（0代表存在 2代表删除）
+     * 设置删除标记 0.正常 1.删除
      */
     public void setDelFlag(String delFlag) {
         this.delFlag = delFlag;
     }
 
     /**
-     * 获取删除标志（0代表存在 2代表删除）
+     * 获取删除标记 0.正常 1.删除
      */
     public String getDelFlag() {
         return delFlag;

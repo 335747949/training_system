@@ -24,7 +24,7 @@ private static final long serialVersionUID = 1L;
 	    private Integer trainCoursewareId;
 	        /** 显示顺序 */
 	    private Integer orderNum;
-	        /** 删除标志（0代表存在 2代表删除） */
+	        /** 删除标记 0.正常 1.删除 */
 	    private String delFlag;
 	        /** 创建者 */
 	    private String createBy;
@@ -81,13 +81,13 @@ private static final long serialVersionUID = 1L;
             {
             return orderNum;
             }
-	    /** 设置删除标志（0代表存在 2代表删除） */
+	    /** 设置删除标记 0.正常 1.删除 */
     public void setDelFlag(String delFlag)
             {
             this.delFlag = delFlag;
             }
 
-    /** 获取删除标志（0代表存在 2代表删除） */
+    /** 获取删除标记 0.正常 1.删除 */
     public String getDelFlag()
             {
             return delFlag;

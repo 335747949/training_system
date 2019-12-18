@@ -33,8 +33,14 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
      */
     @Override
     @DataScope(tableAlias = "d")
-    public List<TrainCourseCategory> selectCategoryList(TrainCourseCategory dept) {
-        return trainCourseCategoryMapper.selectCategoryList( dept );
+    public List<TrainCourseCategory> selectCategoryList(TrainCourseCategory category) {
+        return trainCourseCategoryMapper.selectCategoryList( category );
+    }
+
+    @Override
+    @DataScope(tableAlias = "d")
+    public List<TrainCourseCategory> selectAllCategoryList(TrainCourseCategory category) {
+        return trainCourseCategoryMapper.selectAllCategoryList( category );
     }
 
     /**

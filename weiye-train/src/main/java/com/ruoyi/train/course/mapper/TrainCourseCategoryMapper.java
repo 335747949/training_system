@@ -37,6 +37,15 @@ public interface TrainCourseCategoryMapper extends MyMapper<TrainCourseCategory>
      */
     public List<TrainCourseCategory> selectCategoryList(TrainCourseCategory category);
 
+
+    /**
+     * 查询课程分类管理数据
+     *
+     * @param category 课程分类信息
+     * @return 课程分类信息集合
+     */
+    public List<TrainCourseCategory> selectAllCategoryList(TrainCourseCategory category);
+
     /**
      * 删除课程分类管理信息
      *

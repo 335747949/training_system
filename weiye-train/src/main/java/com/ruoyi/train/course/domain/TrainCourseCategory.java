@@ -34,8 +34,11 @@ public class TrainCourseCategory extends BaseEntity
     /** 显示顺序 */
     private String orderNum;
 
-    /** 删除标志（0代表存在 2代表删除） */
+    /** 删除标记 0.正常 1.删除 */
     private String delFlag;
+
+    /** 状态 0.正常 1.停用 */
+    private int status;
 
     /** 父课程分类名称 */
     private String parentName;
@@ -111,6 +114,14 @@ public class TrainCourseCategory extends BaseEntity
     public void setParentName(String parentName)
     {
         this.parentName = parentName;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     @Override
