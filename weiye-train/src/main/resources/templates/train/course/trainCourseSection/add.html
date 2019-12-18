@@ -79,14 +79,17 @@
                 },
                 orderNum:{
                     required:true,
-                }
+                },
+				courseware:{
+					required:true,
+				}
 			}
 		});
 		
 		function submitHandler() {
 	        if ($.validate.form()) {
 	            if(fileList.length==0){
-                    layer.msg('上传课件...');
+                    layer.msg('附件不能为空，请选择文件...');
 	                return false;
 				}
 	            $("#courseware").val(fileList.join(","));
