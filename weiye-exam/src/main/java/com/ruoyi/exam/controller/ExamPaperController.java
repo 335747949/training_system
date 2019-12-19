@@ -277,7 +277,7 @@ public class ExamPaperController extends BaseController {
             item.setDelFlag("0");
             examPaperQuestionService.insert(item);
             num++;
-            score += item.getScore();
+            score += (item.getScore() == null ? 0 : item.getScore()) ;
         }
         //规定考试才更新题目数量
         if(type.equals("1")){
@@ -312,6 +312,9 @@ public class ExamPaperController extends BaseController {
         JSONObject json = new JSONObject();
         List<ExamPaperQuestionVO> examPaperQuestions = examPaperQuestionService.selectQuestionForPaperId(id);
         for (ExamPaperQuestionVO examPaperQuestion : examPaperQuestions) {
+            if (null == examPaperQuestion.getScore()){
+                examPaperQuestion.setScore(0);
+            }
             //排序用
             json.append(examPaperQuestion.getOrderNum().toString() + examPaperQuestion.getExamQuestionId().toString(), new JSONObject(examPaperQuestion).toString());
         }
