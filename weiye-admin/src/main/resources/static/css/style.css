@@ -189,7 +189,7 @@ body.body-small .navbar-top-links li:last-child {
 }
 
 .nav>li.active {
-    border-left: 4px solid #19aa8d;
+    border-left: 4px solid #3377F0;
     background: #293846;
 }
 
@@ -1830,7 +1830,7 @@ table.dataTable thead .sorting:after {
 }
 
 .form-control:focus, .single-line:focus {
-    border-color: #1ab394 !important;
+    border-color: #3377F0 !important;
 }
 
 .has-success .form-control {
@@ -2321,13 +2321,13 @@ table.dataTable thead .sorting:after {
 }
 /* Validation */
 label.error {
-    color: #cc5965;
+    color: #FA5555;
     display: inline-block;
     margin-left: 5px;
 }
 
 .form-control.error {
-    border: 1px dotted #cc5965;
+    border: 1px solid #FA5555 !important;
 }
 /* ngGrid */
 .gridStyle {

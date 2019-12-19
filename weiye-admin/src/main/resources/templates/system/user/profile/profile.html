@@ -10,36 +10,52 @@
     <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
     <link th:href="@{/css/main/animate.min.css}" rel="stylesheet"/>
     <link th:href="@{/css/main/style.min862f.css}" rel="stylesheet"/>
+    <style>
+        .edit-btn-group a{
+            font-size: 14px;
+            color: #3377F0;
+            line-height: 14px;
+            margin-right: 32px;
+        }
+        .info-i .fa{
+            margin-right: 16px;
+        }
+        .user-avatar{
+            width: 168px;
+            height: 168px;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 
 <body class="gray-bg">
     <div class="wrapper wrapper-content">
         <div class="row animated fadeInRight">
-            <div class="col-sm-6">
+            <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5>个人信息</h5>
-                    <div class="ibox-tools">
-                        
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="profile.html#">
-                            <i class="fa fa-edit"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-user">
-                            <li><a href="javascript:edit()">修改信息</a></li>
-                            <li><a href="javascript:resetPwd()">修改密码</a></li>
-                            <li><a href="javascript:avatar()">修改头像</a></li>
-                        </ul>
-                       
-                    </div>
+<!--                    <div class="ibox-tools">-->
+<!--                        -->
+<!--                        <a class="dropdown-toggle" data-toggle="dropdown" href="profile.html#">-->
+<!--                            <i class="fa fa-edit"></i>-->
+<!--                        </a>-->
+<!--                        <ul class="dropdown-menu dropdown-user">-->
+<!--                            <li><a href="javascript:edit()">修改信息</a></li>-->
+<!--                            <li><a href="javascript:resetPwd()">修改密码</a></li>-->
+<!--                            <li><a href="javascript:avatar()">修改头像</a></li>-->
+<!--                        </ul>-->
+<!--                       -->
+<!--                    </div>-->
                     </div>
                     <div class="contact-box">
 	                        <div class="col-sm-4">
 	                            <div class="text-center">
-	                                <img alt="image" class="img-circle m-t-xs img-responsive" th:src="(${user.avatar} == '') ? @{/img/profile.jpg} : ${user.avatar}">
-	                                <div class="m-t-xs font-bold">[[${user.loginIp}]]</div>
+	                                <img alt="image" class="img-circle m-t-xs img-responsive user-avatar" th:src="(${user.avatar} == '') ? @{/img/profile.jpg} : ${user.avatar}">
+<!--	                                <div class="m-t-xs font-bold">[[${user.loginIp}]]</div>-->
 	                            </div>
 	                        </div>
-	                        <div class="col-sm-8">
+	                        <div class="col-sm-8 info-i">
 	                            <h3><strong>[[${user.loginName}]]</strong></h3>
 	                            <p><i class="fa fa-user"></i> [[${user.userName}]] / [[${#strings.defaultString(roleGroup,'无角色')}]]
 	                            <p><i class="fa fa-phone"></i> [[${user.phonenumber}]]</p>
@@ -47,6 +63,7 @@
 	                            <p><i class="fa fa-transgender"></i> 性别：[[${user.sex}]]</p>
 	                            <p><i class="fa fa-envelope-o"></i> [[${user.email}]]</p>
 	                            <p><i class="fa fa-calendar"></i> [[${#dates.format(user.createTime, 'yyyy-MM-dd HH:mm:ss')}]]</p>
+                                <div class="edit-btn-group"><a href="javascript:edit()">[修改信息]</a><a href="javascript:resetPwd()">[修改密码]</a><a href="javascript:avatar()">[修改头像]</a></div>
 	                        </div>
 	                        <div class="clearfix"></div>
 	                    </a>

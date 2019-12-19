@@ -21,14 +21,14 @@ function login() {
     var validateCode = $("input[name='validateCode']").val();
     var rememberMe = $("input[name='rememberme']").is(':checked');
 
-    if(password.length < 5 || password.length > 20){
-        layer.msg("密码长度不正确,密码长度5-20位", {icon: 2});
-        return;
-    }
-    if(username.length < 2 || username.length > 20){
-        layer.msg("用户名长度不正确,用户名长度5-20位", {icon: 2});
-        return;
-    }
+    // if(password.length < 5 || password.length > 20){
+    //     layer.msg("密码长度不正确,密码长度5-20位", {icon: 2});
+    //     return;
+    // }
+    // if(username.length < 2 || username.length > 20){
+    //     layer.msg("用户名长度不正确,用户名长度5-20位", {icon: 2});
+    //     return;
+    // }
 
     $.ajax({
         type: "post",

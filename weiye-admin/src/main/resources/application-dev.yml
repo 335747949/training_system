@@ -13,7 +13,7 @@ spring:
     nacos:
       discovery:
         #nacos配置中心集群地址，后面会接入配置中心
-        server-addr: localhost:8848
+        server-addr: 192.168.0.188:8848
         #服务启动可加载本地缓存服务信息，避免注册中心发生分区场景，服务不可用
         namingLoadCacheAtStart: true
         #服务空间隔离

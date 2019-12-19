@@ -671,7 +671,7 @@
         }
 
         .layadmin-carousel {
-            height: 185px !important;
+            /*height: 185px !important;*/
             background-color: #fff
         }
 
@@ -776,15 +776,16 @@
         }
 
         .layadmin-backlog-body h3 {
-            padding-bottom: 10px;
-            font-size: 12px
+            padding-bottom: 16px;
+            font-size: 16px;
+            color: #FFFFFF;
+            line-height: 16px;
         }
 
         .layadmin-backlog-body p cite {
-            font-style: normal;
-            font-size: 30px;
-            font-weight: 300;
-            color: #009688
+            font-size: 32px;
+            color: #FFFFFF;
+            line-height: 32px;
         }
 
         .layadmin-backlog-body:hover {
@@ -1366,16 +1367,77 @@
                 overflow: auto
             }
         }   .carousel-item{
-            height: 200px;
+            /*height: 200px;*/
+            padding: 10px 0;
                     }
+
+        .number-wrap li a{
+            border-radius: 8px !important;
+            padding-top: 16px !important;
+        }
+        .number-wrap li:nth-child(1) a{
+            background: #8693F3;
+            box-shadow: 0 9px 16px 0 rgba(134,147,243,0.24);
+        }
+        .number-wrap li:nth-child(2) a{
+            background: #F09F69;
+            box-shadow: 0 9px 16px 0 rgba(240,159,105,0.24);
+        }
+        .number-wrap li:nth-child(3) a{
+            background: #BC8DEF;
+            box-shadow: 0 9px 16px 0 rgba(188,141,239,0.24);
+        }
+        .number-wrap li:nth-child(4) a{
+            background: #89C4F8;
+            box-shadow: 0 9px 16px 0 rgba(137,196,248,0.24);
+        }
     </style>
 </head>
 <body>
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
-        <div class="layui-col-md8">
+        <div class="layui-col-md12">
             <div class="layui-row layui-col-space15">
-                <div class="layui-col-md6">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">数量统计</div>
+                        <div class="layui-card-body">
+
+                            <div class="layui-carousel layadmin-carousel layadmin-backlog">
+                                <div class="carousel-item">
+                                    <ul class="layui-row layui-col-space10 number-wrap">
+                                        <li class="layui-col-xs3">
+                                            <a href="../train/trainCourse" class="layadmin-backlog-body">
+                                                <h3>课程数量</h3>
+                                                <p><cite th:text="${trainCourseNum}"></cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs3">
+                                            <a href="../exam/examPaper" class="layadmin-backlog-body">
+                                                <h3>试卷数量</h3>
+                                                <p><cite th:text="${examPaperNum}"></cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs3">
+                                            <a href="../exam/examExamination" class="layadmin-backlog-body">
+                                                <h3>考试数量</h3>
+                                                <p><cite th:text="${examExaminationNum}"></cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs3">
+                                            <a href="../exam/examPractice"
+                                               class="layadmin-backlog-body">
+                                                <h3>练习数量</h3>
+                                                <p><cite th:text="${examPractice}"></cite></p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md12">
                     <div class="layui-card">
                         <div class="layui-card-header">快捷方式</div>
                         <div class="layui-card-body">
@@ -1438,45 +1500,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="layui-col-md6">
-                    <div class="layui-card">
-                        <div class="layui-card-header">数量统计</div>
-                        <div class="layui-card-body">
 
-                            <div class="layui-carousel layadmin-carousel layadmin-backlog">
-                                <div class="carousel-item">
-                                    <ul class="layui-row layui-col-space10">
-                                        <li class="layui-col-xs6">
-                                            <a href="../train/trainCourse" class="layadmin-backlog-body">
-                                                <h3>课程数量</h3>
-                                                <p><cite th:text="${trainCourseNum}"></cite></p>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs6">
-                                            <a href="../exam/examPaper" class="layadmin-backlog-body">
-                                                <h3>试卷数量</h3>
-                                                <p><cite th:text="${examPaperNum}"></cite></p>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs6">
-                                            <a href="../exam/examExamination" class="layadmin-backlog-body">
-                                                <h3>考试数量</h3>
-                                                <p><cite th:text="${examExaminationNum}"></cite></p>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs6">
-                                            <a href="../exam/examPractice"
-                                               class="layadmin-backlog-body">
-                                                <h3>练习数量</h3>
-                                                <p><cite th:text="${examPractice}"></cite></p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 <!--                <div class="layui-col-md12">-->
 <!--                    <div class="layui-card">-->
 <!--                        <div class="layui-card-header">数据概览</div>-->
