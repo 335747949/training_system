@@ -16,6 +16,7 @@ import com.ruoyi.framework.web.util.ShiroUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
@@ -218,100 +219,105 @@ public class ExamQuestionController extends BaseController
 	@Log(title = "问题", businessType = BusinessType.INSERT)
 	@PostMapping( "/importfile")
 	@ResponseBody
+	@Transactional(rollbackFor = Exception.class)
 	public AjaxResult importfile(@RequestParam("file") MultipartFile file, @RequestParam("categoryId")String id) throws Exception {
 
 		InputStream inputStream = file.getInputStream();
 
 		ExcelUtil<ExamQuestionFile> util = new ExcelUtil<ExamQuestionFile>(ExamQuestionFile.class);
 		List<ExamQuestionFile> examQuestions = util.importExcel(inputStream);
+		try {
+			for (ExamQuestionFile item : examQuestions) {
+				ExamQuestion insert = new ExamQuestion();
+				insert.setCategoryId(id);
+				insert.setCreateBy(ShiroUtils.getLoginName());
+				insert.setAnswer(item.getAnswer());
+				insert.setCreateDate(new Date());
+				insert.setDelFlag("0");
+				insert.setRemarks(item.getRemarks());
+				insert.setTitle(item.getName());
+				String type = "1";
 
-		for (ExamQuestionFile item : examQuestions) {
-			ExamQuestion insert = new ExamQuestion();
-			insert.setCategoryId(id);
-			insert.setCreateBy(ShiroUtils.getLoginName());
-			insert.setAnswer(item.getAnswer());
-			insert.setCreateDate(new Date());
-			insert.setDelFlag("0");
-			insert.setRemarks(item.getRemarks());
-			insert.setTitle(item.getName());
-			String type = "1";
+				if (item.getItemA().equals("正确")||item.getItemA().equals("错误")) {
+					type ="3";
+				}else if(item.getAnswer().split(",").length>1){
+					type="2";
+				}
+				insert.setType(type);
+				examQuestionService.insertExamQuestion(insert);
+				if(item.getItemA()!=null&&!item.getItemA().trim().equals("")){
+					ExamQuestionItem examQuestionItem = new ExamQuestionItem();
+					examQuestionItem.setExamQuestionId(insert.getId());
+					examQuestionItem.setNumber("A");
+					examQuestionItem.setContent(item.getItemA());
+					examQuestionItem.setCreateBy(ShiroUtils.getLoginName());
+					examQuestionItem.setCreateDate(new Date());
+					examQuestionItem.setDelFlag("0");
+					examQuestionItemService.insert(examQuestionItem);
 
-			if (item.getItemA().equals("正确")||item.getItemA().equals("错误")) {
-				type ="3";
-			}else if(item.getAnswer().split(",").length>1){
-				type="2";
+				}
+				if(item.getItemB()!=null&&!item.getItemB().trim().equals("")){
+					ExamQuestionItem examQuestionItem = new ExamQuestionItem();
+					examQuestionItem.setExamQuestionId(insert.getId());
+					examQuestionItem.setNumber("B");
+					examQuestionItem.setContent(item.getItemB());
+					examQuestionItem.setCreateBy(ShiroUtils.getLoginName());
+					examQuestionItem.setCreateDate(new Date());
+					examQuestionItem.setDelFlag("0");
+					examQuestionItemService.insert(examQuestionItem);
+
+
+				}
+				if(item.getItemC()!=null&&!item.getItemC().trim().equals("")){
+					ExamQuestionItem examQuestionItem = new ExamQuestionItem();
+					examQuestionItem.setExamQuestionId(insert.getId());
+					examQuestionItem.setNumber("C");
+					examQuestionItem.setContent(item.getItemC());
+					examQuestionItem.setCreateBy(ShiroUtils.getLoginName());
+					examQuestionItem.setCreateDate(new Date());
+					examQuestionItem.setDelFlag("0");
+					examQuestionItemService.insert(examQuestionItem);
+
+				}
+				if(item.getItemD()!=null&&!item.getItemD().trim().equals("")){
+					ExamQuestionItem examQuestionItem = new ExamQuestionItem();
+					examQuestionItem.setExamQuestionId(insert.getId());
+					examQuestionItem.setNumber("D");
+					examQuestionItem.setContent(item.getItemD());
+					examQuestionItem.setCreateBy(ShiroUtils.getLoginName());
+					examQuestionItem.setCreateDate(new Date());
+					examQuestionItem.setDelFlag("0");
+					examQuestionItemService.insert(examQuestionItem);
+
+				}
+				if(item.getItemE()!=null&&!item.getItemE().trim().equals("")){
+					ExamQuestionItem examQuestionItem = new ExamQuestionItem();
+					examQuestionItem.setExamQuestionId(insert.getId());
+					examQuestionItem.setNumber("E");
+					examQuestionItem.setContent(item.getItemE());
+					examQuestionItem.setCreateBy(ShiroUtils.getLoginName());
+					examQuestionItem.setCreateDate(new Date());
+					examQuestionItem.setDelFlag("0");
+					examQuestionItemService.insert(examQuestionItem);
+
+				}
+				if(item.getItemF()!=null&&!item.getItemF().trim().equals("")){
+					ExamQuestionItem examQuestionItem = new ExamQuestionItem();
+					examQuestionItem.setExamQuestionId(insert.getId());
+					examQuestionItem.setNumber("F");
+					examQuestionItem.setContent(item.getItemF());
+					examQuestionItem.setCreateBy(ShiroUtils.getLoginName());
+					examQuestionItem.setCreateDate(new Date());
+					examQuestionItem.setDelFlag("0");
+					examQuestionItemService.insert(examQuestionItem);
+
+				}
+
 			}
-			insert.setType(type);
-			examQuestionService.insertExamQuestion(insert);
-			if(item.getItemA()!=null&&!item.getItemA().trim().equals("")){
-				ExamQuestionItem examQuestionItem = new ExamQuestionItem();
-				examQuestionItem.setExamQuestionId(insert.getId());
-				examQuestionItem.setNumber("A");
-				examQuestionItem.setContent(item.getItemA());
-				examQuestionItem.setCreateBy(ShiroUtils.getLoginName());
-				examQuestionItem.setCreateDate(new Date());
-				examQuestionItem.setDelFlag("0");
-				examQuestionItemService.insert(examQuestionItem);
-
-			}
-			if(item.getItemB()!=null&&!item.getItemB().trim().equals("")){
-				ExamQuestionItem examQuestionItem = new ExamQuestionItem();
-				examQuestionItem.setExamQuestionId(insert.getId());
-				examQuestionItem.setNumber("B");
-				examQuestionItem.setContent(item.getItemB());
-				examQuestionItem.setCreateBy(ShiroUtils.getLoginName());
-				examQuestionItem.setCreateDate(new Date());
-				examQuestionItem.setDelFlag("0");
-				examQuestionItemService.insert(examQuestionItem);
-
-
-			}
-			if(item.getItemC()!=null&&!item.getItemC().trim().equals("")){
-				ExamQuestionItem examQuestionItem = new ExamQuestionItem();
-				examQuestionItem.setExamQuestionId(insert.getId());
-				examQuestionItem.setNumber("C");
-				examQuestionItem.setContent(item.getItemC());
-				examQuestionItem.setCreateBy(ShiroUtils.getLoginName());
-				examQuestionItem.setCreateDate(new Date());
-				examQuestionItem.setDelFlag("0");
-				examQuestionItemService.insert(examQuestionItem);
-
-			}
-			if(item.getItemD()!=null&&!item.getItemD().trim().equals("")){
-				ExamQuestionItem examQuestionItem = new ExamQuestionItem();
-				examQuestionItem.setExamQuestionId(insert.getId());
-				examQuestionItem.setNumber("D");
-				examQuestionItem.setContent(item.getItemD());
-				examQuestionItem.setCreateBy(ShiroUtils.getLoginName());
-				examQuestionItem.setCreateDate(new Date());
-				examQuestionItem.setDelFlag("0");
-				examQuestionItemService.insert(examQuestionItem);
-
-			}
-			if(item.getItemE()!=null&&!item.getItemE().trim().equals("")){
-				ExamQuestionItem examQuestionItem = new ExamQuestionItem();
-				examQuestionItem.setExamQuestionId(insert.getId());
-				examQuestionItem.setNumber("E");
-				examQuestionItem.setContent(item.getItemE());
-				examQuestionItem.setCreateBy(ShiroUtils.getLoginName());
-				examQuestionItem.setCreateDate(new Date());
-				examQuestionItem.setDelFlag("0");
-				examQuestionItemService.insert(examQuestionItem);
-
-			}
-			if(item.getItemF()!=null&&!item.getItemF().trim().equals("")){
-				ExamQuestionItem examQuestionItem = new ExamQuestionItem();
-				examQuestionItem.setExamQuestionId(insert.getId());
-				examQuestionItem.setNumber("F");
-				examQuestionItem.setContent(item.getItemF());
-				examQuestionItem.setCreateBy(ShiroUtils.getLoginName());
-				examQuestionItem.setCreateDate(new Date());
-				examQuestionItem.setDelFlag("0");
-				examQuestionItemService.insert(examQuestionItem);
-
-			}
-
+		}catch (Exception e){
+			return error("导入失败，请检查文件后重试");
 		}
+
 		return success("导入成功");
 	}
 	
