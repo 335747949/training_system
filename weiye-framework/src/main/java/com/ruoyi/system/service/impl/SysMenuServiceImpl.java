@@ -119,14 +119,12 @@ public class SysMenuServiceImpl extends AbstractBaseServiceImpl<SysMenuMapper,Sy
         Long roleId = role.getRoleId();
         List<Map<String, Object>> trees = new ArrayList<Map<String, Object>>();
         List<SysMenu> menuList = menuMapper.selectMenuAll();
-        if (StringUtils.isNotNull(roleId))
-        {
+        if (StringUtils.isNotNull(roleId)){
             List<String> roleMenuList = menuMapper.selectMenuTree(roleId);
-            trees = getTrees(menuList, true, roleMenuList, true);
-        }
-        else
+            trees = getTrees(menuList, true, roleMenuList, false);
+        }else
         {
-            trees = getTrees(menuList, false, null, true);
+            trees = getTrees(menuList, false, null, false);
         }
         return trees;
     }
