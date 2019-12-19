@@ -73,7 +73,7 @@
                         <tr>
                             <th style="width: 50%">题目</th>
                             <th>题型</th>
-                            <th>分数</th>
+<!--                            <th>分数</th>-->
                             <th>向上移动</th>
                             <th>向上移动</th>
                             <th>删除</th>
@@ -115,7 +115,7 @@
             questionOfTable+="<input class = 'itemId' type='hidden' value='"+item.examQuestionId+"'>"
             questionOfTable+="<input class = 'itemType' type='hidden' value='"+item.questionType+"'>"
             questionOfTable+="<th>"+formatType(item.questionType)+"</th>"
-            questionOfTable+="<th><input onkeyup='changeScore($(this))'class = 'itemScore' type='text' size='3' value='"+item.score+"'></th>"
+            // questionOfTable+="<th><input onkeyup='changeScore($(this))'class = 'itemScore' type='text' size='3' value='"+item.score+"'></th>"
             questionOfTable+="<th><button onclick='moveUp($(this))' class='badge badge-primary'>" + "上移" + "</button></th>"
             questionOfTable+="<th><button onclick='moveDown($(this))' class='badge badge-primary'>" + "下移" + "</button></th>"
             questionOfTable+="<th><button onclick='deleteObj($(this))' class='badge badge-delete'>" + "删除" + "</button></th></tr>"
