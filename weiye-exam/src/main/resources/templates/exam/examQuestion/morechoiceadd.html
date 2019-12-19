@@ -120,6 +120,13 @@
 
 
     function addOption(){
+
+        if (index >= item.length){
+            var max = item.length + 2;
+            layer.msg("选项最多支持"+ max + "个");
+            return;
+        }
+
         $("#addOption").before(' <div class="form-group update1"  id="div'+item[index]+'"> <label class="col-sm-3 control-label"></label><div class="col-sm-1" style="padding-right: 0px;"> <input class="form-control update4" name="answer" value="'+item[index]+'" type="checkbox" style="margin: 0 0 0;">' +
             '</div><div class="col-sm-1" style="padding-right: 0px;padding-left: 0px"> ' +
             '<input  style="padding: 6px 10px;text-align: center" id="number'+item[index]+'" name="number" class="form-control update2" type="text" value="'+item[index]+'" readonly> ' +

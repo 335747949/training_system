@@ -16,12 +16,6 @@
                 <input id="title" name="title" class="form-control" type="text" th:value="${examQuestion.title}">
             </div>
         </div>
-        <!--<div class="form-group">-->
-            <!--<label class="col-sm-3 control-label">问题答案：</label>-->
-            <!--<div class="col-sm-8">-->
-                <!--<input id="answer" name="answer" class="form-control" type="text">-->
-            <!--</div>-->
-        <!--</div>-->
 
         <div class="form-group" >
             <label class="col-sm-3 control-label">问题选项：</label>
@@ -49,15 +43,6 @@
                 <input id="content2" name="content" class="form-control" type="text" value="错误" readonly>
             </div>
         </div>
-
-        <!--</div>-->
-
-        <!--<div class="form-group">-->
-            <!--<label class="col-sm-3 control-label">标签：</label>-->
-            <!--<div class="col-sm-8">-->
-                <!--<input id="label" name="label" class="form-control" type="text">-->
-            <!--</div>-->
-        <!--</div>-->
 
         <div class="form-group">
             <label class="col-sm-3 control-label">答案解析：</label>
@@ -118,8 +103,6 @@
 
     });
 
-    var item = ["C","D","E","F","G","H","I","G","K","L","M","N"];
-    var index = 0;
     var prefix = ctx + "exam/examQuestion"
     $("#form-examQuestion-add").validate({
         rules:{
@@ -155,38 +138,6 @@
         $.operate.save(prefix + "/update", $('#form-examQuestion-add').serialize());
     }
 
-
-
-    function addOption(){
-        $("#addOption").before(' <div class="form-group update1"  id="div'+item[index]+'"> <label class="col-sm-3 control-label"></label><div class="col-sm-1" style="padding-right: 0px;"> <input class="form-control update4" name="answer" value="'+item[index]+'" type="checkbox" style="margin: 0 0 0;">' +
-            '</div><div class="col-sm-1" style="padding-right: 0px;padding-left: 0px"> ' +
-            '<input  style="padding: 6px 10px;text-align: center" id="number'+item[index]+'" name="number" class="form-control update2" type="text" value="'+item[index]+'" readonly> ' +
-            '</div> <div class="col-sm-6" style="padding-left: 0px"> <input name="content" class="form-control" type="text"> </div> <div class="col-sm-1"> <a  class="update3" style="text-align: center;color: #999;border: 1px #ccc dashed;display:block;height: 34px;line-height: 34px" href="javascript:deleteOption(\''+item[index++]+'\');">X</a> </div></div>')
-    }
-
-    function deleteOption(id){
-
-        $("#div"+id).remove();
-        index--;
-        var index1 = 0;
-        var index2 = 0;
-        var index3 = 0;
-        var index4 = 0
-        $(".update1").each(function(){
-            $(this).attr("id","div"+item[index1++])
-        })
-        $(".update2").each(function(){
-            $(this).attr("value",item[index2++])
-        })
-        $(".update3").each(function(){
-            $(this).attr("href",'javascript:deleteOption(\''+item[index3++]+'\');');
-        })
-        $(".update4").each(function(){
-            $(this).attr("value",'javascript:deleteOption(\''+item[index4++]+'\');');
-        })
-
-
-    }
 </script>
 </body>
 </html>

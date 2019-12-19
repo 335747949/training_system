@@ -1,7 +1,11 @@
 <!DOCTYPE HTML>
 <html  lang="zh" xmlns:th="http://www.thymeleaf.org">
 <meta charset="utf-8">
-<head th:include="include :: header"></head>
+<head th:include="include :: header">
+    <link rel="stylesheet" href="/css/layui.css">
+</head>
+<script src="/web/res/layui/layui.js"></script>
+<script src="/js/jquery.min.js"></script>
 <body class="white-bg">
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
     <form class="form-horizontal m" id="form-examQuestion-add">
@@ -120,6 +124,12 @@
 
 
     function addOption(){
+        if (index >= item.length){
+            var max = item.length + 2;
+            layer.msg("选项最多支持"+ max + "个");
+            return;
+        }
+
         $("#addOption").before(' ' +
             '<div class="form-group update1"  id="div'+item[index]+'"> <label class="col-sm-3 control-label"></label><div class="col-sm-1" style="padding-right: 0px;"> <input class="form-control update4" name="answer" value="'+item[index]+'" type="radio" style="margin: 0 0 0;">' +
             '</div><div class="col-sm-1" style="padding-right: 0px;padding-left: 0px"> ' +
