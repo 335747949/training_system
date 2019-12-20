@@ -192,7 +192,7 @@ public class ExamQuestionCategoryController extends BaseController {
      * 删除
      */
     @Log(title = "试题分类管理", businessType = BusinessType.DELETE)
-    @RequiresPermissions("system:examQuestionCategory:remove")
+    @RequiresPermissions("exam:examQuestionCategory:remove")
     @PostMapping("/remove/{id}")
     @ResponseBody
     public AjaxResult remove(@PathVariable("id") Long id) {
