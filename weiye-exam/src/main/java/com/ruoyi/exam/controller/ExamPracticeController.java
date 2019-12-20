@@ -189,7 +189,7 @@ public class ExamPracticeController extends BaseController
 			item.setDelFlag("0");
 			examPracticeQuestionService.insert(item);
 			num++;
-			score+=item.getScore();
+			score += ( item.getScore()==null ? 0 : item.getScore());
 		}
 		examPracticeService.updateSelectiveById(examPractice);
 		return AjaxResult.success();
