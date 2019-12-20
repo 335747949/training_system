@@ -78,7 +78,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="selectCategoryById" parameterType="Long" resultMap="TrainCourseCategoryResult">
-		select d.id, d.parent_id, d.parent_ids, d.name, d.order_num, d.del_flag,
+		select d.id, d.parent_id, d.parent_ids, d.name, d.order_num, d.del_flag,d.status,
 			(select name from train_course_category where id = d.parent_id) parent_name
 		from train_course_category d
 		where d.id = #{id}

@@ -38,7 +38,7 @@ public class TrainCourseCategory extends BaseEntity
     private String delFlag;
 
     /** 状态 0.正常 1.停用 */
-    private String status;
+    private int status;
 
     /** 父课程分类名称 */
     private String parentName;
@@ -116,11 +116,11 @@ public class TrainCourseCategory extends BaseEntity
         this.parentName = parentName;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

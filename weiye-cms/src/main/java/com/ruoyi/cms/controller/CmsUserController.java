@@ -27,14 +27,11 @@ import com.ruoyi.vip.domain.vo.VipUserOrdersVO;
 import com.ruoyi.vip.service.IVipUserCertificateService;
 import com.ruoyi.vip.service.IVipUserOrdersService;
 
-import org.apache.shiro.session.Session;
-import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpCookie;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
@@ -355,11 +352,26 @@ public class CmsUserController {
     @Log(title = "重置密码", businessType = BusinessType.UPDATE)
     @RequestMapping("/user/resetPwd")
     @ResponseBody
-    public AjaxResult resetPwdSave(SysUser user) {
+    @Transactional (rollbackFor = Exception.class)
+    public AjaxResult resetPwdSave(SysUser user, HttpServletRequest request, HttpServletResponse response) {
         user.setSalt(ShiroUtils.randomSalt());
         user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
         sysUserService.resetUserPwd(user);
+        clearLoginCookie(request, response);
         return AjaxResult.success();
+    }
+
+    private void clearLoginCookie(HttpServletRequest request, HttpServletResponse response) {
+        ShiroUtils.clearCachedAuthorizationInfo();
+        sysUserOnlineService.deleteOnlineById(ShiroUtils.getSessionId());
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("JSESSIONID")) {
+                cookie.setMaxAge(0);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+            }
+        }
     }
 
     @RequestMapping("/user/usercertificate.html")
@@ -392,16 +404,7 @@ public class CmsUserController {
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(loginName, Constants.LOGOUT, MessageUtils.message("user.logout.success")));
         }
         // 退出登录,刪除session和cookie
-        ShiroUtils.clearCachedAuthorizationInfo();
-        sysUserOnlineService.deleteOnlineById(ShiroUtils.getSessionId());
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("JSESSIONID")) {
-                cookie.setMaxAge(0);
-                cookie.setPath("/");
-                response.addCookie(cookie);
-            }
-        }
+        clearLoginCookie(request, response);
         return prefix + "/user/login";
     }
 
