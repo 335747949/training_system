@@ -78,6 +78,12 @@ public class SysProfileController extends BaseController {
         return prefix + "/resetPwd";
     }
 
+    @GetMapping("/resetPwd1/{userId}")
+    public String resetPwd1(@PathVariable("userId") Long userId, ModelMap mmap) {
+        mmap.put( "user", userService.selectUserById( userId ) );
+        return prefix + "/resetPwd1";
+    }
+
     @Log(title = "重置密码", businessType = BusinessType.UPDATE)
     @PostMapping("/resetPwd")
     @ResponseBody
