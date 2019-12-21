@@ -3,8 +3,8 @@ package com.ruoyi.cms.controller;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.constant.UserConstants;
-import com.ruoyi.exam.domain.ExamPracticeVO;
-import com.ruoyi.exam.domain.ExamQuestionVO;
+import com.ruoyi.exam.domain.*;
+import com.ruoyi.exam.service.IExamPracticeQuestionService;
 import com.ruoyi.exam.service.IExamPracticeService;
 import com.ruoyi.exam.service.IExamQuestionService;
 import com.ruoyi.framework.web.util.ShiroUtils;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,9 @@ public class CmsPracticeController {
 
     @Autowired
     private IExamQuestionService examQuestionService;
+
+    @Autowired
+    private IExamPracticeQuestionService examPracticeQuestionService;
 
 
     private String prefix = "web/practice/";
@@ -65,9 +69,18 @@ public class CmsPracticeController {
         }
         examPractice.setVipUserId(user.getUserId().toString());
         List<ExamPracticeVO> list = examPracticeService.selectListFromWeb(examPractice);
+        List<ExamPracticeVO> resultList = new ArrayList<>();
+        // 若练习中不包含题目时，不做展示
+        for (ExamPracticeVO practice : list) {
+          List<ExamPracticeQuestionVO> examPracticeQuestionList = examPracticeQuestionService.selectQuestionForPracticeId(practice.getId());
+          if (examPracticeQuestionList.size() > 0){
+              resultList.add(practice);
+          }
+        }
+
         AjaxResult success = AjaxResult.success("查询成功");
-        success.put("data", list);
-        success.put("total",new PageInfo(list).getTotal());
+        success.put("data", resultList);
+        success.put("total",new PageInfo(resultList).getTotal());
         return success;
     }
 
