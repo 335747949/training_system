@@ -91,24 +91,6 @@ document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Csc
         $("." + id + "useranswer:checked").each(function () {
             userAnswer+=$(this).val()+","
         });
-        if (userAnswer != (answer+",")) {
-            layer.msg('回答错误', {icon: 2});
-
-            $.ajax({
-                type: 'post',
-                url: "/web/user/adderrorquestion",
-                data: {questionId:id},
-                success: function (result) {
-                    if (result.code != web_status.SUCCESS) {
-                        layer.msg(result.msg, {icon: 2});
-                    }
-                }
-            });
-
-
-        }else{
-            layer.msg('回答正确', {icon: 1})
-        }
         $("#" + id + "answer").show()
     }
 
