@@ -164,13 +164,13 @@
       <img th:src="@{/weiye.png}" alt="伟业医药" width="45px" height="45px">
     </a>
     <ul class="layui-nav fly-nav layui-hide-xs">
-      <li class="layui-nav-item layui-this" th:if="${session.user!=null and session.userType!='10'}">
+      <li class="layui-nav-item nav-li course-li layui-this" th:if="${session.user!=null and session.userType!='10'}">
         <a th:href="@{/web}"><i class="iconfont icon-jiaoliu"></i>课程</a>
       </li>
-      <li class="layui-nav-item" th:if="${session.user!=null and session.userType!='10'}">
+      <li class="layui-nav-item nav-li practice-li" th:if="${session.user!=null and session.userType!='10'}">
         <a th:href="@{/web/practice}"><i class="iconfont icon-iconmingxinganli"></i>练习</a>
       </li>
-      <li class="layui-nav-item"  th:if="${session.user!=null and session.userType!='10'}">
+      <li class="layui-nav-item nav-li exam-li"  th:if="${session.user!=null and session.userType!='10'}">
         <a th:href="@{/web/examination}"><i class="iconfont icon-ui"></i>考试</a>
       </li>
     </ul>
@@ -211,6 +211,9 @@
         </dl>
       </li>
       <script>
+        layui.use('element', function(){
+          var element = layui.element;
+        });
       </script>
     </ul>
   </div>
@@ -277,5 +280,6 @@
 <div class="fly-footer" th:fragment="cmsBottom">
   <p><a href="#" target="_blank">伟业医药</a></p>
 </div>
+
 </body>
 </html>

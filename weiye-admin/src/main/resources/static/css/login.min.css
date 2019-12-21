@@ -121,14 +121,14 @@ body.signin {
 }
 
 .login-left {
-    width: 380px;
-    height: 560px;
+    width: 300px;
+    height: 440px;
     background: url(../img/left-bg.jpg) no-repeat;
 }
 
 .login-right {
-    width: 440px;
-    height: 560px;
+    width: 400px;
+    height: 440px;
     background: #fff;
     display: flex;
     align-items: center;
@@ -143,5 +143,5 @@ body.signin {
     color: #3377F0;
     letter-spacing: 0;
     line-height: 28px;
-    margin-bottom: 90px;
+    margin-bottom: 60px;
 }
