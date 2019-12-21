@@ -133,17 +133,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         INNER JOIN sys_user su ON exam_user_examination.vip_user_id = su.user_id
         INNER JOIN exam_paper ep ON ep.id = exam_user_examination.exam_paper_id
         <where>
-            <if test="id != null "> and id = #{id}</if>
-            <if test="vipUserId != null "> and vip_user_id = #{vipUserId}</if>
-            <if test="examExaminationId != null "> and exam_examination_id = #{examExaminationId}</if>
-            <if test="examPaperId != null "> and exam_paper_id = #{examPaperId}</if>
-            <if test="score != null "> and score = #{score}</if>
-            <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
-            <if test="createDate != null "> and create_date = #{createDate}</if>
-            <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
-            <if test="updateDate != null "> and update_date = #{updateDate}</if>
-            <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
-            <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+            <if test="id != null "> and exam_user_examination.id = #{id}</if>
+            <if test="vipUserId != null "> and exam_user_examination.vip_user_id = #{vipUserId}</if>
+            <if test="examExaminationId != null "> and exam_user_examination.exam_examination_id = #{examExaminationId}</if>
+            <if test="examPaperId != null "> and exam_user_examination.exam_paper_id = #{examPaperId}</if>
+            <if test="score != null "> and exam_user_examination.score = #{score}</if>
+            <if test="createBy != null  and createBy != '' "> and exam_user_examination.create_by = #{createBy}</if>
+            <if test="createDate != null "> and exam_user_examination.create_date = #{createDate}</if>
+            <if test="updateBy != null  and updateBy != '' "> and exam_user_examination.update_by = #{updateBy}</if>
+            <if test="updateDate != null "> and exam_user_examination.update_date = #{updateDate}</if>
+            <if test="remarks != null  and remarks != '' "> and exam_user_examination.remarks = #{remarks}</if>
+            <if test="delFlag != null  and delFlag != '' "> and exam_user_examination.del_flag = #{delFlag}</if>
             <if test="userName != null  and userName != '' "> and su.user_name like concat('%', #{userName}, '%')</if>
             <if test="loginName != null  and loginName != '' "> and su.login_name like concat('%', #{loginName}, '%') </if>
             <if test="examExaminationVO != null  and examExaminationVO.trainCourseName != null  and examExaminationVO.trainCourseName != '' "> and tc.name = #{examExaminationVO.trainCourseName}</if>
@@ -188,25 +188,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         ee.start_time as startTime,
         ee.end_time as endTime,
         exam_user_examination.score as score
-
-
         from exam_user_examination exam_user_examination
         INNER JOIN exam_examination ee ON exam_user_examination.exam_examination_id = ee.id
         INNER JOIN train_course tc ON ee.train_course_id = tc.id
         INNER JOIN sys_user su ON exam_user_examination.vip_user_id = su.user_id
         INNER JOIN exam_paper ep ON ep.id = exam_user_examination.exam_paper_id
         <where>
-            <if test="id != null "> and id = #{id}</if>
-            <if test="vipUserId != null "> and vip_user_id = #{vipUserId}</if>
-            <if test="examExaminationId != null "> and exam_examination_id = #{examExaminationId}</if>
-            <if test="examPaperId != null "> and exam_paper_id = #{examPaperId}</if>
-            <if test="score != null "> and score = #{score}</if>
-            <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
-            <if test="createDate != null "> and create_date = #{createDate}</if>
-            <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
-            <if test="updateDate != null "> and update_date = #{updateDate}</if>
-            <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
-            <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+            <if test="id != null "> and exam_user_examination.id = #{id}</if>
+            <if test="vipUserId != null "> and exam_user_examination.vip_user_id = #{vipUserId}</if>
+            <if test="examExaminationId != null "> and exam_user_examination.exam_examination_id = #{examExaminationId}</if>
+            <if test="examPaperId != null "> and exam_user_examination.exam_paper_id = #{examPaperId}</if>
+            <if test="score != null "> and exam_user_examination.score = #{score}</if>
+            <if test="createBy != null  and createBy != '' "> and exam_user_examination.create_by = #{createBy}</if>
+            <if test="createDate != null "> and exam_user_examination.create_date = #{createDate}</if>
+            <if test="updateBy != null  and updateBy != '' "> and exam_user_examination.update_by = #{updateBy}</if>
+            <if test="updateDate != null "> and exam_user_examination.update_date = #{updateDate}</if>
+            <if test="remarks != null  and remarks != '' "> and exam_user_examination.remarks = #{remarks}</if>
+            <if test="delFlag != null  and delFlag != '' "> and exam_user_examination.del_flag = #{delFlag}</if>
             <if test="userName != null  and userName != '' "> and su.user_name = #{userName}</if>
             <if test="examExaminationVO != null  and examExaminationVO.trainCourseName != null  and examExaminationVO.trainCourseName != '' "> and tc.name = #{examExaminationVO.trainCourseName}</if>
             <if test="examPaperName != null  and examPaperName != '' "> and ep.name = #{examPaperName}</if>
