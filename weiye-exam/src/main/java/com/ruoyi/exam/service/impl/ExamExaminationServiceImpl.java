@@ -298,4 +298,9 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
     public ExamExaminationVO selectExamExaminationById(Integer id) {
         return examExaminationMapper.selectExamExaminationById(id);
     }
+
+    @Override
+    public int countExamQuestion(Integer id) {
+        return examExaminationMapper.countExamQuestion(id);
+    }
 }

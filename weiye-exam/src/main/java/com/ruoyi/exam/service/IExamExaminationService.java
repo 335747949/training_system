@@ -56,4 +56,6 @@ public interface IExamExaminationService extends AbstractBaseService<ExamExamina
     int update(ExamExamination examExamination);
 
     ExamExaminationVO selectExamExaminationById(Integer id);
+
+    int countExamQuestion(Integer id);
 }

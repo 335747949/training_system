@@ -188,6 +188,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         left join exam_paper_category epc on ep.exam_paper_category_id = epc.id
         where exam_examination.id = #{id}
     </select>
+    <select id="countExamQuestion" resultType="java.lang.Integer">
+        SELECT
+            COUNT( ee.id )
+        FROM
+            exam_examination ee
+            LEFT JOIN exam_paper_question epq ON epq.exam_paper_id = ee.exam_paper_id
+        WHERE
+            ee.id = #{id}
+    </select>
 
     <update id="update" parameterType="ExamExamination">
         update exam_examination

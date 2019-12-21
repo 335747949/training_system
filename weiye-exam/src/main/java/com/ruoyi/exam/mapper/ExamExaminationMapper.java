@@ -32,4 +32,6 @@ public interface ExamExaminationMapper  extends MyMapper<ExamExamination>
     int update(ExamExamination examExamination);
 
     ExamExaminationVO selectExamExaminationById(@Param("id") Integer id);
+
+    int countExamQuestion(@Param("id") Integer id);
 }
