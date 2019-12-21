@@ -217,8 +217,12 @@
         });
 
     function submitHandler() {
+        if (overAllIds.length > 0){
+            $.operate.save(ctx + "exam/examPaper"+ "/addQuestionForModel",$.param({questionId:overAllIds,paperId:$("#examPaperId").val()}));
+        }else {
+            layer.msg("请选择问题", {icon: 2});
+        }
 
-        $.operate.save(ctx + "exam/examPaper"+ "/addQuestionForModel",$.param({questionId:overAllIds,paperId:$("#examPaperId").val()}));
     }
 </script>
 </body>

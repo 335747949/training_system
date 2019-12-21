@@ -118,6 +118,9 @@ private static final long serialVersionUID = 1L;
     /** 获取总分数 */
     public Integer getScore()
             {
+                if (null == score){
+                return 0;
+                 }
             return score;
             }
 	    /** 设置试题数量 */

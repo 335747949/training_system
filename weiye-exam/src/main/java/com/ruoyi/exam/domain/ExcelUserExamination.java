@@ -92,6 +92,9 @@ public class ExcelUserExamination {
     }
 
     public Integer getScore() {
+        if (null == score){
+            return 0;
+        }
         return score;
     }
 

@@ -82,6 +82,9 @@ private static final long serialVersionUID = 1L;
     /** 获取分数 */
     public Integer getScore()
             {
+                if (null == score){
+                    return 0;
+                }
             return score;
             }
 	    /** 设置排序号 */

@@ -113,6 +113,9 @@ public class ExamExaminationResultVo{
     }
 
     public Integer getScore() {
+        if (null == score){
+            return 0;
+        }
         return score;
     }
 

@@ -217,8 +217,11 @@
         });
 
     function submitHandler() {
-
-        $.operate.save(ctx + "exam/examPractice"+ "/addQuestionForModel",$.param({questionId:overAllIds,practiceId:$("#examPracticeId").val()}));
+        if (overAllIds.length > 0){
+            $.operate.save(ctx + "exam/examPractice"+ "/addQuestionForModel",$.param({questionId:overAllIds,practiceId:$("#examPracticeId").val()}));
+        }else {
+            layer.msg("请选择问题", {icon: 2});
+        }
     }
 </script>
 </body>
