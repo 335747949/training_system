@@ -8,7 +8,9 @@
     <div class="container"> 
         <div class="imageBox"> 
 	        <div class="thumbBox"></div> 
-	        <div class="spinner" style="display: none">Loading...</div> 
+	        <div class="spinner" style="display: none">
+				<img th:src="(${user.avatar} == '') ? @{/weiye.png} : ${user.avatar}" width="198px" height="198px">
+			</div>
 	   </div> 
 	   <div class="action"> 
 	       <div class="new-contentarea tc">
@@ -30,7 +32,7 @@ $(window).load(function() {
     var options = {
         thumbBox: '.thumbBox',
         spinner: '.spinner',
-        imgSrc: $.common.isEmpty(avatar) ? ctx + 'img/profile.jpg' : ctx + 'profile/avatar/' + avatar
+        imgSrc: $.common.isEmpty(avatar) ? ctx + 'img/weiye.png' : avatar
     }
     cropper = $('.imageBox').cropbox(options);
     $('#avatar').on('change', function() {
