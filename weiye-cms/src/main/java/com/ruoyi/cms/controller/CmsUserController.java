@@ -27,6 +27,9 @@ import com.ruoyi.vip.domain.vo.VipUserOrdersVO;
 import com.ruoyi.vip.service.IVipUserCertificateService;
 import com.ruoyi.vip.service.IVipUserOrdersService;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -353,26 +356,24 @@ public class CmsUserController {
     @RequestMapping("/user/resetPwd")
     @ResponseBody
     @Transactional (rollbackFor = Exception.class)
-    public AjaxResult resetPwdSave(SysUser user, HttpServletRequest request, HttpServletResponse response) {
+    public AjaxResult resetPwdSave(SysUser user, HttpServletRequest request, HttpServletResponse response) throws IOException {
         user.setSalt(ShiroUtils.randomSalt());
         user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
         sysUserService.resetUserPwd(user);
-        clearLoginCookie(request, response);
-        return AjaxResult.success();
-    }
-
-    private void clearLoginCookie(HttpServletRequest request, HttpServletResponse response) {
+        // 退出登录,刪除session和cookie
         ShiroUtils.clearCachedAuthorizationInfo();
-        sysUserOnlineService.deleteOnlineById(ShiroUtils.getSessionId());
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("JSESSIONID")) {
                 cookie.setMaxAge(0);
                 cookie.setPath("/");
                 response.addCookie(cookie);
+                response.sendRedirect( "login.html");
             }
         }
+        return AjaxResult.success();
     }
+
 
     @RequestMapping("/user/usercertificate.html")
     public String userCertificate(ModelMap map) {
@@ -396,16 +397,26 @@ public class CmsUserController {
     }
 
     @RequestMapping("/user/userlogout.html")
-    public String userLogout(ModelMap map, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void userLogout(ModelMap map, HttpServletRequest request, HttpServletResponse response) throws IOException {
         SysUser user = ShiroUtils.getSysUser();
         if (StringUtils.isNotNull(user)) {
             String loginName = user.getLoginName();
             // 记录用户退出日志
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(loginName, Constants.LOGOUT, MessageUtils.message("user.logout.success")));
         }
+
         // 退出登录,刪除session和cookie
-        clearLoginCookie(request, response);
-        return prefix + "/user/login";
+        ShiroUtils.clearCachedAuthorizationInfo();
+        sysUserOnlineService.deleteOnlineById(ShiroUtils.getSessionId());
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("JSESSIONID")) {
+                cookie.setMaxAge(0);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+                response.sendRedirect( "login.html");
+            }
+        }
     }
 
 }
