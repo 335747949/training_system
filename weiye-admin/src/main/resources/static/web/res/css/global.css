@@ -9,7 +9,7 @@
 
 /* 全局 */
 html,body{overflow-x: hidden;height: 100%;}
-html body{padding-top: 88px;box-sizing: border-box;}
+html body{padding: 88px 0 102px 0;height: calc(100% - 190px);}
 html{background-color: #F2F2F2;}
 i{font-style: normal;}
 
