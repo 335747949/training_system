@@ -164,6 +164,24 @@
 <script th:src="@{/ajax/libs//datapicker/bootstrap-datetimepicker.js}"></script>
 <script th:src="@{/ajax/libs/beautifyhtml/beautifyhtml.js}"></script>
 <script type="text/javascript">
+
+    // 日期比较校验
+    $.validator.addMethod("compareDate",function(value,element){
+        var assigntime = $("#startTime").val();
+        var deadlinetime = $("#endTime").val();
+        var reg = new RegExp('-','g');
+        assigntime = assigntime.replace(reg,'/');//正则替换
+        deadlinetime = deadlinetime.replace(reg,'/');
+        assigntime = new Date(parseInt(Date.parse(assigntime),10));
+        deadlinetime = new Date(parseInt(Date.parse(deadlinetime),10));
+        if(assigntime>deadlinetime){
+            layer.msg("结束日期必须大于开始日期");
+            return false;
+        }else{
+            return true;
+        }
+    },"<font color='#E47068'>结束日期必须大于开始日期</font>");
+
     $(".input-group.date").datetimepicker({
         minView: 1,//设置只显示到月份
         format: 'yyyy-mm-dd hh:00:00',
@@ -243,6 +261,7 @@
             },
             endTime: {
                 required: true,
+                compareDate:"startTime",
             },
             passMark: {
                 required: true,
@@ -252,6 +271,15 @@
             },
             examNumber: {
                 required: true
+            },
+            messages:{
+                "startTime":{
+                    required:  "开始时间不能为空"
+                },
+                "endTime":{
+                    required:  "结束时间不能为空",
+                    compareDate: "结束日期必须大于开始日期!"
+                }
             }
 
         }
