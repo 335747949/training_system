@@ -1,7 +1,7 @@
 # 日志配置
 logging:
   level:
-    com.ruoyi: WARN
+    com.ruoyi: debug
     org.springframework: WARN
     org.spring.springboot.dao: debug
 
