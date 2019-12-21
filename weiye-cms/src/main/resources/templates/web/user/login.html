@@ -12,27 +12,27 @@
 <div class="layui-container fly-marginTop">
   <div class="fly-panel fly-panel-user" pad20>
     <div class="layui-tab layui-tab-brief" lay-filter="user">
-      <ul class="layui-tab-title">
-        <li class="layui-this">登入</li>
+      <ul class="layui-tab-title login-title-center">
+        <li class="layui-this" style="margin-right: 40px;">登陆</li>
         <li><a th:href="@{/web/user/reg.html}">注册</a></li>
       </ul>
       <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
         <div class="layui-tab-item layui-show">
-          <div class="layui-form layui-form-pane">
-              <div class="layui-form-item">
+          <div class="layui-form layui-form-pane flex-center">
+              <div class="layui-form-item" style="margin-top: 120px;">
                 <label for="L_loginName" class="layui-form-label">手机号</label>
                 <div class="layui-input-inline">
                   <input type="text" id="L_loginName" name="loginName" required lay-verify="required" autocomplete="off" class="layui-input">
                 </div>
               </div>
-              <div class="layui-form-item">
+              <div class="layui-form-item" style="margin-top: 36px;">
                 <label for="L_pass" class="layui-form-label">密码</label>
                 <div class="layui-input-inline">
                   <input type="password" id="L_pass" name="password" required lay-verify="required" autocomplete="off" class="layui-input">
                 </div>
               </div>
-              <div class="layui-form-item">
-                <button id="btnSubmit" class="layui-btn" lay-filter="*" onclick="login()" >立即登录</button>
+              <div class="layui-form-item" style="margin-top: 100px;margin-bottom: 100px;">
+                <button id="btnSubmit" class="layui-btn login-btn"  style="width: 300px;" lay-filter="*" onclick="login()" >立即登录</button>
                 <!--<span style="padding-left:20px;">-->
                   <!--<a href="forget.html">忘记密码？</a>-->
                 <!--</span>-->

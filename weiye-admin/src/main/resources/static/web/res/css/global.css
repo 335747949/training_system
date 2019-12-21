@@ -8,8 +8,8 @@
 
 
 /* 全局 */
-html,body{overflow-x: hidden;}
-html body{margin-top: 61px;}
+html,body{overflow-x: hidden;height: 100%;}
+html body{padding-top: 88px;box-sizing: border-box;}
 html{background-color: #F2F2F2;}
 i{font-style: normal;}
 
@@ -95,7 +95,9 @@ i{font-style: normal;}
 a:hover{color: #009688; transition: all .3s;}
 pre{padding: 10px 15px; margin: 10px 0; font-size: 12px; border-left: 6px solid #009688;  background-color: #f8f8f8; font-family: Courier New; overflow: auto;}
 
-.layui-container{padding: 0;}
+.layui-container{padding: 0;
+  height: calc(100% - 240px);
+}
 .fly-main{width: 1079px; min-height: 600px; margin: 0 auto 15px;}
 .layui-badge{height: 20px; line-height: 20px; border-radius: 2px;}
 
@@ -108,7 +110,7 @@ pre{padding: 10px 15px; margin: 10px 0; font-size: 12px; border-left: 6px solid 
 .fly-msg a{color:#4F99CF}
 .fly-editbox{position: relative;}
 
-.fly-marginTop{margin-top: 15px;}
+.fly-marginTop{margin-top: 16px;}
 .fly-mid{display: inline-block; height: 10px; width: 1px; margin: 0 10px; vertical-align: middle; background-color: #e2e2e2;}
 .fly-right{position: absolute; right: 15px; top: 0;}
 
@@ -157,15 +159,18 @@ pre{padding: 10px 15px; margin: 10px 0; font-size: 12px; border-left: 6px solid 
 .fly-header .fly-nav-user li a{padding: 0 10px;}
 .fly-header .fly-nav-user li .fly-nav-avatar{padding-right: 0;}
 .fly-header .fly-nav-user a.iconfont{color: #A9B7B7;}
-.fly-header>.layui-nav-item a{color: rgba(255,255,255,0.5);}
-.fly-header .layui-this a{color: #fff;}
+.fly-header>.layui-nav-item a{color: #626262;}
+.layui-nav  .nav-li a{color: #626262;padding: 0 0 6px 0;margin-right: 50px;font-size: 18px;line-height: 1;}
+.fly-header .layui-this a{color: #3CB47B;}
 .fly-header .layui-nav .layui-this:after,
 .fly-header .layui-nav .layui-nav-bar,
 .fly-header .fly-nav-user .layui-nav-more{display: none !important;}
 .fly-header .fly-nav-user .layui-nav-child{left: auto; right: 0; width: 120px; min-width: 0;}
-
+.nav-header{margin-left: 479px;}
+.layui-nav  .layui-this a{color: #3CB47B;border-bottom: 2px solid #3CB47B;}
+.layui-nav  .nav-li a:hover{color: #3CB47B;border-bottom: 2px solid #3CB47B;}
 /* 底部 */
-.fly-footer {margin: 50px 0 0; padding: 20px 0 30px; line-height: 30px; text-align: center; color: #737573; border-top: 1px solid #e2e2e2;}
+.fly-footer {width:100%;margin: 50px 0 0; padding: 20px 0;  text-align: center; background: #fff;font-size: 12px;position: fixed;bottom: 0;left: 0;}
 .fly-footer a{padding:0 6px; font-weight: 300; color: #333;}
 .fly-footer a:hover{color: #777;}
 .fly-union{margin-top: 10px; color: #999;}
@@ -174,7 +179,6 @@ pre{padding: 10px 15px; margin: 10px 0; font-size: 12px; border-left: 6px solid 
 .fly-union span{position: relative; top: 3px;}
 .fly-union span a{padding: 0; display: inline; color: #999;}
 .fly-union span a:hover{text-decoration: underline;}
-
 /* 面板 */
 .fly-panel{margin-bottom: 15px; border-radius: 2px; background-color: #fff; box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);}
 .fly-panel[pad20]{padding: 20px;}
@@ -552,3 +556,6 @@ body .fly-user-main{position: relative; min-height: 600px;}
   .site-mobile .fly-user-main>.layui-nav{left: 0;}
   .site-mobile .site-mobile-shade{content: ''; position: fixed; top: 0; bottom: 0; left: 0; right: 0; background-color: rgba(0,0,0,.9); z-index: 999;}
 }
+.login-title-center{display: flex;justify-content: center;} .login-title-center li{font-size: 18px;padding: 0;} .login-title-center li a{font-size: 18px;color: #979797;} .login-title-center li.layui-this{color: #2EAF71;}.login-title-center li.layui-this:after{border-bottom:2px solid #2EAF71;}
+.flex-center .layui-form-item{display: flex;justify-content: center;}
+.login-btn{background-color: #2EAF71; }
