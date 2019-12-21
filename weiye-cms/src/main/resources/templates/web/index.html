@@ -156,22 +156,21 @@
   .filterbox li:after{content:".";display:block;height:0;clear:both;visibility:hidden}
   .filterbox .path-now{font-size: 16px;color: #333;margin-bottom:20px;}
 
-
 </style>
-<div class="fly-header layui-bg-black" th:fragment="top">
+<div class="fly-header" th:fragment="top" style="background: #fff;border-bottom: 1px solid #D4D4D4;height: 88px;line-height: 88px;">
   <div class="layui-container">
-    <a class="fly-logo" th:href="@{/web}">
-      <img th:src="@{/weiye.png}" alt="伟业医药" width="45px" height="45px">
+    <a class="fly-logo" th:href="@{/web}" style="top: 0;left: 0">
+      <img th:src="@{/img/logo.png}" alt="伟业医药" width="145px" height="47px">
     </a>
-    <ul class="layui-nav fly-nav layui-hide-xs">
+    <ul class="layui-nav fly-nav layui-hide-xs nav-header">
       <li class="layui-nav-item nav-li course-li layui-this" th:if="${session.user!=null and session.userType!='10'}">
-        <a th:href="@{/web}"><i class="iconfont icon-jiaoliu"></i>课程</a>
+        <a th:href="@{/web}">课程</a>
       </li>
       <li class="layui-nav-item nav-li practice-li" th:if="${session.user!=null and session.userType!='10'}">
-        <a th:href="@{/web/practice}"><i class="iconfont icon-iconmingxinganli"></i>练习</a>
+        <a th:href="@{/web/practice}">练习</a>
       </li>
       <li class="layui-nav-item nav-li exam-li"  th:if="${session.user!=null and session.userType!='10'}">
-        <a th:href="@{/web/examination}"><i class="iconfont icon-ui"></i>考试</a>
+        <a th:href="@{/web/examination}">考试</a>
       </li>
     </ul>
 
@@ -179,7 +178,9 @@
 
       <!-- 未登入的状态 -->
       <li th:if="${session.user == null}" class="layui-nav-item">
-        <a class="iconfont icon-touxiang layui-hide-xs" th:href="@{/web/user/login.html}"></a>
+        <a class="iconfont layui-hide-xs" th:href="@{/web/user/login.html}">
+          <img th:src="@{/img/avator-default.png}" alt="头像" width="40px" height="40px">
+        </a>
       </li>
 <!--      <li th:if="${session.user}==null" class="layui-nav-item">-->
 <!--        <a th:href="@{/web/user/login.html}">登入</a>-->
@@ -189,17 +190,27 @@
 <!--      </li>-->
       <!-- 登入后的状态 -->
       <li th:if="${session.user != null}" class="layui-nav-item">
-        <a class="iconfont icon-touxiang layui-hide-xs" th:href="@{/web/user/set.html}">
+        <a class="iconfont layui-hide-xs" href="javascript:;">
+          <img th:src="@{/img/avator-default.png}" alt="头像" width="40px" height="40px">
 <!--        </a>    <a class="fly-nav-avatar" href="javascript:;">-->
 <!--          <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>-->
 <!--          <i class="layui-badge fly-badge-vip layui-hide-xs">VIP</i>-->
 <!--          <img th:if="${#strings.isEmpty(session.user.avatar)}" th:src="@{/web/res/images/avatar/default.png}" th:alt="${session.user.userName}">-->
 <!--          <img th:if="${not #strings.isEmpty(session.user.avatar)}" th:src="${session.user.avatar}" th:alt="${session.user.avatar}">-->
-          <cite class="layui-hide-xs" th:text="${session.user.userName}"></cite>
-          <i>(
-          <cite class="layui-hide-xs" th:text="${session.user.dept.deptName}"></cite>
-          )
-          </i>
+          <div style="display: inline-block;vertical-align: middle;margin-left: 4px;">
+            <div style="line-height: 1;">
+              <span th:text="${session.user.userName}" style="font-size: 12px;"></span>
+              <img th:src="@{/img/xiala.png}" alt="头像" width="11px" height="6px">
+            </div>
+            <div style="line-height: 1;margin-top: 4px;">
+              <span th:text="${session.user.dept.deptName}" style="font-size: 12px;"></span>
+            </div>
+          </div>
+<!--          <cite class="layui-hide-xs" th:text="${session.user.userName}"></cite>-->
+<!--          <i>(-->
+<!--          <cite class="layui-hide-xs" th:text="${session.user.dept.deptName}"></cite>-->
+<!--          )-->
+<!--          </i>-->
         </a>
         <dl class="layui-nav-child">
           <!--<dd><a th:href="@{/web/user/message.html}"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>-->
@@ -210,11 +221,6 @@
             <dd><a th:href="@{/web/user/userlogout.html}" style="text-align: center;">退出</a></dd>
         </dl>
       </li>
-      <script>
-        layui.use('element', function(){
-          var element = layui.element;
-        });
-      </script>
     </ul>
   </div>
 </div>
@@ -278,7 +284,17 @@
 </div>
 
 <div class="fly-footer" th:fragment="cmsBottom">
-  <p><a href="#" target="_blank">伟业医药</a></p>
+<!--  <p><a href="#" target="_blank">伟业医药</a></p>-->
+  <img th:src="@{/img/footer-logo.png}" alt="" width="80px" height="18px">
+  <p style="margin-top: 8px;color: #979797;">伟业课堂 是伟业医药（weiye360.cn）旗下专注医药行业的在线学习平台</p>
+  <p style="margin-top: 4px;color: #979797;"> <span>© </span><span id="year"></span><span> 伟业医药版权所有</span></p>
+  <script>
+    $(function(){
+      var year=new Date().getFullYear();
+      $('#year').text(year);
+    })
+
+  </script>
 </div>
 
 </body>
