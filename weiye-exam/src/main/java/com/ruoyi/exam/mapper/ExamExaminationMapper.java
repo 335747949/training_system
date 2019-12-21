@@ -4,7 +4,9 @@ import com.ruoyi.exam.domain.ExamExamination;
 import java.util.List;
 import java.util.Map;
 
+import com.ruoyi.exam.domain.ExamExaminationVO;
 import com.ruoyi.framework.web.base.MyMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 考试 数据层
@@ -28,4 +30,6 @@ public interface ExamExaminationMapper  extends MyMapper<ExamExamination>
     List<ExamExamination> selectEnterNameListFromWeb(Map<String, Object> map);
 
     int update(ExamExamination examExamination);
+
+    ExamExaminationVO selectExamExaminationById(@Param("id") Integer id);
 }

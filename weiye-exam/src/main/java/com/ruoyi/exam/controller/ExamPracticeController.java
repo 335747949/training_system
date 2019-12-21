@@ -108,7 +108,7 @@ public class ExamPracticeController extends BaseController
 	@GetMapping("/edit/{id}")
 	public String edit(@PathVariable("id") Integer id, ModelMap mmap)
 	{
-		ExamPractice examPractice = examPracticeService.selectById(id);
+		ExamPracticeVO examPractice = examPracticeService.selectExamPracticeById(id);
 		mmap.put("examPractice", examPractice);
 	    return prefix + "/edit";
 	}

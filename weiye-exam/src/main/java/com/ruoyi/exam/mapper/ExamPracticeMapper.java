@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ruoyi.exam.domain.ExamPracticeVO;
 import com.ruoyi.framework.web.base.MyMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 练习 数据层
@@ -31,4 +32,6 @@ public interface ExamPracticeMapper  extends MyMapper<ExamPractice>
 	List<ExamPracticeVO> selectListFromWeb(ExamPractice examPractice);
 
     int update(ExamPractice examPractice);
+
+    ExamPracticeVO selectExamPracticeById(@Param("id") Integer id);
 }

@@ -28,9 +28,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
     <select id="selectTrainCourseList" parameterType="TrainCourseVO" resultMap="TrainCourseResultVO">
         select
-        <include refid="selectTrainCourseVo"/>
+        <include refid="selectTrainCourseVo"/>,
+        tcc.name AS trainCourseCategoryName
         from train_course
-
+        left join train_course_category tcc on tcc.id = train_course.train_course_category_id
         <if test="userId != null ">
             left join train_course_user tcu on tcu.train_course_id =train_course.id
         </if>

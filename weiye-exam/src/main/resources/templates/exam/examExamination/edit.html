@@ -23,11 +23,12 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">考试试卷：</label>
                 <div class="col-sm-3">
-                    <input id="treeName" name="treeName" value="试卷分类" onclick="selectExamPaperCategoryTree()"
-                           class="form-control" type="text" readonly="true">
+<!--                    <input id="treeName" name="treeName" value="试卷分类" onclick="selectExamPaperCategoryTree()"-->
+<!--                           class="form-control" type="text" readonly="true">-->
+                    <input id="treeName" name="treeName" th:value="*{examPaperCategoryName}" class="form-control" type="text" readonly="true">
                 </div>
                 <div class="col-sm-5">
-                    <select id="examPaperId" name="examPaperId" class="form-control m-b">
+                    <select id="examPaperId" name="examPaperId" class="form-control m-b" disabled>
                         <option value="">---请选择---</option>
                     </select>
                 </div>
@@ -36,11 +37,12 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">课程选择：</label>
                 <div class="col-sm-3">
-                    <input id="trainCateGoryName" name="trainCateGoryName" value="课程分类"
-                           onclick="selectTrainCategoryTree()" class="form-control" type="text" readonly="true">
+<!--                    <input id="trainCateGoryName" name="trainCateGoryName" value="课程分类"-->
+<!--                           onclick="selectTrainCategoryTree()" class="form-control" type="text" readonly="true">-->
+                    <input id="trainCateGoryName" name="trainCateGoryName" th:value="*{trainCourseCategoryName}" class="form-control" type="text" readonly="true">
                 </div>
                 <div class="col-sm-5">
-                    <select id="trainCourseId" name="trainCourseId" class="form-control m-b">
+                    <select id="trainCourseId" name="trainCourseId" class="form-control m-b" disabled>
                         <option>---请选择---</option>
                     </select>
                 </div>

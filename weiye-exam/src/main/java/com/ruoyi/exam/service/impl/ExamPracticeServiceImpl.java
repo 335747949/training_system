@@ -58,4 +58,9 @@ public class ExamPracticeServiceImpl extends AbstractBaseServiceImpl<ExamPractic
     public int update(ExamPractice examPractice) {
         return examPracticeMapper.update(examPractice);
     }
+
+    @Override
+    public ExamPracticeVO selectExamPracticeById(Integer id) {
+        return examPracticeMapper.selectExamPracticeById(id);
+    }
 }

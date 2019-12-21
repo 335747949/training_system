@@ -101,7 +101,7 @@
 				{
 					field : '${column.attrname}', 
 					title : '${column.columnComment}',
-					sortable: true,
+					//sortable: true,
 					formatter: function(value, row, index) {
 		            	return $.table.selectDictLabel(datas, value);
 		            }
@@ -110,7 +110,7 @@
 				{
 					field : '${column.attrname}', 
 					title : '${column.columnComment}',
-					sortable: true
+					//sortable: true
 				},
 #end
 #end				

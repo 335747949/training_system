@@ -99,6 +99,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
 
     </select>
+    <select id="selectExamPracticeById" resultType="com.ruoyi.exam.domain.ExamPracticeVO">
+        select
+        <include refid="selectExamPracticeVo"/>,
+        tc.name AS trainCourseName,
+        tcc.name AS trainCourseCategoryName
+        from exam_practice exam_practice
+        left join train_course tc on exam_practice.train_course_id = tc.id
+        left join train_course_category tcc on tcc.id = tc.train_course_category_id
+        where exam_practice.id = #{id}
+    </select>
 
     <update id="update" parameterType="ExamPractice">
         update exam_practice

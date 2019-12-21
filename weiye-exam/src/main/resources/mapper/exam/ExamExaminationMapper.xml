@@ -175,6 +175,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     </select>
 
+    <select id="selectExamExaminationById" resultType="com.ruoyi.exam.domain.ExamExaminationVO">
+        select
+        <include refid="selectExamExaminationVo"/>,
+        tc.name AS trainCourseName,
+        tcc.name AS trainCourseCategoryName,
+        epc.name AS examPaperCategoryName
+        from exam_examination exam_examination
+        left join train_course tc on exam_examination.train_course_id = tc.id
+        left join train_course_category tcc on tcc.id = tc.train_course_category_id
+        left join exam_paper ep on exam_examination.exam_paper_id = ep.id
+        left join exam_paper_category epc on ep.exam_paper_category_id = epc.id
+        where exam_examination.id = #{id}
+    </select>
+
     <update id="update" parameterType="ExamExamination">
         update exam_examination
         <set>

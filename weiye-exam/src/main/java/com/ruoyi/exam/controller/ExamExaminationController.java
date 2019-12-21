@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.exam.domain.ExamExaminationResultVo;
+import com.ruoyi.exam.domain.ExamExaminationVO;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -111,7 +112,7 @@ public class ExamExaminationController extends BaseController
 	@GetMapping("/edit/{id}")
 	public String edit(@PathVariable("id") Integer id, ModelMap mmap)
 	{
-		ExamExamination examExamination = examExaminationService.selectById(id);
+		ExamExaminationVO examExamination = examExaminationService.selectExamExaminationById(id);
 		mmap.put("examExamination", examExamination);
 	    return prefix + "/edit";
 	}
