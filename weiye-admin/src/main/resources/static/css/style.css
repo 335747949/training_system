@@ -722,8 +722,8 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 }
 
 .btn-success {
-    background-color: #1c84c6;
-    border-color: #1c84c6;
+    background-color: #3377F0;
+    border-color: #3377F0;
     color: #FFFFFF;
 }
 
@@ -7346,4 +7346,13 @@ body.skin-yellow {
     background-color: #ffffff!important;
     border-color: #cccccc!important;
 }
-
+.layui-layer-btn a{
+    background-color: #fff !important;
+    color:  #303131!important;
+    border: 1px solid #DCDFE6!important;
+}
+.layui-layer-btn .layui-layer-btn0{
+    background-color: #3377F0 !important;
+    color:#fff!important;
+    border-color: #3377F0 !important;
+}
