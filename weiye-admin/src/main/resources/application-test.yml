@@ -26,7 +26,7 @@ spring:
     druid:
       # 主库数据源
       master:
-        url: jdbc:mysql://rm-m5e5905g322yqnjm9.mysql.rds.aliyuncs.com:3306/exam?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=UTC
+        url: jdbc:mysql://rm-m5e5905g322yqnjm9.mysql.rds.aliyuncs.com:3306/exam?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=CST
         username: gm_exam
         password: B5Qwheb1IdAiM
       # 从库数据源

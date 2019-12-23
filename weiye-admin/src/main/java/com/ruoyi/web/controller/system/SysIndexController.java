@@ -80,6 +80,8 @@ public class SysIndexController extends BaseController
         Long examPractice = examPracticeService.selectCount( null );
         mmap.put("examPractice",examPractice);
         mmap.put("version", Global.getVersion());
+        SysUser user = getSysUser();
+        mmap.put("user", user);
         return "main";
     }
 }
