@@ -6,12 +6,8 @@
 <div class="fly-header layui-bg-black" th:replace="web/index:: top">
 </div>
 <style type="text/css">
-    body{
-        background-color: #ffffff;
-    }
     .courseView {
         background-size: auto auto;
-        padding: 50px 0;
         background-size: 100% 100%;
     }
     .wWidth1200 .page-width {
@@ -19,20 +15,15 @@
         width: 1200px;
     }
     .courseView .box {
-        background: #fff;
-        border: 1px solid #e6e6e6;
         position: relative;
     }
     .bd-all {
-        border: 1px solid #eee;
         border-radius: 3px;
     }
     .posnav {
-        padding: 0 30px;
-        font-size: 12px;
-        color: #999;
-        line-height: 45px;
-        height: 45px;
+        font-size: 14px;
+        color: #626262;
+        padding: 22px 0;
     }
     . {
         padding: 0px 30px 30px 560px;
@@ -83,8 +74,22 @@
         font-size: 24px;
         color: #3ab57f;
     }
-
-
+    .courseInfo{
+        display: flex;
+        justify-content: space-between;
+        background: #fff;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 32px;
+    }
+    .courseInfo .image{
+        width: 600px;
+    }
+    .courseInfo-right{
+        width: calc(100% - 632px);
+        box-sizing: border-box;
+        position: relative;
+    }
     .courseInfo-right .button {
         height: 44px;
         line-height: 44px;
@@ -94,8 +99,8 @@
     .courseInfo-right .hb-ui-btn, .courseInfo-right .hb-ui-btn1 {
         height: 44px;
         line-height: 44px;
-        font-size: 16px;
-        background: #f59121;
+        font-size: 18px;
+        background: #2EAF71;
         width: 150px;
         text-align: center;
         color: #fff;
@@ -107,8 +112,9 @@
         border-radius: 3px;
     }
     .courseInfo-right .button em {
+        font-size: 16px;
         margin-left: 20px;
-        color: #b1b1b1;
+        color: #979797;
     }
     .courseInfo-right .remark{
         font-family: Arial,hiragino sans gb,microsoft yahei,simsun,sans-serif !important;
@@ -155,6 +161,22 @@
     li {
         list-style-type: none;
     }
+    .course-name{
+        font-size: 24px;
+        color: #303133;
+        line-height: 32px;
+    }
+    .course-desc{
+        font-size: 16px;
+        color: #979797;
+        line-height: 24px;
+        margin-top: 16px;
+    }
+    .btn-study-group{
+        position: absolute;
+        left: 0;
+        bottom: 0;
+    }
 </style>
 <div class="layui-container">
     <div class="courseView">
@@ -169,53 +191,52 @@
                         <div class="image" id="courseImage">
                             <div id="view_flv" style="display:none;"></div>
                             <div class="course-pro0"></div>
-                            <img th:if="${#strings.isEmpty(trainCourse.cover)}" th:src="@{/web/res/images/no_img.png}" th:alt="${trainCourse.name}"  class="course-cover" width="480" height="290">
-                            <img th:if="${not #strings.isEmpty(trainCourse.cover)}" th:src="${trainCourse.cover}" th:alt="${trainCourse.name}"  class="course-cover" width="480" height="290">
+                            <img th:if="${#strings.isEmpty(trainCourse.cover)}" th:src="@{/web/res/images/no_img.png}" th:alt="${trainCourse.name}"  class="course-cover" width="600" height="auto">
+                            <img th:if="${not #strings.isEmpty(trainCourse.cover)}" th:src="${trainCourse.cover}" th:alt="${trainCourse.name}"  class="course-cover" width="600" height="auto">
 
                         </div>
                         <div class="courseInfo-right">
-                            <div class="name" th:text="${trainCourse.name}">
-                                安全测试基础课程
-                            </div>
-                            <div class="price">
-                                <span th:if="${trainCourse.price>0}" class="price-info"><span th:text="'¥'+${trainCourse.price}"></span></span>
+                            <div class="course-name" th:text="${trainCourse.name}"></div>
+                            <div class="course-desc" th:text="${trainCourse.description}"></div>
+<!--                            <div class="price">-->
+<!--                                <span th:if="${trainCourse.price>0}" class="price-info"><span th:text="'¥'+${trainCourse.price}"></span></span>-->
 <!--                                <span th:if="${trainCourse.price==0}" class="price-info-free"><span th:text="免费"></span></span>-->
-                            </div>
-                            <div class="button" th:if="${trainCourse.price>0 && !courseAuth}">
-                                <input type="button" onclick="shop()" class="hb-ui-btn" value="立刻购买">
-                            </div>
-                            <div class="button" th:if="${trainCourse.price==0||courseAuth}">
+<!--                            </div>-->
+<!--                            <div class="button" th:if="${trainCourse.price>0 && !courseAuth}">-->
+<!--                                <input type="button" onclick="shop()" class="hb-ui-btn" value="立刻购买">-->
+<!--                            </div>-->
+                            <div class="button btn-study-group" th:if="${trainCourse.price==0||courseAuth}">
                                 <input type="button" onclick="goStudy()" class="hb-ui-btn" value="立即学习">
                                 <em>有效期:
                                     <span id="shixian" th:if="${trainCourse.price==0}" th:text="永久"></span>
                                     <span id="shixian" th:if="${trainCourse.price>0}" th:text="${courseDays}+'(天)'"></span>
                                     </em>
                             </div>
-                            <div class="remark" th:text="${trainCourse.description}">
+<!--                            <div class="remark" th:text="${trainCourse.description}">-->
 
-                            </div>
+<!--                            </div>-->
                         </div>
-                        <div class="clear"></div>
+<!--                        <div class="clear"></div>-->
                     </div>
                 </div>
         </div>
     </div>
-    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
-        <ul  class="layui-tab-title">
-            <li class="layui-this">课程目录</li>
-            <li>相关题库</li>
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief" style="margin-top: 14px;background: #fff;padding: 0 32px;">
+        <ul  class="layui-tab-title" style="border-bottom: 1px solid  #E4E4E4;">
+            <li class="layui-this" style="padding: 0;">课程目录</li>
+<!--            <li>相关题库</li>-->
         </ul>
-        <div class="layui-tab-content">
+        <div class="layui-tab-content" style="padding:0;">
             <div class="layui-tab-item layui-show">
-                <ul >
-                    <li th:if="trainCourseSections" th:each="sections,obj:${trainCourseSections}" >
+                <ul style="padding-bottom: 24px;">
+                    <li style="margin-top: 24px;" th:if="trainCourseSections" th:each="sections,obj:${trainCourseSections}" >
                         <a th:if="${trainCourse.price==0 || courseAuth}" th:id="'section'+${obj.index+1}" th:href="@{'/web/course/courseSections.html/'+${sections.id}}">
                         <span th:text="${sections.name}"> </span>
                         </a>
 <!--                        <a th:if="!${courseAuth}" onclick="shop()">-->
 <!--                            <span th:text="${sections.name}"> </span>-->
 <!--                        </a>-->
-                        <hr>
+<!--                        <hr>-->
                     </li>
                 </ul>
             </div>

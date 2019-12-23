@@ -10,7 +10,7 @@
 /* 全局 */
 html,body{overflow-x: hidden;height: 100%;}
 html body{padding: 88px 0 102px 0;height: calc(100% - 190px);}
-html{background-color: #F2F2F2;}
+html{background-color: #F4F4F4;}
 i{font-style: normal;}
 
 /* 图标 */
@@ -92,11 +92,23 @@ i{font-style: normal;}
 
 
 /* 辅助 */
-a:hover{color: #009688; transition: all .3s;}
+a:hover{color: #2EAF71; transition: all .3s;}
 pre{padding: 10px 15px; margin: 10px 0; font-size: 12px; border-left: 6px solid #009688;  background-color: #f8f8f8; font-family: Courier New; overflow: auto;}
 
-.layui-container{padding: 0;
-  height: calc(100% - 240px);
+.layui-container{
+  padding: 0;
+  padding-bottom: 30px;
+  /*height: calc(100% - 240px);*/
+}
+.layui-btn{
+  background: #2EAF71;
+}
+.layui-form-checked[lay-skin=primary] i{
+  background-color:#2EAF71;
+  border-color: #2EAF71;
+}
+.layui-laypage .layui-laypage-curr .layui-laypage-em{
+  background: #2EAF71;
 }
 .fly-main{width: 1079px; min-height: 600px; margin: 0 auto 15px;}
 .layui-badge{height: 20px; line-height: 20px; border-radius: 2px;}
@@ -181,7 +193,7 @@ pre{padding: 10px 15px; margin: 10px 0; font-size: 12px; border-left: 6px solid 
 .fly-union span a:hover{text-decoration: underline;}
 /* 面板 */
 .fly-panel{margin-bottom: 15px; border-radius: 2px; background-color: #fff; box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);}
-.fly-panel[pad20]{padding: 20px;}
+.fly-panel[pad20]{padding: 20px;height: calc(100% - 28px);overflow-y: auto;}
 .fly-panel-title{position: relative; height: 50px; line-height: 50px; padding: 0 15px; border-bottom: 1px dotted #E9E9E9; color: #333; border-radius: 2px 2px 0 0; font-size: 14px;}
 .fly-panel-main{padding: 10px 15px;}
 
@@ -388,8 +400,8 @@ body .layui-edit-face  .layui-layer-content{padding:0; background-color:#fff; co
 
 
 /* 用户中心 */
-body .fly-user-main{position: relative; min-height: 600px;}
-.fly-user-main>.layui-nav{position: absolute; left: 0; top: 0; z-index: 1000; height: 100%; padding: 10px 0;}
+body .fly-user-main{position: relative; min-height: 600px;height: 100%;box-sizing: border-box;padding: 16px 0;margin-top: 0;}
+.fly-user-main>.layui-nav{position: absolute; left: 0; top: 16px; z-index: 1000; height: calc(100% - 32px); padding: 10px 0;overflow-y: auto;}
 .fly-user-main>.layui-nav .layui-icon{position: relative; top: 2px; font-size: 20px; margin-right: 10px;}
 .fly-user-main>.fly-panel{min-height: 575px; margin: 0 0 10px 215px;}
 .fly-user-main .fly-none{min-height: 0;}

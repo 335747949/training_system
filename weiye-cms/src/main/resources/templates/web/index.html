@@ -34,35 +34,23 @@
 </head>
 <body>
 <style type="text/css">
-
   .course{
-    height: 370px;
-    border: 1px solid #8a8a8a;
     background-color: #ffffff;
   }
   .title{
-    margin-top: 20px;
+    margin-top: 32px;
+    border-left: 4px solid #2EAF71;
+    padding-left: 16px;
   }
   .title span{
-    font-size: 28px;
-    font-weight: normal;
-    float: left;
-    margin-left: 10px;
-    line-height: 50px;
-  }
-  .title em{
-    display: block;
-    width: 70px;
-    height: 24px;
-    border-bottom: 2px #666 solid;
-    float: left;
+    font-size: 24px;
+    color: #303133;
   }
   .title i{
-    float: left;
-    font-size: 20px;
-    color: #999;
-    margin-left: 10px;
-    line-height: 50px;
+    font-size: 16px;
+    color: #BABABA;
+    margin-left: 8px;
+    /*line-height: 50px;*/
   }
   .in01{
     background: rgba(0,0,0,0.6);
@@ -84,9 +72,9 @@
     color: #fff;
   }
   .remark{
-    width: 80%;
-    margin: 5% 10%;
-    line-height: 25px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 16px 20px 16px;
     font-size: 14px;
     color: #777;
     text-align: left;
@@ -146,16 +134,22 @@
     overflow: hidden;
   }
   .filterbox{/*! border:1px solid #ebebeb; */border-radius:4px;background: #fff;margin-top: 40px}
-  .filterbox ul{ background-color:white; text-indent:20px;border-radius:3px;}
-  .filterbox li{ position: relative;border-top:1px dashed #ebebeb;padding: 15px 15px 15px 0;margin-left: 140px;}
+  .filterbox ul{ background-color:white; padding: 10px 24px 16px 24px;box-sizing: border-box;}
+  .filterbox li{ display: flex;align-items: flex-start;padding-top: 20px;}
   .filterbox li:first-child{border-top:0px;}
-  .filterbox li span{width: 140px;font-size: 16px;line-height:34px;position: absolute;left:-150px;top:15px; color:#fff;background:url(web/res/images/icon-1.png) #ff9f37 no-repeat right center;}
-  .filterbox li a{float: left;margin:0px 15px 0px 0;font-size: 14px;color: #828282;line-height: 34px;}
-  .filterbox li a.curr,
-  .filterbox li a:hover{color:#0288d1;}
+  .filterbox li span{width: 140px;font-size: 16px;font-weight:600;line-height:34px;position: absolute;left:0;top:15px; color:#303133;}
+  .filterbox li a{float: left;margin:0px 15px 0px 0;font-size: 14px;color: #828282;line-height: 14px;}
+
   .filterbox li:after{content:".";display:block;height:0;clear:both;visibility:hidden}
   .filterbox .path-now{font-size: 16px;color: #333;margin-bottom:20px;}
-
+  .filterbox li .left-category{font-size: 16px;font-weight:600;color:#303133;width: 104px;}
+  .filterbox li .right-category{width:calc(100% - 104px);border-bottom: 1px dashed #E0E0E0;padding-top: 3px;}
+  .filterbox li:last-child .right-category{border-bottom:none;}
+  .filterbox li .right-category a{font-size: 14px;color: #979797;float: left;margin-right: 32px;margin-bottom: 14px;}
+  .filterbox li a.curr,
+  .filterbox li a:hover{color:#2EAF71;}
+  .coures-name{font-size: 14px;color: #303133;}
+  .coures-desc{margin-top: 14px;font-size: 12px;color: #979797; text-overflow: -o-ellipsis-lastline;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;line-clamp: 2;-webkit-box-orient: vertical}
 </style>
 <div class="fly-header" th:fragment="top" style="box-sizing:border-box;background: #fff;border-bottom: 1px solid #D4D4D4;height: 88px;line-height: 88px;">
   <div class="layui-container">
@@ -225,8 +219,8 @@
   </div>
 </div>
 <div class="layui-container">
-  <div class="layui-carousel" id="test1">
-    <div carousel-item style="width: 100%;">
+  <div class="layui-carousel" id="test1" style="margin-top: 8px;">
+    <div carousel-item style="width: 100%;border-radius: 8px;">
       <img th:src="@{/img/banner1.jpg}" alt="" width="100%" height="360px">
       <img th:src="@{/img/banner2.jpg}" alt="" width="100%" height="360px">
     </div>
@@ -244,65 +238,70 @@
       });
     });
   </script>
-  <section class="filterbox" style="margin-top: 0;">
+  <section class="filterbox" style="margin-top: 24px;">
     <ul>
-      <li field="classid"><span>一级分类：</span>
-        <a th:href="@{/web}" th:class="${#strings.isEmpty(selectCategoryId)}?'curr':''">不限</a>
-        <a th:each="category:${courseCategories1}" th:href="@{'/web?parentIds='+${category.parentIds}+','+${category.id}}" th:text="${category.name}"
-           th:class="${category.id==selectCategoryId||category.id==selectCategoryId1}?'curr':''"></a>
+      <li field="classid">
+        <div class="left-category">一级分类：</div>
+        <div class="right-category">
+          <a th:href="@{/web}" th:class="${#strings.isEmpty(selectCategoryId)}?'curr':''">不限</a>
+          <a th:each="category:${courseCategories1}" th:href="@{'/web?parentIds='+${category.parentIds}+','+${category.id}}" th:text="${category.name}"
+             th:class="${category.id==selectCategoryId||category.id==selectCategoryId1}?'curr':''"></a>
+        </div>
       </li>
-      <li field="classid"><span>二级分类：</span>
-        <a th:if="${#lists.size(courseCategories2)}>0" th:href="@{'/web?parentIds='+${courseCategories2[0].parentIds}}">不限</a>
-        <a th:if="${#lists.size(courseCategories2)}==0" th:href="@{'/web'}">不限</a>
-        <a th:each="category:${courseCategories2}" th:href="@{'/web?parentIds='+${category.parentIds}+','+${category.id}}" th:text="${category.name}" th:class="${category.id==selectCategoryId||category.id==selectCategoryId2}?'curr':''"></a>
-
+      <li field="classid">
+        <div class="left-category">二级分类：</div>
+        <div class="right-category">
+          <a th:if="${#lists.size(courseCategories2)}>0" th:href="@{'/web?parentIds='+${courseCategories2[0].parentIds}}">不限</a>
+          <a th:if="${#lists.size(courseCategories2)}==0" th:href="@{'/web'}">不限</a>
+          <a th:each="category:${courseCategories2}" th:href="@{'/web?parentIds='+${category.parentIds}+','+${category.id}}" th:text="${category.name}" th:class="${category.id==selectCategoryId||category.id==selectCategoryId2}?'curr':''"></a>
+        </div>
       </li>
-      <li field="classid"><span>三级分类：</span>
-        <a th:if="${#lists.size(courseCategories3)}>0" th:href="@{'/web?parentIds='+${courseCategories3[0].parentIds}}">不限</a>
-        <a th:if="${#lists.size(courseCategories3)}==0" th:href="@{'/web'}">不限</a>
-        <a th:each="category:${courseCategories3}" th:href="@{'/web?parentIds='+${category.parentIds}+','+${category.id}}" th:text="${category.name}" th:class="${category.id}==${selectCategoryId}?'curr':''"></a>
-
+      <li field="classid">
+        <div class="left-category">三级分类：</div>
+        <div class="right-category">
+          <a th:if="${#lists.size(courseCategories3)}>0" th:href="@{'/web?parentIds='+${courseCategories3[0].parentIds}}">不限</a>
+          <a th:if="${#lists.size(courseCategories3)}==0" th:href="@{'/web'}">不限</a>
+          <a th:each="category:${courseCategories3}" th:href="@{'/web?parentIds='+${category.parentIds}+','+${category.id}}" th:text="${category.name}" th:class="${category.id}==${selectCategoryId}?'curr':''"></a>
+        </div>
       </li>
     </ul>
   </section>
   <div class="title">
-    <em></em>
     <span>所有课程</span>
     <i>All Course</i>
   </div>
-  <div class="layui-row layui-col-space15">
-    <div class="layui-col-md3" th:each="course:${trainCourse}">
-      <div class="course">
-        <div class="courseImg">
-          <a th:href="@{'/web/course/courseInfo.html/'+${course.id}}">
-            <img th:if="${#strings.isEmpty(course.cover)}" th:src="@{/web/res/images/no_img.png}" th:alt="${course.name}" width="100%" height="180px">
-            <img th:if="${not #strings.isEmpty(course.cover)}" th:src="${course.cover}" th:alt="${course.name}" width="100%" height="180px">
-            <p class="in01">
-              <span class="f20 c77b" th:text="${course.name}"></span>
-              <span class="cfff"></span>
-            </p>
-          </a>
-        </div>
-        <div class="remark">
-          <div class="title" th:text="${course.description}">
-          </div>
-          <div class="price" th:if="${course.price>0}" th:text="'￥'+${course.price}">
-          </div>
+  <div class="layui-row layui-col-space15" style="margin:-5px;margin-top: 20px;">
+    <div class="layui-col-md3" th:each="course:${trainCourse}" style="padding:8px 5px;">
+    <div class="course">
+      <div class="courseImg">
+        <a th:href="@{'/web/course/courseInfo.html/'+${course.id}}">
+          <img th:if="${#strings.isEmpty(course.cover)}" th:src="@{/web/res/images/no_img.png}" th:alt="${course.name}" width="100%" height="auto">
+          <img th:if="${not #strings.isEmpty(course.cover)}" th:src="${course.cover}" th:alt="${course.name}" width="100%" height="auto">
+        </a>
+      </div>
+      <div class="remark">
+        <a th:href="@{'/web/course/courseInfo.html/'+${course.id}}">
+          <div class="coures-name" th:text="${course.name}"></div>
+          <div class="coures-desc" th:text="${course.description}"></div>
+        </a>
+<!--        <div class="price" th:if="${course.price>0}" th:text="'￥'+${course.price}">-->
+<!--        </div>-->
 
-          <div class="free_price" th:if="${course.price==0}" th:text="''">
-          </div>
-          <div class="boxbtn01 clearfix">
-            <a class="btn01"  th:href="@{'/web/course/courseInfo.html/'+${course.id}}">了解更多</a>
-<!--            <a class="btn02"  th:href="@{'/web/course/courseInfo.html/'+${course.id}}">立即购买</a>-->
-            <a class="btn02"  th:href="@{'/web/course/courseInfo.html/'+${course.id}}">立即学习</a>
-          </div>
-        </div>
+<!--        <div class="free_price" th:if="${course.price==0}" th:text="''">-->
+<!--        </div>-->
+<!--        <div class="boxbtn01 clearfix">-->
+<!--          <a class="btn01"  th:href="@{'/web/course/courseInfo.html/'+${course.id}}">了解更多</a>-->
+<!--          &lt;!&ndash;            <a class="btn02"  th:href="@{'/web/course/courseInfo.html/'+${course.id}}">立即购买</a>&ndash;&gt;-->
+<!--          <a class="btn02"  th:href="@{'/web/course/courseInfo.html/'+${course.id}}">立即学习</a>-->
+<!--        </div>-->
       </div>
     </div>
   </div>
+
+  </div>
 </div>
 
-<div class="fly-footer" th:fragment="cmsBottom">
+<div class="fly-footer" th:fragment="cmsBottom" style="z-index: 1111;">
 <!--  <p><a href="#" target="_blank">伟业医药</a></p>-->
   <img th:src="@{/img/footer-logo.png}" alt="" width="80px" height="18px">
   <p style="margin-top: 8px;color: #979797;">伟业课堂 是伟业医药（weiye360.cn）旗下专注医药行业的在线学习平台</p>

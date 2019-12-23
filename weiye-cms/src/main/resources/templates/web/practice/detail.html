@@ -3,6 +3,24 @@
 <meta charset="utf-8">
 <head th:include="web/index::cmsHeader">
 </head>
+<style>
+    .practice-type{
+        font-size: 12px;
+        color: #FFFFFF;
+        border-radius: 2px;
+        padding: 1px 3px;
+        margin-left: 10px;
+    }
+    .practice-type-1{
+        background: #3CB47B;
+    }
+    .practice-type-2{
+        background: #F27F1F;
+    }
+    .practice-type-3{
+        background: #4F7AE1;
+    }
+</style>
 <body  oncontextmenu="return false" onselectstart="return false">
 <div class="fly-header layui-bg-black" th:replace="web/index::top">
 </div>
@@ -16,16 +34,17 @@
             <div class="fly-panel">
 
                 <div class="layui-col-md12">
-                    <div class="layui-card" style="text-align: center;">
-                        <span style="font-size: 30px;line-height: 60px">[[${practice.name}]]</span>
+                    <div class="layui-card" style="padding: 24px 0;background: #f4f4f4;border: none;box-shadow: none;margin: 0;">
+                        <span style="font-size: 16px;color: #626262;">练习内容：</span>
+                        <span style="font-size: 16px;color: #626262;">[[${practice.name}]]</span>
                     </div>
 
                     <div class="layui-card" th:each="question:${data}">
-                        <div class="layui-card-header" style="display: inline-block">[[${questionStat.index+1}]]:<span
+                        <div class="layui-card-header" style="display: inline-block;font-size: 14px;color: #303133;width: 100%;">[[${questionStat.index+1}]]、<span
                                 th:text="${question.title}"></span>
-                            <span th:if="${question.type=='1'}">(单选)</span>
-                            <span th:if="${question.type=='2'}">(多选)</span>
-                            <span th:if="${question.type=='3'}">(判断)</span>
+                            <span class="practice-type practice-type-1" th:if="${question.type=='1'}">单选</span>
+                            <span class="practice-type practice-type-2" th:if="${question.type=='2'}">多选</span>
+                            <span class="practice-type practice-type-3" th:if="${question.type=='3'}">判断</span>
                         </div>
                         <div class="layui-card-body" th:each="item:${question.questionItem}">
                             <input th:class="${question.id}+'useranswer'" th:if="${question.type=='2'}" type="checkbox"

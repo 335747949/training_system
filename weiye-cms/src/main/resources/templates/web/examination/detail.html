@@ -3,6 +3,28 @@
 <meta charset="utf-8">
 <head th:include="web/index::cmsHeader">
 </head>
+<style>
+    #count_down span{
+        font-size: 22px;
+        color: #F27F1F;
+    }
+    .practice-type{
+        font-size: 12px;
+        color: #FFFFFF;
+        border-radius: 2px;
+        padding: 1px 3px;
+        margin-left: 10px;
+    }
+    .practice-type-1{
+        background: #3CB47B;
+    }
+    .practice-type-2{
+        background: #F27F1F;
+    }
+    .practice-type-3{
+        background: #4F7AE1;
+    }
+</style>
 <body oncontextmenu="return false" onselectstart="return false">
 
 <div class="fly-header layui-bg-black" th:replace="web/index::top"></div>
@@ -10,34 +32,48 @@
     $('.nav-li').removeClass('layui-this');
     $('.exam-li').addClass('layui-this');
 </script>
-<div class="layui-container"  style="top:20px;">
-    <div class="layui-row layui-col-space15">
-        <div class="layui-col-md12">
-            <div class="fly-panel">
+<div class="layui-container"  style="top:20px;height: 100%;">
+    <div class="layui-row layui-col-space15" style="height: 100%;">
 
-                <div class="layui-col-md12">
+        <div class="layui-col-md12" style="height: 100%;">
+            <div class="fly-panel" style="height: 100%;background: transparent;">
 
-                    <div class="layui-card "
-                         style="text-align: center;position: fixed;top:88px; left: 0;width: 100%;  z-index:99;bottom: auto;">
-                        <span style="font-size: 30px;line-height: 60px">[[${examExamination.name}]]</span><br>
-                        <button style="width: 100px;margin-bottom: 20px" class="layui-btn layui-btn-warm"
-                                onclick="endPaper()">交卷
-                        </button>
-                        <div id="count_down">
-                            <span class="day_num"></span>
-                            <span class="hour_num"></span>
-                            <span class="min_num"></span>
-                            <span class="sec_num"></span>
-                        </div>
+                <div class="layui-col-md12" style="height: 100%;">
+
+                    <div class="layui-card" style="display: flex;align-items: center;position: absolute;top:0; left: 0;padding:14px 16px;box-sizing:border-box;width: 100%;  z-index:99;background: #fff;">
+                            <div style="flex: auto;font-size: 16px;color: #626262;">考试内容：[[${examExamination.name}]]</div>
+                            <div id="count_down" style="flex: auto;">
+                                <span>离考试结束：</span>
+                                <span class="day_num"></span>
+                                <span class="hour_num"></span>
+                                <span class="min_num"></span>
+                                <span class="sec_num"></span>
+                            </div>
+                            <div style="flex: auto;text-align: right;">
+                                <button style="width: 164px;" class="layui-btn layui-btn-warm"
+                                        onclick="endPaper()">交卷
+                                </button>
+                            </div>
+
+<!--                        <span style="font-size: 16px;">[[${examExamination.name}]]</span><br>-->
+<!--                        <button style="width: 100px;margin-bottom: 20px" class="layui-btn layui-btn-warm"-->
+<!--                                onclick="endPaper()">交卷-->
+<!--                        </button>-->
+<!--                        <div id="count_down">-->
+<!--                            <span class="day_num"></span>-->
+<!--                            <span class="hour_num"></span>-->
+<!--                            <span class="min_num"></span>-->
+<!--                            <span class="sec_num"></span>-->
+<!--                        </div>-->
                     </div>
-                    <div class="layui-col-md12" style="margin-top: 140px">
+                    <div class="layui-col-md12" style="margin-top: 82px;height: calc(100% - 66px);overflow-y: auto;">
                         <div class="layui-card question" th:each="question:${data}">
                             <input type="hidden" class="questionId" th:value="${question.id}">
                             <div class="layui-card-header" style="display: inline-block">[[${questionStat.index+1}]]:
                                 <span  th:text="${question.title}"></span>
-                                <span  th:if="${question.type=='1'}">(单选)</span>
-                                <span  th:if="${question.type=='2'}">(多选)</span>
-                                <span  th:if="${question.type=='3'}">(判断)</span>
+                                <span class="practice-type practice-type-1" th:if="${question.type=='1'}">单选</span>
+                                <span class="practice-type practice-type-2" th:if="${question.type=='2'}">多选</span>
+                                <span class="practice-type practice-type-3" th:if="${question.type=='3'}">判断</span>
                             </div>
                             <div class="layui-card-body" th:each="item:${question.questionItem}">
                                 <input th:class="${question.id}+'useranswer'" th:if="${question.type=='2'}"

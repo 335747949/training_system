@@ -8,8 +8,15 @@
 <div class="fly-header layui-bg-black" th:replace="web/index::top">
 </div>
 
-<div class="layui-container fly-marginTop fly-user-main" >
+<div class="layui-container fly-marginTop fly-user-main">
   <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user" th:fragment="userinfo">
+    <style>
+      .layui-nav-tree .layui-this>a,.layui-this>a:hover{
+        background-color: #585D69 !important;
+        border: none !important;
+        color:#fff !important;
+      }
+    </style>
     <li class="layui-nav-item" id="set">
       <a th:href="@{/web/user/set.html}">
         <i class="layui-icon">&#xe620;</i>
@@ -65,7 +72,7 @@
   <div class="site-mobile-shade"></div>
 
 
-  <div class="fly-panel fly-panel-user" pad20>
+  <div class="fly-panel fly-panel-user" pad20 style="height: calc(100% - 32px);overflow-y: auto;">
     <div class="layui-tab layui-tab-brief" lay-filter="user">
       <ul class="layui-tab-title" id="LAY_mine">
         <li class="layui-this" lay-id="info">我的资料</li>

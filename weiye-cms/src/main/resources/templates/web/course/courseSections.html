@@ -8,20 +8,59 @@
 
 <style type="text/css">
     .video-box {
-        background-color: #000000;
-        padding-top: 10px;
-        padding-bottom: 10px;
+        /*padding-top: 24px;*/
+        /*padding-bottom: 10px;*/
+    }
+    .course-name{
+        font-size: 24px;
+        color: #303131;
+        font-weight: 500;
+        padding: 24px 0;
+    }
+    .course-content-wrap{
+        display: flex;
+        background: #333;
+    }
+    .course-left{
+        width: 870px;
+        height: 542px;
+    }
+    .course-right{
+        width: calc(100% - 870px);
+        height: 542px;
+        overflow-y: auto;
+    }
+    .list-item{
+        display: flex;
+        align-items: flex-start;
+        padding: 15px 0;
     }
 
-    .container-fluid {
+    .list-item-left{
+        font-size: 24px;
+        color: #FFFFFF;
+        line-height: 24px;
+        padding: 0 16px 0 24px;
+    }
+    .list-item-name{
+        font-size: 16px;
+        color: #FFFFFF;
+    }
+    .list-item-date{
+        font-size: 12px;
+        color: #979797;
+        margin-top: 6px;
+    }
+    .list-item-active .list-item-left,.list-item-active .list-item-name{
+        color: #2EAF71;
+    }
+    .list-item:hover .list-item-left,.list-item:hover .list-item-name{
+        color: #2EAF71;
+    }
+    .course-left video{
         width: 100%;
-        padding-right: 15px;
-        padding-left: 15px;
-        margin-right: auto;
-        margin-left: auto;
-        height: 650px;
+        height: 100%;
     }
-
     .play-list {
         padding: 0;
         background-color: #202026;
@@ -62,40 +101,65 @@
 </style>
 <div class="container-fluid video-box layui-container">
     <div class="layui-row">
-        <div class="layui-col-md2">1
-        </div>
-        <div class="layui-col-md6">
-            <!--視頻-->
-            <div th:if="${trainCourseSection.type} == 1">
-                <video id="myVideo" onplay="playVideo()" onpause="stop()" th:src="${trainCourseSection.courseware}" autoplay="autoplay" width="95%" height="600px"
-                       controls="controls">
-                </video>
+        <div class="course-name" th:text="${trainCourseSection.name}"></div>
+        <div class="course-content-wrap">
+            <div class="course-left">
+                <div style="width:100%;height: 100%;" th:if="${trainCourseSection.type} == 1">
+                    <video id="myVideo" onplay="playVideo()" onpause="stop()" th:src="${trainCourseSection.courseware}" autoplay="autoplay"
+                           controls="controls">
+                    </video>
+                </div>
+                <div style="width:100%;height: 100%;" th:if="${trainCourseSection.type} == 2">
+                    <embed th:src="${trainCourseSection.courseware}" width="100%" height="100%" type="application/pdf">
+                </div>
             </div>
-            <div th:if="${trainCourseSection.type} == 2">
-                <embed th:src="${trainCourseSection.courseware}" width="95%" height="800px" type="application/pdf">
-            </div>
-        </div>
-
-        <div class="layui-col-md3">
-            <div class="play-list"  style="height: 800px">
+            <div class="course-right">
                 <ul>
                     <a th:each="section,obj:${trainCourseSections}"
-                        th:href="@{'/web/course/courseSections.html/'+${section.id}}">
-                        <li class="section">
-                            <div class="section-index" th:text="${obj.index+1}"></div>
-                            <div class="section-info">
-                                <div class="section-info-name" th:text="${section.name}"></div>
-                                <div class="section-time"
-                                     th:text="'创建于：'+*{#dates.format(section.createTime,'yyyy-MM-dd HH:mm:ss')}"></div>
+                       th:href="@{'/web/course/courseSections.html/'+${section.id}}">
+                        <li class="list-item" th:classappend="${section.id}==${trainCourseSection.id} ? 'list-item-active' : 'list-item'">
+                            <div class="list-item-left hover-text" th:text="${obj.index+1}"></div>
+                            <div class="list-item-right">
+                                <div class="list-item-name hover-text" th:text="${section.name}"></div>
+                                <div class="list-item-date" th:text="'创建于：'+*{#dates.format(section.createTime,'yyyy-MM-dd HH:mm:ss')}"></div>
                             </div>
-                            <hr>
                         </li>
                     </a>
                 </ul>
             </div>
         </div>
-        <div class="layui-col-md2">4
-        </div>
+<!--        <div class="layui-col-md6">-->
+<!--            &lt;!&ndash;視頻&ndash;&gt;-->
+<!--            <div th:if="${trainCourseSection.type} == 1">-->
+<!--                <video id="myVideo" onplay="playVideo()" onpause="stop()" th:src="${trainCourseSection.courseware}" autoplay="autoplay" width="95%" height="600px"-->
+<!--                       controls="controls">-->
+<!--                </video>-->
+<!--            </div>-->
+<!--            <div th:if="${trainCourseSection.type} == 2">-->
+<!--                <embed th:src="${trainCourseSection.courseware}" width="95%" height="800px" type="application/pdf">-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="layui-col-md3">-->
+<!--            <div class="play-list"  style="height: 800px">-->
+<!--                <ul>-->
+<!--                    <a th:each="section,obj:${trainCourseSections}"-->
+<!--                        th:href="@{'/web/course/courseSections.html/'+${section.id}}">-->
+<!--                        <li class="section">-->
+<!--                            <div class="section-index" th:text="${obj.index+1}"></div>-->
+<!--                            <div class="section-info">-->
+<!--                                <div class="section-info-name" th:text="${section.name}"></div>-->
+<!--                                <div class="section-time"-->
+<!--                                     th:text="'创建于：'+*{#dates.format(section.createTime,'yyyy-MM-dd HH:mm:ss')}"></div>-->
+<!--                            </div>-->
+<!--                            <hr>-->
+<!--                        </li>-->
+<!--                    </a>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="layui-col-md2">-->
+<!--        </div>-->
     </div>
 </div>
 
