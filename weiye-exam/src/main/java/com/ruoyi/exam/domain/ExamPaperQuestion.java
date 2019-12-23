@@ -43,9 +43,6 @@ private static final long serialVersionUID = 1L;
 
 
     public Integer getScore() {
-        if (null == score){
-            return 0;
-        }
         return score;
     }
 

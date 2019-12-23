@@ -220,7 +220,7 @@ public class ExamPracticeController extends BaseController
 		HashSet<Integer> dbSet = new HashSet<>();
 		for (ExamPracticeQuestionVO dbData : dbDatas) {
 			dbSet.add(dbData.getExamQuestionId());
-			score+=dbData.getScore();
+			score += (dbData.getScore() == null ? 0 : dbData.getScore());
 		}
 
 		HashSet<Integer> htmlSet = new HashSet<>();
@@ -246,7 +246,7 @@ public class ExamPracticeController extends BaseController
 			if(!htmlSet.contains(dbData.getExamQuestionId())){
 				examPracticeQuestionService.delete(dbData);
 				questionNum--;
-				score-=dbData.getScore();
+				score-= (dbData.getScore() == null ? 0 : dbData.getScore());
 			}
 		}
 

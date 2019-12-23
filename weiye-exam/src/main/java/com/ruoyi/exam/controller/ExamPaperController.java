@@ -284,7 +284,7 @@ public class ExamPaperController extends BaseController {
             examPaper.setQuestionNumber(num);
             examPaper.setScore(score);
         }else{
-            examPaper.setScore(examPaperQuestion.getScore());
+            examPaper.setScore(examPaperQuestion.getScore() == null ? 0 : examPaperQuestion.getScore());
         }
 
         examPaperService.updateSelectiveById(examPaper);
@@ -346,7 +346,7 @@ public class ExamPaperController extends BaseController {
         HashSet<Integer> dbSet = new HashSet<>();
         for (ExamPaperQuestionVO dbData : dbDatas) {
             dbSet.add(dbData.getExamQuestionId());
-            score += dbData.getScore();
+            score += (dbData.getScore() == null ? 0 : dbData.getScore());
         }
 
         HashSet<Integer> htmlSet = new HashSet<>();
@@ -372,7 +372,7 @@ public class ExamPaperController extends BaseController {
             if (!htmlSet.contains(dbData.getExamQuestionId())) {
                 examPaperQuestionService.delete(dbData);
                 questionNum--;
-                score -= dbData.getScore();
+                score -= (dbData.getScore() == null ? 0 : dbData.getScore());
             }
         }
 

@@ -292,7 +292,8 @@ public class ApiExaminationController extends BaseController {
                 ExamPaperQuestion examPaperQuestion = new ExamPaperQuestion();
                 examPaperQuestion.setExamPaperId(paperId);
                 examPaperQuestion.setExamQuestionId(examQuestionId);
-                score += examPaperQuestionService.selectExamPaperQuestionList(examPaperQuestion).get(0).getScore();
+                ExamPaperQuestionVO paperQuestionVO = examPaperQuestionService.selectExamPaperQuestionList(examPaperQuestion).get(0);
+                score += (paperQuestionVO.getScore() == null ? 0 : paperQuestionVO.getScore());
                 returnItem.put("rightWrong", "正确");
             }
             item.setExamUserExaminationId(examUserExaminationId);

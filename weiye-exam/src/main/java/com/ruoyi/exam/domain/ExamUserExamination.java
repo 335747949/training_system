@@ -131,9 +131,6 @@ public class ExamUserExamination {
      * 获取考试得分
      */
     public Integer getScore() {
-        if (null == score){
-            return 0;
-        }
         return score;
     }
 
