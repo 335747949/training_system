@@ -127,7 +127,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
 
-    <select id="selectEnterNameListFromWeb" resultMap="ExamExaminationResult">
+    <select id="selectSignUpListFromWeb" resultMap="ExamExaminationResult">
         select
         <include refid="selectExamExaminationVo"/>,tc.name as traincourse_name
         from exam_examination exam_examination

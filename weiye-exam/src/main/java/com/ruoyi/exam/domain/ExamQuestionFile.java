@@ -9,6 +9,8 @@ public class ExamQuestionFile {
 
     @Excel(order = 1)
     private String name;
+    @Excel(order = 2)
+    private String type;
     @Excel(order = 10)
     private String answer;
     @Excel(order = 4)
@@ -96,5 +98,13 @@ public class ExamQuestionFile {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

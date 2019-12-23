@@ -43,7 +43,7 @@ public interface IExamExaminationService extends AbstractBaseService<ExamExamina
      * @param map
      * @return
      */
-    List<ExamExamination> selectEnterNameListFromWeb(Map<String, Object> map);
+    List<ExamExamination> selectSignUpListFromWeb(Map<String, Object> map);
 
     Map<String,Object> queryExaminationQuestion(ExamExamination examExamination,ExamUserExamination examUserExamination);
 

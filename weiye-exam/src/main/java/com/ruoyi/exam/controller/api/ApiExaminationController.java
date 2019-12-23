@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 /**
- * Created by flower on 2019/1/9.
+ * 考试相关API接口
+ * @author liugang
+ * @date 2019/12/23
  */
-@Api("考试")
+@Api("考试相关API")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 public class ApiExaminationController extends BaseController {
 
     @Autowired
@@ -55,15 +57,15 @@ public class ApiExaminationController extends BaseController {
 
     /**
      * 获取考试列表
-     *
-     * @param examExamination
      * @return
      */
-    @GetMapping("/v1/examination/list")
-    public AjaxResult list(ExamExamination examExamination) {
-
+    @GetMapping("/examination/list")
+    public AjaxResult list() {
         SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(), UserConstants.USER_VIP );
         Map<String, Object> map = new HashMap<>();
+        ExamExamination examExamination = new ExamExamination();
+        // 考试类型为2，正式考试
+        examExamination.setType("2");
         map.put( "examExamination", examExamination );
         map.put( "userId", sysUser.getUserId() );
         List<ExamExamination> list = examExaminationService.selectListFromWeb( map );
@@ -77,12 +79,12 @@ public class ApiExaminationController extends BaseController {
     /**
      * 开始考试
      *
-     * @param inationId
+     * @param id 考试id
      * @return
      */
-    @GetMapping("/v1/examination/start/{examExamination}")
-    public AjaxResult start(@PathVariable("examExamination") String inationId) {
-        ExamExamination examExamination = examExaminationService.selectById( inationId );
+    @GetMapping("/examination/start/{id}")
+    public AjaxResult start(@PathVariable("id") String id) {
+        ExamExamination examExamination = examExaminationService.selectById( id );
         SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() ,UserConstants.USER_VIP);
         Integer userId = Integer.parseInt( sysUser.getUserId().toString() );
         //考试类型
@@ -102,7 +104,7 @@ public class ApiExaminationController extends BaseController {
             ExamUserExamination examUserExamination = new ExamUserExamination();
             examUserExamination.setVipUserId( userId );
             examUserExamination.setExamPaperId( examPaperId );
-            examUserExamination.setExamExaminationId( Integer.parseInt( inationId ) );
+            examUserExamination.setExamExaminationId( Integer.parseInt( id ) );
             //考试记录集合
             List<ExamUserExamination> userExamination = examUserExaminationService.selectLastOne( examUserExamination );
             // 最后一次考试
@@ -117,18 +119,19 @@ public class ApiExaminationController extends BaseController {
                     return error( 500, "已超过" + examNumber + "次考试，" );
                 } else {
                     // 最后一次考试未交卷，但超过考试时长,直接返回
-                    if (last.getCreateDate().getTime() + timeLength * 60 * 1000 < new Date().getTime()) {
+                    if (last.getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()) {
                         return error( 500, "已超过" + examNumber + "次考试，" );
                     }
                 }
 
             }
 
+
             if (userExamination.size() <= 0 //考试次数小于0
                     || userExamination.get( 0 ).getUpdateDate() != null //最后一次考试已交卷
-                    || userExamination.get( 0 ).getCreateDate().getTime() + timeLength * 60 * 1000 < new Date().getTime()//最后一次考试，已超过考过时长
+                    || userExamination.get( 0 ).getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()//最后一次考试，已超过考过时长
                     ) {
-                insert.setExamExaminationId( Integer.parseInt( inationId ) );
+                insert.setExamExaminationId( Integer.parseInt( id ) );
                 insert.setVipUserId( userId );
                 insert.setCreateDate( new Date() );
                 insert.setExamPaperId( examPaperId );
@@ -195,19 +198,21 @@ public class ApiExaminationController extends BaseController {
     /**
      * 报名列表
      *
-     * @param examExamination
      * @return
      */
-    @GetMapping("/v1/examination/entername/list")
-    public AjaxResult enterNameList(ExamExamination examExamination) {
+    @GetMapping("/examination/signup/list")
+    public AjaxResult signUpList() {
         SysUser sysUser = sysUserService.selectUserByLoginName(JwtUtil.getLoginName(),UserConstants.USER_VIP );
 
         Map<String, Object> map = new HashMap<>();
+        ExamExamination examExamination = new ExamExamination();
+        examExamination.setType("2");
         map.put( "examExamination", examExamination );
         map.put( "userId", sysUser.getUserId() );
-        List<ExamExamination> list = examExaminationService.selectEnterNameListFromWeb( map );
+        List<ExamExamination> list = examExaminationService.selectSignUpListFromWeb( map );
         AjaxResult success = success( "查询成功" );
-        success.put( "data", list );
+        success.put("data", list);
+        success.put("total",new PageInfo(list).getTotal());
         return success;
     }
 
@@ -215,23 +220,20 @@ public class ApiExaminationController extends BaseController {
     /**
      * 报名
      *
-     * @param sysUser
-     * @param inationId
+     * @param id
      * @return
      */
-    @PostMapping("/v1/examination/entername")
-    public AjaxResult enterName(SysUser sysUser, String inationId) {
+    @PostMapping("/examination/signup/{id}")
+    public AjaxResult signUp(@PathVariable String id) {
         SysUser user = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(),UserConstants.USER_VIP );
         Long userId = user.getUserId();
-        sysUser.setUserId( userId );
-        sysUserService.updateSelectiveById( sysUser );
 
         ExamExaminationUser examExaminationUser = new ExamExaminationUser();
         examExaminationUser.setVipUserId( Integer.parseInt( userId.toString() ) );
         examExaminationUser.setDelFlag( "0" );
         examExaminationUser.setCreateDate( new Date() );
         examExaminationUser.setCreateBy( user.getLoginName() );
-        examExaminationUser.setExamExaminationId( Integer.parseInt( inationId ) );
+        examExaminationUser.setExamExaminationId( Integer.parseInt( id ) );
         examExaminationUserService.insertOne( examExaminationUser );
 
         AjaxResult success = success( "报名成功" );
@@ -248,7 +250,7 @@ public class ApiExaminationController extends BaseController {
      * @param paperId
      * @return
      */
-    @PostMapping("/v1/examination/finish/{examUserExaminationId}/{examinationId}/{paperId}/{time}")
+    @PostMapping("/examination/finish/{examUserExaminationId}/{examinationId}/{paperId}/{time}")
     public AjaxResult finish(@RequestBody List<ExamUserExaminationQuestion> examUserExaminationQuestion,
                              @PathVariable Integer examUserExaminationId, @PathVariable Integer examinationId, @PathVariable Integer paperId,@PathVariable Long time) {
 
@@ -328,17 +330,17 @@ public class ApiExaminationController extends BaseController {
 
     /**
      * 考试记录列表
-     *
-     * @param bean
      * @return
      */
-    @GetMapping("/v1/user/examination/page")
-    public AjaxResult userexamination(ExamUserExaminationVO bean) {
+    @GetMapping("/user/examination/page")
+    public AjaxResult userexamination() {
         SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(),UserConstants.USER_VIP );
+        ExamUserExaminationVO bean = new ExamUserExaminationVO();
         bean.setVipUserId( sysUser.getUserId().intValue() );
         List<ExamUserExaminationVO> data = examUserExaminationService.selectMyExamUserExamination( bean );
         AjaxResult success = success( "查询列表成功" );
-        success.put( "data", data );
+        success.put( "data",  data);
+        success.put( "total", new PageInfo(data).getTotal() );
         return success;
     }
 
@@ -347,7 +349,7 @@ public class ApiExaminationController extends BaseController {
      * @param id
      * @return
      */
-    @GetMapping("/v1/examination/userexamination/detail/{id}")
+    @GetMapping("/examination/userexamination/detail/{id}")
     public AjaxResult detail(@PathVariable Integer id) {
         ExamUserExaminationVO data = examUserExaminationService.selectDetailById( id );
         ExamExamination examExamination = examExaminationService.selectById( id );

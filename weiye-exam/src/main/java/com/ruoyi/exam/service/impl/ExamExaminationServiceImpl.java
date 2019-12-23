@@ -71,9 +71,9 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
     }
 
     @Override
-    public List<ExamExamination> selectEnterNameListFromWeb(Map<String, Object> map) {
+    public List<ExamExamination> selectSignUpListFromWeb(Map<String, Object> map) {
         startPage();
-        return examExaminationMapper.selectEnterNameListFromWeb(map);
+        return examExaminationMapper.selectSignUpListFromWeb(map);
     }
 
     @Override

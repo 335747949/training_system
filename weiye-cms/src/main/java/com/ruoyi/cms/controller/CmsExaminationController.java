@@ -120,7 +120,7 @@ public class CmsExaminationController {
         Map<String, Object> map = new HashMap<>();
         map.put( "ination", examExamination );
         map.put( "userId", sysUser.getUserId() );
-        List<ExamExamination> list = examExaminationService.selectEnterNameListFromWeb( map );
+        List<ExamExamination> list = examExaminationService.selectSignUpListFromWeb( map );
 
         List<ExamExamination> resultList = new ArrayList<>();
         for (ExamExamination exam : list) {

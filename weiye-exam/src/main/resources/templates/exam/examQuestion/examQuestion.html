@@ -295,7 +295,7 @@
                     $.table.search();
                 }else{
                     $("#myModal input").val("");
-                    $.modal.msgError("导入失败"+data.msg);
+                    layer.msg(data.msg,{icon: 2})
                 }
                 $.modal.closeLoading();
             }
