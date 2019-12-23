@@ -39,10 +39,11 @@ public class SysLoginController extends BaseController {
 
     @GetMapping("/admin")
     public String admin(HttpServletRequest request, HttpServletResponse response) {
-        // 如果是Ajax请求，返回Json字符串。
-//        if (ServletUtils.isAjaxRequest( request )) {
-//            return ServletUtils.renderString( response, "{\"code\":\"1\",\"msg\":\"未登录或登录超时。请重新登录\"}" );
-//        }
+//         如果是Ajax请求，返回Json字符串。
+        if (ServletUtils.isAjaxRequest( request )) {
+            ServletUtils.renderString( response, "{\"code\":\"1\",\"msg\":\"未登录或登录超时。请重新登录\"}" );
+            return "login";
+        }
 
         return "login";
     }

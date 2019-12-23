@@ -11,6 +11,9 @@ import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.exception.DemoModeException;
 import com.ruoyi.framework.web.util.PermissionUtils;
 
+import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
+
 /**
  * 自定义异常处理器
  * 
@@ -68,7 +71,28 @@ public class DefaultExceptionHandler
         log.error(e.getMessage(), e);
         return AjaxResult.error("服务器错误，请联系管理员");
     }
-    
+
+    /**
+     * 数据库错误
+     */
+    @ExceptionHandler({ SQLException.class })
+    public AjaxResult handleException(SQLException e)
+    {
+        log.error(e.getMessage(), e);
+        return AjaxResult.error("数据库错误，请联系管理员");
+    }
+
+    /**
+     * 数据库错误
+     */
+    @ExceptionHandler({ SQLSyntaxErrorException.class })
+    public AjaxResult handleException(SQLSyntaxErrorException e)
+    {
+        log.error(e.getMessage(), e);
+        return AjaxResult.error("sql错误，请联系管理员");
+    }
+
+
     /**
      * 演示模式异常
      */
