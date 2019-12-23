@@ -35,10 +35,10 @@
 		
 		function submitHandler() {
 	        if ($.validate.form()) {
+                var password=document.getElementById("password").value;
+                console.log(password)
+                layer.msg("重置默认密码为:" + password,{icon: 1, time: 3000});
 	        	$.operate.save(ctx + "system/user/resetPwd", $('#form-user-resetPwd').serialize());
-				var password=document.getElementById("password").value;
-				console.log(password)
-				layer.msg("重置默认密码为:" + password,{icon: 1, time: 3000});
 	        }
 	    }
 	</script>

@@ -1,4 +1,4 @@
-package com.ruoyi.exam.controller;
+package com.ruoyi.exam.controller.api;
 
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.base.AjaxResult;

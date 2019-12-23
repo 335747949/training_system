@@ -1,4 +1,4 @@
-package com.ruoyi.vip.controller;
+package com.ruoyi.vip.controller.api;
 
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.base.AjaxResult;
@@ -13,7 +13,9 @@ import com.ruoyi.framework.web.base.BaseController;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -55,7 +57,7 @@ public class ApiVipUserController extends BaseController {
             if (sysUser == null) {
                 return error("用户或密码错误");
             }
-            String tokenSign = JwtUtil.sign(sysUser.getLoginName(), user.getPassword());
+            String tokenSign = JwtUtil.sign(sysUser.getUserName(), user.getPassword());
             JSONObject json = new JSONObject();
 
             json.put("token", tokenSign);

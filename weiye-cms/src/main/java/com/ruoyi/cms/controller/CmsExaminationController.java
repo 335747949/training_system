@@ -135,6 +135,12 @@ public class CmsExaminationController {
         return success;
     }
 
+
+    /**
+     * 报名
+     * @param id
+     * @return
+     */
     @RequestMapping("/examination/signup/{id}")
     @GetMapping()
     @ResponseBody

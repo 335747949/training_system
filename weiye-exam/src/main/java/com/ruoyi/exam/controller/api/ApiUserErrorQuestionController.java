@@ -1,4 +1,4 @@
-package com.ruoyi.exam.controller;
+package com.ruoyi.exam.controller.api;
 
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.constant.UserConstants;

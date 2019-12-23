@@ -1,4 +1,4 @@
-package com.ruoyi.exam.controller;
+package com.ruoyi.exam.controller.api;
 
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageInfo;
