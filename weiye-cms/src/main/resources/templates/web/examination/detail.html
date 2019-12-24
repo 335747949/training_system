@@ -8,22 +8,6 @@
         font-size: 22px;
         color: #F27F1F;
     }
-    .practice-type{
-        font-size: 12px;
-        color: #FFFFFF;
-        border-radius: 2px;
-        padding: 1px 3px;
-        margin-left: 10px;
-    }
-    .practice-type-1{
-        background: #3CB47B;
-    }
-    .practice-type-2{
-        background: #F27F1F;
-    }
-    .practice-type-3{
-        background: #4F7AE1;
-    }
 </style>
 <body oncontextmenu="return false" onselectstart="return false">
 
@@ -69,8 +53,8 @@
                     <div class="layui-col-md12" style="margin-top: 82px;height: calc(100% - 66px);overflow-y: auto;">
                         <div class="layui-card question" th:each="question:${data}">
                             <input type="hidden" class="questionId" th:value="${question.id}">
-                            <div class="layui-card-header" style="display: inline-block">[[${questionStat.index+1}]]:
-                                <span  th:text="${question.title}"></span>
+                            <div class="layui-card-header" style="display: inline-block;color: #303133;font-size: 14px;width: 100%;box-sizing: border-box;">[[${questionStat.index+1}]]、
+                                <span th:text="${question.title}"></span>
                                 <span class="practice-type practice-type-1" th:if="${question.type=='1'}">单选</span>
                                 <span class="practice-type practice-type-2" th:if="${question.type=='2'}">多选</span>
                                 <span class="practice-type practice-type-3" th:if="${question.type=='3'}">判断</span>
