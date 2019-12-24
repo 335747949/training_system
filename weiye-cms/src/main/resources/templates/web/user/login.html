@@ -32,7 +32,7 @@
                 </div>
               </div>
               <div class="layui-form-item" style="margin-top: 100px;margin-bottom: 100px;">
-                <button id="btnSubmit" class="layui-btn login-btn"  style="width: 300px;" lay-filter="*" onclick="login()" >立即登录</button>
+                <button id="btnSubmit" name="btnSubmit" class="layui-btn login-btn"  style="width: 300px;" lay-filter="*" onclick="login()" >立即登录</button>
                 <!--<span style="padding-left:20px;">-->
                   <!--<a href="forget.html">忘记密码？</a>-->
                 <!--</span>-->
@@ -47,6 +47,16 @@
 <div class="fly-footer" th:replace="web/index::cmsBottom">
 </div>
 <script>
+
+    document.onkeydown = function (e) { // 回车提交表单
+        // 兼容FF和IE和Opera
+        var theEvent = window.event || e;
+        var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+        if (code == 13) {
+            login();
+        }
+    }
+
     var layer;
     $(function () {
         layui.use('layer', function () {
