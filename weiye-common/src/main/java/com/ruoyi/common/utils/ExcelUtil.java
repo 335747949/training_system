@@ -109,7 +109,7 @@ public class ExcelUtil<T> {
                     }
                 }
             }
-            for (int i = 2; i < rows; i++) {
+            for (int i = 1; i < rows; i++) {
                 // 从第2行开始取数据,默认第一行是表头.
                 Row row = sheet.getRow(i);
                 if (row == null) {
