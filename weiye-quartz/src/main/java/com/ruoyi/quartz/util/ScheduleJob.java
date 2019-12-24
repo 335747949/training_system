@@ -57,7 +57,7 @@ public class ScheduleJob extends QuartzJobBean
             future.get();
             long times = System.currentTimeMillis() - startTime;
             // 任务状态 0：成功 1：失败
-            jobLog.setStatus(Constants.SUCCESS);
+            jobLog.setStatus("0");
             jobLog.setJobMessage(job.getJobName() + " 总共耗时：" + times + "毫秒");
 
             log.info("任务执行结束 - 名称：{} 耗时：{} 毫秒", job.getJobName(), times);
@@ -69,7 +69,7 @@ public class ScheduleJob extends QuartzJobBean
             long times = System.currentTimeMillis() - startTime;
             jobLog.setJobMessage(job.getJobName() + " 总共耗时：" + times + "毫秒");
             // 任务状态 0：成功 1：失败
-            jobLog.setStatus(Constants.FAIL);
+            jobLog.setStatus("1");
             jobLog.setExceptionInfo(StringUtils.substring(e.getMessage(), 0, 2000));
         }
         finally
