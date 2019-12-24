@@ -78,7 +78,10 @@
                 state:{
                     required:true,
                 },
-                // price:{
+				description:{
+					required:true,
+				},
+				// price:{
                 //     required:true,
                 // }
 			}
@@ -86,6 +89,11 @@
 		
 		function submitHandler() {
 	        if ($.validate.form()) {
+				var imgSrc = document.getElementById("demo1").getAttribute("src");
+				if (!imgSrc){
+					layer.msg("请上传封面图片",{icon: 2});
+					return;
+				}
 	            $.operate.save(prefix + "/edit", $('#form-trainCourse-edit').serialize());
 	        }
 	    }

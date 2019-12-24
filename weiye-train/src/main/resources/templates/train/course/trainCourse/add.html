@@ -48,7 +48,7 @@
 					<div class="layui-upload">
 						<button type="button" class="layui-btn" id="test1">上传图片</button>
 						<div class="layui-upload-list">
-							<img class="layui-upload-img" id="demo1">
+							<img class="layui-upload-img" id="demo1" name="demo1">
 							<p id="demoText"></p>
 						</div>
 					</div>
@@ -69,14 +69,17 @@
 		$("#form-trainCourse-add").validate({
 			rules:{
                 treeName:{
-					required:true,
+					required: true,
 				},
                 name:{
-                    required:true,
+                    required: true,
                 },
                 state:{
-                    required:true,
+                    required: true,
                 },
+				description:{
+					required: true,
+				},
 				// price:{
 				//     required:true,
 				// }
@@ -85,6 +88,11 @@
 		
 		function submitHandler() {
 	        if ($.validate.form()) {
+	        	var imgSrc = document.getElementById("demo1").getAttribute("src");
+	        	if (!imgSrc){
+	        		layer.msg("请上传封面图片",{icon: 2});
+	        		return;
+				}
 	            $.operate.save(prefix + "/add", $('#form-trainCourse-add').serialize());
 	        }
 	    }
