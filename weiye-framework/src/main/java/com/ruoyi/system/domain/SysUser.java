@@ -58,9 +58,6 @@ public class SysUser extends BaseEntity
     /** 用户头像 */
     private String avatar;
 
-    @Value("${default.user.avatar}")
-    private String defaultAvatar;
-
     /** 密码 */
     private String password;
 
@@ -195,7 +192,7 @@ public class SysUser extends BaseEntity
     public String getAvatar()
     {
         if (ObjectUtils.isEmpty(this.avatar)){
-            return defaultAvatar;
+            return "https://trainpics.weiye360.cn/test/20191217/b98a8aaac9324a708e719c919a495250.png";
         }
         return avatar;
     }
