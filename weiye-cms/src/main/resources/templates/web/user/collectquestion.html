@@ -17,11 +17,11 @@
             <legend>我的收藏</legend>
         </fieldset>
         <div class="layui-card"  th:each="item:${data}">
-            <div class="layui-card-header" >[[${itemStat.index+1}]]:<span
+            <div class="layui-card-header" style="color: #303133;font-size: 14px;">[[${itemStat.index+1}]]、<span
                     th:text="${item.question.title}"></span>
-                <span th:if="${item.question.type=='1'}">(单选)</span>
-                <span th:if="${item.question.type=='2'}">(多选)</span>
-                <span th:if="${item.question.type=='3'}">(判断)</span>
+                <span class="practice-type practice-type-1" th:if="${item.question.type=='1'}">单选</span>
+                <span class="practice-type practice-type-2" th:if="${item.question.type=='2'}">多选</span>
+                <span class="practice-type practice-type-3" th:if="${item.question.type=='3'}">判断</span>
             </div>
             <div class="layui-card-body" th:each="qitem:${item.question.questionItem}">
                 <input th:class="${item.question.id}+'useranswer'" th:if="${item.question.type=='2'}" type="checkbox"
@@ -32,10 +32,10 @@
                 <span th:text="${qitem.content}" onclick="checkbox(this)"></span>
             </div>
             <div class="layui-card-body" >
-                <button class="layui-btn layui-btn-warm"
+                <button class="layui-btn layui-btn-warm" style="border-radius: 4px;"
                         th:onclick="analysis([[${item.question.id}]],[[${item.question.answer}]])">解析
                 </button>
-                <button class="layui-btn layui-btn-err" th:onclick="del([[${item.question.id}]])">删除</button>
+                <button class="layui-btn layui-btn-err" style="background: #fff;color: #F27F1F;border: 1px solid #F27F1F;border-radius: 4px;" th:onclick="del([[${item.question.id}]])">删除</button>
                 </button>
             </div>
 

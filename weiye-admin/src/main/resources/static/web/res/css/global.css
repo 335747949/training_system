@@ -571,3 +571,20 @@ body .fly-user-main{position: relative; min-height: 600px;height: 100%;box-sizin
 .login-title-center{display: flex;justify-content: center;} .login-title-center li{font-size: 18px;padding: 0;} .login-title-center li a{font-size: 18px;color: #979797;} .login-title-center li.layui-this{color: #2EAF71;}.login-title-center li.layui-this:after{border-bottom:2px solid #2EAF71;}
 .flex-center .layui-form-item{display: flex;justify-content: center;}
 .login-btn{background-color: #2EAF71; }
+.layui-nav-tree .layui-nav-bar{background-color:#2EAF71;}
+.practice-type{
+  font-size: 12px;
+  color: #FFFFFF;
+  border-radius: 2px;
+  padding: 1px 3px;
+  margin-left: 10px;
+}
+.practice-type-1{
+  background: #3CB47B;
+}
+.practice-type-2{
+  background: #F27F1F;
+}
+.practice-type-3{
+  background: #4F7AE1;
+}

@@ -25,8 +25,8 @@
         <div class="layui-collapse" lay-filter="test" th:if="${data.examExaminationVO.examEnd =='2' or data.examExaminationVO.examEnd =='3'}">
             <div class="layui-colla-item" th:each="item:${data.examUserExaminationQuestions}">
                 <h2 class="layui-colla-title">[[${itemStat.index+1}]]:[[${item.title}]]
-                    <span style="color: green" th:if="${item.answer==item.userAnswer}">✔️回答正确</span>
-                    <span style="color: red" th:if="${item.answer != item.userAnswer}">✘回答错误</span>
+                    <span style="color: #2EAF71;" th:if="${item.answer==item.userAnswer}">✔️回答正确</span>
+                    <span style="color: #E73E3E;" th:if="${item.answer != item.userAnswer}">✘回答错误</span>
                 </h2>
 
                 <div class="layui-colla-content" >

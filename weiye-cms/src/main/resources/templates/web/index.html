@@ -73,6 +73,8 @@
   }
   .remark{
     width: 100%;
+    height: 100px;
+    overflow: hidden;
     box-sizing: border-box;
     padding: 12px 16px 20px 16px;
     font-size: 14px;
@@ -275,14 +277,15 @@
     <div class="course">
       <div class="courseImg">
         <a th:href="@{'/web/course/courseInfo.html/'+${course.id}}">
-          <img th:if="${#strings.isEmpty(course.cover)}" th:src="@{/web/res/images/no_img.png}" th:alt="${course.name}" width="100%" height="auto">
-          <img th:if="${not #strings.isEmpty(course.cover)}" th:src="${course.cover}" th:alt="${course.name}" width="100%" height="auto">
+          <img th:if="${#strings.isEmpty(course.cover)}" th:src="@{/web/res/images/no_img.png}" th:alt="${course.name}" width="100%" height="160px">
+          <img th:if="${not #strings.isEmpty(course.cover)}" th:src="${course.cover}" th:alt="${course.name}" width="100%" height="160px">
         </a>
       </div>
       <div class="remark">
         <a th:href="@{'/web/course/courseInfo.html/'+${course.id}}">
           <div class="coures-name" th:text="${course.name}"></div>
           <div class="coures-desc" th:text="${course.description}"></div>
+
         </a>
 <!--        <div class="price" th:if="${course.price>0}" th:text="'￥'+${course.price}">-->
 <!--        </div>-->
