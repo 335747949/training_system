@@ -123,7 +123,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="remarks != null  and remarks != '' "> and exam_examination.remarks = #{remarks}</if>
             <if test="delFlag != null  and delFlag != '' "> and exam_examination.del_flag = #{delFlag}</if>
         </where>
-
+            ORDER BY eeu.create_date desc,exam_examination.create_date desc
     </select>
 
 
@@ -172,6 +172,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="remarks != null  and remarks != '' "> and exam_examination.remarks = #{remarks}</if>
             <if test="delFlag != null  and delFlag != '' "> and exam_examination.del_flag = #{delFlag}</if>
         </where>
+            ORDER BY exam_examination.create_date desc
 
     </select>
 

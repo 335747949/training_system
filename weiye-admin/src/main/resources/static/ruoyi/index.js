@@ -200,6 +200,8 @@ $(function() {
                 if (!$(this).hasClass('active')) {
                     $(this).addClass('active').siblings('.menuTab').removeClass('active');
                     scrollToTab(this);
+                    // 刷新Tab数据
+                    // refreshTab();
                     // 显示tab对应的内容区
                     $('.mainContent .RuoYi_iframe').each(function() {
                         if ($(this).data('id') == dataUrl) {

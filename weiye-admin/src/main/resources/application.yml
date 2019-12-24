@@ -88,7 +88,8 @@ shiro:
     # 登录地址
     loginUrl: /admin
     # 权限认证失败地址
-    unauthorizedUrl: /unauth
+#    unauthorizedUrl: /unauth
+    unauthorizedUrl: /admin
     # 首页地址
     indexUrl: /admin/index
     # 验证码开关
@@ -106,7 +107,7 @@ shiro:
     maxAge: 30
   session:
     # Session超时时间（默认30分钟）
-    expireTime: 30
+    expireTime: 120
     # 同步session到数据库的周期（默认1分钟）
     dbSyncPeriod: 1
     # 相隔多久检查一次session的有效性，默认就是10分钟
