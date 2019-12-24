@@ -54,12 +54,6 @@ public class TrainCourseCategoryController extends BaseController {
     @GetMapping("/add/{parentId}")
     public String add(@PathVariable("parentId") Long parentId, ModelMap mmap, HttpServletResponse response) throws IOException {
         TrainCourseCategory category = trainCourseCategoryService.selectCategoryById( parentId );
-        String ids = category.getParentIds();
-        String[] idsStr = ids.split(",");
-        // 目前前台仅支持三级分类
-        if(idsStr.length > 4){
-            throw new RuntimeException("暂只支持三级分类");
-        }
         mmap.put( "category",  category);
         return prefix + "/add";
     }
@@ -72,6 +66,12 @@ public class TrainCourseCategoryController extends BaseController {
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(TrainCourseCategory category) {
+        String ids = category.getParentIds();
+        String[] idsStr = ids.split(",");
+        // 目前前台仅支持三级分类
+        if(idsStr.length > 4){
+            return AjaxResult.error("仅支持三级分类");
+        }
         category.setCreateBy( ShiroUtils.getLoginName() );
         return toAjax( trainCourseCategoryService.insertCategory( category ) );
     }
