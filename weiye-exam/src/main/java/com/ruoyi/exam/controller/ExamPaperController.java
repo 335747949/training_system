@@ -279,12 +279,12 @@ public class ExamPaperController extends BaseController {
             num++;
             score += (item.getScore() == null ? 0 : item.getScore()) ;
         }
-        //规定考试才更新题目数量
+        //固定考试才更新题目数量
         if(type.equals("1")){
             examPaper.setQuestionNumber(num);
             examPaper.setScore(score);
         }else{
-            examPaper.setScore(examPaperQuestion.getScore() == null ? 0 : examPaperQuestion.getScore());
+            examPaper.setScore(score);
         }
 
         examPaperService.updateSelectiveById(examPaper);
