@@ -101,15 +101,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="checkLoginNameUnique" parameterType="String" resultType="int">
-		select count(1) from sys_user where login_name=#{loginName} and user_type = #{type}
+		select count(1) from sys_user where login_name=#{loginName} and user_type = #{type} and del_flag = '0'
 	</select>
 	
 	<select id="checkPhoneUnique" parameterType="String" resultMap="SysUserResult">
-		select user_id, phonenumber from sys_user where phonenumber=#{phonenumber} and user_type = #{type}
+		select user_id, phonenumber from sys_user where phonenumber=#{phonenumber} and user_type = #{type} and del_flag = '0'
 	</select>
 	
 	<select id="checkEmailUnique" parameterType="String" resultMap="SysUserResult">
-		select user_id, email from sys_user where email=#{email} and user_type = #{type}
+		select user_id, email from sys_user where email=#{email} and user_type = #{type} and del_flag = '0'
 	</select>
 	
 	<select id="selectUserById" parameterType="Long" resultMap="SysUserResult">
