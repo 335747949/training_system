@@ -2,6 +2,7 @@ package com.ruoyi.system.service;
 
 import java.util.List;
 
+import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.framework.web.base.AbstractBaseService;
 import com.ruoyi.system.domain.SysUser;
 
@@ -140,4 +141,11 @@ public interface ISysUserService extends AbstractBaseService<SysUser>
      * @return 结果
      */
     public String selectUserPostGroup(Long userId);
+
+    /**
+     * 批量保存客户列表
+     * @param list
+     * @return
+     */
+    AjaxResult addClientUserList(List<SysUser> list);
 }

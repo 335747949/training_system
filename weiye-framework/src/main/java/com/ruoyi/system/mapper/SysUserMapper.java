@@ -110,4 +110,11 @@ public interface SysUserMapper extends MyMapper<SysUser>
      */
     public SysUser checkEmailUnique(@Param("email") String email,@Param("type") String type);
 
+    /**
+     * 批量保存
+     * @param list
+     * @return
+     */
+    int saveBatch(@Param("list") List<SysUser> list);
+
 }
