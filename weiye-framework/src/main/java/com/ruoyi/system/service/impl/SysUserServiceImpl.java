@@ -1,21 +1,23 @@
 package com.ruoyi.system.service.impl;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
-import com.ruoyi.framework.web.exception.user.UserException;
-import com.ruoyi.framework.web.exception.user.UserNotExistsException;
-import com.ruoyi.system.domain.*;
-import com.ruoyi.system.mapper.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.ruoyi.common.annotation.DataScope;
+import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.support.Convert;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+import com.ruoyi.framework.web.util.ShiroUtils;
+import com.ruoyi.system.domain.*;
+import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISysUserService;
+import org.apache.shiro.crypto.hash.Md5Hash;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 用户 业务层处理
@@ -38,6 +40,9 @@ public class SysUserServiceImpl extends AbstractBaseServiceImpl<SysUserMapper, S
 
     @Autowired
     private SysUserRoleMapper userRoleMapper;
+
+    @Autowired
+    private SysConfigMapper sysConfigMapper;
 
     /**
      * 根据条件分页查询用户对象
@@ -316,5 +321,53 @@ public class SysUserServiceImpl extends AbstractBaseServiceImpl<SysUserMapper, S
             return idsStr.substring( 0, idsStr.length() - 1 );
         }
         return idsStr.toString();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public AjaxResult addClientUserList(List<SysUser> list) {
+        List<SysUser> successList = new ArrayList<>();
+        List<String> errorPhoneNumList = new ArrayList<>();
+        // 默认密码
+        String defaultPwd = sysConfigMapper.checkConfigKeyUnique("sys.user.initPassword").getConfigValue();
+        for (SysUser sysUser: list) {
+            sysUser.setUserType(UserConstants.USER_VIP);
+            // 校验手机号码格式
+            if (!sysUser.getPhonenumber().matches(UserConstants.MOBILE_PHONE_NUMBER_PATTERN)) {
+                errorPhoneNumList.add(sysUser.getPhonenumber());
+                continue;
+            } else if (UserConstants.USER_PHONE_NOT_UNIQUE.equals(checkPhoneUnique(sysUser))) {
+                // 校验手机号码是否唯一
+                errorPhoneNumList.add(sysUser.getPhonenumber());
+                continue;
+            } else {
+                sysUser.setLoginName(sysUser.getPhonenumber());
+                // 默认部门id-269
+                sysUser.setDeptId(UserConstants.DEFAULT_DEPT_ID);
+                sysUser.setStatus("0");
+                // 盐加密
+                String salt = ShiroUtils.randomSalt();
+                sysUser.setSalt(salt);
+                sysUser.setPassword(new Md5Hash(sysUser.getPhonenumber() + defaultPwd + salt).toHex());
+                sysUser.setCreateBy(ShiroUtils.getLoginName());
+                successList.add(sysUser);
+            }
+        }
+        if (CollectionUtils.isEmpty(list)) {
+            return AjaxResult.error("导入失败，内容为空！");
+        }
+        // 保存符合条件的客户信息
+        StringBuffer message = new StringBuffer();
+        if (!CollectionUtils.isEmpty(successList)) {
+            int i = userMapper.saveBatch(successList);
+            if (i > 0) {
+                message.append("客户列表导入成功！");
+            }
+        }
+        // 校验不通过的账号提示信息
+        if (!CollectionUtils.isEmpty(errorPhoneNumList)) {
+            message.append(errorPhoneNumList.toString()).append("手机号码已存在或号码格式异常，请检查后再次导入！");
+        }
+        return AjaxResult.success(message.toString());
     }
 }
