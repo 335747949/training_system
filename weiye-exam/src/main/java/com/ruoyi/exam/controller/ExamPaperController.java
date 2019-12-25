@@ -49,6 +49,7 @@ public class ExamPaperController extends BaseController {
     @Autowired
     private IExamPaperTypeNumberService examPaperTypeNumberService;
 
+
     @RequiresPermissions("exam:examPaper:view")
     @GetMapping()
     public String examPaper() {
@@ -272,18 +273,68 @@ public class ExamPaperController extends BaseController {
         examPaperQuestionService.delete(delete);
         int num = 0;
         int score = 0;
+        int choiceScore = 0;
+        int choiceNum = 0;
+        int moreChoiceScore = 0;
+        int moreChoiceNum = 0;
+        int judgeScore = 0;
+        int judgeNum = 0;
+
         for (int i = 1; i < paperQuestionList.size(); i++) {
             ExamPaperQuestion item = paperQuestionList.get(i);
             item.setDelFlag("0");
             examPaperQuestionService.insert(item);
-            num++;
-            score += (item.getScore() == null ? 0 : item.getScore()) ;
+            ExamQuestion question = examQuestionService.selectById(item.getExamQuestionId());
+            if ("1".equals(question.getType())){
+                choiceScore =(item.getScore() == null ? 0 : item.getScore()) ;
+                choiceNum++ ;
+
+            }else if ("2".equals(question.getType())){
+                moreChoiceScore = (item.getScore() == null ? 0 : item.getScore()) ;
+                moreChoiceNum++ ;
+            }else if ("3".equals(question.getType())){
+                judgeScore = (item.getScore() == null ? 0 : item.getScore()) ;
+                judgeNum ++;
+            }
         }
-        //固定考试才更新题目数量
-        if(type.equals("1")){
+
+        // 計算縂分數
+        if (type.equals("1")){
+            for (int i = 1; i < paperQuestionList.size(); i++) {
+                ExamPaperQuestion item = paperQuestionList.get(i);
+                item.setDelFlag("0");
+                examPaperQuestionService.insert(item);
+                num++;
+                score += (item.getScore() == null ? 0 : item.getScore()) ;
+            }
+            //固定考试才更新题目数量
             examPaper.setQuestionNumber(num);
             examPaper.setScore(score);
-        }else{
+        }else {
+            ExamPaperTypeNumber examPaperTypeNumber = new ExamPaperTypeNumber();
+            examPaperTypeNumber.setExamPaperId(paper.getId());
+            List<ExamPaperTypeNumber> examPaperTypeNumbers = examPaperTypeNumberService.selectList(examPaperTypeNumber);
+            for (ExamPaperTypeNumber typeNumber : examPaperTypeNumbers) {
+                if (typeNumber.getExamQuestionType() == 1){
+                    if (typeNumber.getNumber().compareTo(choiceNum) < 0){
+                        score += ((typeNumber.getNumber() == null ? 0 : typeNumber.getNumber()) * choiceScore);
+                    }else {
+                        score += (choiceNum * choiceScore);
+                    }
+                }else if (typeNumber.getExamQuestionType() == 2){
+                    if (typeNumber.getNumber().compareTo(moreChoiceNum) < 0){
+                        score += ((typeNumber.getNumber() == null ? 0 : typeNumber.getNumber()) * moreChoiceScore);
+                    }else {
+                        score += (moreChoiceNum * moreChoiceScore);
+                    }
+                }else if (typeNumber.getExamQuestionType() == 3){
+                    if (typeNumber.getNumber().compareTo(judgeNum) < 0){
+                        score += ((typeNumber.getNumber() == null ? 0 : typeNumber.getNumber()) * judgeScore);
+                    }else {
+                        score += (judgeNum * judgeScore);
+                    }
+                }
+            }
             examPaper.setScore(score);
         }
 
