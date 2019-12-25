@@ -56,7 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="name != null and name != ''">
 			AND name like concat('%', #{name}, '%')
 		</if>
-
+		ORDER BY order_num asc;
 		<!-- 数据范围过滤 -->
 		${params.dataScope}
 	</select>

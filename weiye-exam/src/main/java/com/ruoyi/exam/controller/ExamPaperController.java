@@ -318,23 +318,30 @@ public class ExamPaperController extends BaseController {
                 if (typeNumber.getExamQuestionType() == 1){
                     if (typeNumber.getNumber().compareTo(choiceNum) < 0){
                         score += ((typeNumber.getNumber() == null ? 0 : typeNumber.getNumber()) * choiceScore);
+                        num += typeNumber.getNumber();
                     }else {
                         score += (choiceNum * choiceScore);
+                        num += choiceNum;
                     }
                 }else if (typeNumber.getExamQuestionType() == 2){
                     if (typeNumber.getNumber().compareTo(moreChoiceNum) < 0){
                         score += ((typeNumber.getNumber() == null ? 0 : typeNumber.getNumber()) * moreChoiceScore);
+                        num += typeNumber.getNumber();
                     }else {
                         score += (moreChoiceNum * moreChoiceScore);
+                        num += moreChoiceNum;
                     }
                 }else if (typeNumber.getExamQuestionType() == 3){
                     if (typeNumber.getNumber().compareTo(judgeNum) < 0){
                         score += ((typeNumber.getNumber() == null ? 0 : typeNumber.getNumber()) * judgeScore);
+                        num += typeNumber.getNumber();
                     }else {
                         score += (judgeNum * judgeScore);
+                        num += judgeNum;
                     }
                 }
             }
+            examPaper.setQuestionNumber(num);
             examPaper.setScore(score);
         }
 
