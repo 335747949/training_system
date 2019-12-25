@@ -40,6 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
              <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
          </where>
+        ORDER BY order_num asc;
     </select>
 
     
