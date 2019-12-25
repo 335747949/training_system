@@ -9,7 +9,7 @@
 
 /* 全局 */
 html,body{overflow-x: hidden;height: 100%;}
-html body{padding: 88px 0 102px 0;height: calc(100% - 190px);}
+html body{padding: 70px 0 98px 0;height: calc(100% - 168px);}
 html{background-color: #F4F4F4;}
 i{font-style: normal;}
 
@@ -97,7 +97,7 @@ pre{padding: 10px 15px; margin: 10px 0; font-size: 12px; border-left: 6px solid 
 
 .layui-container{
   padding: 0;
-  padding-bottom: 30px;
+  /*padding-bottom: 30px;*/
   /*height: calc(100% - 240px);*/
 }
 .layui-btn{

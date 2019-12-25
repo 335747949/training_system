@@ -9,12 +9,24 @@
 </div>
 
 <div class="layui-container fly-marginTop fly-user-main">
-  <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user" th:fragment="userinfo">
+  <ul class="layui-nav layui-nav-tree layui-inline" style="background: #fff;" lay-filter="user" th:fragment="userinfo">
     <style>
+      .layui-nav .layui-nav-item a{
+        color: #303131;
+      }
       .layui-nav-tree .layui-this>a,.layui-this>a:hover{
-        background-color: #585D69 !important;
+        background-color: #fff !important;
         border: none !important;
-        color:#fff !important;
+        color:#2EAF71 !important;
+        font-weight: 600;
+        font-size: 16px;
+      }
+      .layui-nav-tree .layui-this>a>i{
+        font-weight: normal;
+      }
+      .layui-nav-tree .layui-nav-item a:hover{
+        background: #fff;
+        color:#2EAF71;
       }
     </style>
     <li class="layui-nav-item" id="set">
@@ -108,12 +120,12 @@
                 <input type="text" id="phonenumber" name="phonenumber" disabled  th:value="${user.phonenumber}" autocomplete="off" value="" class="layui-input">
               </div>
             </div>
-            <div class="layui-form-item layui-form-text">
-              <label for="remark" class="layui-form-label">签名</label>
-              <div class="layui-input-block">
-                <textarea placeholder="随便写些什么刷下存在感" id="remark"  th:text="${user.remark}"   name="sign" autocomplete="off" class="layui-textarea" style="height: 80px;"></textarea>
-              </div>
-            </div>
+<!--            <div class="layui-form-item layui-form-text">-->
+<!--              <label for="remark" class="layui-form-label">签名</label>-->
+<!--              <div class="layui-input-block">-->
+<!--                <textarea placeholder="随便写些什么刷下存在感" id="remark"  th:text="${user.remark}"   name="sign" autocomplete="off" class="layui-textarea" style="height: 80px;"></textarea>-->
+<!--              </div>-->
+<!--            </div>-->
             <div class="layui-form-item">
               <button  type="button" class="layui-btn" key="set-mine" lay-filter="*" onclick="updateUserInfo()">确认修改</button>
             </div>
@@ -236,7 +248,8 @@
             userId:userId,
             loginName:$("#loginName").val(),
             phonenumber:$("#phonenumber").val(),
-            remark:$("#remark").val(),
+            // remark:$("#remark").val(),
+            remark:'',
             userName:$("#userName").val()
         }
         updateUserAvatar(data);
