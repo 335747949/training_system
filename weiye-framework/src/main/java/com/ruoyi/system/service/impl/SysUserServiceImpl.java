@@ -348,7 +348,8 @@ public class SysUserServiceImpl extends AbstractBaseServiceImpl<SysUserMapper, S
                 // 盐加密
                 String salt = ShiroUtils.randomSalt();
                 sysUser.setSalt(salt);
-                sysUser.setPassword(new Md5Hash(sysUser.getPhonenumber() + defaultPwd + salt).toHex());
+                // 加密根据登录用户名 + 密码 + 盐
+                sysUser.setPassword(new Md5Hash(sysUser.getLoginName() + defaultPwd + salt).toHex());
                 sysUser.setCreateBy(ShiroUtils.getLoginName());
                 successList.add(sysUser);
             }

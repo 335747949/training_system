@@ -22,6 +22,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -118,7 +119,7 @@ public class ApiVipUserController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     public AjaxResult editSave(SysUser user) {
-
+        Assert.notNull(user.getUserId(), "用户ID不能为空！");
         user.setUpdateBy(ShiroUtils.getLoginName());
         return toAjax(sysUserService.updateUser(user));
     }
@@ -126,7 +127,14 @@ public class ApiVipUserController extends BaseController {
     @Log(title = "重置密码", businessType = BusinessType.UPDATE)
     @PostMapping("/member/user/resetPwd")
     @ResponseBody
-    public AjaxResult resetPwdSave(SysUser user) {
+    public AjaxResult resetPwdSave(@RequestBody SysUser user) {
+        Assert.hasText(user.getLoginName(), "登录账号不能为空！");
+        Assert.hasText(user.getPassword(), "密码不能为空！");
+        Assert.notNull(user.getUserId(), "用户ID不能为空！");
+        String loginName = JwtUtil.getLoginName();
+        if (!loginName.equals(user.getLoginName())) {
+            return error("您无权修改其他用户密码！");
+        }
         user.setSalt(ShiroUtils.randomSalt());
         user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
         return toAjax(sysUserService.resetUserPwd(user));
