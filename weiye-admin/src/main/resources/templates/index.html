@@ -41,7 +41,7 @@
                 <li class="nav-header">
                     <div class="dropdown profile-element">
                         <span>
-                        <img th:src="(${user.avatar} == '') ? @{/weiye.png} : ${user.avatar}" alt="image" class="img-circle" height="60" width="60"/></span>
+                        <img th:src="(${user.avatar} == '') ? @{/img/avator-default.png} : ${user.avatar}" alt="image" class="img-circle" height="60" width="60"/></span>
                         </span>
                         <div class="userInfo">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
@@ -135,7 +135,9 @@
                     th:src="@{/system/main}" frameborder="0" seamless></iframe>
         </div>
         <div class="footer">
-            <div class="pull-right">© [[${copyrightYear}]] 伟业医药 Copyright </div>
+<!--            <div class="pull-right">© [[${copyrightYear}]] 伟业医药 Copyright </div>-->
+            <div class="pull-right">© <span id="year"></span> 伟业医药 Copyright </div>
+
         </div>
     </div>
     <!--右侧部分结束-->
@@ -149,5 +151,11 @@
 <script th:src="@{/ruoyi/js/ry-ui.js?v=3.0.0}"></script>
 <script th:src="@{/ruoyi/index.js}"></script>
 <script th:src="@{/ajax/libs/fullscreen/jquery.fullscreen.js}"></script>
+<script>
+    $(function(){
+        var year=new Date().getFullYear();
+        $('#year').text(year);
+    })
+</script>
 </body>
 </html>
