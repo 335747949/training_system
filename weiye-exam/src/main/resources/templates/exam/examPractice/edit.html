@@ -144,9 +144,11 @@
 
 		$("#form-examPractice-edit").validate({
 			rules:{
-                name:{
-                    required:true,
-                },
+				name:{
+					required:true,
+					minlength: 1,
+					maxlength: 30
+				},
                 trainCourseId:{
                     required:true
                 },
@@ -157,6 +159,9 @@
 					required: true,	compareDate:"startTime",
 				},
 				messages:{
+					"name": {
+						required: "名称最长30字"
+					},
 					"startTime":{
 						required:  "开始时间不能为空"
 					},

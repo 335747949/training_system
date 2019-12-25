@@ -271,8 +271,10 @@
 
     $("#form-examExamination-edit").validate({
         rules: {
-            name: {
-                required: true,
+            name:{
+                required:true,
+                minlength: 1,
+                maxlength: 30
             },
             examPaperId: {
                 required: true,
@@ -294,6 +296,9 @@
                 required: true
             },
             messages:{
+                "name":{
+                    required:  "名称最长30字"
+                },
                 "startTime":{
                     required:  "开始时间不能为空"
                 },

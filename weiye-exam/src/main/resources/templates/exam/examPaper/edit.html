@@ -65,6 +65,8 @@
         rules:{
             name:{
                 required:true,
+                minlength: 1,
+                maxlength: 30
             },
             choiceNumber:{
                 required:true,
@@ -75,6 +77,11 @@
             moreChoiceNumber:{
                 required:true,
             },
+            messages: {
+                "name": {
+                    required: "名称最长30字"
+                }
+            }
         }
     });
 

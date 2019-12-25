@@ -41,7 +41,14 @@
 			rules:{
 				name:{
 					required:true,
+					minlength: 1,
+					maxlength: 30
 				},
+				messages: {
+					"name": {
+						required: "名称最长30字"
+					}
+				}
 			}
 		});
 		

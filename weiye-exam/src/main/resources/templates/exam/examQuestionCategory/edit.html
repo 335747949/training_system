@@ -77,7 +77,14 @@
 			rules:{
 				name:{
 					required:true,
+					minlength: 1,
+					maxlength: 30
 				},
+				message:{
+					"name": {
+						required: "名称最长30字"
+					},
+				}
 			}
 		});
 		

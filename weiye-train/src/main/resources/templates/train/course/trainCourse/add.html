@@ -73,6 +73,8 @@
 				},
                 name:{
                     required: true,
+					minlength: 1,
+					maxlength: 30
                 },
                 state:{
                     required: true,
@@ -83,6 +85,11 @@
 				// price:{
 				//     required:true,
 				// }
+				message:{
+					"name": {
+						required: "名称最长30字"
+					},
+				}
 			}
 		});
 		
