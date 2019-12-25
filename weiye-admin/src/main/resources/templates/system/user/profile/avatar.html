@@ -9,7 +9,7 @@
         <div class="imageBox"> 
 	        <div class="thumbBox"></div> 
 	        <div class="spinner" style="display: none">
-				<img th:src="(${user.avatar} == '') ? @{/weiye.png} : ${user.avatar}">
+				<img th:src="(${user.avatar} == '') ? @{/weiye.png} : ${user.avatar}" crossOrigin="Anonymous">
 			</div>
 	   </div> 
 	   <div class="action"> 
