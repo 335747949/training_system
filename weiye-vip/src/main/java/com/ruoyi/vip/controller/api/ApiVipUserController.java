@@ -49,15 +49,15 @@ public class ApiVipUserController extends BaseController {
     @ApiImplicitParam(name = "user", value = "登录用户实体", required = true, dataType = "SysUser")
     public AjaxResult login(@RequestBody SysUser user) {
         boolean rememberMe = false;
-        UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(), user.getPassword(), rememberMe);
+        UsernamePasswordToken token = new UsernamePasswordToken(user.getLoginName(), user.getPassword(), rememberMe);
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);
-            SysUser sysUser = loginService.login(user.getUserName(), user.getPassword(),UserConstants.USER_VIP);
+            SysUser sysUser = loginService.login(user.getLoginName(), user.getPassword(),UserConstants.USER_VIP);
             if (sysUser == null) {
                 return error("用户或密码错误");
             }
-            String tokenSign = JwtUtil.sign(sysUser.getUserName(), user.getPassword());
+            String tokenSign = JwtUtil.sign(sysUser.getLoginName(), user.getPassword());
             JSONObject json = new JSONObject();
 
             json.put("token", tokenSign);
