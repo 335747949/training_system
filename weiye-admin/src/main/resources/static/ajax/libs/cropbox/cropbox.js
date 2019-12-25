@@ -7,6 +7,8 @@
     }
 }(function ($) {
     var cropbox = function(options, el){
+        var image=new Image();
+        image.setAttribute("crossOrigin",'anonymous');
         var el = el || $(options.imageBox),
             obj =
             {
@@ -16,7 +18,7 @@
                 imageBox : el,
                 thumbBox : el.find(options.thumbBox),
                 spinner : el.find(options.spinner),
-                image : new Image(),
+                image : image,
                 getDataURL: function ()
                 {
                     var width = this.thumbBox.width(),

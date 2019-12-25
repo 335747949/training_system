@@ -32,7 +32,7 @@ $(window).load(function() {
     var options = {
         thumbBox: '.thumbBox',
         spinner: '.spinner',
-        imgSrc: $.common.isEmpty(avatar) ? ctx + 'img/weiye.png' : avatar
+        imgSrc: $.common.isEmpty(avatar) ? ctx + 'img/avator-default.png' : avatar
     }
     cropper = $('.imageBox').cropbox(options);
     $('#avatar').on('change', function() {
