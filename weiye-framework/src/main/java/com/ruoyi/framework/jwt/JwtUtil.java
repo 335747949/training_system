@@ -6,6 +6,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.ruoyi.framework.web.exception.base.BaseException;
 import com.ruoyi.framework.web.exception.user.UserNotExistsException;
 import com.ruoyi.framework.web.util.ServletUtils;
 
@@ -55,9 +56,10 @@ public class JwtUtil {
             }
             DecodedJWT jwt = JWT.decode(token);
             String loginName = jwt.getClaim( "loginName" ).asString();
-//            jwt.getExpiresAt();
-            if (StrUtil.isBlank( loginName )) {
-                throw new UserNotExistsException();
+            Date expiresDate = jwt.getExpiresAt();
+            // 若token已过期或者用户不存在时
+            if (StrUtil.isBlank( loginName ) || expiresDate.before(new Date())) {
+                throw new BaseException(null,"401",null,"请重新登录");
             }
             return loginName;
         } catch (JWTDecodeException e) {

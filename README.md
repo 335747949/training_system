@@ -1,4 +1,6 @@
 ## 平台简介
+1. 管理端：http://localhost:8080/admin
+2. 用户端：http://localhost:8080/web
 ### 后台管理系统
 ##### 课程管理
 1. 课程分类管理：课程分类搜索查看、添加、修改/编辑、删除等
@@ -35,23 +37,16 @@
 16. 连接池监视：监视当期系统数据库连接池状态，可进行分析SQL找出系统性能瓶颈。
 
 
-## 数据库说明
-#####  exam_:    考试/试卷相关数据表
-#####  train_:   练习相关数据表
-#####  vip_:     用户相关数据表
-#####  gen_:    代码生成器相关数据表
-#####  qrtz_:   定时任务相关数据表
-#####  sys_:    系统配置相关数据表
-
-
 ## 系统包结构说明（training_system）
-#####  weiye-admin:    考试/试卷相关数据表
-#####  weiye-cms:   练习相关数据表
-#####  weiye-common:     用户相关数据表
-#####  weiye-framework:     用户相关数据表
-#####  weiye-generator:     用户相关数据表
-#####  weiye-quartz:     用户相关数据表
-#####  weiye-exam:    代码生成器相关数据表
-#####  weiye-train:    代码生成器相关数据表
-#####  weiye-vip:    代码生成器相关数据表
-#####  weiye-weixin:    代码生成器相关数据表
+#####  weiye-admin:       管理端模块
+#####  weiye-cms:         web用户端模块及相关页面
+#####  weiye-common:     公共模块
+#####  weiye-framework:  基础信息模块
+#####  weiye-generator:  代码生产模块
+#####  weiye-quartz:     定时任务模块
+#####  weiye-exam:       考试模块及管理端相关页面
+#####  weiye-train:      课程模块及管理端相关页面
+#####  weiye-vip:        用户模块及管理端相关页面
+#####  weiye-weixin:     微信支付模块【暂不使用】
+
+
