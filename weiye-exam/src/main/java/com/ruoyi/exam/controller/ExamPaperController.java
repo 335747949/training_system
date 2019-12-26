@@ -273,30 +273,6 @@ public class ExamPaperController extends BaseController {
         examPaperQuestionService.delete(delete);
         int num = 0;
         int score = 0;
-        int choiceScore = 0;
-        int choiceNum = 0;
-        int moreChoiceScore = 0;
-        int moreChoiceNum = 0;
-        int judgeScore = 0;
-        int judgeNum = 0;
-
-        for (int i = 1; i < paperQuestionList.size(); i++) {
-            ExamPaperQuestion item = paperQuestionList.get(i);
-            item.setDelFlag("0");
-            examPaperQuestionService.insert(item);
-            ExamQuestion question = examQuestionService.selectById(item.getExamQuestionId());
-            if ("1".equals(question.getType())){
-                choiceScore =(item.getScore() == null ? 0 : item.getScore()) ;
-                choiceNum++ ;
-
-            }else if ("2".equals(question.getType())){
-                moreChoiceScore = (item.getScore() == null ? 0 : item.getScore()) ;
-                moreChoiceNum++ ;
-            }else if ("3".equals(question.getType())){
-                judgeScore = (item.getScore() == null ? 0 : item.getScore()) ;
-                judgeNum ++;
-            }
-        }
 
         // 計算縂分數
         if (type.equals("1")){
@@ -311,6 +287,29 @@ public class ExamPaperController extends BaseController {
             examPaper.setQuestionNumber(num);
             examPaper.setScore(score);
         }else {
+            int choiceScore = 0;
+            int choiceNum = 0;
+            int moreChoiceScore = 0;
+            int moreChoiceNum = 0;
+            int judgeScore = 0;
+            int judgeNum = 0;
+            for (int i = 1; i < paperQuestionList.size(); i++) {
+                ExamPaperQuestion item = paperQuestionList.get(i);
+                item.setDelFlag("0");
+                examPaperQuestionService.insert(item);
+                ExamQuestion question = examQuestionService.selectById(item.getExamQuestionId());
+                if ("1".equals(question.getType())){
+                    choiceScore =(item.getScore() == null ? 0 : item.getScore()) ;
+                    choiceNum++ ;
+
+                }else if ("2".equals(question.getType())){
+                    moreChoiceScore = (item.getScore() == null ? 0 : item.getScore()) ;
+                    moreChoiceNum++ ;
+                }else if ("3".equals(question.getType())){
+                    judgeScore = (item.getScore() == null ? 0 : item.getScore()) ;
+                    judgeNum ++;
+                }
+            }
             ExamPaperTypeNumber examPaperTypeNumber = new ExamPaperTypeNumber();
             examPaperTypeNumber.setExamPaperId(paper.getId());
             List<ExamPaperTypeNumber> examPaperTypeNumbers = examPaperTypeNumberService.selectList(examPaperTypeNumber);
