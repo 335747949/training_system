@@ -56,7 +56,7 @@ public class DefaultExceptionHandler
     public AjaxResult userNotFound(UserNotExistsException e)
     {
         log.error("运行时异常:", e);
-        return AjaxResult.error(302,"运行时异常:" + e.getMessage());
+        return AjaxResult.error(302, e.getMessage());
     }
 
     /**
@@ -77,7 +77,7 @@ public class DefaultExceptionHandler
     public AjaxResult notFount(RuntimeException e)
     {
         log.error("运行时异常:", e);
-        return AjaxResult.error("运行时异常:" + e.getMessage());
+        return AjaxResult.error(e.getMessage());
     }
 
     /**
