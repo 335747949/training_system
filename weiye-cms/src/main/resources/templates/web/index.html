@@ -158,7 +158,7 @@
     <a class="fly-logo" th:href="@{/web}" style="top: 0;left: 0">
       <img th:src="@{/img/logo.png}" alt="伟业医药" width="151px" height="46px">
     </a>
-    <ul class="layui-nav fly-nav layui-hide-xs nav-header" style="background: transparent;">
+    <ul class="layui-nav fly-nav layui-hide-xs nav-header">
       <li class="layui-nav-item nav-li course-li layui-this" th:if="${session.user!=null and session.userType!='10'}">
         <a th:href="@{/web}">课程</a>
       </li>
@@ -170,7 +170,7 @@
       </li>
     </ul>
 
-    <ul class="layui-nav fly-nav-user" style="background: transparent;">
+    <ul class="layui-nav fly-nav-user">
       <!-- 未登入的状态 -->
       <li th:if="${session.user == null}" class="layui-nav-item">
         <a class="iconfont layui-hide-xs" th:href="@{/web/user/login.html}">
@@ -210,7 +210,7 @@
         <dl class="layui-nav-child">
           <!--<dd><a th:href="@{/web/user/message.html}"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>-->
           <!--<dd><a th:href="@{/web/user/home.html}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>-->
-          <dd><a th:href="@{/web/user/set.html}"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+          <dd><a th:href="@{/web/user/set.html}" style="border: none;"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
 <!--          <dd><a th:href="@{/web/user/set.html}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe63c;</i>更多...</a></dd>-->
           <!--<dd><a th:href="@{/web/user/collectquestion.html}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe600;</i>我的收藏</a></dd>-->
             <dd><a th:href="@{/web/user/userlogout.html}" style="text-align: center;">退出</a></dd>
