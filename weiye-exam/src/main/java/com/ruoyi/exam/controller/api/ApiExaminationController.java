@@ -167,6 +167,7 @@ public class ApiExaminationController extends BaseController {
                 }
             }
             for (ExamQuestionVO item : list) {
+                item.setAnswer("");
                 if(item.getType().equals("1")&&one>0){
                     data.add(item);
                     one--;
