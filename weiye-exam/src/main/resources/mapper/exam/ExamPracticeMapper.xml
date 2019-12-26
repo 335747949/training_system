@@ -121,7 +121,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             end_time = #{endTime},
             <if test="practiceUserLimit != null  and practiceUserLimit != '' "> practice_user_limit = #{practiceUserLimit},</if>
             <if test="updateBy != null  and updateBy != '' "> update_by = #{updateBy},</if>
-            <if test="remarks != null  and remarks != '' "> remarks = #{remarks},</if>
+            remarks = #{remarks},
             <if test="delFlag != null  and delFlag != '' "> del_flag = #{delFlag},</if>
             update_date = sysdate()
         </set>

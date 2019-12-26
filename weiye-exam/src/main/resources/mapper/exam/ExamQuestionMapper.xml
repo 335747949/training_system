@@ -243,7 +243,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createDate != null  ">create_date = #{createDate},</if>
             <if test="updateBy != null  and updateBy != ''  ">update_by = #{updateBy},</if>
             <if test="updateDate != null  ">update_date = #{updateDate},</if>
-            <if test="remarks != null  and remarks != ''  ">remarks = #{remarks},</if>
+            remarks = #{remarks},
             <if test="delFlag != null  and delFlag != ''  ">del_flag = #{delFlag},</if>
         </trim>
         where id = #{id}
