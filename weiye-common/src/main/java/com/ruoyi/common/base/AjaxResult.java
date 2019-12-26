@@ -66,7 +66,7 @@ public class AjaxResult extends HashMap<String, Object>
     {
         AjaxResult json = new AjaxResult();
         json.put("msg", msg);
-        json.put("code", Constants.SUCCESS);
+        json.put("code", Integer.parseInt(Constants.SUCCESS));
         return json;
     }
     /**
@@ -78,7 +78,7 @@ public class AjaxResult extends HashMap<String, Object>
     {
         AjaxResult json = new AjaxResult();
         json.put("msg", "成功");
-        json.put("code", Constants.SUCCESS);
+        json.put("code", Integer.parseInt(Constants.SUCCESS));
         json.put("data", object);
         return json;
     }
@@ -91,7 +91,7 @@ public class AjaxResult extends HashMap<String, Object>
     {
         AjaxResult json = new AjaxResult();
         json.put("msg", msg);
-        json.put("code", Constants.SUCCESS);
+        json.put("code", Integer.parseInt(Constants.SUCCESS));
         json.put("data", object);
         return json;
     }
