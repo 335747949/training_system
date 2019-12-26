@@ -6,7 +6,6 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.ruoyi.framework.web.exception.base.BaseException;
 import com.ruoyi.framework.web.exception.user.AuthExpireException;
 import com.ruoyi.framework.web.exception.user.UserNotExistsException;
 import com.ruoyi.framework.web.util.ServletUtils;

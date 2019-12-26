@@ -10,8 +10,7 @@ import java.util.List;
 import cn.hutool.json.JSONArray;
 import com.ruoyi.common.json.JSONObject;
 import com.ruoyi.exam.domain.*;
-import com.ruoyi.exam.service.IExamQuestionCategoryService;
-import com.ruoyi.exam.service.IExamQuestionItemService;
+import com.ruoyi.exam.service.*;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.exam.service.IExamQuestionService;
 import com.ruoyi.framework.web.base.BaseController;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.common.base.AjaxResult;
@@ -49,6 +47,12 @@ public class ExamQuestionController extends BaseController
 
 	@Autowired
     private IExamQuestionItemService examQuestionItemService;
+
+	@Autowired
+	private IExamPaperQuestionService paperQuestionService;
+
+	@Autowired
+	private IExamPracticeQuestionService practiceQuestionService;
 	
 	@RequiresPermissions("exam:examQuestion:view")
 	@GetMapping()
@@ -208,8 +212,27 @@ public class ExamQuestionController extends BaseController
 	@Log(title = "问题", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody
+	@Transactional(rollbackFor = Exception.class)
 	public AjaxResult remove(String ids)
 	{
+		// 若考试或练习中存在该试题，不允许删除问题
+		String[] idArray = ids.split(",");
+		for (String id : idArray) {
+			ExamPaperQuestion examPaperQuestion = new ExamPaperQuestion();
+			examPaperQuestion.setExamQuestionId(Integer.parseInt(id));
+			List<ExamPaperQuestionVO> examPaperQuestionList = paperQuestionService.selectExamPaperQuestionList(examPaperQuestion);
+			ExamPracticeQuestion examPracticeQuestion = new ExamPracticeQuestion();
+			examPracticeQuestion.setExamQuestionId(Integer.parseInt(id));
+			List<ExamPracticeQuestionVO> examPracticeQuestionVOList = practiceQuestionService.selectExamPracticeQuestionList(examPracticeQuestion);
+			if (examPaperQuestionList.size() > 0 ){
+				return AjaxResult.error("该试题已分配到相应试卷中，不允许删除");
+			}
+
+			if (examPracticeQuestionVOList.size() > 0 ){
+				return AjaxResult.error("该试题已分配到相应练习中，不允许删除");
+			}
+		}
+
 	    examQuestionItemService.deleteByQuestionIds(ids);
 		return toAjax(examQuestionService.deleteExamQuestionByIds(ids));
 	}
