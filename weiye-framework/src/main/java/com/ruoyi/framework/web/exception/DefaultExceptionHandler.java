@@ -1,5 +1,6 @@
 package com.ruoyi.framework.web.exception;
 
+import com.ruoyi.framework.web.exception.user.AuthExpireException;
 import com.ruoyi.framework.web.exception.user.UserNotExistsException;
 import org.apache.shiro.authz.AuthorizationException;
 import org.slf4j.Logger;
@@ -56,6 +57,17 @@ public class DefaultExceptionHandler
     {
         log.error("运行时异常:", e);
         return AjaxResult.error(302,"运行时异常:" + e.getMessage());
+    }
+
+    /**
+     * 拦截未知的运行时异常
+     */
+    @ResponseBody
+    @ExceptionHandler(AuthExpireException.class)
+    public AjaxResult AuthExpire(AuthExpireException e)
+    {
+        log.error("运行时异常:", e);
+        return AjaxResult.error(401, e.getMessage());
     }
     /**
      * 拦截未知的运行时异常
