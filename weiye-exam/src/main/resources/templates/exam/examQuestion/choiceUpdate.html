@@ -11,6 +11,7 @@
             <input type="hidden" id="type" name="type" th:value="${examQuestion.type}">
             <input type="hidden" id="answer" name="questionAnswer" th:value="${examQuestion.answer}">
             <input type="hidden" id="item" name="item" th:value="${examQuestionItem}">
+
             <label class="col-sm-3 control-label">问题标题：</label>
             <div class="col-sm-8">
                 <input id="title" name="title" class="form-control" type="text" th:value="${examQuestion.title}">
@@ -54,7 +55,7 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">答案解析：</label>
             <div class="col-sm-8">
-                <textarea id="remarks" name="remarks" class="form-control" type="text" th:value="${examQuestion.remarks}"></textarea>
+                <textarea id="remarks" name="remarks" class="form-control" type="text" th:field="*{examQuestion.remarks}"></textarea>
             </div>
         </div>
 
