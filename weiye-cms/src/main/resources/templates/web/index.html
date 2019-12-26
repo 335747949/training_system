@@ -158,7 +158,7 @@
     <a class="fly-logo" th:href="@{/web}" style="top: 0;left: 0">
       <img th:src="@{/img/logo.png}" alt="伟业医药" width="151px" height="46px">
     </a>
-    <ul class="layui-nav fly-nav layui-hide-xs nav-header">
+    <ul class="layui-nav fly-nav layui-hide-xs nav-header" style="background: transparent;">
       <li class="layui-nav-item nav-li course-li layui-this" th:if="${session.user!=null and session.userType!='10'}">
         <a th:href="@{/web}">课程</a>
       </li>
@@ -170,8 +170,7 @@
       </li>
     </ul>
 
-    <ul class="layui-nav fly-nav-user">
-
+    <ul class="layui-nav fly-nav-user" style="background: transparent;">
       <!-- 未登入的状态 -->
       <li th:if="${session.user == null}" class="layui-nav-item">
         <a class="iconfont layui-hide-xs" th:href="@{/web/user/login.html}">
