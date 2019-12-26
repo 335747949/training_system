@@ -63,7 +63,7 @@
 
         <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
 
-            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">导入</button>
+            <button class="btn btn-primary btn-lg" onclick="importQuestion()" data-target="#myModal">导入</button>
 
             <a class="btn btn-success" onclick="addChoiceQuestion()" shiro:hasPermission="exam:examQuestion:add">
                 <i class="fa fa-plus"></i> 添加单选题
@@ -126,7 +126,14 @@
         $.table.search();
         queryExamQuestionCategoryTree();
     });
+    function importQuestion() {
 
+        if ($("#categoryId").val() == 1) {
+            $.modal.alertWarning("不能选择根节点（所有分类）");
+            return;
+        }
+        $("#myModal").modal("toggle");
+    }
     function queryExamQuestionList() {
         var options = {
             url: prefix + "/list",
