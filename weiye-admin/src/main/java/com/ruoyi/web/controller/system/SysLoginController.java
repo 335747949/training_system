@@ -23,6 +23,8 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.web.util.ServletUtils;
 import com.ruoyi.framework.web.base.BaseController;
 
+import java.io.IOException;
+
 /**
  * 登录验证
  *
@@ -38,11 +40,10 @@ public class SysLoginController extends BaseController {
     private SysPasswordService passwordService;
 
     @GetMapping("/admin")
-    public String admin(HttpServletRequest request, HttpServletResponse response) {
+    public String admin(HttpServletRequest request, HttpServletResponse response) throws IOException {
 //         如果是Ajax请求，返回Json字符串。
         if (ServletUtils.isAjaxRequest( request )) {
-            ServletUtils.renderString( response, "{\"code\":\"1\",\"msg\":\"未登录或登录超时。请重新登录\"}" );
-            return "login";
+            return ServletUtils.renderString( response, "{\"code\":\"1\",\"msg\":\"未登录或登录超时。请重新登录\"}" );
         }
 
         return "login";
