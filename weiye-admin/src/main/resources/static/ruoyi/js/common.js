@@ -157,8 +157,6 @@ function createMenuItem(dataUrl, menuName) {
 /** 设置全局ajax处理 */
 $.ajaxSetup({
     complete: function(XMLHttpRequest, textStatus) {
-		console.log(XMLHttpRequest)
-    	console.log(XMLHttpRequest.responseJSON.code)
         if (textStatus == 'timeout') {
             $.modal.alertWarning("服务器超时，请稍后再试！");
             $.modal.closeLoading();
