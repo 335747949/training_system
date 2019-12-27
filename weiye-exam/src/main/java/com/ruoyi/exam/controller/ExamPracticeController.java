@@ -170,8 +170,8 @@ public class ExamPracticeController extends BaseController
 		return prefix + "/examQuestion";
 	}
 
-	//	@RequiresPermissions("exam:examPaper:add")
-//	@Log(title = "试卷", businessType = BusinessType.DELETE)
+	@RequiresPermissions("exam:examPractice:add")
+	@Log(title = "练习", businessType = BusinessType.INSERT)
 	@PostMapping( "/saveQuestion")
 	@ResponseBody
 	public AjaxResult saveQuestion(@RequestBody List<ExamPracticeQuestion>  practiceQuestionList)

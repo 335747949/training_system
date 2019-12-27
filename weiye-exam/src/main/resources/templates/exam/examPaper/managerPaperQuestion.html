@@ -36,7 +36,7 @@
                     <input type="hidden" id="paperType" th:value="${examPaper.type}">
                     <div class="form-group draggable">
                         <button onclick="addQuestion()" class="btn btn-warning" >添加试题</button>
-                        <button onclick="saveQuestion(true)" class="btn btn-success" >保存</button>
+                        <button onclick="saveQuestion(true)" class="btn btn-success" shiro:hasPermission="exam:examPaper:add">保存</button>
                     </div>
 
                     <div class="form-group draggable">

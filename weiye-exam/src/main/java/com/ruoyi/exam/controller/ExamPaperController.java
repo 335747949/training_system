@@ -257,8 +257,8 @@ public class ExamPaperController extends BaseController {
         return prefix + "/examQuestion";
     }
 
-    //	@RequiresPermissions("exam:examPaper:add")
-//	@Log(title = "试卷", businessType = BusinessType.DELETE)
+    @RequiresPermissions("exam:examPaper:add")
+	@Log(title = "试卷", businessType = BusinessType.INSERT)
     @RequestMapping("/saveQuestion")
     @ResponseBody
     public AjaxResult saveQuestion(@RequestBody List<ExamPaperQuestion> paperQuestionList) {
