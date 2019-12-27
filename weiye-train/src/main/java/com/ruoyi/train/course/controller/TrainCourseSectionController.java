@@ -7,8 +7,10 @@ import com.ruoyi.train.course.domain.TrainCourseSection;
 import com.ruoyi.train.course.service.ITrainCourseSectionService;
 import com.ruoyi.train.course.service.ITrainCourseService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
@@ -87,9 +89,30 @@ public class TrainCourseSectionController extends BaseController
 	@Log(title = "课程章节", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
+	@Transactional(rollbackFor = Exception.class)
 	public AjaxResult addSave(TrainCourseSection trainCourseSection)
 	{
-		return toAjax(trainCourseSectionService.insertSelective(trainCourseSection));
+		String courseware = trainCourseSection.getCourseware();
+		String[] coursewares = courseware.split(",");
+		int orderNum = trainCourseSection.getOrderNum();
+		String courseName = trainCourseSection.getName();
+		int count = 1;
+		if (courseware.length()>1){
+			for (String item : coursewares){
+				TrainCourseSection courseSection = new TrainCourseSection();
+				BeanUtils.copyProperties(trainCourseSection,courseSection);
+				courseSection.setOrderNum(orderNum);
+				courseSection.setCourseware(item);
+				courseSection.setName(courseName + "("+ count +")");
+				trainCourseSectionService.insertSelective(courseSection);
+				orderNum++;
+				count++;
+			}
+			return AjaxResult.success(courseware.length());
+		}else {
+			return toAjax(trainCourseSectionService.insertSelective(trainCourseSection));
+		}
+
 	}
 
 	/**

@@ -29,11 +29,12 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-3 control-label">上传课件：</label>
+				<label class="col-sm-3 control-label">上传课件：<span id="upload_explain" class="fa fa-question-circle" aria-hidden="true"/></label>
 				<div class="col-sm-8">
 					<input id="courseware" name="courseware" class="form-control" type="hidden">
 					<div class="layui-upload">
 						<button type="button" class="layui-btn layui-btn-normal" id="testList">选择文件</button>
+							<span style="font-size: smaller"><br>单文件最大限制100mb，总大小不能超过2G。若文件过大，请对视频进行压缩/转码后上传。<br>可<a href="https://trainpics.weiye360.cn/test/20191227/707df6acbf424b8ab93e541f57a5228f.exe" style="color: blue">下载工具</a>进行视频处理</span>
 						<div class="layui-upload-list">
 							<table class="layui-table">
 								<thead>
@@ -68,6 +69,18 @@
     <div th:include="include::footer"></div>
 	<script th:src="@{/ajax/libs/layui/layui.js}"></script>
     <script type="text/javascript">
+		$(function () {
+			$("#upload_explain").hover(function () {
+				var tips = layer.tips('文件最大限制100mb,若文件过大，请压缩/转码或剪辑后上传。<br />可<a href="https://trainpics.weiye360.cn/test/20191227/707df6acbf424b8ab93e541f57a5228f.exe" style="color: blue">下载工具</a>进行压缩编辑', '#upload_explain',{
+					tips: [1, '#555555']
+					// 上右下左四个方向，通过1-4进行方向设定
+				});
+				sleep(3000);
+				layer.close(tips);
+			})
+		})
+
+
 		var prefix = ctx + "train/trainCourseSection"
 		$("#form-trainCourseSection-add").validate({
 			rules:{
@@ -121,6 +134,7 @@
                 ,accept: 'file'
                 ,multiple: false
                 ,auto: true
+				,size: 102400    //最大上传文件大小100M
                 ,progress: function(e , percent) {
 					console.log("进度：" + percent + '%');
 					element.progress('progressBar',percent  + '%');
