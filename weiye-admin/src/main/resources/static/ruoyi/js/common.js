@@ -157,6 +157,7 @@ function createMenuItem(dataUrl, menuName) {
 /** 设置全局ajax处理 */
 $.ajaxSetup({
     complete: function(XMLHttpRequest, textStatus) {
+    	console.log(XMLHttpRequest);
         if (textStatus == 'timeout') {
             $.modal.alertWarning("服务器超时，请稍后再试！");
             $.modal.closeLoading();
@@ -164,7 +165,7 @@ $.ajaxSetup({
         } else if (textStatus == "parsererror") {
             $.modal.alertWarning("服务器错误，请联系管理员！");
             $.modal.closeLoading();
-        }else if(XMLHttpRequest.responseJSON.code == "403"){
+        }else if(textStatus == "success" && XMLHttpRequest.responseJSON.code == "403"){
 			$.modal.closeLoading();
         	window.location.replace("/admin");
 		}
