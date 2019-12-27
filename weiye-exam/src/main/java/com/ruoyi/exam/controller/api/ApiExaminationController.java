@@ -244,30 +244,27 @@ public class ApiExaminationController extends BaseController {
 
     /**
      * 交卷
-     *
-     * @param examUserExaminationQuestion
-     * @param examUserExaminationId
-     * @param examinationId
-     * @param paperId
      * @return
      */
-    @PostMapping("/examination/finish/{examUserExaminationId}/{examinationId}/{paperId}/{time}")
-    public AjaxResult finish(@RequestBody List<ExamUserExaminationQuestion> examUserExaminationQuestion,
-                             @PathVariable Integer examUserExaminationId, @PathVariable Integer examinationId, @PathVariable Integer paperId,@PathVariable Long time) {
-
+    @PostMapping("/examination/finish")
+    public AjaxResult finish(@RequestBody ExamUserExaminationFinishVO examUserExaminationFinishVO) {
 
         SysUser user = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(),UserConstants.USER_VIP );
         Long userId = user.getUserId();
+        Integer examUserExaminationId = examUserExaminationFinishVO.getExamUserExaminationId();
+        Integer examinationId = examUserExaminationFinishVO.getExaminationId();
+        Integer paperId = examUserExaminationFinishVO.getPaperId();
+        List<ExamUserExaminationQuestion> examUserExaminationQuestion = examUserExaminationFinishVO.getExamUserExaminationQuestion();
+
         //交卷后返回的数据
         ArrayList<Map<String, String>> data = new ArrayList<>();
-
 
         //如果是模拟考试，考试记录新增数据
         if (examUserExaminationId == -1) {
             ExamUserExamination insert = new ExamUserExamination();
             insert.setExamExaminationId(examinationId);
             insert.setVipUserId(Integer.parseInt(userId.toString()));
-            insert.setCreateDate(new Date(time));
+            insert.setCreateDate(new Date());
             insert.setExamPaperId(paperId);
             insert.setDelFlag("0");
             insert.setScore(0);
