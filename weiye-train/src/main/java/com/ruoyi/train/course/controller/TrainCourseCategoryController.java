@@ -94,8 +94,26 @@ public class TrainCourseCategoryController extends BaseController {
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(TrainCourseCategory category) {
-        category.setUpdateBy( ShiroUtils.getLoginName() );
-        return toAjax( trainCourseCategoryService.updateCategory( category ) );
+        TrainCourseCategory categoryOld = trainCourseCategoryService.selectCategoryById(category.getId());
+        if (categoryOld.getStatus() != category.getStatus()){
+            if (category.getStatus() == 0){
+                // 停用变为正常
+                category.setUpdateBy( ShiroUtils.getLoginName() );
+                return toAjax( trainCourseCategoryService.updateCategory( category ) );
+            }else {
+                // 正常变为停用
+                if (trainCourseCategoryService.checkCategoryExistCourse( category.getId() )) {
+                    return error( 1, "课程分类存在用户,不允许停用" );
+                }
+
+                //停用当前节点及所有子节点
+                trainCourseCategoryService.updateCategoryByParentId(category.getId(), ShiroUtils.getLoginName());
+                return AjaxResult.success();
+            }
+        }else {
+            category.setUpdateBy( ShiroUtils.getLoginName() );
+            return toAjax( trainCourseCategoryService.updateCategory( category ) );
+        }
     }
 
     /**

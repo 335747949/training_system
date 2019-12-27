@@ -195,4 +195,9 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
         }
         return UserConstants.DEPT_NAME_UNIQUE;
     }
+
+    @Override
+    public int updateCategoryByParentId(Long id, String updateBy) {
+        return trainCourseCategoryMapper.updateCategoryByParentId(id,updateBy);
+    }
 }

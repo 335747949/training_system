@@ -164,7 +164,7 @@ $.ajaxSetup({
         } else if (textStatus == "parsererror") {
             $.modal.alertWarning("服务器错误，请联系管理员！");
             $.modal.closeLoading();
-        }else if(XMLHttpRequest.responseJSON.code == "1"){
+        }else if(XMLHttpRequest.responseJSON.code == "403"){
 			$.modal.closeLoading();
         	window.location.replace("/admin");
 		}

@@ -62,7 +62,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="checkCategoryExistCourse" parameterType="Long" resultType="int">
-		select count(1) from train_course where train_course_category_id = #{id} and del_flag = '0'
+		select count(1) from train_course where
+		train_course_category_id IN (SELECT  id FROM train_course_category WHERE FIND_IN_SET(#{id}, parent_ids) OR id = #{id} AND del_flag = '0') and del_flag = '0'
 	</select>
 	
 	<select id="selectCategoryCount" parameterType="TrainCourseCategory" resultType="int">
@@ -133,8 +134,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        #{item.id}
 	    </foreach>
 	 </update>
+    <update id="updateCategoryByParentId">
+		UPDATE train_course_category a
+		INNER JOIN train_course_category b ON a.id = b.id
+		SET a.`status` = 1,
+		a.update_by = #{updateBy}
+		WHERE
+			FIND_IN_SET( #{id}, b.parent_ids )
+			OR b.id = #{id}
+	</update>
 
-	<delete id="deleteCategoryById" parameterType="Long">
+    <delete id="deleteCategoryById" parameterType="Long">
 		update train_course_category set del_flag = '1' where id = #{id}
 	</delete>
 

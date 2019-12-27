@@ -70,13 +70,13 @@
 					title: '排序',
 					align: "left"
 				},
-		        // {
-		        //     field: 'status',
-		        //     title: '状态',
-				// 	formatter: function(value, item, index) {
-				// 				return $.table.selectDictLabel([[${@dict.getType('sys_normal_disable')}]], item.status);
-				// 			}
-		        // },
+		        {
+		            field: 'status',
+		            title: '状态',
+					formatter: function(value, item, index) {
+								return $.table.selectDictLabel([[${@dict.getType('sys_normal_disable')}]], item.status);
+							}
+		        },
 		        {
 		            field: 'createTime',
 		            title: '创建时间',

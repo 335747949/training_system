@@ -43,7 +43,7 @@ public class SysLoginController extends BaseController {
     public String admin(HttpServletRequest request, HttpServletResponse response) throws IOException {
 //         如果是Ajax请求，返回Json字符串。
         if (ServletUtils.isAjaxRequest( request )) {
-            return ServletUtils.renderString( response, "{\"code\":\"1\",\"msg\":\"未登录或登录超时。请重新登录\"}" );
+            return ServletUtils.renderString( response, "{\"code\":\"403\",\"msg\":\"未登录或登录超时。请重新登录\"}" );
         }
 
         return "login";
