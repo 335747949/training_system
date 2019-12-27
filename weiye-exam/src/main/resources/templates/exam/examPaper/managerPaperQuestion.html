@@ -51,16 +51,16 @@
                     </div>
                     <div class="form-group draggable">
                         单选题:<label th:if="${examPaper.type == '2'}" >[[${choiceNumber}]]题,</label>
-                        每题<input onkeyup="defaultScore(1,$(this))" id="choiceNumber" type="text" size="4" >分
+                        每题&nbsp;&nbsp;<input onkeyup="defaultScore(1,$(this))" id="choiceNumber" type="text" size="4" >&nbsp;&nbsp;分
 
                     </div>
                     <div class="form-group draggable">
                        多选题:<label th:if="${examPaper.type == '2'}" >[[${moreChoiceNumber}]]题,</label>
-                        每题<input onkeyup="defaultScore(2,$(this))" id="moreChoiceNumber" type="text" size="4" >分
+                        每题&nbsp;&nbsp;<input onkeyup="defaultScore(2,$(this))" id="moreChoiceNumber" type="text" size="4" >&nbsp;&nbsp;分
                     </div>
                     <div class="form-group draggable">
                         判断题:<label th:if="${examPaper.type == '2'}" >[[${judgeNumber}]]题,</label>
-                        每题<input onkeyup="defaultScore(3,$(this))" id="judgeNumber" type="text" size="4" >分
+                        每题&nbsp;&nbsp;<input onkeyup="defaultScore(3,$(this))" id="judgeNumber" type="text" size="4" >&nbsp;&nbsp;分
                     </div>
 
                     <div class="form-group draggable">
