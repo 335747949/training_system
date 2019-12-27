@@ -23,9 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 用户信息
@@ -164,4 +162,17 @@ public class UploadFileController extends BaseController {
         return toAjax(sysOssService.save(ossEntity)).put("data", ossEntity.getUrl());
     }
 
+    /**
+     * 获取七牛token
+     */
+    @Log(title = "获取七牛token")
+    @PostMapping("/getToken")
+    public AjaxResult getToken(@RequestParam("file") MultipartFile file, String module) throws Exception {
+        CloudStorageService storage = OSSFactory.build();
+
+        String token = storage.getToken();
+        Map<String,Object> data = new HashMap<>();
+        data.put("token",token);
+        return AjaxResult.success(data);
+    }
 }

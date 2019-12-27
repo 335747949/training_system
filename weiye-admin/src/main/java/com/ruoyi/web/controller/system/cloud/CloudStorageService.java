@@ -69,4 +69,10 @@ public abstract class CloudStorageService
      * @return             返回http地址
      */
     public abstract String uploadSuffix(InputStream inputStream, String suffix);
+
+    /**
+     * 获取token
+     * @return
+     */
+    public abstract String getToken();
 }

@@ -80,4 +80,9 @@ public class QcloudCloudStorageService extends CloudStorageService
     {
         return upload(inputStream, getPath(config.getQcloudPrefix(), suffix));
     }
+
+    @Override
+    public String getToken() {
+        return null;
+    }
 }

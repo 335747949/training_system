@@ -57,4 +57,9 @@ public class AliyunCloudStorageService extends CloudStorageService
     {
         return upload(inputStream, getPath(config.getAliyunPrefix(), suffix));
     }
+
+    @Override
+    public String getToken() {
+        return null;
+    }
 }

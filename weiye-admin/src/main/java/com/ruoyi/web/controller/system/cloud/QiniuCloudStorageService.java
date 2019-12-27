@@ -77,4 +77,9 @@ public class QiniuCloudStorageService extends CloudStorageService
     {
         return upload(inputStream, getPath(config.getQiniuPrefix(), suffix));
     }
+
+    @Override
+    public String getToken(){
+        return token;
+    }
 }
