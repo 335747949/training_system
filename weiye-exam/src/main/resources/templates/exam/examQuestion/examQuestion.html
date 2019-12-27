@@ -63,7 +63,7 @@
 
         <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
 
-            <button class="btn btn-primary btn-lg" onclick="importQuestion()" data-target="#myModal">导入</button>
+            <button class="btn btn-primary btn-lg" onclick="importQuestion()" data-target="#myModal" shiro:hasPermission="exam:examQuestion:import">导入</button>
 
             <a class="btn btn-success" onclick="addChoiceQuestion()" shiro:hasPermission="exam:examQuestion:add">
                 <i class="fa fa-plus"></i> 添加单选题
