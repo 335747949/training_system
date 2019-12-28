@@ -43,44 +43,49 @@
                     </div>
 
                     <div class="form-group draggable">
-                        试卷名称：<label id="name"></label>
+                        试卷名称：&nbsp;&nbsp;<label id="name"></label>
                     </div>
                     <div class="form-group draggable">
-                        试卷类型：<label th:if="${examPaper.type == '1'}" >固定试卷</label>
+                        试卷类型：&nbsp;&nbsp;<label th:if="${examPaper.type == '1'}" >固定试卷</label>
                         <label th:if="${examPaper.type == '2'}" >随机试卷</label>
                     </div>
-
-                    <div class="form-group draggable" th:if="${examPaper.type == '2'}" >
-                        <label>试卷包含:<br>单选题：[[${choiceNumber}]]&nbsp;个<br>多选题：[[${moreChoiceNumber}]]&nbsp;个<br>判断题：[[${judgeNumber}]]&nbsp;个</label>
-                    </div>
-
-
                     <div class="form-group draggable">
-                        单选题:<label th:if="${examPaper.type == '2'}" ></label>
-                        每题<input onkeyup="defaultScore(1,$(this))" id="choiceNumber" type="text" size="4" >分
-
-                    </div>
-                    <div class="form-group draggable">
-                       多选题:<label th:if="${examPaper.type == '2'}" ></label>
-                        每题<input onkeyup="defaultScore(2,$(this))" id="moreChoiceNumber" type="text" size="4" >分
-                    </div>
-                    <div class="form-group draggable">
-                        判断题:<label th:if="${examPaper.type == '2'}" ></label>
-                        每题<input onkeyup="defaultScore(3,$(this))" id="judgeNumber" type="text" size="4" >分
-                    </div>
-                    <div class="form-group draggable">
-                        已选共<label id="number"></label>题
-                        <br>
-                        单选<label id="choiceCount"></label>题
-                        <br>
-                        多选<label id="moreChoiceCount"></label>题
-                        <br>
-                        判断<label id="judgeCount"></label>题
-                    </div>
-                    <div class="form-group draggable">
-                        总分数：<label id="score"></label>
+                        题库：&nbsp;&nbsp;共计<label id="number"></label>&nbsp;题
                     </div>
 
+                    <div th:if="${examPaper.type == '2'}">
+                        <div class="form-group draggable">
+                            <label>抽题规则:</label>
+                        </div>
+                        <div class="form-group draggable">
+                            &nbsp;&nbsp;&nbsp;&nbsp;单选题：&nbsp;&nbsp;题库随机抽取[[${choiceNumber}]]&nbsp;题
+                        </div>
+                        <div class="form-group draggable">
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;多选题：&nbsp;&nbsp;题库随机抽取[[${moreChoiceNumber}]]&nbsp;题
+                        </div>
+                        <div class="form-group draggable">
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;判断题：&nbsp;&nbsp;题库随机抽取[[${judgeNumber}]]&nbsp;题
+                        </div>
+                    </div>
+                    <div class="form-group draggable">
+                        <label><br>计分规则<span style="font: smaller">（按实际抽取题目数量计分）</span>:
+                    </div>
+                    <div class="form-group draggable">
+                        &nbsp;&nbsp;&nbsp;&nbsp;单选题抽取题目数量:&nbsp;&nbsp;<label id="choiceCount"></label>题
+                        ，每题&nbsp;<input onkeyup="defaultScore(1,$(this))" id="choiceNumber" type="text" size="4" >&nbsp;分
+                    </div>
+
+                    <div class="form-group draggable">
+                        &nbsp;&nbsp;&nbsp;&nbsp;多选题抽取题目数量:&nbsp;&nbsp;<label id="moreChoiceCount"></label>题
+                        ，每题&nbsp;<input onkeyup="defaultScore(2,$(this))" id="moreChoiceNumber" type="text" size="4" >&nbsp;分
+                    </div>
+                    <div class="form-group draggable">
+                        &nbsp;&nbsp;&nbsp;&nbsp;判断题抽取题目数量:&nbsp;&nbsp;<label id="judgeCount"></label>题
+                        ，每题&nbsp;<input onkeyup="defaultScore(3,$(this))" id="judgeNumber" type="text" size="4" >&nbsp;分
+                    </div>
+                    <div class="form-group draggable">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: red">试卷总分：&nbsp;&nbsp;<label id="score"></label>分</span>
+                    </div>
                 </div>
             </div>
         </div>

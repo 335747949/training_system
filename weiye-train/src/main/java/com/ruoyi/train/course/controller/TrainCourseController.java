@@ -92,6 +92,7 @@ public class TrainCourseController extends BaseController
 	public AjaxResult addSave(TrainCourse trainCourse)
 	{
 		trainCourse.setPrice(BigDecimal.ZERO);
+		trainCourse.setDelFlag("0");
 		return toAjax(trainCourseService.insert(trainCourse));
 	}
 
