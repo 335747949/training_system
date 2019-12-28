@@ -130,10 +130,12 @@
         questionArr = $.parseJSON($("#paperQuestion").val())
         var questionOfTable = '';
 
+
+
         for (var i in questionArr) {
 
             var item = $.parseJSON(questionArr[i][0])
-           // questionOfTable+="<tr class = 'questionItem'><th>"+item.orderNum+"</th><th>"+item.questionName+"</th>"
+            // questionOfTable+="<tr class = 'questionItem'><th>"+item.orderNum+"</th><th>"+item.questionName+"</th>"
             questionOfTable+="<tr class = 'questionItem'><th>"+item.questionName+"</th>"
             questionOfTable+="<input class = 'itemId' type='hidden' value='"+item.examQuestionId+"'>"
             questionOfTable+="<input class = 'itemType' type='hidden' value='"+item.questionType+"'>"
@@ -195,6 +197,8 @@
         var choiceNumber=[[${choiceNumber}]];
         var choiceNumber=[[${choiceNumber}]];
         var choiceNumber=[[${choiceNumber}]];
+
+
     }
 
     function changeScore(obj) {
@@ -205,7 +209,10 @@
             scorc += parseInt($(this).find(".itemScore").eq(0).val());
         })
         $("#score").html(scorc)
+
+
     }
+
 
     function defaultScore(type,obj) {
         obj.val(obj.val().replace(/\D/g,''));
@@ -224,7 +231,6 @@
         $(".questionItem").each(function(){
             scorc += parseInt($(this).find(".itemScore").eq(0).val());
         })
-
         if($("#paperType").val()=='2'){
             var choiceNumber = $(".itemType[value='1']").length>=parseInt([[${choiceNumber}]])?parseInt([[${choiceNumber}]]):$(".itemType[value='1']").length
             var moreChoiceNumber = $(".itemType[value='2']").length>=parseInt([[${moreChoiceNumber}]])?parseInt([[${moreChoiceNumber}]]):$(".itemType[value='2']").length
