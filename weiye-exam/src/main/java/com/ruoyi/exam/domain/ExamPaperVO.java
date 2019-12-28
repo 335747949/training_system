@@ -9,6 +9,10 @@ public class ExamPaperVO extends ExamPaper {
     private Integer moreChoiceNumber;
     private Integer judgeNumber;
 
+    private Integer choiceCount;
+    private Integer moreChoiceCount;
+    private Integer judgeCount;
+
     public Integer getChoiceNumber() {
         return choiceNumber;
     }
@@ -31,5 +35,29 @@ public class ExamPaperVO extends ExamPaper {
 
     public void setJudgeNumber(Integer judgeNumber) {
         this.judgeNumber = judgeNumber;
+    }
+
+    public Integer getChoiceCount() {
+        return choiceCount;
+    }
+
+    public void setChoiceCount(Integer choiceCount) {
+        this.choiceCount = choiceCount;
+    }
+
+    public Integer getMoreChoiceCount() {
+        return moreChoiceCount;
+    }
+
+    public void setMoreChoiceCount(Integer moreChoiceCount) {
+        this.moreChoiceCount = moreChoiceCount;
+    }
+
+    public Integer getJudgeCount() {
+        return judgeCount;
+    }
+
+    public void setJudgeCount(Integer judgeCount) {
+        this.judgeCount = judgeCount;
     }
 }

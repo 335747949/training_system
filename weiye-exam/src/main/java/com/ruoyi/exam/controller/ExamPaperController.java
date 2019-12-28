@@ -351,6 +351,9 @@ public class ExamPaperController extends BaseController {
 
     @GetMapping("/toManagerPaperQuestion/{id}")
     public String toManagerPaperQuestion(@PathVariable("id") Integer id, ModelMap mmap) {
+        int choiceCount = 0;
+        int moreChoiceCount = 0;
+        int judgeCount = 0;
         mmap.put("examPaper", examPaperService.selectById(id));
         ExamPaperTypeNumber examPaperTypeNumber = new ExamPaperTypeNumber();
         examPaperTypeNumber.setExamPaperId(id);
@@ -369,6 +372,13 @@ public class ExamPaperController extends BaseController {
         JSONObject json = new JSONObject();
         List<ExamPaperQuestionVO> examPaperQuestions = examPaperQuestionService.selectQuestionForPaperId(id);
         for (ExamPaperQuestionVO examPaperQuestion : examPaperQuestions) {
+            if (examPaperQuestion.getQuestionType() == 1){
+                choiceCount++;
+            }else if (examPaperQuestion.getQuestionType() == 2){
+                moreChoiceCount++;
+            }else if (examPaperQuestion.getQuestionType() == 3){
+                judgeCount++;
+            }
             if (null == examPaperQuestion.getScore()){
                 examPaperQuestion.setScore(0);
             }
@@ -376,6 +386,9 @@ public class ExamPaperController extends BaseController {
             json.append(examPaperQuestion.getOrderNum().toString() + examPaperQuestion.getExamQuestionId().toString(), new JSONObject(examPaperQuestion).toString());
         }
         mmap.put("examPaperQuestion", json.toString());
+        mmap.put("choiceCount",choiceCount);
+        mmap.put("moreChoiceCount",moreChoiceCount);
+        mmap.put("judgeCount",judgeCount);
         return prefix + "/managerPaperQuestion";
     }
 

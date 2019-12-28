@@ -34,6 +34,9 @@
                     <input type="hidden" id="paperQuestion" th:value="${examPaperQuestion}">
                     <input type="hidden" id="paperQuestionNumber" th:value="${examPaper.questionNumber}">
                     <input type="hidden" id="paperType" th:value="${examPaper.type}">
+                    <input type="hidden" id="choiceCountH" th:value="${choiceCount}">
+                    <input type="hidden" id="moreChoiceCountH" th:value="${moreChoiceCount}">
+                    <input type="hidden" id="judgeCountH" th:value="${judgeCount}">
                     <div class="form-group draggable">
                         <button onclick="addQuestion()" class="btn btn-warning" >添加试题</button>
                         <button onclick="saveQuestion(true)" class="btn btn-success" shiro:hasPermission="exam:examPaper:add">保存</button>
@@ -46,23 +49,34 @@
                         试卷类型：<label th:if="${examPaper.type == '1'}" >固定试卷</label>
                         <label th:if="${examPaper.type == '2'}" >随机试卷</label>
                     </div>
-                    <div class="form-group draggable">
-                        共<label id="number"></label>题
+
+                    <div class="form-group draggable" th:if="${examPaper.type == '2'}" >
+                        <label>试卷包含:<br>单选题：[[${choiceNumber}]]&nbsp;个<br>多选题：[[${moreChoiceNumber}]]&nbsp;个<br>判断题：[[${judgeNumber}]]&nbsp;个</label>
                     </div>
+
+
                     <div class="form-group draggable">
-                        单选题:<label th:if="${examPaper.type == '2'}" >[[${choiceNumber}]]题,</label>
+                        单选题:<label th:if="${examPaper.type == '2'}" ></label>
                         每题<input onkeyup="defaultScore(1,$(this))" id="choiceNumber" type="text" size="4" >分
 
                     </div>
                     <div class="form-group draggable">
-                       多选题:<label th:if="${examPaper.type == '2'}" >[[${moreChoiceNumber}]]题,</label>
+                       多选题:<label th:if="${examPaper.type == '2'}" ></label>
                         每题<input onkeyup="defaultScore(2,$(this))" id="moreChoiceNumber" type="text" size="4" >分
                     </div>
                     <div class="form-group draggable">
-                        判断题:<label th:if="${examPaper.type == '2'}" >[[${judgeNumber}]]题,</label>
+                        判断题:<label th:if="${examPaper.type == '2'}" ></label>
                         每题<input onkeyup="defaultScore(3,$(this))" id="judgeNumber" type="text" size="4" >分
                     </div>
-
+                    <div class="form-group draggable">
+                        已选共<label id="number"></label>题
+                        <br>
+                        单选<label id="choiceCount"></label>题
+                        <br>
+                        多选<label id="moreChoiceCount"></label>题
+                        <br>
+                        判断<label id="judgeCount"></label>题
+                    </div>
                     <div class="form-group draggable">
                         总分数：<label id="score"></label>
                     </div>
@@ -108,16 +122,18 @@
     $(function () {
         $("#name").html($("#paperName").val())
         $("#number").html($("#paperQuestionNumber").val())
+        $("#choiceCount").html($("#choiceCountH").val())
+        $("#moreChoiceCount").html($("#moreChoiceCountH").val())
+        $("#judgeCount").html($("#judgeCountH").val())
         $("#score").html($("#paperScore").val())
 
         questionArr = $.parseJSON($("#paperQuestion").val())
         var questionOfTable = '';
 
-
-
         for (var i in questionArr) {
+
             var item = $.parseJSON(questionArr[i][0])
-            // questionOfTable+="<tr class = 'questionItem'><th>"+item.orderNum+"</th><th>"+item.questionName+"</th>"
+           // questionOfTable+="<tr class = 'questionItem'><th>"+item.orderNum+"</th><th>"+item.questionName+"</th>"
             questionOfTable+="<tr class = 'questionItem'><th>"+item.questionName+"</th>"
             questionOfTable+="<input class = 'itemId' type='hidden' value='"+item.examQuestionId+"'>"
             questionOfTable+="<input class = 'itemType' type='hidden' value='"+item.questionType+"'>"
@@ -129,7 +145,15 @@
             }
             questionOfTable+="<th><button onclick='moveUp($(this))' class='badge badge-primary'>" + "上移" + "</button></th>"
             questionOfTable+="<th><button onclick='moveDown($(this))' class='badge badge-primary'>" + "下移" + "</button></th>"
-            questionOfTable+="<th><button onclick='deleteObj($(this))' class='badge badge-delete'>" + "删除" + "</button></th></tr>"
+            console.log(item.questionType)
+            if (item.questionType == "1"){
+                questionOfTable+="<th><button onclick='deleteObj(1,$(this))' class='badge badge-delete'>" + "删除" + "</button></th></tr>"
+            }else if (item.questionType == "2"){
+                questionOfTable+="<th><button onclick='deleteObj(2,$(this))' class='badge badge-delete'>" + "删除" + "</button></th></tr>"
+            }else if (item.questionType == "3"){
+                questionOfTable+="<th><button onclick='deleteObj(3,$(this))' class='badge badge-delete'>" + "删除" + "</button></th></tr>"
+            }
+
         }
 
 
@@ -171,8 +195,6 @@
         var choiceNumber=[[${choiceNumber}]];
         var choiceNumber=[[${choiceNumber}]];
         var choiceNumber=[[${choiceNumber}]];
-
-
     }
 
     function changeScore(obj) {
@@ -183,10 +205,7 @@
             scorc += parseInt($(this).find(".itemScore").eq(0).val());
         })
         $("#score").html(scorc)
-
-
     }
-
 
     function defaultScore(type,obj) {
         obj.val(obj.val().replace(/\D/g,''));
@@ -205,6 +224,7 @@
         $(".questionItem").each(function(){
             scorc += parseInt($(this).find(".itemScore").eq(0).val());
         })
+
         if($("#paperType").val()=='2'){
             var choiceNumber = $(".itemType[value='1']").length>=parseInt([[${choiceNumber}]])?parseInt([[${choiceNumber}]]):$(".itemType[value='1']").length
             var moreChoiceNumber = $(".itemType[value='2']").length>=parseInt([[${moreChoiceNumber}]])?parseInt([[${moreChoiceNumber}]]):$(".itemType[value='2']").length
@@ -219,7 +239,7 @@
 
     }
 
-    function deleteObj(obj) {
+    function deleteObj(type,obj) {
         var me = obj.parent("th").parent(".questionItem");
         me.remove()
         var scorc = 0
@@ -228,6 +248,15 @@
         })
         $("#score").html(scorc)
         $("#number").html(parseInt($("#number").html())-1)
+        if (type == 1){
+            $("#choiceCount").html(parseInt($("#choiceCount").html())-1)
+        }
+        if (type == 2){
+            $("#moreChoiceCount").html(parseInt($("#moreChoiceCount").html())-1)
+        }
+        if (type == 3){
+            $("#judgeCount").html(parseInt($("#judgeCount").html())-1)
+        }
     }
 
     function addQuestion() {

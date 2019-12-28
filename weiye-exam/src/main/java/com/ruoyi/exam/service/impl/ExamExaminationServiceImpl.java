@@ -279,8 +279,12 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
                 ExamPaperQuestion examPaperQuestion = new ExamPaperQuestion();
                 examPaperQuestion.setExamPaperId(paperId);
                 examPaperQuestion.setExamQuestionId(examQuestionId);
-                ExamPaperQuestionVO paperQuestionVO = examPaperQuestionService.selectExamPaperQuestionList(examPaperQuestion).get(0);
-                score += (paperQuestionVO.getScore() == null ? 0 : paperQuestionVO.getScore());  }
+                List<ExamPaperQuestionVO> paperQuestionVOS = examPaperQuestionService.selectExamPaperQuestionList(examPaperQuestion);
+                if (paperQuestionVOS.size() > 0) {
+                    ExamPaperQuestionVO paperQuestionVO = paperQuestionVOS.get(0);
+                    score += (paperQuestionVO.getScore() == null ? 0 : paperQuestionVO.getScore());  }
+                }
+
         }
         return score;
     }

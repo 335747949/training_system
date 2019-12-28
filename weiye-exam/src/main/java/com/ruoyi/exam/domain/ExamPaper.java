@@ -53,6 +53,7 @@ private static final long serialVersionUID = 1L;
     private String remarks;
     /** 删除标记 0.正常 1.删除 */
     private String delFlag;
+
 	
 	    /** 设置试卷ID */
     public void setId(Integer id)
@@ -208,7 +209,8 @@ private static final long serialVersionUID = 1L;
             {
             return delFlag;
             }
-	
+
+    @Override
 public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
 	            .append("id", getId())

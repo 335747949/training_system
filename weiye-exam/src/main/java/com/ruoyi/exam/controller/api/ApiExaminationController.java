@@ -116,11 +116,11 @@ public class ApiExaminationController extends BaseController {
                 last = userExamination.get( 0 );
                 //最后一次考试已交卷，直接返回
                 if (last.getUpdateDate() != null && !last.getUpdateDate().equals( "" )) {
-                    return error( 500, "已超过" + examNumber + "次考试，" );
+                    return error( 1, "已超过" + examNumber + "次考试，" );
                 } else {
                     // 最后一次考试未交卷，但超过考试时长,直接返回
                     if (last.getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()) {
-                        return error( 500, "已超过" + examNumber + "次考试，" );
+                        return error( 1, "已超过" + examNumber + "次考试，" );
                     }
                 }
 
@@ -349,13 +349,35 @@ public class ApiExaminationController extends BaseController {
      */
     @GetMapping("/examination/userexamination/detail/{id}")
     public AjaxResult detail(@PathVariable Integer id) {
-        ExamUserExaminationVO data = examUserExaminationService.selectDetailById( id );
-        ExamExamination examExamination = examExaminationService.selectById( id );
+        ExamUserExaminationVO data = examUserExaminationService.selectDetailById(id);
+        List<ExamUserExaminationQuestionVO> questions = data.getExamUserExaminationQuestions();
+        int score = 0;
+        int right = 0;
+        int error = 0;
+        int nullAnswer = 0;
+        for (ExamUserExaminationQuestionVO question : questions) {
+            if (StrUtil.isBlank(question.getUserAnswer())) {
+                nullAnswer++;
+            } else if (question.getUserAnswer().equals(question.getAnswer())) {
+                right++;
+            } else {
+                error++;
+            }
+        }
+
+        // 根据答案实时计算分数
+        score = examExaminationService.countScore(questions, data.getExamExaminationId());
+        // TODO,为避免出现考题答案错误的情况（后台修改答案），若记录分数与计算分数不一致重新设置考试分数
+        if (data.getScore().compareTo(score) != 0) {
+            data.setScore(score);
+            examUserExaminationService.updateById(data);
+        }
         AjaxResult success = success( "考试信息" );
         success.put( "data", data );
-        success.put( "examExamination", examExamination );
+        success.put("right", right);
+        success.put("error", error);
+        success.put("nullAnswer", nullAnswer);
         return success;
     }
-
 
 }

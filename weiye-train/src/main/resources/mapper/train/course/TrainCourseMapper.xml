@@ -36,14 +36,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             left join train_course_user tcu on tcu.train_course_id =train_course.id
         </if>
         <where>
-
             <if test="userId != null "> and tcu.vip_user_id = #{userId}</if>
             <if test="id != null "> and train_course.id = #{id}</if>
              <if test="deptId != null "> and train_course.dept_id = #{deptId}</if>
              <if test="trainCourseCategoryId != null ">
                  and (train_course.train_course_category_id in
                  (select id from train_course_category where (FIND_IN_SET(#{trainCourseCategoryId},parent_ids))
-                 or train_course.train_course_category_id = #{trainCourseCategoryId}) AND status = 0 AND del_flag = '0' )
+                 or train_course_category_id = #{trainCourseCategoryId} AND status = 0 AND del_flag = '0'))
              </if>
              <if test="name != null  and name != '' "> and train_course.name like CONCAT('%', #{name},'%')</if>
              <if test="cover != null  and cover != '' "> and train_course.cover = #{cover}</if>
@@ -67,7 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="trainCourseCategoryId != null ">
                 and (train_course.train_course_category_id in
                 (select id from train_course_category where (FIND_IN_SET(#{trainCourseCategoryId},parent_ids))
-                or train_course.train_course_category_id = #{trainCourseCategoryId}) AND status = 0 AND del_flag = '0' )
+                or train_course_category_id = #{trainCourseCategoryId} AND status = 0 AND del_flag = '0' ) )
             </if>
         </where>
 
