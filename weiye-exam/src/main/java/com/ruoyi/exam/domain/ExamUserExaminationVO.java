@@ -19,6 +19,12 @@ public class ExamUserExaminationVO extends ExamUserExamination{
     @Excel(name = "试卷名称",order = 2)
     private String examPaperName;
 
+    private Integer nullAnswer = 0;
+
+    private Integer right = 0;
+
+    private Integer error = 0;
+
     private List<ExamUserExaminationQuestionVO> examUserExaminationQuestions;
 
     public String getLoginName() {
@@ -61,5 +67,29 @@ public class ExamUserExaminationVO extends ExamUserExamination{
 
     public void setExamUserExaminationQuestions(List<ExamUserExaminationQuestionVO> examUserExaminationQuestions) {
         this.examUserExaminationQuestions = examUserExaminationQuestions;
+    }
+
+    public Integer getNullAnswer() {
+        return nullAnswer;
+    }
+
+    public void setNullAnswer(Integer nullAnswer) {
+        this.nullAnswer = nullAnswer;
+    }
+
+    public Integer getRight() {
+        return right;
+    }
+
+    public void setRight(Integer right) {
+        this.right = right;
+    }
+
+    public Integer getError() {
+        return error;
+    }
+
+    public void setError(Integer error) {
+        this.error = error;
     }
 }

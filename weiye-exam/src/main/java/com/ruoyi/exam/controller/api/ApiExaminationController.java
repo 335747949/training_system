@@ -355,6 +355,26 @@ public class ApiExaminationController extends BaseController {
         ExamUserExaminationVO bean = new ExamUserExaminationVO();
         bean.setVipUserId( sysUser.getUserId().intValue() );
         List<ExamUserExaminationVO> data = examUserExaminationService.selectMyExamUserExamination( bean );
+        for (ExamUserExaminationVO userExaminationVO : data) {
+            ExamUserExaminationVO userExamination = examUserExaminationService.selectDetailById(userExaminationVO.getId());
+            List<ExamUserExaminationQuestionVO> questions = userExamination.getExamUserExaminationQuestions();
+            int right = 0;
+            int error = 0;
+            int nullAnswer = 0;
+            for (ExamUserExaminationQuestionVO question : questions) {
+                if (StrUtil.isBlank(question.getUserAnswer())) {
+                    nullAnswer++;
+                } else if (question.getUserAnswer().equals(question.getAnswer())) {
+                    right++;
+                } else {
+                    error++;
+                }
+            }
+            userExaminationVO.setScore(userExaminationVO.getScore());
+            userExaminationVO.setRight(right);
+            userExaminationVO.setError(error);
+            userExaminationVO.setNullAnswer(nullAnswer);
+        }
         AjaxResult success = success( "查询列表成功" );
         success.put( "data",  data);
         success.put( "total", new PageInfo(data).getTotal() );
