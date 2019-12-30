@@ -49,6 +49,7 @@ public class SysLoginController extends BaseController {
         return "login";
     }
 
+
     @PostMapping("/login")
     @ResponseBody
     public AjaxResult ajaxLogin(String username, String password, Boolean rememberMe, Boolean isAdmin) {
@@ -86,6 +87,6 @@ public class SysLoginController extends BaseController {
 
     @GetMapping("/unauth")
     public String unauth() {
-        return "/error/unauth";
+        return "admin/error/unauth";
     }
 }

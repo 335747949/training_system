@@ -88,8 +88,8 @@ shiro:
     # 登录地址
     loginUrl: /admin
     # 权限认证失败地址
-#    unauthorizedUrl: /unauth
-    unauthorizedUrl: /admin
+    unauthorizedUrl: /unauth
+#    unauthorizedUrl: /admin
     # 首页地址
     indexUrl: /admin/index
     # 验证码开关
