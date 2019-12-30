@@ -40,7 +40,7 @@ public class DefaultExceptionHandler
     {
         log.error(e.getMessage(), e);
 //        return AjaxResult.error(PermissionUtils.getMsg(e.getMessage()));
-        return "/error/unauth.html";
+        return "error/unauth.html";
     }
 
     /**
