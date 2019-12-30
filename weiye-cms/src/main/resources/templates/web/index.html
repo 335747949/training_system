@@ -309,10 +309,12 @@
 <!--  <p style="margin-top: 8px;color: #979797;">伟业课堂 是伟业医药（weiye360.cn）旗下专注医药行业的在线学习平台</p>-->
   <p style="margin-top: 4px;color: #979797;"> <span>© </span><span id="year"></span><span> 伟业医药版权所有</span></p>
   <script>
-    $(function(){
-      var year=new Date().getFullYear();
-      $('#year').text(year);
-    })
+   var spanYear= document.getElementById('year');
+   spanYear.innerHTML = new Date().getFullYear();
+    // $(function(){
+    //   var year=new Date().getFullYear();
+    //   $('#year').text(year);
+    // })
   </script>
 </div>
 
