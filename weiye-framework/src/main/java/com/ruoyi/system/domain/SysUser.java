@@ -192,7 +192,7 @@ public class SysUser extends BaseEntity
     public String getAvatar()
     {
         if (ObjectUtils.isEmpty(this.avatar)){
-            return "https://trainpics.weiye360.cn/test/20191217/b98a8aaac9324a708e719c919a495250.png";
+            return "https://trainpics.weiye360.cn/test/20191230/6148bdd536ac4fbf938c2087dbd6317f/png";
         }
         return avatar;
     }

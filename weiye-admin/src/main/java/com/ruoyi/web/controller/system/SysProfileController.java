@@ -123,7 +123,12 @@ public class SysProfileController extends BaseController {
     @PostMapping("/update")
     @ResponseBody
     public AjaxResult update(SysUser user) {
-        if (userService.updateUserInfo( user ) > 0) {
+        SysUser userUpadte = userService.selectUserById( user.getUserId() );
+        userUpadte.setUserName(user.getUserName());
+        userUpadte.setEmail(user.getEmail());
+        userUpadte.setPhonenumber(user.getPhonenumber());
+        userUpadte.setSex(user.getSex());
+        if (userService.updateUserInfo( userUpadte ) > 0) {
             setSysUser( userService.selectUserById( user.getUserId() ) );
             return success();
         }
