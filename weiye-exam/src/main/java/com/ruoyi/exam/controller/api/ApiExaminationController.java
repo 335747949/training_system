@@ -70,8 +70,10 @@ public class ApiExaminationController extends BaseController {
         map.put( "userId", sysUser.getUserId() );
         List<ExamExamination> list = examExaminationService.selectListFromWeb( map );
         AjaxResult success = success( "查询成功" );
+        PageInfo pageInfo = new PageInfo(list);
         success.put( "data", list );
-        success.put("total",new PageInfo(list).getTotal());
+        success.put("pages",pageInfo.getPages());
+        success.put("total",pageInfo.getTotal());
         return success;
     }
 
@@ -212,8 +214,10 @@ public class ApiExaminationController extends BaseController {
         map.put( "userId", sysUser.getUserId() );
         List<ExamExamination> list = examExaminationService.selectSignUpListFromWeb( map );
         AjaxResult success = success( "查询成功" );
+        PageInfo pageInfo = new PageInfo(list);
         success.put("data", list);
-        success.put("total",new PageInfo(list).getTotal());
+        success.put("pages",pageInfo.getPages());
+        success.put("total",pageInfo.getTotal());
         return success;
     }
 
@@ -376,8 +380,10 @@ public class ApiExaminationController extends BaseController {
             userExaminationVO.setNullAnswer(nullAnswer);
         }
         AjaxResult success = success( "查询列表成功" );
-        success.put( "data",  data);
-        success.put( "total", new PageInfo(data).getTotal() );
+        PageInfo pageInfo = new PageInfo(data);
+        success.put("data", data);
+        success.put("pages",pageInfo.getPages());
+        success.put("total",pageInfo.getTotal());
         return success;
     }
 
