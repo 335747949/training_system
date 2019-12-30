@@ -273,6 +273,10 @@ public class ApiExaminationController extends BaseController {
         }
 
         Integer score = 0;
+        Integer right = 0;
+        Integer error = 0;
+        Integer nullAnswer = 0;
+
         for (ExamUserExaminationQuestion item : examUserExaminationQuestion) {
             HashMap<String, String> returnItem = new HashMap<>();
             String userAnswer = item.getUserAnswer();
@@ -311,17 +315,32 @@ public class ApiExaminationController extends BaseController {
         examUserExaminationService.updateOneSelectiveById(examUserExamination);
 
         ExamExamination examExamination = examExaminationService.selectById(examinationId);
-        String finishedPaper = examExamination.getFinishedPaper();
 
+        // 及格分数
+        int passMark = examExamination.getPassMark();
+
+        // 统计正确，错误，漏达数
+        ExamUserExaminationVO userExaminationVO = examUserExaminationService.selectDetailById(examUserExaminationId);
+        List<ExamUserExaminationQuestionVO> questions = userExaminationVO.getExamUserExaminationQuestions();
+
+        for (ExamUserExaminationQuestionVO question : questions) {
+            if (StrUtil.isBlank(question.getUserAnswer())) {
+                nullAnswer++;
+            } else if (question.getUserAnswer().equals(question.getAnswer())) {
+                right++;
+            } else {
+                error++;
+            }
+        }
 
         AjaxResult success = success( "考试完成" );
+        success.put("right", right);
+        success.put("error", error);
+        success.put("nullAnswer", nullAnswer);
+
         //考试完成后参数
-        success.put( "finishedPaper", finishedPaper );
         success.put( "score", score );
-        success.put( "examExamination", examExamination );
-        if (!finishedPaper.equals( "0" )) {
-            success.put( "data", data );
-        }
+        success.put( "passMark", passMark );
         return success;
     }
 
