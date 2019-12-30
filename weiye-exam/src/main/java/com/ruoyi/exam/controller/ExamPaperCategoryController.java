@@ -189,8 +189,8 @@ public class ExamPaperCategoryController extends BaseController
 	/**
 	 * 删除
 	 */
-	@Log(title = "部门管理", businessType = BusinessType.DELETE)
-	@RequiresPermissions("system:examPaperCategory:remove")
+	@Log(title = "试卷分类删除", businessType = BusinessType.DELETE)
+	@RequiresPermissions("exam:examPaperCategory:remove")
 	@PostMapping("/remove/{id}")
 	@ResponseBody
 	public AjaxResult remove(@PathVariable("id") Integer id)
