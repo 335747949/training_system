@@ -5,6 +5,8 @@ import com.ruoyi.framework.web.exception.user.UserNotExistsException;
 import org.apache.shiro.authz.AuthorizationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,6 +28,9 @@ import java.sql.SQLSyntaxErrorException;
 public class DefaultExceptionHandler
 {
     private static final Logger log = LoggerFactory.getLogger(DefaultExceptionHandler.class);
+
+    @Value("${exception.handle.unauthUrl}")
+    private String unauthUrl;
     
     /**
      * 权限校验失败
@@ -35,7 +40,7 @@ public class DefaultExceptionHandler
     {
         log.error(e.getMessage(), e);
 //        return AjaxResult.error(PermissionUtils.getMsg(e.getMessage()));
-        return "/admin/unauth";
+        return unauthUrl;
     }
 
     /**

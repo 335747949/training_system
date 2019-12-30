@@ -123,3 +123,8 @@ jodconverter:
     #每个office进程可执行的最大task数, 超过将重启
     max-tasks-per-process: 10
     port-numbers: 8100
+
+
+exception:
+  handle:
+    unauthUrl: /admin/error/unauth.html

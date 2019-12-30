@@ -123,3 +123,9 @@ jodconverter:
     office-home: /opt/libreoffice6.2  # linux
     max-tasks-per-process: 10
     port-numbers: 8100
+
+
+
+exception:
+  handle:
+    unauthUrl: /admin/error/unauth.html

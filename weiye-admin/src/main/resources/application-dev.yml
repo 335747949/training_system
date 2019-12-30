@@ -125,3 +125,6 @@ jodconverter:
     max-tasks-per-process: 10
     port-numbers: 8100
 
+exception:
+  handle:
+    unauthUrl: /error/unauth.html
