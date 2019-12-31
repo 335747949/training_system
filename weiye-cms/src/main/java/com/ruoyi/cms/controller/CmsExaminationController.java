@@ -93,7 +93,19 @@ public class CmsExaminationController {
         for (ExamExamination exam : list) {
            int count = examExaminationService.countExamQuestion(exam.getId());
            if (count > 0){
-               resultList.add(exam);
+               int maxExamNumber = exam.getExamNumber();
+               // 根据用户id统计用户已参加考试次数
+               ExamUserExamination examUserExamination = new ExamUserExamination();
+               examUserExamination.setVipUserId(sysUser.getUserId().intValue());
+               examUserExamination.setExamPaperId(exam.getExamPaperId());
+               examUserExamination.setExamExaminationId(exam.getId());
+               //考试记录集合
+               List<ExamUserExamination> userExamination = examUserExaminationService.selectLastOne(examUserExamination);
+
+               //超过考试次数
+               if (userExamination.size() < maxExamNumber) {
+                   resultList.add(exam);
+               }
             }
         }
 

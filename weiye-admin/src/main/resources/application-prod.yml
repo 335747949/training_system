@@ -17,7 +17,7 @@ spring:
         #服务启动可加载本地缓存服务信息，避免注册中心发生分区场景，服务不可用
         namingLoadCacheAtStart: true
         #服务空间隔离
-#        namespace: d8a7ce04-b1d4-478c-ae58-fe72b830d5be
+        namespace: 039dbcd3-23b7-4eb4-b720-19f0218edd20
   jmx:
     default-domain: exam
   datasource:

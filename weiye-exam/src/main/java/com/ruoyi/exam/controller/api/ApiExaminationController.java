@@ -64,14 +64,29 @@ public class ApiExaminationController extends BaseController {
         SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(), UserConstants.USER_VIP );
         Map<String, Object> map = new HashMap<>();
         ExamExamination examExamination = new ExamExamination();
-        // 考试类型为2，正式考试
-        examExamination.setType("2");
         map.put( "examExamination", examExamination );
         map.put( "userId", sysUser.getUserId() );
         List<ExamExamination> list = examExaminationService.selectListFromWeb( map );
+        List<ExamExamination> resultList = new ArrayList<>();
+        for (ExamExamination exam : list) {
+            int maxExamNumber = exam.getExamNumber();
+            // 根据用户id统计用户已参加考试次数
+            ExamUserExamination examUserExamination = new ExamUserExamination();
+            examUserExamination.setVipUserId(sysUser.getUserId().intValue());
+            examUserExamination.setExamPaperId(exam.getExamPaperId());
+            examUserExamination.setExamExaminationId(exam.getId());
+            //考试记录集合
+            List<ExamUserExamination> userExamination = examUserExaminationService.selectLastOne(examUserExamination);
+
+            //超过考试次数
+            if (userExamination.size() < maxExamNumber) {
+                resultList.add(exam);
+            }
+        }
+
         AjaxResult success = success( "查询成功" );
-        PageInfo pageInfo = new PageInfo(list);
-        success.put( "data", list );
+        PageInfo pageInfo = new PageInfo(resultList);
+        success.put( "data", resultList );
         success.put("pages",pageInfo.getPages());
         success.put("total",pageInfo.getTotal());
         return success;
@@ -360,24 +375,32 @@ public class ApiExaminationController extends BaseController {
         bean.setVipUserId( sysUser.getUserId().intValue() );
         List<ExamUserExaminationVO> data = examUserExaminationService.selectMyExamUserExamination( bean );
         for (ExamUserExaminationVO userExaminationVO : data) {
-            ExamUserExaminationVO userExamination = examUserExaminationService.selectDetailById(userExaminationVO.getId());
-            List<ExamUserExaminationQuestionVO> questions = userExamination.getExamUserExaminationQuestions();
-            int right = 0;
-            int error = 0;
-            int nullAnswer = 0;
-            for (ExamUserExaminationQuestionVO question : questions) {
-                if (StrUtil.isBlank(question.getUserAnswer())) {
-                    nullAnswer++;
-                } else if (question.getUserAnswer().equals(question.getAnswer())) {
-                    right++;
-                } else {
-                    error++;
+            if (userExaminationVO.getUpdateDate() == null){
+                ExamExamination examExamination = examExaminationService.selectById(userExaminationVO.getExamExaminationId());
+                userExaminationVO.setScore(0);
+                userExaminationVO.setRight(0);
+                userExaminationVO.setError(0);
+                userExaminationVO.setNullAnswer(examExamination.getExamNumber());
+            }else {
+                ExamUserExaminationVO userExamination = examUserExaminationService.selectDetailById(userExaminationVO.getId());
+                List<ExamUserExaminationQuestionVO> questions = userExamination.getExamUserExaminationQuestions();
+                int right = 0;
+                int error = 0;
+                int nullAnswer = 0;
+                for (ExamUserExaminationQuestionVO question : questions) {
+                    if (StrUtil.isBlank(question.getUserAnswer())) {
+                        nullAnswer++;
+                    } else if (question.getUserAnswer().equals(question.getAnswer())) {
+                        right++;
+                    } else {
+                        error++;
+                    }
                 }
+                userExaminationVO.setScore(userExaminationVO.getScore());
+                userExaminationVO.setRight(right);
+                userExaminationVO.setError(error);
+                userExaminationVO.setNullAnswer(nullAnswer);
             }
-            userExaminationVO.setScore(userExaminationVO.getScore());
-            userExaminationVO.setRight(right);
-            userExaminationVO.setError(error);
-            userExaminationVO.setNullAnswer(nullAnswer);
         }
         AjaxResult success = success( "查询列表成功" );
         PageInfo pageInfo = new PageInfo(data);
