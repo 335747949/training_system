@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<!--<input id="examId" type="hidden" th:value="${examId}" />-->
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var prefix = ctx + "exam/examExamination";
+    var examId = [[${examId}]];
+    console.log(examId)
+    $(function() {
+        var options = {
+            url: prefix + "/resultList/" + examId,
+            exportUrl: prefix + "/resultExport/" + examId,
+            modalName: "考试成绩",
+            search: false,
+            showExport: true,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'userExamId',
+                    title: '考试ID',
+                    visible: false
+                },
+                {
+                    field: 'vipUserId',
+                    title: '用户ID',
+                    visible: false
+                },
+                {
+                    field: 'examName',
+                    title: '考试名称'
+                },
+                {
+                    field: 'examPaperName',
+                    title: '试卷名称'
+                },
+                {
+                    field: 'vipUserName',
+                    title: '姓名'
+                }, {
+                    field: 'vipUserMobile',
+                    title: '电话'
+                }, {
+                    field: 'score',
+                    title: '成绩'
+                }, {
+                    field: 'finshTime',
+                    title: '交卷时间'
+                }, {
+                    field: 'passScore',
+                    title: '是否合格',
+                    formatter: function (value, row, index) {
+                        if (row.score >= row.passScore){
+                            return '<span class="label label-success" style="color: white"> 合格</span> ';
+                        }
+                            return '<span class="label label-warning" style="color: crimson"> 不合格</span> ';
+                    }
+                }
+            ]
+        };
+        $.table.init(options);
+    })
+</script>
+</body>
+</html>

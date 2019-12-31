@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="web/index::cmsHeader">
+</head>
+<style>
+  .practice-title{
+    padding: 20px 0 10px 0;
+    margin-left: 16px;
+    font-size: 16px;
+    color: #303133;
+    /*border-bottom: 1px solid #F4F4F4;*/
+  }
+</style>
+<body>
+<div class="fly-header layui-bg-black" th:replace="web/index::top">
+</div>
+<script>
+  $('.nav-li').removeClass('layui-this');
+  $('.practice-li').addClass('layui-this');
+</script>
+<div class="layui-container" style="background: #fff;margin-top: 20px;">
+  <div class="practice-title">练习题</div>
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md12">
+      <div class="fly-panel">
+        <table class="layui-hide" id="test" lay-filter="test"></table>
+        <script type="text/html" id="barDemo">
+          <a class="layui-btn layui-btn-xs" lay-event="start">开始练习</a>
+          <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+        </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="fly-footer" th:replace="web/index::cmsBottom">
+
+</div>
+ 
+<script src="/web/res/layui/layui.js"></script>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/c.php%3Fid%3D30088308' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<script type="text/javascript">
+    layui.use('table', function(){
+        var table = layui.table;
+
+        table.render({
+            elem: '#test'
+            ,url:'/web/practice/list'
+            ,title: '练习表'
+            ,cols: [ [
+                 {checkbox: true}
+                ,{field: 'trainCourseName', title: '课程名称'}
+                ,{field: 'name', title: '考试名称'}
+                ,{title: '操作',toolbar: '#barDemo'}
+            ] ]
+            ,request: {
+                pageName: 'pageNum' //页码的参数名称，默认：page
+                ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
+            }
+            ,response: {
+                statusCode: 200
+                ,countName: 'total'
+            }
+            ,page: true
+        });
+
+
+
+        table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值
+            if(layEvent === 'start'){
+                window.location.href = "/web/practice/start/"+data.id;
+            }
+        })
+    });
+
+
+
+</script>
+
+
+</body>
+</html>

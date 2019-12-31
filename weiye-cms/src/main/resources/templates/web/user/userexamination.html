@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="web/index::cmsHeader">
+</head>
+<body>
+
+<div class="fly-header layui-bg-black" th:replace="web/index::top">
+</div>
+
+<div class="layui-container fly-marginTop fly-user-main">
+    <div th:replace="web/user/set::userinfo">
+    </div>
+
+    <div class="fly-panel fly-panel-user" pad20>
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend>我的考试记录</legend>
+        </fieldset>
+        <table class="layui-hide" id="test" lay-filter="test"></table>
+        <script type="text/html" id="barDemo">
+            <a class="layui-btn layui-btn-xs" lay-event="query">查看</a>
+            <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+        </script>
+
+        <script type="text/html" id="trainCourseName">
+         {{d.examExaminationVO.trainCourseName}}
+        </script>
+
+        <script type="text/html" id="examinationName">
+            {{d.examExaminationVO.name}}
+        </script>
+
+        <script type="text/html" id="type">
+            {{# if (d.examExaminationVO.type == "2"){ }}
+                正式考试
+            {{# }else { }}
+                模拟考试
+            {{# } }}
+        </script>
+
+
+    </div>
+</div>
+
+
+<div class="fly-footer" th:replace="web/index::cmsBottom">
+</div>
+
+<script src="/web/res/layui/layui.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/c.php%3Fid%3D30088308' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<script type="text/javascript">
+    $(function(){
+        $("#userexamination").addClass("layui-this")
+    })
+
+    layui.use('table', function(){
+        var table = layui.table;
+
+        table.render({
+            elem: '#test'
+            ,url:'/web/user/myuserexamination/list'
+            ,title: '练习表'
+            ,cols: [ [
+                {checkbox: true}
+                ,{field: 'trainCourseName', title: '课程名称',templet: '#trainCourseName'}
+                ,{field: 'name', title: '考试名称',templet: '#examinationName'}
+                ,{field: 'examPaperName', title: '试卷名称'}
+                ,{field: 'type', title: '考试类型',templet: '#type'}
+                ,{title: '操作',toolbar: '#barDemo'}
+            ] ]
+            ,request: {
+                pageName: 'pageNum' //页码的参数名称，默认：page
+                ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
+            }
+            ,response: {
+                statusCode: 200
+                ,countName: 'total'
+            }
+            ,page: true
+        });
+
+
+
+        table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值
+            if(layEvent === 'query'){
+                window.location.href = "/web/user/myuserexamination/detail/"+data.id;
+            }
+        })
+    });
+
+</script>
+
+
+</body>
+</html>

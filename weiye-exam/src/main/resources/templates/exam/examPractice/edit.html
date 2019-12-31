@@ -1,0 +1,217 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/datapicker/bootstrap-datetimepicker.css}" rel="stylesheet"/>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-examPractice-edit" th:object="${examPractice}">
+            <input id="id" name="id" th:field="*{id}"  type="hidden">
+			<input id="trainId" name="trainId" th:value="${examPractice.trainCourseId}" type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">练习名称：</label>
+				<div class="col-sm-8">
+					<input id="name" name="name" th:field="*{name}" class="form-control" type="text">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label">课程选择：</label>
+				<div class="col-sm-3">
+<!--					<input id="trainCateGoryName" name="trainCateGoryName" value="课程分类" onclick="selectTrainCategoryTree()" class="form-control" type="text" readonly="true">-->
+					<input id="trainCateGoryName" name="trainCateGoryName" th:value="*{trainCourseCategoryName}" class="form-control" type="text" readonly="true">
+				</div>
+				<div class="col-sm-5">
+					<select id="trainCourseId" name="trainCourseId" class="form-control m-b" disabled>
+						<option>---请选择---</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label">是否控制开始结束时间：</label>
+
+				<div class="col-sm-8">
+					<select id="enableControlTime" name="enableControlTime" th:field="*{enableControlTime}" class="form-control m-b" th:with="type=${@dict.getType('exam_ination_enableControlTime')}">
+						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group enableControlTime">
+				<label class="col-sm-3 control-label">开始时间：</label>
+				<div class="col-sm-8">
+					<div class="input-group date"> <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						<input id="startTime" th:value="*{#dates.format(startTime, 'yyyy-MM-dd HH:mm:ss')}" name="startTime" class="form-control" type="text">
+					</div>
+				</div>
+			</div>
+			<div class="form-group enableControlTime">
+				<label class="col-sm-3 control-label">结束时间：</label>
+				<div class="col-sm-8 " >
+					<div class="input-group date "> <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						<input id="endTime" th:value="*{#dates.format(endTime, 'yyyy-MM-dd HH:mm:ss')}" name="endTime" class="form-control" type="text">
+					</div>
+				</div>
+			</div>
+			<div class="form-group" >
+				<label class="col-sm-3 control-label">练习对象：</label>
+				<div class="col-sm-8">
+					<select id="practiceUserLimit" name="practiceUserLimit" th:field="*{practiceUserLimit}" class="form-control m-b" th:with="type=${@dict.getType('exam_ination_examinationUserLimit')}">
+						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">练习说明：</label>
+				<div class="col-sm-8">
+					<textarea id="remarks" name="remarks" th:field="*{remarks}" class="form-control" type="text"></textarea>
+				</div>
+			</div>
+
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+	<script th:src="@{/js/jquery-ui-1.10.4.min.js}"></script>
+	<script th:src="@{/ajax/libs/iCheck/icheck.min.js}"></script>
+	<script th:src="@{/ajax/libs//datapicker/bootstrap-datetimepicker.js}"></script>
+	<script th:src="@{/ajax/libs/beautifyhtml/beautifyhtml.js}"></script>
+    <script type="text/javascript">
+
+		// 日期比较校验
+		$.validator.addMethod("compareDate",function(value,element){
+			var assigntime = $("#startTime").val();
+			var deadlinetime = $("#endTime").val();
+			var reg = new RegExp('-','g');
+			assigntime = assigntime.replace(reg,'/');//正则替换
+			deadlinetime = deadlinetime.replace(reg,'/');
+			assigntime = new Date(parseInt(Date.parse(assigntime),10));
+			deadlinetime = new Date(parseInt(Date.parse(deadlinetime),10));
+			if(assigntime>deadlinetime){
+				layer.msg("结束日期必须大于开始日期");
+				return false;
+			}else{
+				return true;
+			}
+		},"<font color='#E47068'>结束日期必须大于开始日期</font>");
+
+
+        $(".input-group.date").datetimepicker({
+			minView: 1,//设置只显示到月份
+            format: 'yyyy-mm-dd hh:00:00',
+            language: "zh-Cn",
+			todayBtn: "linked",
+			keyboardNavigation: !1,
+			forceParse: !1,
+			calendarWeeks: !0,
+			autoclose: !0
+        });
+		var prefix = ctx + "exam/examPractice"
+
+		$(function(){
+            var config = {
+                url: ctx + "train/trainCourse"+ "/list",
+                type: "post",
+                dataType: "json",
+                data: {trainCourseCategoryId:100},
+//                contentType:"application/json",
+                success: function(result) {
+                    $("#trainCourseId").html("<option value=''>---请选择---</option>");
+                    var id = $("#trainId").val();
+                    var rows =result.rows;
+                    for(var i in rows){
+                        $("#trainCourseId").append("<option value='"+rows[i].id+"'>"+rows[i].name+"</option>");
+                    }
+                    $("#trainCourseId").val(id);
+                }
+            };
+            $.ajax(config)
+
+            if ($("#enableControlTime").val().toString() == "0") {
+                $(".enableControlTime").hide()
+            } else {
+                $(".enableControlTime").show()
+            }
+
+            $("#enableControlTime").change(function () {
+                if ($("#enableControlTime").val().toString() == "0") {
+                    $(".enableControlTime").hide()
+                } else {
+                    $(".enableControlTime").show()
+                }
+            })
+		})
+
+		$("#form-examPractice-edit").validate({
+			rules:{
+				name:{
+					required:true,
+					minlength: 1,
+					maxlength: 30
+				},
+                trainCourseId:{
+                    required:true
+                },
+				startTime: {
+					required: true,
+				},
+				endTime: {
+					required: true,	compareDate:"startTime",
+				},
+				messages:{
+					"name": {
+						required: "名称最长30字"
+					},
+					"startTime":{
+						required:  "开始时间不能为空"
+					},
+					"endTime":{
+						required:  "结束时间不能为空",
+						compareDate: "结束日期必须大于开始日期!"
+					}
+				}
+            }
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-examPractice-edit').serialize());
+	        }
+	    }
+
+        var trainCategoryId = 100;
+        function selectTrainCategoryTree(){
+            var options = {
+                title: '课程分类选择',
+                width: "380",
+                url: ctx + "train/course/category" + "/selectCategoryTree/"+trainCategoryId,
+                callBack: doSubmitForTrainCategory
+            };
+            $.modal.openOptions(options);
+        }
+
+        function doSubmitForTrainCategory(index, layero){
+            var body = layer.getChildFrame('body', index);
+            trainCategoryId = body.find('#treeId').val()
+            $("#trainCateGoryName").val(body.find('#treeName').val());
+            layer.close(index);
+
+            var config = {
+                url: ctx + "train/trainCourse"+ "/list",
+                type: "post",
+                dataType: "json",
+                data: {trainCourseCategoryId:trainCategoryId},
+//                contentType:"application/json",
+                success: function(result) {
+                    $("#trainCourseId").html("<option value=''>---请选择---</option>");
+                    var rows =result.rows;
+                    for(var i in rows){
+                        $("#trainCourseId").append("<option value='"+rows[i].id+"'>"+rows[i].name+"</option>");
+                    }
+                }
+            };
+            $.ajax(config)
+        }
+	</script>
+</body>
+</html>

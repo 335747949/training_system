@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.train.course.mapper.TrainCourseUserMapper">
+    
+    <resultMap type="TrainCourseUser" id="TrainCourseUserResult">
+        <result property="id"    column="id"    />
+        <result property="trainCourseId"    column="train_course_id"    />
+        <result property="vipUserId"    column="vip_user_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+	
+	<sql id="selectTrainCourseUserVo">
+         id, train_course_id, vip_user_id, create_by, create_date, update_by, update_date, remarks, del_flag    </sql>
+	
+    <select id="selectTrainCourseUserList" parameterType="TrainCourseUser" resultMap="TrainCourseUserResult">
+        select
+        <include refid="selectTrainCourseUserVo"/>
+        from train_course_user
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="trainCourseId != null "> and train_course_id = #{trainCourseId}</if>
+             <if test="vipUserId != null "> and vip_user_id = #{vipUserId}</if>
+             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+             <if test="createDate != null "> and create_date = #{createDate}</if>
+             <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+             <if test="updateDate != null "> and update_date = #{updateDate}</if>
+             <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+             <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+         </where>
+    </select>
+    <select id="authority"  resultMap="TrainCourseUserResult">
+        select
+        <include refid="selectTrainCourseUserVo"/>
+        from train_course_user
+        <where>
+           train_course_id = #{trainCourseId}
+            and vip_user_id = #{vipUserId}
+            <if test="days>0" >
+                and ABS(DATEDIFF(create_date,now()))  <![CDATA[
+                <=#{days}
+                ]]>
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

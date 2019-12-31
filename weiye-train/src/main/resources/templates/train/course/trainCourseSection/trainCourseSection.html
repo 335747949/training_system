@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+	<div class="container-div ui-layout-center">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<input type="hidden" id="trainCourseId" name="trainCourseId" th:value="${trainCourseId}"/>
+					<div class="select-list">
+						<ul>
+							<li>
+								章节名称：<input type="text" name="name"/>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+	        <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+				<a class="btn btn-success" onclick="toAdd()" shiro:hasPermission="train:trainCourseSection:add">
+					<i class="fa fa-plus"></i> 添加
+				</a>
+<!--				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="train:trainCourseSection:edit">-->
+<!--					<i class="fa fa-edit"></i> 修改-->
+<!--				</a>-->
+				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="train:trainCourseSection:remove">
+					<i class="fa fa-remove"></i> 删除
+				</a>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var typeDate = [[${@dict.getType('train_course_section_type')}]];
+        var editFlag = [[${@permission.hasPermi('train:trainCourseSection:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('train:trainCourseSection:remove')}]];
+        var prefix = ctx + "train/trainCourseSection";
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+                modalName: "课程章节",
+				search: false,
+		        showExport: true,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'id', 
+					title : '章节id',
+					visible: false
+				},
+				{
+					field : 'trainCourseId',
+					title : '课程ID',
+					//sortable: true
+				},
+				{
+					field : 'type',
+					title : '章节类型',
+					formatter: function(value, row, index) {
+						return $.table.selectDictLabel(typeDate, value);
+					}
+				},
+				{
+					field : 'name', 
+					title : '章节名称',
+					//sortable: true
+				},
+				{
+					field : 'orderNum', 
+					title : '显示顺序',
+					//sortable: true
+				},
+				{
+					field : 'createBy', 
+					title : '创建者',
+					//sortable: true
+				},
+				{
+					field : 'createTime', 
+					title : '创建时间',
+					//sortable: true
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+        function toAdd() {
+            var url =prefix + "/add/"+$("#trainCourseId").val();
+            $.operate.jumpModeltoUrl("课程章节添加",url,1000,600);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="web/index::cmsHeader">
+</head>
+<body>
+
+<div class="fly-header layui-bg-black" th:replace="web/index::top">
+</div>
+
+<div class="layui-container fly-marginTop fly-user-main">
+    <div th:replace="web/user/set::userinfo">
+    </div>
+
+    <div class="fly-panel fly-panel-user" pad20>
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;" th:if="${data == null or data.examExaminationVO.examEnd =='0'}">
+            <legend>该试卷无法查看</legend>
+        </fieldset>
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;" th:if="${data.examExaminationVO.examEnd =='1' or data.examExaminationVO.examEnd =='2' or data.examExaminationVO.examEnd =='3'}">
+            <legend>得分:[[${data.score}]],回答正确:[[${right}]],回答错误:[[${error}]],漏答:[[${nullAnswer}]]</legend>
+        </fieldset>
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;" th:if="${data.examExaminationVO.examEnd =='1' or data.examExaminationVO.examEnd =='0'}">
+            <legend>该考试无法查看考试详情</legend>
+        </fieldset>
+        <div class="layui-collapse" lay-filter="test" th:if="${data.examExaminationVO.examEnd =='2' or data.examExaminationVO.examEnd =='3'}">
+            <div class="layui-colla-item" th:each="item:${data.examUserExaminationQuestions}">
+                <h2 class="layui-colla-title">[[${itemStat.index+1}]]:[[${item.title}]]
+                    <span style="color: #2EAF71;" th:if="${item.answer==item.userAnswer}">✔️回答正确</span>
+                    <span style="color: #E73E3E;" th:if="${item.answer != item.userAnswer}">✘回答错误</span>
+                </h2>
+
+                <div class="layui-colla-content" >
+                    <p th:each="qItem:${item.questionItems}">[[${qItem.number}]]:[[${qItem.content}]]</p>
+                    <p th:if="${data.examExaminationVO.examEnd == '3'}">正确答案[[${item.answer}]]</p>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+<div class="fly-footer" th:replace="web/index::cmsBottom">
+</div>
+
+<script src="/web/res/layui/layui.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/c.php%3Fid%3D30088308' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<script type="text/javascript">
+    $(function(){
+        $("#userexamination").addClass("layui-this")
+    })
+
+    function del(id) {
+        $.ajax({
+            type: 'post',
+            url: "/web/user/delcollectquestion",
+            data: {questionId:id},
+            success: function (result) {
+                if (result.code != web_status.SUCCESS) {
+                    layer.msg(result.msg, {icon: 2});
+                }else{
+                    window.location="/web/user/collectquestion.html"
+                }
+            }
+        });
+    }
+
+
+
+</script>
+
+
+</body>
+</html>

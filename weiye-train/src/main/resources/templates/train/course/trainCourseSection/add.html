@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/layui/css/layui.css}" rel="stylesheet"/>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-trainCourseSection-add">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">课程名称：</label>
+				<div class="col-sm-8">
+					<input id="trainCourseId" name="trainCourseId" th:value="${trainCourse.id}" class="form-control" type="hidden">
+					<input id="trainCourseName" name="trainCourseName" th:value="${trainCourse.name}" class="form-control" type="text" disabled="disabled">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">章节名称：</label>
+				<div class="col-sm-8">
+					<input id="name" name="name" class="form-control" type="text">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label" title="课件类型（1-视频，2-附件）">课件类型：</label>
+				<div class="col-sm-8">
+					<select id="type"  name="type" th:with="type=${@dict.getType('train_course_section_type')}" class="form-control" >
+						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">上传课件：</label>
+<!--				<span id="upload_explain" class="fa fa-question-circle" aria-hidden="true"/>-->
+				<div class="col-sm-8">
+					<input id="courseware" name="courseware" class="form-control" type="hidden">
+					<div class="layui-upload">
+						<button type="button" class="layui-btn layui-btn-normal" id="testList">选择文件</button>
+							<span style="font-size: smaller"><br>单文件最大限制100mb，总大小不能超过2G。若文件过大，请对视频进行压缩/转码后上传。<br>可<a href="https://trainpics.weiye360.cn/test/20191227/707df6acbf424b8ab93e541f57a5228f.exe" style="color: blue">下载工具</a>进行视频处理</span>
+						<div class="layui-upload-list">
+							<table class="layui-table">
+								<thead>
+								<tr><th>文件名</th>
+									<th>大小</th>
+									<th>状态</th>
+									<th>操作</th>
+								</tr></thead>
+								<tbody id="demoList"></tbody>
+							</table>
+						</div>
+					</div>
+					<div class="layui-progress layui-progress-big" lay-showPercent="yes" lay-filter="progressBar">
+						<div class="layui-progress-bar layui-bg-red" lay-percent="0%"></div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">显示顺序：</label>
+				<div class="col-sm-8">
+					<input id="orderNum" name="orderNum" class="form-control" type="number" min="1">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">章节介绍：</label>
+				<div class="col-sm-8">
+					<textarea id="remark" name="remark" placeholder="请输入章节介绍" class="layui-textarea"></textarea>
+				</div>
+			</div>
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+	<script th:src="@{/ajax/libs/layui/layui.js}"></script>
+    <script type="text/javascript">
+		$(function () {
+			$("#upload_explain").hover(function () {
+				var tips = layer.tips('文件最大限制100mb,若文件过大，请压缩/转码或剪辑后上传。<br />可<a href="https://trainpics.weiye360.cn/test/20191227/707df6acbf424b8ab93e541f57a5228f.exe" style="color: blue">下载工具</a>进行压缩编辑', '#upload_explain',{
+					tips: [1, '#555555']
+					// 上右下左四个方向，通过1-4进行方向设定
+				});
+				sleep(3000);
+				layer.close(tips);
+			})
+		})
+
+
+		var prefix = ctx + "train/trainCourseSection"
+		$("#form-trainCourseSection-add").validate({
+			rules:{
+                name:{
+					required:true,
+					minlength: 1,
+					maxlength: 30
+				},
+                trainCourseName:{
+                    required:true,
+					minlength: 1,
+					maxlength: 30
+                },
+                orderNum:{
+                    required:true,
+                },
+				courseware:{
+					required:true,
+				},
+				message:{
+					"name": {
+						required: "名称最长30字"
+					},
+				}
+			}
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            if(fileList.length==0){
+                    layer.msg('附件不能为空，请选择文件...');
+	                return false;
+				}
+	            $("#courseware").val(fileList.join(","));
+				var formData=$('#form-trainCourseSection-add').serialize();
+	            $.operate.save(prefix + "/add",formData );
+	        }
+	    }
+
+        var fileList=new Array();
+        layui.use(['upload',"element"], function() {
+            var $ = layui.jquery
+                , upload = layui.upload,
+                element=layui.element;
+            //多文件列表示例
+            var demoListView = $('#demoList')
+                ,uploadListIns = upload.render({
+                elem: '#testList'
+                ,url: '/upload/oss'
+                ,data:{module:"train/courseware"}//文件存放路径
+                ,accept: 'file'
+                ,multiple: false
+                ,auto: true
+				,size: 102400    //最大上传文件大小100M
+                ,progress: function(e , percent) {
+					console.log("进度：" + percent + '%');
+					element.progress('progressBar',percent  + '%');
+				}
+                ,choose: function(obj){
+                    var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+                    //读取本地文件
+                    obj.preview(function(index, file, result){
+                        var tr = $(['<tr id="upload-'+ index +'">'
+                            ,'<td>'+ file.name +'</td>'
+                            ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
+                            ,'<td>等待上传</td>'
+                            ,'<td>'
+                            ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
+                            ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
+                            ,'</td>'
+                            ,'</tr>'].join(''));
+
+                        //单个重传
+                        tr.find('.demo-reload').on('click', function(){
+                            obj.upload(index, file);
+                        });
+
+                        //删除
+                        tr.find('.demo-delete').on('click', function(){
+                            delete files[index]; //删除对应的文件
+                            tr.remove();
+                            uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                        });
+
+                        demoListView.append(tr);
+                    });
+                }
+                ,done: function(res, index, upload){
+                    if(res.code == 200){ //上传成功
+                        var tr = demoListView.find('tr#upload-'+ index)
+                            ,tds = tr.children();
+                        tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+                        tds.eq(3).html(''); //清空操作
+                        fileList.push(res.data);
+                        return delete this.files[index]; //删除文件队列已经上传成功的文件
+                    }
+                    this.error(index, upload);
+                }
+                ,error: function(index, upload){
+                    var tr = demoListView.find('tr#upload-'+ index)
+                        ,tds = tr.children();
+                    tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+                    tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+                }
+            });
+        });
+	</script>
+</body>
+</html>

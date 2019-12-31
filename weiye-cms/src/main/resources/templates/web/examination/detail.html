@@ -1,0 +1,303 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="web/index::cmsHeader">
+</head>
+<style>
+    #count_down span{
+        font-size: 22px;
+        color: #F27F1F;
+    }
+</style>
+<body oncontextmenu="return false" onselectstart="return false">
+
+<div class="fly-header layui-bg-black" th:replace="web/index::top"></div>
+<script>
+    $('.nav-li').removeClass('layui-this');
+    $('.exam-li').addClass('layui-this');
+</script>
+<div class="layui-container"  style="top:20px;height: calc(100% - 20px);">
+    <div class="layui-row layui-col-space15" style="height: 100%;">
+
+        <div class="layui-col-md12" style="height: 100%;">
+            <div class="fly-panel" style="height: 100%;background: transparent;">
+
+                <div class="layui-col-md12" style="height: 100%;">
+
+                    <div class="layui-card" style="display: flex;align-items: center;position: absolute;top:0; left: 0;padding:14px 16px;box-sizing:border-box;width: 100%;  z-index:99;background: #fff;">
+                            <div style="flex: auto;font-size: 16px;color: #626262;">考试内容：[[${examExamination.name}]]</div>
+                            <div id="count_down" style="flex: auto;">
+                                <span>离考试结束：</span>
+                                <span class="day_num"></span>
+                                <span class="hour_num"></span>
+                                <span class="min_num"></span>
+                                <span class="sec_num"></span>
+                            </div>
+                            <div style="flex: auto;text-align: right;">
+                                <button style="width: 164px;" class="layui-btn layui-btn-warm"
+                                        onclick="endPaper()">交卷
+                                </button>
+                            </div>
+
+<!--                        <span style="font-size: 16px;">[[${examExamination.name}]]</span><br>-->
+<!--                        <button style="width: 100px;margin-bottom: 20px" class="layui-btn layui-btn-warm"-->
+<!--                                onclick="endPaper()">交卷-->
+<!--                        </button>-->
+<!--                        <div id="count_down">-->
+<!--                            <span class="day_num"></span>-->
+<!--                            <span class="hour_num"></span>-->
+<!--                            <span class="min_num"></span>-->
+<!--                            <span class="sec_num"></span>-->
+<!--                        </div>-->
+                    </div>
+                    <div class="layui-col-md12" style="margin-top: 82px;height: calc(100% - 66px);overflow-y: auto;">
+                        <div class="layui-card question" th:each="question:${data}">
+                            <input type="hidden" class="questionId" th:value="${question.id}">
+                            <div class="layui-card-header" style="display: inline-block;color: #303133;font-size: 14px;width: 100%;box-sizing: border-box;">[[${questionStat.index+1}]]、
+                                <span th:text="${question.title}"></span>
+                                <span class="practice-type practice-type-1" th:if="${question.type=='1'}">单选</span>
+                                <span class="practice-type practice-type-2" th:if="${question.type=='2'}">多选</span>
+                                <span class="practice-type practice-type-3" th:if="${question.type=='3'}">判断</span>
+                            </div>
+                            <div class="layui-card-body" th:each="item:${question.questionItem}">
+                                <input th:class="${question.id}+'useranswer'" th:if="${question.type=='2'}"
+                                       type="checkbox" th:name="${question.id}" th:value="${item.number}">
+                                <input th:class="${question.id}+'useranswer'" th:if="${question.type != '2'}"
+                                       type="radio" th:name="${question.id}" th:value="${item.number}">
+                                [[${item.number}]]:
+                                <span class="ck" th:text="${item.content}" onclick="checkbox(this)"></span>
+                            </div>
+
+
+                            <!--<div class="layui-card-body">-->
+                            <!--<button class="layui-btn layui-btn-warm"-->
+                            <!--th:onclick="analysis([[${question.id}]],[[${question.answer}]])">解析-->
+                            <!--</button>-->
+                            <!--</div>-->
+                            <!--<div class="layui-card-body" hidden th:id="${question.id}+'answer'">-->
+                            <!--解析:正确答案[[${question.answer}]]<br>-->
+                            <!--[[${question.label}]]-->
+                            <!--</div>-->
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="fly-footer" th:replace="web/index::cmsBottom">
+
+</div>
+
+<script src="/web/res/layui/layui.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/c.php%3Fid%3D30088308' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<script type="text/javascript">
+    var layer;
+    $(function () {
+        layui.use('layer', function () {
+            layer = layui.layer;
+        });
+
+
+        var startTime = [[${userExaminationTime}]] == 0 ? new Date().getTime() : [[${userExaminationTime}]];
+        var endTime = startTime + [[${examExamination.timeLength}]] * 60 * 1000
+        $("#count_down").countDown({
+            startTimeStr: startTime,//开始时间
+            endTimeStr: endTime,//结束时间
+            daySelector: ".day_num",
+            hourSelector: ".hour_num",
+            minSelector: ".min_num",
+            secSelector: ".sec_num"
+        });
+    })
+
+
+    function endPaper() {
+        var data = [];
+        var i = 0;
+        var index = 0;
+        var str = '';
+        $(".question").each(function () {
+            var examQuestionId = $(this).find(".questionId").eq(0).val()
+            var userAnswer = "";
+            $(this).find("." + examQuestionId + "useranswer:checked").each(function () {
+                userAnswer += $(this).val() + ",";
+            })
+            userAnswer = userAnswer.substring(0, userAnswer.length - 1)
+            i++;
+            if (userAnswer == '') {
+                str += i + ",";
+                index++
+            }
+
+            data.push({examQuestionId: examQuestionId, userAnswer: userAnswer})
+
+        })
+        if (str != "") {
+            str = str.substring(0, str.length - 1)
+            str = index + "道题目未作答(" + str + ")"
+        }
+
+        layer.confirm("确定交卷么?" + str, {
+            btn: ['关闭', '确认'] //可以无限个按钮
+            , btn2: function () {
+                //按钮【按钮三】的回调
+                $.ajax({
+                    type: 'post',
+                    url: "/web/examination/finish/" + [[${examUserExaminationId}]] + "/" + [[${examExamination.id}]] + "/" + [[${paperId}]],
+                    contentType: "application/json",
+                    data: JSON.stringify(data),
+                    success: function (result) {
+                        if (result.code != web_status.SUCCESS) {
+                            layer.msg(result.msg, {icon: 2})
+                        } else {
+                            layer.msg("已交卷", {icon: 1})
+                            location.href = "/web/user/myuserexamination/detail/" + result.id;
+                        }
+                    }
+
+                });
+            }
+        }, function () {
+            layer.closeAll();
+        });
+
+    }
+        function endPaper1() {
+            var data = [];
+            var i = 0;
+            var index = 0;
+            var str = '';
+            $(".question").each(function () {
+                var examQuestionId = $(this).find(".questionId").eq(0).val()
+                var userAnswer = "";
+                $(this).find("." + examQuestionId + "useranswer:checked").each(function () {
+                    userAnswer += $(this).val() + ",";
+                })
+                userAnswer = userAnswer.substring(0, userAnswer.length - 1)
+                i++;
+                if (userAnswer == '') {
+                    str += i + ",";
+                    index++
+                }
+
+                data.push({examQuestionId: examQuestionId, userAnswer: userAnswer});
+            });
+            $.ajax({
+                type: 'post',
+                url: "/web/examination/finish/" + [[${examUserExaminationId}]] + "/" + [[${examExamination.id}]] + "/" + [[${paperId}]],
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (result) {
+                    if (result.code != web_status.SUCCESS) {
+                        layer.msg(result.msg, {icon: 2})
+                    } else {
+                        layer.msg("已交卷", {icon: 1})
+                        location.href = "/web/user/myuserexamination/detail/" + result.id;
+                    }
+                }
+
+            });
+            layer.closeAll();
+    }
+
+    function checkbox(value) {
+        $(value).prev().prop("checked", !$(value).prev().prop("checked"));
+
+    }
+
+    //倒计时
+    (function ($) {
+        var intervalDate;
+        var day, hour, min, sec;
+
+        $.fn.extend({
+            countDown: function (options) {  //生成倒计时字符串
+
+                var opts = $.extend({}, defaults, options);
+                this.each(function () {
+
+                    var $this = $(this);
+//                    var nowTime = new Date().getTime();
+                    var startTime = opts.startTimeStr; //开始时间
+                    var endTime = opts.endTimeStr;  //结束时间
+//                    endTime = endTime > startTime ? endTime : startTime;
+//                    startTime = endTime > startTime ? startTime : endTime;
+
+                    intervalDate = setInterval(function () {
+                        var nowTime = new Date().getTime();
+//                        if(startTime >= endTime){
+//                            $this.beforeAction(opts);
+//                            clearInterval(intervalDate);
+//                        }else
+
+                        if (endTime > nowTime) {
+                            //显示倒计时
+                            var t = endTime - nowTime;
+                            day = Math.floor(t / 1000 / 60 / 60 / 24);
+                            hour = Math.floor(t / 1000 / 60 / 60 % 24);
+                            min = Math.floor(t / 1000 / 60 % 60);
+                            sec = Math.floor(t / 1000 % 60);
+                            $(opts.daySelector).html($this.doubleNum(day) + "天");
+                            $(opts.hourSelector).html($this.doubleNum(hour) + "小时");
+                            $(opts.minSelector).html($this.doubleNum(min) + "分");
+                            $(opts.secSelector).html($this.doubleNum(sec) + "秒");
+                        } else {
+                            $this.afterAction(opts);
+                            clearInterval(intervalDate);
+                        }
+                    }, 1000);
+
+                });
+            },
+            doubleNum: function (num) { //将个位数字变成两位
+                if (num < 10) {
+                    return "0" + num;
+                } else {
+                    return num + "";
+                }
+            },
+            beforeAction: function (options) {
+                //父容器显示，特定文字
+                $(options.daySelector).parent().html("敬请期待");
+            },
+            afterAction: function (options) {
+                //父容器显示，特定文字
+                // $(options.daySelector).parent().html("考试结束,请交卷");
+                $(":checkbox").attr("disabled", "disabled")
+                $(":radio").attr("disabled", "disabled")
+                $(".ck").removeAttr("onclick");
+                endPaper1();
+
+            }
+
+        });
+
+        var defaults = {
+            startTimeStr: "2017/01/10 00:00:00",
+            endTimeStr: "2017/01/17 23:59:59",
+            daySelector: ".day",
+            hourSelector: ".hour",
+            minSelector: ".min",
+            secSelector: ".sec"
+        }
+
+
+    })(jQuery)
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-examPaperCategory-add">
+			<input id="treeId" name="parentId" type="hidden" th:value="${examPaperCategory.id}"   />
+			<div class="form-group">
+				<label class="col-sm-3 control-label ">上级名称：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" onclick="selectExamPaperCategoryTree()" id="treeName" readonly="true" th:value="${examPaperCategory.name}"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">分类名称：</label>
+				<div class="col-sm-8">
+					<input id="name" name="name" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">排序号：</label>
+				<div class="col-sm-8">
+					<input id="orderNum" name="orderNum" class="form-control" type="text">
+				</div>
+			</div>
+
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">备注信息：</label>
+				<div class="col-sm-8">
+					<textarea id="remarks" name="remarks" class="form-control" type="text"></textarea>
+				</div>
+			</div>
+
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "exam/examPaperCategory"
+		$("#form-examPaperCategory-add").validate({
+			rules:{
+				name:{
+					required:true,
+					minlength: 1,
+					maxlength: 30
+				},
+				messages: {
+					"name": {
+						required: "名称最长30字"
+					}
+				}
+			}
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/add", $('#form-examPaperCategory-add').serialize());
+	        }5
+	    }
+
+        function selectExamPaperCategoryTree() {
+            var options = {
+                title: '分类选择',
+                width: "380",
+                url: prefix + "/selectExamPaperCategoryTree/" + $("#treeId").val(),
+                callBack: doSubmit
+            };
+            $.modal.openOptions(options);
+        }
+
+        function doSubmit(index, layero){
+            var body = layer.getChildFrame('body', index);
+            $("#treeId").val(body.find('#treeId').val());
+            $("#treeName").val(body.find('#treeName').val());
+            layer.close(index);
+
+
+        }
+	</script>
+</body>
+</html>

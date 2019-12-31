@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.train.course.mapper.TrainCourseCategoryMapper">
+
+	<resultMap type="TrainCourseCategory" id="TrainCourseCategoryResult">
+		<id     property="id"     column="id"/>
+		<result property="deptId"   column="dept_id"/>
+		<result property="parentId"   column="parent_id"/>
+		<result property="parentIds"  column="parent_ids"/>
+		<result property="name"   column="name"/>
+		<result property="orderNum"   column="order_num"/>
+		<result property="delFlag"    column="del_flag"/>
+		<result property="parentName" column="parent_name"/>
+		<result property="status" column="status"/>
+		<result property="createBy"   column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy"   column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+	</resultMap>
+	
+	<sql id="selectCategoryVo">
+        select d.id,d.dept_id, d.parent_id, d.parent_ids, d.name, d.order_num, d.status, d.del_flag, d.create_by, d.create_time
+        from train_course_category d
+    </sql>
+	<select id="selectRoleCategoryTree" parameterType="Long" resultType="String">
+		select concat(d.id, d.name) as name
+		from train_course_category d
+			left join sys_role_dept rd on d.id = rd.id
+		where d.del_flag = '0' and rd.role_id = #{roleId}
+		order by d.parent_id, d.order_num
+	</select>
+	
+	<select id="selectAllCategoryList" parameterType="TrainCourseCategory" resultMap="TrainCourseCategoryResult">
+        <include refid="selectCategoryVo"/>
+        where d.del_flag = '0'
+        <if test="parentId != null and parentId != 0">
+			AND parent_id = #{parentId}
+		</if>
+		<if test="name != null and name != ''">
+			AND name like concat('%', #{name}, '%')
+		</if>
+		ORDER BY order_num asc;
+
+		<!-- 数据范围过滤 -->
+		${params.dataScope}
+    </select>
+
+	<select id="selectCategoryList" parameterType="TrainCourseCategory" resultMap="TrainCourseCategoryResult">
+		<include refid="selectCategoryVo"/>
+		where d.del_flag = '0' AND d.status = 0
+		<if test="parentId != null and parentId != 0">
+			AND parent_id = #{parentId}
+		</if>
+		<if test="name != null and name != ''">
+			AND name like concat('%', #{name}, '%')
+		</if>
+		ORDER BY order_num asc;
+		<!-- 数据范围过滤 -->
+		${params.dataScope}
+	</select>
+	
+	<select id="checkCategoryExistCourse" parameterType="Long" resultType="int">
+		select count(1) from train_course where
+		train_course_category_id IN (SELECT  id FROM train_course_category WHERE FIND_IN_SET(#{id}, parent_ids) OR id = #{id} AND del_flag = '0') and del_flag = '0'
+	</select>
+	
+	<select id="selectCategoryCount" parameterType="TrainCourseCategory" resultType="int">
+		select count(1) from train_course_category
+		where del_flag = '0'
+		<if test="id != null and id != 0"> and id = #{id} </if>
+		<if test="parentId != null and parentId != 0"> and parent_id = #{parentId} </if>
+	</select>
+	
+	<select id="checkCategoryNameUnique" resultMap="TrainCourseCategoryResult">
+	    <include refid="selectCategoryVo"/>
+		where name=#{name} and parent_id = #{parentId}
+		and del_flag = '0'
+	</select>
+
+	<select id="selectCategoryById" parameterType="Long" resultMap="TrainCourseCategoryResult">
+		select d.id, d.parent_id, d.parent_ids, d.name, d.order_num, d.del_flag,d.status,
+			(select name from train_course_category where id = d.parent_id) parent_name
+		from train_course_category d
+		where d.id = #{id}
+	</select>
+	
+	<insert id="insertCategory" parameterType="TrainCourseCategory">
+ 		insert into train_course_category(
+ 			<if test="id != null and id != 0">id,</if>
+ 			<if test="parentId != null and parentId != 0">parent_id,</if>
+ 			<if test="name != null and name != ''">name,</if>
+ 			<if test="parentIds != null and parentIds != ''">parent_ids,</if>
+ 			<if test="orderNum != null and orderNum != ''">order_num,</if>
+ 			<if test="createBy != null and createBy != ''">create_by,</if>
+ 			create_time,
+			status
+ 		)values(
+ 			<if test="id != null and id != 0">#{id},</if>
+ 			<if test="parentId != null and parentId != 0">#{parentId},</if>
+ 			<if test="name != null and name != ''">#{name},</if>
+ 			<if test="parentIds != null and parentIds != ''">#{parentIds},</if>
+ 			<if test="orderNum != null and orderNum != ''">#{orderNum},</if>
+ 			<if test="createBy != null and createBy != ''">#{createBy},</if>
+ 			sysdate(),
+			#{status}
+ 		)
+	</insert>
+	
+	<update id="updateCategory" parameterType="TrainCourseCategory">
+ 		update train_course_category
+ 		<set>
+ 			<if test="parentId != null and parentId != 0">parent_id = #{parentId},</if>
+ 			<if test="name != null and name != ''">name = #{name},</if>
+ 			<if test="parentIds != null and parentIds != ''">parent_ids = #{parentIds},</if>
+ 			<if test="orderNum != null and orderNum != ''">order_num = #{orderNum},</if>
+ 			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+			status = #{status},
+ 			update_time = sysdate()
+ 		</set>
+ 		where id = #{id}
+	</update>
+	
+	<update id="updateCategoryChildren" parameterType="java.util.List">
+	    update train_course_category set parent_ids =
+	    <foreach collection="ids" item="item" index="index"
+	        separator=" " open="case id" close="end">
+	        when #{item.id} then #{item.parentIds}
+	    </foreach>
+	    where id in
+	    <foreach collection="ids" item="item" index="index"
+	        separator="," open="(" close=")">
+	        #{item.id}
+	    </foreach>
+	 </update>
+    <update id="updateCategoryByParentId">
+		UPDATE train_course_category a
+		INNER JOIN train_course_category b ON a.id = b.id
+		SET a.`status` = 1,
+		a.update_by = #{updateBy}
+		WHERE
+			FIND_IN_SET( #{id}, b.parent_ids )
+			OR b.id = #{id}
+	</update>
+
+    <delete id="deleteCategoryById" parameterType="Long">
+		update train_course_category set del_flag = '1' where id = #{id}
+	</delete>
+
+</mapper> 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.agile.mapper.GenTableAllMapper">
+    
+    <resultMap type="GenTable" id="GenTableResult">
+        <result property="id"    column="id"    />
+        <result property="tableName"    column="table_name"    />
+        <result property="className"    column="class_name"    />
+        <result property="comments"    column="comments"    />
+        <result property="parentTableName"    column="parent_table_name"    />
+        <result property="parentTableFkName"    column="parent_table_fk_name"    />
+        <result property="dataSourceName"    column="data_source_name"    />
+        <result property="tplCategory"    column="tpl_category"    />
+        <result property="packageName"    column="package_name"    />
+        <result property="moduleName"    column="module_name"    />
+        <result property="subModuleName"    column="sub_module_name"    />
+        <result property="functionName"    column="function_name"    />
+        <result property="functionNameSimple"    column="function_name_simple"    />
+        <result property="functionAuthor"    column="function_author"    />
+        <result property="genBaseDir"    column="gen_base_dir"    />
+        <result property="options"    column="options"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+    </resultMap>
+	
+	<sql id="selectGenTableVo">
+        select id, table_name, class_name, comments, parent_table_name, parent_table_fk_name, data_source_name, tpl_category, package_name, module_name, sub_module_name, function_name, function_name_simple, function_author, gen_base_dir, options, create_by, create_date, update_by, update_date, remarks from gen_table
+    </sql>
+
+    
+</mapper>

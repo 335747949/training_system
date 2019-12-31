@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-examQuestionCategory-edit" th:object="${examQuestionCategory}">
+            <input id="id" name="id" th:field="*{id}"  type="hidden">
+			<input id="treeId" name="parentId" type="hidden" th:value="${examQuestionCategory.parentId }"   />
+			<div class="form-group">
+				<label class="col-sm-3 control-label ">上级名称：</label>
+				<div class="col-sm-8">
+<!--					<input class="form-control" type="text" onclick="selectExamQuestionCategoryTree()" id="treeName" readonly="true" th:value="${parentName}"/>-->
+					<input class="form-control" type="text" id="treeName" readonly="true" th:value="${parentName}"/>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">分类：</label>
+				<div class="col-sm-8">
+					<input id="name" name="name" th:field="*{name}" class="form-control" type="text">
+				</div>
+			</div>
+			<!--<div class="form-group">	-->
+				<!--<label class="col-sm-3 control-label">：</label>-->
+				<!--<div class="col-sm-8">-->
+					<!--<input id="parentId" name="parentId" th:field="*{parentId}" class="form-control" type="text">-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="form-group">	-->
+				<!--<label class="col-sm-3 control-label">：</label>-->
+				<!--<div class="col-sm-8">-->
+					<!--<input id="parentIds" name="parentIds" th:field="*{parentIds}" class="form-control" type="text">-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">创建者：</label>
+				<div class="col-sm-8">
+					<input id="createBy" name="createBy" th:field="*{createBy}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">创建时间：</label>
+				<div class="col-sm-8">
+					<input id="createDate" name="createDate" th:field="*{createDate}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">更新者：</label>
+				<div class="col-sm-8">
+					<input id="updateBy" name="updateBy" th:field="*{updateBy}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">更新时间：</label>
+				<div class="col-sm-8">
+					<input id="updateDate" name="updateDate" th:field="*{updateDate}" class="form-control" type="text">
+				</div>
+			</div>-->
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">备注信息：</label>
+				<div class="col-sm-8">
+					<textarea id="remarks" name="remarks" th:field="*{remarks}" class="form-control" type="text"></textarea>
+				</div>
+			</div>
+			<!--<div class="form-group">	-->
+				<!--<label class="col-sm-3 control-label">删除标记：</label>-->
+				<!--<div class="col-sm-8">-->
+					<!--<input id="delFlag" name="delFlag" th:field="*{delFlag}" class="form-control" type="text">-->
+				<!--</div>-->
+			<!--</div>-->
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "exam/examQuestionCategory"
+		$("#form-examQuestionCategory-edit").validate({
+			rules:{
+				name:{
+					required:true,
+					minlength: 1,
+					maxlength: 30
+				},
+				message:{
+					"name": {
+						required: "名称最长30字"
+					},
+				}
+			}
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-examQuestionCategory-edit').serialize());
+	        }
+	    }
+
+        function selectExamQuestionCategoryTree() {
+            var options = {
+                title: '分类选择',
+                width: "380",
+                url: prefix + "/selectExamQuestionCategoryTree/" + $("#treeId").val(),
+                callBack: doSubmit
+            };
+            $.modal.openOptions(options);
+        }
+
+        function doSubmit(index, layero){
+            var body = layer.getChildFrame('body', index);
+            $("#treeId").val(body.find('#treeId').val());
+            $("#treeName").val(body.find('#treeName').val());
+            layer.close(index);
+        }
+	</script>
+</body>
+</html>

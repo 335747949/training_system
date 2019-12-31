@@ -1,0 +1,322 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="cmsHeader">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>伟业医药培训考试系统</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="stylesheet" th:href="@{/web/res/layui/css/layui.css}">
+  <link rel="stylesheet" th:href="@{/web/res/css/global.css}">
+  <script th:src="@{/js/jquery.min.js}"></script>
+
+  <script>
+    if(window.top!==window.self){window.top.location=window.location};
+  </script>
+
+  <!-- jquery-validate 表单验证插件 -->
+  <script th:src="@{/ajax/libs/validate/jquery.validate.min.js}"></script>
+  <script th:src="@{/ajax/libs/validate/messages_zh.min.js}"></script>
+  <script th:src="@{/ajax/libs/validate/jquery.validate.extend.js}"></script>
+  <script th:src="@{/ajax/libs/blockUI/jquery.blockUI.js}"></script>
+  <script th:src="@{/web/res/layui/layui.js}"></script>
+  <script th:src="@{/ruoyi/js/common.js}"></script>
+  <script th:src="@{/ruoyi/js/ry-ui.js}"></script>
+  <script th:inline="javascript"> var ctx = [[@{/}]]; </script>
+  <script>
+      layui.cache.page = '';
+      layui.cache.user = {};
+      layui.use('element', function(){
+          var element = layui.element;
+      });
+  </script>
+</head>
+<body>
+<style type="text/css">
+  .course{
+    background-color: #ffffff;
+  }
+  .title{
+    margin-top: 32px;
+    border-left: 4px solid #2EAF71;
+    padding-left: 16px;
+  }
+  .title span{
+    font-size: 24px;
+    color: #303133;
+  }
+  .title i{
+    font-size: 16px;
+    color: #BABABA;
+    margin-left: 8px;
+    /*line-height: 50px;*/
+  }
+  .in01{
+    background: rgba(0,0,0,0.6);
+    width: 100%;
+    line-height: 30px;
+    height: 30px;
+    padding: 0px 10px;
+    bottom: 0;
+    left: 0;
+    box-sizing: border-box;
+    position: relative;
+  }
+  .in01 span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 18px;
+    color: #fff;
+  }
+  .remark{
+    width: 100%;
+    height: 100px;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: 12px 16px 20px 16px;
+    font-size: 14px;
+    color: #777;
+    text-align: left;
+  }
+  .remark .title{
+    height: 50px;
+    line-height: 25px;
+    overflow: hidden;
+    margin: 10px 0;
+  }
+  .remark .price{
+    font-size: 18px;
+    line-height: 30px;
+    color: #e91c35;
+    height: 30px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .remark .free_price{
+    font-size: 18px;
+    line-height: 30px;
+    color: #3ab57f;
+    height: 30px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .remark .boxbtn01{
+    /*margin: 0px 20px 20px;*/
+
+  }
+  .remark .clearfix{
+    display: block;
+  }
+  .remark .boxbtn01 .btn01{
+    float: left;
+    color: #999;
+    width: 46%;
+    border: 1px solid #ddd;
+  }
+  .remark .boxbtn01 .btn02{
+    float: right;
+    background: #0288d1;
+    color: #fff;
+    width: 46%;
+    border: 1px solid #0288d1;
+  }
+  .remark .boxbtn01 a{
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    box-sizing: border-box;
+    border-radius: 30px;
+    overflow: hidden;
+  }
+  .filterbox{/*! border:1px solid #ebebeb; */border-radius:4px;background: #fff;margin-top: 40px}
+  .filterbox ul{ background-color:white; padding: 10px 24px 16px 24px;box-sizing: border-box;}
+  .filterbox li{ display: flex;align-items: flex-start;padding-top: 20px;}
+  .filterbox li:first-child{border-top:0px;}
+  .filterbox li span{width: 140px;font-size: 16px;font-weight:600;line-height:34px;position: absolute;left:0;top:15px; color:#303133;}
+  .filterbox li a{float: left;margin:0px 15px 0px 0;font-size: 14px;color: #828282;line-height: 14px;}
+
+  .filterbox li:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+  .filterbox .path-now{font-size: 16px;color: #333;margin-bottom:20px;}
+  .filterbox li .left-category{font-size: 16px;font-weight:600;color:#303133;width: 104px;}
+  .filterbox li .right-category{width:calc(100% - 104px);border-bottom: 1px dashed #E0E0E0;padding-top: 3px;}
+  .filterbox li:last-child .right-category{border-bottom:none;}
+  .filterbox li .right-category a{font-size: 14px;color: #979797;float: left;margin-right: 32px;margin-bottom: 14px;}
+  .filterbox li a.curr,
+  .filterbox li a:hover{color:#2EAF71;}
+  .coures-name{font-size: 14px;color: #303133;}
+  .coures-desc{margin-top: 14px;font-size: 12px;color: #979797; text-overflow: -o-ellipsis-lastline;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;line-clamp: 2;-webkit-box-orient: vertical}
+</style>
+<div class="fly-header" th:fragment="top" style="box-sizing:border-box;background: #fff;border-bottom: 1px solid #D4D4D4;height: 70px;line-height: 70px;">
+  <div class="layui-container">
+    <a class="fly-logo" th:href="@{/web}" style="top: 0;left: 0">
+      <img th:src="@{/img/logo.png}" alt="伟业医药" width="151px" height="46px">
+    </a>
+    <ul class="layui-nav fly-nav layui-hide-xs nav-header">
+      <li class="layui-nav-item nav-li course-li layui-this" th:if="${session.user!=null and session.userType!='10'}">
+        <a th:href="@{/web}">课程</a>
+      </li>
+      <li class="layui-nav-item nav-li practice-li" th:if="${session.user!=null and session.userType!='10'}">
+        <a th:href="@{/web/practice}">练习</a>
+      </li>
+      <li class="layui-nav-item nav-li exam-li"  th:if="${session.user!=null and session.userType!='10'}">
+        <a th:href="@{/web/examination}">考试</a>
+      </li>
+    </ul>
+
+    <ul class="layui-nav fly-nav-user">
+      <!-- 未登入的状态 -->
+      <li th:if="${session.user == null}" class="layui-nav-item">
+        <a class="iconfont layui-hide-xs" th:href="@{/web/user/login.html}">
+          <img th:src="@{/img/avator-default.png}" alt="头像" width="40px" height="40px">
+        </a>
+      </li>
+<!--      <li th:if="${session.user}==null" class="layui-nav-item">-->
+<!--        <a th:href="@{/web/user/login.html}">登入</a>-->
+<!--      </li>-->
+<!--      <li th:if="${session.user}==null" class="layui-nav-item">-->
+<!--        <a th:href="@{/web/user/reg.html}">注册</a>-->
+<!--      </li>-->
+      <!-- 登入后的状态 -->
+      <li th:if="${session.user != null}" class="layui-nav-item">
+        <a class="iconfont layui-hide-xs" href="javascript:;">
+          <img th:src="@{/img/avator-default.png}" alt="头像" width="40px" height="40px">
+<!--        </a>    <a class="fly-nav-avatar" href="javascript:;">-->
+<!--          <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>-->
+<!--          <i class="layui-badge fly-badge-vip layui-hide-xs">VIP</i>-->
+<!--          <img th:if="${#strings.isEmpty(session.user.avatar)}" th:src="@{/web/res/images/avatar/default.png}" th:alt="${session.user.userName}">-->
+<!--          <img th:if="${not #strings.isEmpty(session.user.avatar)}" th:src="${session.user.avatar}" th:alt="${session.user.avatar}">-->
+          <div style="display: inline-block;vertical-align: middle;margin-left: 4px;">
+            <div style="line-height: 1;">
+              <span th:text="${session.user.userName}" style="font-size: 12px;"></span>
+              <img th:src="@{/img/xiala.png}" alt="头像" width="11px" height="6px">
+            </div>
+            <div style="line-height: 1;margin-top: 4px;">
+              <span th:text="${session.user.dept.deptName}" style="font-size: 12px;"></span>
+            </div>
+          </div>
+<!--          <cite class="layui-hide-xs" th:text="${session.user.userName}"></cite>-->
+<!--          <i>(-->
+<!--          <cite class="layui-hide-xs" th:text="${session.user.dept.deptName}"></cite>-->
+<!--          )-->
+<!--          </i>-->
+        </a>
+        <dl class="layui-nav-child">
+          <!--<dd><a th:href="@{/web/user/message.html}"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>-->
+          <!--<dd><a th:href="@{/web/user/home.html}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>-->
+          <dd><a th:href="@{/web/user/set.html}" style="border: none;"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+<!--          <dd><a th:href="@{/web/user/set.html}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe63c;</i>更多...</a></dd>-->
+          <!--<dd><a th:href="@{/web/user/collectquestion.html}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe600;</i>我的收藏</a></dd>-->
+            <dd><a th:href="@{/web/user/userlogout.html}" style="text-align: center;border: none;">退出</a></dd>
+        </dl>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="layui-container">
+  <div class="layui-carousel" id="test1" style="margin-top: 8px;">
+    <div carousel-item style="width: 100%;border-radius: 8px;">
+      <img th:src="@{/img/banner1.jpg}" alt="" width="100%" height="300px">
+      <img th:src="@{/img/banner2.jpg}" alt="" width="100%" height="300px">
+    </div>
+  </div>
+  <script>
+    layui.use('carousel', function(){
+      var carousel = layui.carousel;
+      //建造实例
+      carousel.render({
+        elem: '#test1'
+        ,width: '100%' //设置容器宽度
+        ,height:'300px'
+        ,arrow: 'always' //始终显示箭头
+        //,anim: 'updown' //切换动画方式
+      });
+    });
+  </script>
+  <section class="filterbox" style="margin-top: 24px;">
+    <ul>
+      <li field="classid">
+        <div class="left-category">一级分类：</div>
+        <div class="right-category">
+          <a th:href="@{/web}" th:class="${#strings.isEmpty(selectCategoryId)}?'curr':''">不限</a>
+          <a th:each="category:${courseCategories1}" th:href="@{'/web?parentIds='+${category.parentIds}+','+${category.id}}" th:text="${category.name}"
+             th:class="${category.id==selectCategoryId||category.id==selectCategoryId1}?'curr':''"></a>
+        </div>
+      </li>
+      <li field="classid">
+        <div class="left-category">二级分类：</div>
+        <div class="right-category">
+          <a th:if="${#lists.size(courseCategories2)}>0" th:href="@{'/web?parentIds='+${courseCategories2[0].parentIds}}">不限</a>
+          <a th:if="${#lists.size(courseCategories2)}==0" th:href="@{'/web'}">不限</a>
+          <a th:each="category:${courseCategories2}" th:href="@{'/web?parentIds='+${category.parentIds}+','+${category.id}}" th:text="${category.name}" th:class="${category.id==selectCategoryId||category.id==selectCategoryId2}?'curr':''"></a>
+        </div>
+      </li>
+      <li field="classid">
+        <div class="left-category">三级分类：</div>
+        <div class="right-category">
+          <a th:if="${#lists.size(courseCategories3)}>0" th:href="@{'/web?parentIds='+${courseCategories3[0].parentIds}}">不限</a>
+          <a th:if="${#lists.size(courseCategories3)}==0" th:href="@{'/web'}">不限</a>
+          <a th:each="category:${courseCategories3}" th:href="@{'/web?parentIds='+${category.parentIds}+','+${category.id}}" th:text="${category.name}" th:class="${category.id}==${selectCategoryId}?'curr':''"></a>
+        </div>
+      </li>
+    </ul>
+  </section>
+  <div class="title">
+    <span>所有课程</span>
+    <i>All Course</i>
+  </div>
+  <div class="layui-row layui-col-space15" style="margin:-5px;margin-top: 20px;">
+    <div class="layui-col-md3" th:each="course:${trainCourse}" style="padding:8px 5px;">
+    <div class="course">
+      <div class="courseImg">
+        <a th:href="@{'/web/course/courseInfo.html/'+${course.id}}">
+          <img th:if="${#strings.isEmpty(course.cover)}" th:src="@{/web/res/images/no_img.png}" th:alt="${course.name}" width="100%" height="160px">
+          <img th:if="${not #strings.isEmpty(course.cover)}" th:src="${course.cover}" th:alt="${course.name}" width="100%" height="160px">
+        </a>
+      </div>
+      <div class="remark">
+        <a th:href="@{'/web/course/courseInfo.html/'+${course.id}}">
+          <div class="coures-name" th:text="${course.name}"></div>
+          <div class="coures-desc" th:text="${course.description}"></div>
+
+        </a>
+<!--        <div class="price" th:if="${course.price>0}" th:text="'￥'+${course.price}">-->
+<!--        </div>-->
+
+<!--        <div class="free_price" th:if="${course.price==0}" th:text="''">-->
+<!--        </div>-->
+<!--        <div class="boxbtn01 clearfix">-->
+<!--          <a class="btn01"  th:href="@{'/web/course/courseInfo.html/'+${course.id}}">了解更多</a>-->
+<!--          &lt;!&ndash;            <a class="btn02"  th:href="@{'/web/course/courseInfo.html/'+${course.id}}">立即购买</a>&ndash;&gt;-->
+<!--          <a class="btn02"  th:href="@{'/web/course/courseInfo.html/'+${course.id}}">立即学习</a>-->
+<!--        </div>-->
+      </div>
+    </div>
+  </div>
+
+  </div>
+</div>
+
+<div class="fly-footer" th:fragment="cmsBottom" style="z-index: 1111;">
+<!--  <p><a href="#" target="_blank">伟业医药</a></p>-->
+  <img th:src="@{/img/footer-logo.png}" alt="" width="80px" height="18px">
+<!--  <p style="margin-top: 8px;color: #979797;">伟业课堂 是伟业医药（weiye360.cn）旗下专注医药行业的在线学习平台</p>-->
+  <p style="margin-top: 4px;color: #979797;"> <span>© </span><span id="year"></span><span> 伟业医药版权所有</span></p>
+  <script>
+   var spanYear= document.getElementById('year');
+   spanYear.innerHTML = new Date().getFullYear();
+    // $(function(){
+    //   var year=new Date().getFullYear();
+    //   $('#year').text(year);
+    // })
+  </script>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.exam.mapper.ExamPracticeMapper">
+    
+    <resultMap type="ExamPractice" id="ExamPracticeResult">
+        <result property="id"    column="id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="name"    column="name"    />
+        <result property="trainCourseId"    column="train_course_id"    />
+        <result property="enableControlTime"    column="enable_control_time"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="practiceUserLimit"    column="practice_user_limit"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+    <resultMap type="ExamPracticeVO" id="ExamPracticeResultVO">
+        <result property="id"    column="id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="name"    column="name"    />
+        <result property="trainCourseId"    column="train_course_id"    />
+        <result property="enableControlTime"    column="enable_control_time"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="practiceUserLimit"    column="practice_user_limit"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="trainCourseName"    column="train_course_name"    />
+    </resultMap>
+	<sql id="selectExamPracticeVo">
+         exam_practice.id, exam_practice.dept_id, exam_practice.name,exam_practice.train_course_id,exam_practice.enable_control_time,
+          exam_practice.start_time, exam_practice.end_time, exam_practice.practice_user_limit, exam_practice.create_by, exam_practice.create_date, exam_practice.update_by, exam_practice.update_date, exam_practice.remarks, exam_practice.del_flag    </sql>
+
+    <select id="selectExamPracticeList" parameterType="ExamPractice" resultMap="ExamPracticeResult">
+        select
+        <include refid="selectExamPracticeVo"/>
+        from exam_practice
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="deptId != null "> and dept_id = #{deptId}</if>
+             <if test="name != null  and name != '' "> and name  like concat('%', #{name}, '%')</if>
+            <if test="trainCourseId != null "> and exam_practice.train_course_id = #{trainCourseId}</if>
+            <if test="enableControlTime != null  and enableControlTime != '' "> and enable_control_time = #{enableControlTime}</if>
+             <if test="startTime != null "> and start_time = #{startTime}</if>
+             <if test="endTime != null "> and end_time = #{endTime}</if>
+             <if test="practiceUserLimit != null  and practiceUserLimit != '' "> and practice_user_limit = #{practiceUserLimit}</if>
+             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+             <if test="createDate != null "> and create_date = #{createDate}</if>
+             <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+             <if test="updateDate != null "> and update_date = #{updateDate}</if>
+             <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+             <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+         </where>
+    </select>
+    <select id="selectListFromWeb" parameterType="ExamPractice" resultMap="ExamPracticeResultVO">
+        select
+        <include refid="selectExamPracticeVo"/>,
+        tc.name train_course_name
+        from exam_practice exam_practice
+        INNER join train_course tc on tc.id =exam_practice.train_course_id
+        Left join vip_user_orders vuo ON exam_practice.train_course_id = vuo.train_course_id
+        <where>
+            IF
+            (
+            tc.price > 0,
+            vuo.vip_user_id = 1
+            AND vuo.del_flag = 0
+            AND <![CDATA[(
+            ( exam_practice.enable_control_time = '1' AND exam_practice.end_time > NOW( ) AND exam_practice.start_time < NOW( ) )
+            OR exam_practice.enable_control_time = '0'
+            )]]>,
+            <![CDATA[((exam_practice.enable_control_time = '1' AND exam_practice.end_time > NOW( ) AND exam_practice.start_time < NOW( ) )
+            OR exam_practice.enable_control_time = '0')]]>
+            )
+            <if test="id != null "> and exam_practice.id = #{id}</if>
+            <if test="deptId != null "> and exam_practice.dept_id = #{deptId}</if>
+            <if test="trainCourseId != null "> and exam_practice.train_course_id = #{trainCourseId}</if>
+            <if test="name != null  and name != '' "> and exam_practice.name like concat('%', #{name}, '%') </if>
+            <if test="enableControlTime != null  and enableControlTime != '' "> and exam_practice.enable_control_time = #{enableControlTime}</if>
+            <if test="startTime != null "> and exam_practice.start_time = #{startTime}</if>
+            <if test="endTime != null "> and exam_practice.end_time = #{endTime}</if>
+            <if test="practiceUserLimit != null  and practiceUserLimit != '' "> and exam_practice.practice_user_limit = #{practiceUserLimit}</if>
+            <if test="createBy != null  and createBy != '' "> and exam_practice.create_by = #{createBy}</if>
+            <if test="createDate != null "> and exam_practice.create_date = #{createDate}</if>
+            <if test="updateBy != null  and updateBy != '' "> and exam_practice.update_by = #{updateBy}</if>
+            <if test="updateDate != null "> and exam_practice.update_date = #{updateDate}</if>
+            <if test="remarks != null  and remarks != '' "> and exam_practice.remarks = #{remarks}</if>
+            <if test="delFlag != null  and delFlag != '' "> and exam_practice.del_flag = #{delFlag}</if>
+        </where>
+
+    </select>
+    <select id="selectExamPracticeById" resultType="com.ruoyi.exam.domain.ExamPracticeVO">
+        select
+        <include refid="selectExamPracticeVo"/>,
+        tc.name AS trainCourseName,
+        tcc.name AS trainCourseCategoryName
+        from exam_practice exam_practice
+        left join train_course tc on exam_practice.train_course_id = tc.id
+        left join train_course_category tcc on tcc.id = tc.train_course_category_id
+        where exam_practice.id = #{id}
+    </select>
+
+    <update id="update" parameterType="ExamPractice">
+        update exam_practice
+        <set>
+            <if test="deptId != null "> dept_id = #{deptId},</if>
+            <if test="trainCourseId != null "> train_course_id = #{trainCourseId},</if>
+            <if test="name != null  and name != '' "> name= #{name},</if>
+            <if test="enableControlTime != null  and enableControlTime != '' "> enable_control_time = #{enableControlTime},</if>
+            start_time = #{startTime},
+            end_time = #{endTime},
+            <if test="practiceUserLimit != null  and practiceUserLimit != '' "> practice_user_limit = #{practiceUserLimit},</if>
+            <if test="updateBy != null  and updateBy != '' "> update_by = #{updateBy},</if>
+            remarks = #{remarks},
+            <if test="delFlag != null  and delFlag != '' "> del_flag = #{delFlag},</if>
+            update_date = sysdate()
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

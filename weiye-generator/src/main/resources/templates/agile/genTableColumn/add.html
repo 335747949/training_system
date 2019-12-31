@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-genTableColumn-add">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">表名：</label>
+				<div class="col-sm-8">
+					<input id="tableName" name="tableName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">列名：</label>
+				<div class="col-sm-8">
+					<input id="columnName" name="columnName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">列排序（升序）：</label>
+				<div class="col-sm-8">
+					<input id="columnSort" name="columnSort" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">类型：</label>
+				<div class="col-sm-8">
+					<input id="columnType" name="columnType" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">列标签名：</label>
+				<div class="col-sm-8">
+					<input id="columnLabel" name="columnLabel" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">列备注说明：</label>
+				<div class="col-sm-8">
+					<input id="comments" name="comments" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">类的属性名：</label>
+				<div class="col-sm-8">
+					<input id="attrName" name="attrName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">类的属性类型：</label>
+				<div class="col-sm-8">
+					<input id="attrType" name="attrType" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">是否主键：</label>
+				<div class="col-sm-8">
+					<input id="isPk" name="isPk" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">是否可为空：</label>
+				<div class="col-sm-8">
+					<input id="isNull" name="isNull" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">是否插入字段：</label>
+				<div class="col-sm-8">
+					<input id="isInsert" name="isInsert" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">是否更新字段：</label>
+				<div class="col-sm-8">
+					<input id="isUpdate" name="isUpdate" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">是否列表字段：</label>
+				<div class="col-sm-8">
+					<input id="isList" name="isList" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">是否查询字段：</label>
+				<div class="col-sm-8">
+					<input id="isQuery" name="isQuery" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">查询方式：</label>
+				<div class="col-sm-8">
+					<input id="queryType" name="queryType" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">是否编辑字段：</label>
+				<div class="col-sm-8">
+					<input id="isEdit" name="isEdit" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">表单类型：</label>
+				<div class="col-sm-8">
+					<input id="showType" name="showType" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">其它生成选项：</label>
+				<div class="col-sm-8">
+					<input id="options" name="options" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "agile/genTableColumn"
+		$("#form-genTableColumn-add").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			}
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/add", $('#form-genTableColumn-add').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

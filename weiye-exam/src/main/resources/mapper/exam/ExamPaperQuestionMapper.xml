@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.exam.mapper.ExamPaperQuestionMapper">
+
+    <resultMap type="ExamPaperQuestionVO" id="ExamPaperQuestionResult">
+        <result property="id" column="id"/>
+        <result property="examPaperId" column="exam_paper_id"/>
+        <result property="examQuestionId" column="exam_question_id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createDate" column="create_date"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="remarks" column="remarks"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="score" column="score"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="questionName" column="name"/>
+        <result property="questionType" column="type"/>
+    </resultMap>
+
+    <sql id="selectExamPaperQuestionVo">
+         epq.id, epq.exam_paper_id, epq.exam_question_id, epq.create_by, epq.create_date, epq.update_by, epq.update_date, epq.remarks, epq.del_flag,epq.score,epq.order_num   </sql>
+
+    <select id="selectExamPaperQuestionList" parameterType="ExamPaperQuestion" resultMap="ExamPaperQuestionResult">
+        select
+        <include refid="selectExamPaperQuestionVo"/>,eq.title as name,eq.type as type
+        from exam_paper_question epq
+        INNER JOIN exam_question eq on epq.exam_question_id = eq.id
+        <where>
+            <if test="id != null ">and id = #{id}</if>
+            <if test="examPaperId != null ">and epq.exam_paper_id = #{examPaperId}</if>
+            <if test="examQuestionId != null ">and epq.exam_question_id = #{examQuestionId}</if>
+            <if test="createBy != null  and createBy != '' ">and epq.create_by = #{createBy}</if>
+            <if test="createDate != null ">and epq.create_date = #{createDate}</if>
+            <if test="updateBy != null  and updateBy != '' ">and epq.update_by = #{updateBy}</if>
+            <if test="updateDate != null ">and epq.update_date = #{updateDate}</if>
+            <if test="remarks != null  and remarks != '' ">and epq.remarks = #{remarks}</if>
+            <if test="delFlag != null  and delFlag != '' ">and epq.del_flag = #{delFlag}</if>
+        </where>
+        order by order_num
+    </select>
+    <select id="selectquestionByIds" resultMap="ExamPaperQuestionResult">
+        select
+        <include refid="selectExamPaperQuestionVo"/>,eq.title as name,eq.type as type
+        from exam_paper_question epq
+        INNER JOIN exam_question eq on epq.exam_question_id = eq.id
+        where epq.exam_question_id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+
+</mapper>

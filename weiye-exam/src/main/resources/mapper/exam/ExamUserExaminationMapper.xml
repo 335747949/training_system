@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.exam.mapper.ExamUserExaminationMapper">
+    
+    <resultMap type="ExamUserExamination" id="ExamUserExaminationResult">
+        <result property="id"    column="id"    />
+        <result property="vipUserId"    column="vip_user_id"    />
+        <result property="examExaminationId"    column="exam_examination_id"    />
+        <result property="examPaperId"    column="exam_paper_id"    />
+        <result property="score"    column="score"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+
+    <resultMap type="ExamUserExaminationVO" id="ExamUserExaminationResultVO">
+        <result property="id"    column="id"    />
+        <result property="vipUserId"    column="vip_user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="loginName"    column="login_name"    />
+        <result property="examExaminationId"    column="exam_examination_id"    />
+        <result property="examPaperId"    column="exam_paper_id"    />
+        <result property="examPaperName"    column="exam_paper_name"    />
+        <result property="score"    column="score"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"  jdbcType="TIMESTAMP"  />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"   jdbcType="TIMESTAMP" />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+        <association property="examExaminationVO" javaType="com.ruoyi.exam.domain.ExamExaminationVO">
+            <result property="id"    column="v_id"    />
+            <result property="deptId"    column="v_dept_id"    />
+            <result property="examPaperId"    column="v_exam_paper_id"    />
+            <result property="trainCourseId"    column="v_train_course_id"    />
+            <result property="trainCourseName"    column="v_traincourse_name"    />
+            <result property="name"    column="v_name"    />
+            <result property="type"    column="v_type"    />
+            <result property="enableControlTime"    column="v_enable_control_time"    />
+            <result property="startTime"    column="v_start_time"   jdbcType="TIMESTAMP" />
+            <result property="endTime"    column="v_end_time"   jdbcType="TIMESTAMP" />
+            <result property="timeLength"    column="v_time_length"    />
+            <result property="examNumber"    column="v_exam_number"    />
+            <result property="passMark"    column="v_pass_mark"    />
+            <result property="questionDisorder"    column="v_question_disorder"    />
+            <result property="finishedPaper"    column="v_finished_paper"    />
+            <result property="examEnd"    column="v_exam_end"    />
+            <result property="examinationUserLimit"    column="v_examination_user_limit"    />
+            <result property="createBy"    column="v_create_by"    />
+            <result property="createDate"    column="v_create_date"  jdbcType="TIMESTAMP"  />
+            <result property="updateBy"    column="v_update_by"    />
+            <result property="updateDate"    column="v_update_date"   jdbcType="TIMESTAMP" />
+            <result property="remarks"    column="v_remarks"    />
+            <result property="delFlag"    column="v_del_flag"    />
+        </association>
+    </resultMap>
+
+	
+	<sql id="selectExamUserExaminationVo">
+         exam_user_examination.id,
+         exam_user_examination.vip_user_id,
+         exam_user_examination.exam_examination_id,
+         exam_user_examination.exam_paper_id,
+         exam_user_examination.score,
+         exam_user_examination.create_by,
+         exam_user_examination.create_date,
+         exam_user_examination.update_by,
+         exam_user_examination.update_date,
+         exam_user_examination.remarks,
+         exam_user_examination.del_flag    </sql>
+	
+    <select id="selectExamUserExaminationList" parameterType="ExamUserExamination" resultMap="ExamUserExaminationResult">
+        select
+        <include refid="selectExamUserExaminationVo"/>
+        from exam_user_examination
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="vipUserId != null "> and vip_user_id = #{vipUserId}</if>
+             <if test="examExaminationId != null "> and exam_examination_id = #{examExaminationId}</if>
+             <if test="examPaperId != null "> and exam_paper_id = #{examPaperId}</if>
+             <if test="score != null "> and score = #{score}</if>
+             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+             <if test="createDate != null "> and create_date = #{createDate}</if>
+             <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+             <if test="updateDate != null "> and update_date = #{updateDate}</if>
+             <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+             <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+         </where>
+    </select>
+
+    <select id="selectLastOne" resultMap="ExamUserExaminationResult">
+        select
+        <include refid="selectExamUserExaminationVo"/>
+        from exam_user_examination
+        <where>
+            <if test="id != null "> and id = #{id}</if>
+            <if test="vipUserId != null "> and vip_user_id = #{vipUserId}</if>
+            <if test="examExaminationId != null "> and exam_examination_id = #{examExaminationId}</if>
+            <if test="examPaperId != null "> and exam_paper_id = #{examPaperId}</if>
+            <if test="score != null "> and score = #{score}</if>
+            <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+            <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+            <if test="updateDate != null "> and update_date = #{updateDate}</if>
+            <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+            <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+        </where>
+        order by create_date desc;
+    </select>
+
+    <select id="selectMyExamUserExamination" resultMap="ExamUserExaminationResultVO">
+        select
+        <include refid="selectExamUserExaminationVo"/>,
+        tc.name as v_traincourse_name,
+        ee.name as v_name,
+        ee.type as v_type,
+        ee.enable_control_time as v_enable_control_time,
+        ee.start_time as v_start_time,
+        ee.end_time as v_end_time,
+        ee.pass_mark as v_pass_mark,
+        su.user_name as user_name,
+        su.login_name as login_name,
+        ep.name as exam_paper_name
+        from exam_user_examination exam_user_examination
+        INNER JOIN exam_examination ee ON exam_user_examination.exam_examination_id = ee.id
+        INNER JOIN train_course tc ON ee.train_course_id = tc.id
+        INNER JOIN sys_user su ON exam_user_examination.vip_user_id = su.user_id
+        INNER JOIN exam_paper ep ON ep.id = exam_user_examination.exam_paper_id
+        <where>
+            <if test="id != null "> and exam_user_examination.id = #{id}</if>
+            <if test="vipUserId != null "> and exam_user_examination.vip_user_id = #{vipUserId}</if>
+            <if test="examExaminationId != null "> and exam_user_examination.exam_examination_id = #{examExaminationId}</if>
+            <if test="examPaperId != null "> and exam_user_examination.exam_paper_id = #{examPaperId}</if>
+            <if test="score != null "> and exam_user_examination.score = #{score}</if>
+            <if test="createBy != null  and createBy != '' "> and exam_user_examination.create_by = #{createBy}</if>
+            <if test="createDate != null "> and exam_user_examination.create_date = #{createDate}</if>
+            <if test="updateBy != null  and updateBy != '' "> and exam_user_examination.update_by = #{updateBy}</if>
+            <if test="updateDate != null "> and exam_user_examination.update_date = #{updateDate}</if>
+            <if test="remarks != null  and remarks != '' "> and exam_user_examination.remarks = #{remarks}</if>
+            <if test="delFlag != null  and delFlag != '' "> and exam_user_examination.del_flag = #{delFlag}</if>
+            <if test="userName != null  and userName != '' "> and su.user_name like concat('%', #{userName}, '%')</if>
+            <if test="loginName != null  and loginName != '' "> and su.login_name like concat('%', #{loginName}, '%') </if>
+            <if test="examExaminationVO != null  and examExaminationVO.trainCourseName != null  and examExaminationVO.trainCourseName != '' "> and tc.name = #{examExaminationVO.trainCourseName}</if>
+            <if test="examPaperName != null  and examPaperName != '' "> and ep.name = #{examPaperName}</if>
+            <if test="examExaminationVO!=null and examExaminationVO.type != null  and examExaminationVO.type != '' "> and ee.type = #{examExaminationVO.type}</if>
+
+        </where>
+        order by exam_user_examination.update_date desc
+    </select>
+
+    <select id="selectDetailById" resultMap="ExamUserExaminationQuestionVO">
+        select <include refid="selectExamUserExaminationVo"/>,
+        eq.title as eq_title,
+        eq.answer as eq_answer,
+        eq.type as eq_type,
+        eueq.user_answer as eueq_user_answer,
+        eueq.exam_question_id as eueq_exam_question_id,
+        eqi.content,
+        eqi.number,
+        eqi.id as eqi_id,
+        eueq.id as eueq_id,
+        eq.id as eq_id,
+        ee.exam_end as ee_exam_end,
+        ee.finished_paper as ee_finished_paper
+        FROM exam_user_examination exam_user_examination
+        LEFT JOIN exam_user_examination_question eueq ON exam_user_examination.id = eueq.exam_user_examination_id
+        LEFT JOIN exam_examination ee on exam_user_examination.exam_examination_id = ee.id
+        LEFT JOIN exam_question eq on eueq.exam_question_id = eq.id
+        LEFT JOIN exam_question_item eqi ON eq.id =eqi.exam_question_id
+        WHERE exam_user_examination.id = #{id}
+
+
+
+    </select>
+    <select id="selectMyExamUserExaminationForExcel" resultType="com.ruoyi.exam.domain.ExcelUserExamination">
+        select
+        su.user_name as userName,
+        tc.name as traincourseName,
+        ep.name as examPaperName,
+        ee.name as name,
+        ee.type as type,
+        ee.start_time as startTime,
+        ee.end_time as endTime,
+        exam_user_examination.score as score
+        from exam_user_examination exam_user_examination
+        INNER JOIN exam_examination ee ON exam_user_examination.exam_examination_id = ee.id
+        INNER JOIN train_course tc ON ee.train_course_id = tc.id
+        INNER JOIN sys_user su ON exam_user_examination.vip_user_id = su.user_id
+        INNER JOIN exam_paper ep ON ep.id = exam_user_examination.exam_paper_id
+        <where>
+            <if test="id != null "> and exam_user_examination.id = #{id}</if>
+            <if test="vipUserId != null "> and exam_user_examination.vip_user_id = #{vipUserId}</if>
+            <if test="examExaminationId != null "> and exam_user_examination.exam_examination_id = #{examExaminationId}</if>
+            <if test="examPaperId != null "> and exam_user_examination.exam_paper_id = #{examPaperId}</if>
+            <if test="score != null "> and exam_user_examination.score = #{score}</if>
+            <if test="createBy != null  and createBy != '' "> and exam_user_examination.create_by = #{createBy}</if>
+            <if test="createDate != null "> and exam_user_examination.create_date = #{createDate}</if>
+            <if test="updateBy != null  and updateBy != '' "> and exam_user_examination.update_by = #{updateBy}</if>
+            <if test="updateDate != null "> and exam_user_examination.update_date = #{updateDate}</if>
+            <if test="remarks != null  and remarks != '' "> and exam_user_examination.remarks = #{remarks}</if>
+            <if test="delFlag != null  and delFlag != '' "> and exam_user_examination.del_flag = #{delFlag}</if>
+            <if test="userName != null  and userName != '' "> and su.user_name = #{userName}</if>
+            <if test="examExaminationVO != null  and examExaminationVO.trainCourseName != null  and examExaminationVO.trainCourseName != '' "> and tc.name = #{examExaminationVO.trainCourseName}</if>
+            <if test="examPaperName != null  and examPaperName != '' "> and ep.name = #{examPaperName}</if>
+            <if test="examExaminationVO!=null and examExaminationVO.type != null  and examExaminationVO.type != '' "> and ee.type = #{examExaminationVO.type}</if>
+
+        </where>
+    </select>
+
+    <resultMap type="com.ruoyi.exam.domain.ExamUserExaminationVO" id="ExamUserExaminationQuestionVO">
+        <result property="id"    column="id"    />
+        <result property="vipUserId"    column="vip_user_id"    />
+        <result property="examExaminationId"    column="exam_examination_id"    />
+        <result property="examPaperId"    column="exam_paper_id"    />
+        <result property="score"    column="score"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+        <association property="examExaminationVO" javaType="com.ruoyi.exam.domain.ExamExaminationVO">
+            <result property="examEnd"    column="ee_exam_End"    />
+            <result property="finishedPaper"    column="ee_finished_paper"    />
+        </association>
+
+        <collection property="examUserExaminationQuestions" ofType="com.ruoyi.exam.domain.ExamUserExaminationQuestionVO">
+            <result property="id"    column="eueq_id"    />
+            <result property="userAnswer"    column="eueq_user_answer"    />
+            <result property="answer"    column="eq_answer"    />
+            <result property="type"    column="eq_type"    />
+            <result property="title"    column="eq_title"    />
+            <result property="examQuestionId"    column="eueq_exam_question_id"    />
+            <collection property="questionItems" ofType="com.ruoyi.exam.domain.ExamQuestionItem">
+                <result property="content"    column="content"    />
+                <result property="number"    column="number"    />
+                <result property="id"    column="eqi_id"    />
+            </collection>
+
+        </collection>
+    </resultMap>
+
+</mapper>

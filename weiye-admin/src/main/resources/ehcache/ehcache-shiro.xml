@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache name="ruoyi">
+
+    <!-- 磁盘缓存位置 -->
+    <diskStore path="java.io.tmpdir"/>
+
+    <!-- 默认缓存
+   timeToIdleSeconds 缓存多久失效
+   timeToLiveSeconds 緩存多久未操作失效-->
+    <defaultCache
+            maxEntriesLocalHeap="1000"
+            eternal="false"
+            timeToIdleSeconds="3600"
+            timeToLiveSeconds="3600"
+            overflowToDisk="false">
+    </defaultCache>
+
+    <!-- 登录记录缓存 锁定1小時，60分鐘未操作失效 -->
+    <cache name="loginRecordCache"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="7200"
+           timeToLiveSeconds="7200"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+
+</ehcache>
+	

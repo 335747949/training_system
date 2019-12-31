@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.exam.mapper.ExamQuestionItemMapper">
+    
+    <resultMap type="ExamQuestionItem" id="ExamQuestionItemResult">
+        <result property="id"    column="id"    />
+        <result property="content"    column="content"    />
+        <result property="number"    column="number"    />
+        <result property="examQuestionId"    column="exam_question_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+	
+	<sql id="selectExamQuestionItemVo">
+        select id, content, number, exam_question_id, create_by, create_date, update_by, update_date, remarks, del_flag from exam_question_item
+    </sql>
+	
+    <select id="selectExamQuestionItemList" parameterType="ExamQuestionItem" resultMap="ExamQuestionItemResult">
+        <include refid="selectExamQuestionItemVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and id = #{id}</if>
+             <if test="content != null  and content != '' "> and content = #{content}</if>
+             <if test="number != null  and number != '' "> and number = #{number}</if>
+             <if test="examQuestionId != null  and examQuestionId != '' "> and exam_question_id = #{examQuestionId}</if>
+             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+             <if test="createDate != null "> and create_date = #{createDate}</if>
+             <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+             <if test="updateDate != null "> and update_date = #{updateDate}</if>
+             <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+             <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+         </where>
+    </select>
+    
+    <select id="selectExamQuestionItemById" parameterType="String" resultMap="ExamQuestionItemResult">
+        <include refid="selectExamQuestionItemVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertExamQuestionItem" parameterType="ExamQuestionItem">
+        insert into exam_question_item
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="content != null  and content != ''  ">content,</if>
+			<if test="number != null  and number != ''  ">number,</if>
+			<if test="examQuestionId != null  and examQuestionId != ''  ">exam_question_id,</if>
+			<if test="createBy != null  and createBy != ''  ">create_by,</if>
+			<if test="createDate != null  ">create_date,</if>
+			<if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+			<if test="updateDate != null  ">update_date,</if>
+			<if test="remarks != null  and remarks != ''  ">remarks,</if>
+			<if test="delFlag != null  and delFlag != ''  ">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="content != null  and content != ''  ">#{content},</if>
+			<if test="number != null  and number != ''  ">#{number},</if>
+			<if test="examQuestionId != null  and examQuestionId != ''  ">#{examQuestionId},</if>
+			<if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+			<if test="createDate != null  ">#{createDate},</if>
+			<if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+			<if test="updateDate != null  ">#{updateDate},</if>
+			<if test="remarks != null  and remarks != ''  ">#{remarks},</if>
+			<if test="delFlag != null  and delFlag != ''  ">#{delFlag},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateExamQuestionItem" parameterType="ExamQuestionItem">
+        update exam_question_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="content != null  and content != ''  ">content = #{content},</if>
+            <if test="number != null  and number != ''  ">number = #{number},</if>
+            <if test="examQuestionId != null  and examQuestionId != ''  ">exam_question_id = #{examQuestionId},</if>
+            <if test="createBy != null  and createBy != ''  ">create_by = #{createBy},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''  ">update_by = #{updateBy},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            remarks = #{remarks},
+            <if test="delFlag != null  and delFlag != ''  ">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteExamQuestionItemById" parameterType="String">
+        delete from exam_question_item where id = #{id}
+    </delete>
+	
+    <delete id="deleteExamQuestionItemByIds" parameterType="String">
+        delete from exam_question_item where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <delete id="deleteByQuestionIds">
+        delete from exam_question_item where exam_question_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

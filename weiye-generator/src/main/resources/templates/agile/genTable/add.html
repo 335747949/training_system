@@ -1,0 +1,220 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/layui/css/layui.css}" rel="stylesheet"/>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+            <legend>基本信息</legend>
+        </fieldset>
+        <form class="form-horizontal m">
+            <div class="layui-inline">
+                <label class="layui-form-label">搜索选择框</label>
+                <div class="layui-input-inline">
+                    <select name="modules" lay-verify="required" lay-search="">
+                        <option value="">直接选择或搜索选择</option>
+                        <option value="1">layer</option>
+                        <option value="2">form</option>
+                        <option value="3">layim</option>
+                        <option value="4">element</option>
+                        <option value="5">laytpl</option>
+                        <option value="6">upload</option>
+                        <option value="7">laydate</option>
+                        <option value="8">laypage</option>
+                        <option value="9">flow</option>
+                        <option value="10">util</option>
+                        <option value="11">code</option>
+                        <option value="12">tree</option>
+                        <option value="13">layedit</option>
+                        <option value="14">nav</option>
+                        <option value="15">tab</option>
+                        <option value="16">table</option>
+                        <option value="17">select</option>
+                        <option value="18">checkbox</option>
+                        <option value="19">switch</option>
+                        <option value="20">radio</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content hide">
+
+        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+            <ul class="layui-tab-title">
+                <li class="layui-this">基本信息</li>
+                <li>字段信息</li>
+                <li>生成信息</li>
+            </ul>
+            <div class="layui-tab-content" style="height: 100px;">
+                <form class="form-horizontal m" id="form-genTable-add">
+                    <div class="layui-tab-item layui-show">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+                            <legend>基本信息</legend>
+                        </fieldset>
+                        <div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">实体类名称：</label>
+                                <div class="col-sm-8">
+                                    <input id="className" name="className" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">表说明：</label>
+                                <div class="col-sm-8">
+                                    <input id="comments" name="comments" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">关联父表的表名：</label>
+                                <div class="col-sm-8">
+                                    <input id="parentTableName" name="parentTableName" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">本表关联父表的外键名：</label>
+                                <div class="col-sm-8">
+                                    <input id="parentTableFkName" name="parentTableFkName" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">备注信息：</label>
+                                <div class="col-sm-8">
+                                    <input id="remarks" name="remarks" class="form-control" type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-tab-item">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+                            <legend>字段信息</legend>
+                        </fieldset>
+                    </div>
+                    <div class="layui-tab-item">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+                            <legend>生成信息</legend>
+                        </fieldset>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">使用的模板：</label>
+                            <div class="col-sm-8">
+                                <input id="tplCategory" name="tplCategory" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">生成包路径：</label>
+                            <div class="col-sm-8">
+                                <input id="packageName" name="packageName" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">生成模块名：</label>
+                            <div class="col-sm-8">
+                                <input id="moduleName" name="moduleName" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">生成子模块名：</label>
+                            <div class="col-sm-8">
+                                <input id="subModuleName" name="subModuleName" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">生成功能名：</label>
+                            <div class="col-sm-8">
+                                <input id="functionName" name="functionName" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">生成功能名（简写）：</label>
+                            <div class="col-sm-8">
+                                <input id="functionNameSimple" name="functionNameSimple" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">生成功能作者：</label>
+                            <div class="col-sm-8">
+                                <input id="functionAuthor" name="functionAuthor" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">生成基础路径：</label>
+                            <div class="col-sm-8">
+                                <input id="genBaseDir" name="genBaseDir" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">其它生成选项：</label>
+                            <div class="col-sm-8">
+                                <input id="options" name="options" class="form-control" type="text">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+	</div>
+
+    <div th:include="include::footer"></div>
+    <script th:src="@{/ajax/libs/layui/layui.js}"></script>
+    <script type="text/javascript">
+		var prefix = ctx + "agile/genTable"
+		$("#form-genTable-add").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			}
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/add", $('#form-genTable-add').serialize());
+	        }
+	    }
+        layui.use(['element','form', 'layedit', 'laydate'], function(){
+            var $ = layui.jquery
+                ,element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+
+            //触发事件
+            var active = {
+                tabAdd: function(){
+                    //新增一个Tab项
+                    element.tabAdd('demo', {
+                        title: '新选项'+ (Math.random()*1000|0) //用于演示
+                        ,content: '内容'+ (Math.random()*1000|0)
+                        ,id: new Date().getTime() //实际使用一般是规定好的id，这里以时间戳模拟下
+                    })
+                }
+                ,tabDelete: function(othis){
+                    //删除指定Tab项
+                    element.tabDelete('demo', '44'); //删除：“商品管理”
+
+
+                    othis.addClass('layui-btn-disabled');
+                }
+                ,tabChange: function(){
+                    //切换到指定Tab项
+                    element.tabChange('demo', '22'); //切换到：用户管理
+                }
+            };
+
+            $('.site-demo-active').on('click', function(){
+                var othis = $(this), type = othis.data('type');
+                active[type] ? active[type].call(this, othis) : '';
+            });
+
+            //Hash地址的定位
+            var layid = location.hash.replace(/^#test=/, '');
+            element.tabChange('test', layid);
+
+            element.on('tab(test)', function(elem){
+                location.hash = 'test='+ $(this).attr('lay-id');
+            });
+
+        });
+
+	</script>
+</body>
+</html>

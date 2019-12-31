@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-examQuestion-add">
+        <div class="form-group">
+            <input type="hidden" id="categoryId" name="categoryId" th:value="${categoryId}">
+            <input type="hidden" id="type" name="type" th:value="${type}">
+            <label class="col-sm-3 control-label">问题标题：</label>
+            <div class="col-sm-8">
+                <input id="title" name="title" class="form-control" type="text">
+            </div>
+        </div>
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-3 control-label">问题答案：</label>-->
+            <!--<div class="col-sm-8">-->
+                <!--<input id="answer" name="answer" class="form-control" type="text">-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="form-group" >
+            <label class="col-sm-3 control-label">问题选项：</label>
+            <div class="col-sm-1" style="padding-right: 0px;">
+                <input class="form-control" name="answer" value="A" type="radio" style="margin: 0 0 0;">
+            </div>
+            <div class="col-sm-1" style="padding-right: 0px;padding-left: 0px">
+                <input style="padding: 6px 10px;text-align: center" id="number1" name="number" class="form-control" type="text" value="A" readonly>
+            </div>
+            <div class="col-sm-6" style="padding-left: 0px">
+                <input id="content1" name="content" class="form-control" type="text" value="正确" readonly>
+            </div>
+        </div>
+
+
+        <div class="form-group" >
+            <label class="col-sm-3 control-label"></label>
+            <div class="col-sm-1" style="padding-right: 0px;">
+                <input class="form-control" name="answer" value="B" type="radio" style="margin: 0 0 0;" >
+            </div>
+            <div class="col-sm-1" style="padding-right: 0px;padding-left: 0px">
+                <input style="padding: 6px 10px;text-align: center" id="number2" name="number" class="form-control" type="text" value="B" readonly>
+            </div>
+            <div class="col-sm-6" style="padding-left: 0px">
+                <input id="content2" name="content" class="form-control" type="text" value="错误" readonly>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">答案解析：</label>
+            <div class="col-sm-8">
+                <textarea id="remarks" name="remarks" class="form-control" type="text"></textarea>
+            </div>
+        </div>
+
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    $(function () {
+        if ($.validator) {
+            $.validator.prototype.elements = function () {
+                var validator = this,
+                    rulesCache = {};
+                return $([]).add(this.currentForm.elements)
+                    .filter(":input")
+                    .not(":submit, :reset, :image, [disabled]")
+                    .not(this.settings.ignore)
+                    .filter(function () {
+                        var elementIdentification = this.id || this.name;
+                        !elementIdentification && validator.settings.debug && window.console && console.error("%o has no id nor name assigned", this);
+                        if (elementIdentification in rulesCache || !validator.objectLength($(this).rules()))
+                            return false;
+                        rulesCache[elementIdentification] = true;
+                        return true;
+                    });
+            };
+
+        }
+
+    });
+
+
+    var prefix = ctx + "exam/examQuestion"
+    $("#form-examQuestion-add").validate({
+        rules:{
+            title:{
+                required:true,
+            },
+            content:{
+                required:true,
+            },
+
+        }
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/add", $('#form-examQuestion-add').serialize());
+        }
+    }
+</script>
+</body>
+</html>

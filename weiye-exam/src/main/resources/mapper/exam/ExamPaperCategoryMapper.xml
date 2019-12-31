@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.exam.mapper.ExamPaperCategoryMapper">
+    
+    <resultMap type="ExamPaperCategory" id="ExamPaperCategoryResult">
+        <result property="id"    column="id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="parentIds"    column="parent_ids"    />
+        <result property="name"    column="name"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+	
+	<sql id="selectExamPaperCategoryVo">
+         id, dept_id, parent_id, parent_ids, name, order_num, create_by, create_date, update_by, update_date, remarks, del_flag    </sql>
+	
+    <select id="selectExamPaperCategoryList" parameterType="ExamPaperCategory" resultMap="ExamPaperCategoryResult">
+        select
+        <include refid="selectExamPaperCategoryVo"/>
+        from exam_paper_category
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="deptId != null "> and dept_id = #{deptId}</if>
+             <if test="parentId != null "> and parent_id = #{parentId}</if>
+             <if test="parentIds != null  and parentIds != '' "> and parent_ids = #{parentIds}</if>
+             <if test="name != null  and name != '' "> and name like concat('%', #{name}, '%')</if>
+             <if test="orderNum != null "> and order_num = #{orderNum}</if>
+             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+             <if test="createDate != null "> and create_date = #{createDate}</if>
+             <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+             <if test="updateDate != null "> and update_date = #{updateDate}</if>
+             <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+             <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+         </where>
+        ORDER BY order_num asc;
+    </select>
+
+    
+</mapper>
