@@ -26,7 +26,7 @@ spring:
     druid:
       # 主库数据源
       master:
-        url: jdbc:mysql://rm-m5ep4xwgv5279wemqno.mysql.rds.aliyuncs.com:3306/exam?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://rm-m5esqxob59kubt813.mysql.rds.aliyuncs.com:3306/exam?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=Asia/Shanghai
         username: gm_exam
         password: YEbG1RyyRfQiI
       # 从库数据源
@@ -123,9 +123,3 @@ jodconverter:
     office-home: /opt/libreoffice6.2  # linux
     max-tasks-per-process: 10
     port-numbers: 8100
-
-
-
-exception:
-  handle:
-    unauthUrl: /admin/error/unauth.html
