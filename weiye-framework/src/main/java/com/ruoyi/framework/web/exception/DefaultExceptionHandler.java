@@ -29,9 +29,6 @@ public class DefaultExceptionHandler
 {
     private static final Logger log = LoggerFactory.getLogger(DefaultExceptionHandler.class);
 
-    @Value("${exception.handle.unauthUrl}")
-    private String unauthUrl;
-    
     /**
      * 权限校验失败
      */
