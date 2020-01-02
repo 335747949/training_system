@@ -64,7 +64,7 @@ spring:
 # 默认头像配置
 default:
   user:
-    avatar: https://trainpics.weiye360.cn/test/20191217/b98a8aaac9324a708e719c919a495250.png
+    avatar: https://trainpics.weiye360.cn/test/20191230/6148bdd536ac4fbf938c2087dbd6317f/png
 
 # MyBatis
 mybatis:
