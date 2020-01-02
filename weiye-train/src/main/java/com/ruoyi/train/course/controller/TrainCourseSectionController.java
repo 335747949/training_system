@@ -1,5 +1,6 @@
 package com.ruoyi.train.course.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.ruoyi.train.course.domain.TrainCourse;
@@ -94,10 +95,11 @@ public class TrainCourseSectionController extends BaseController
 	{
 		String courseware = trainCourseSection.getCourseware();
 		String[] coursewares = courseware.split(",");
+		List<String> coursewareList = Arrays.asList(coursewares);
 		int orderNum = trainCourseSection.getOrderNum();
 		String courseName = trainCourseSection.getName();
 		int count = 1;
-		if (courseware.length()>1){
+		if (coursewareList.size()>1){
 			for (String item : coursewares){
 				TrainCourseSection courseSection = new TrainCourseSection();
 				BeanUtils.copyProperties(trainCourseSection,courseSection);
