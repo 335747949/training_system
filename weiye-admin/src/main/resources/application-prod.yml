@@ -13,11 +13,11 @@ spring:
     nacos:
       discovery:
         #nacos配置中心集群地址，后面会接入配置中心
-        server-addr: 10.10.11.20:8880,10.10.11.20:8881,10.10.11.20:8882
+        server-addr: 10.10.13.75:8848,10.10.13.76:8848,10.10.13.77:8848
         #服务启动可加载本地缓存服务信息，避免注册中心发生分区场景，服务不可用
         namingLoadCacheAtStart: true
         #服务空间隔离
-        namespace: 039dbcd3-23b7-4eb4-b720-19f0218edd20
+        namespace: 2cc64776-e200-4351-87bd-434f4db34064
   jmx:
     default-domain: exam
   datasource:
@@ -28,7 +28,7 @@ spring:
       master:
         url: jdbc:mysql://rm-m5esqxob59kubt813.mysql.rds.aliyuncs.com:3306/exam?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=Asia/Shanghai
         username: gm_exam
-        password: YEbG1RyyRfQiI
+        password: B5Qwheb1IdAiM
       # 从库数据源
       slave:
         # 从数据源开关/默认关闭
