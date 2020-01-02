@@ -9,7 +9,7 @@
 
 /* 全局 */
 html,body{overflow-x: hidden;height: 100%;}
-html body{padding: 70px 0 98px 0;height: calc(100% - 168px);}
+html body{padding: 70px 0 0 0;height: calc(100% - 70px);}
 html{background-color: #F4F4F4;}
 i{font-style: normal;}
 
@@ -98,7 +98,8 @@ pre{padding: 10px 15px; margin: 10px 0; font-size: 12px; border-left: 6px solid 
 .layui-container{
   padding: 0;
   /*padding-bottom: 30px;*/
-  /*height: calc(100% - 240px);*/
+  min-height: calc(100% - 128px);
+  padding-top: 16px;
 }
 .layui-btn{
   background: #2EAF71;
@@ -182,7 +183,7 @@ pre{padding: 10px 15px; margin: 10px 0; font-size: 12px; border-left: 6px solid 
 .layui-nav  .layui-this a{color: #3CB47B;border-bottom: 2px solid #3CB47B;}
 .layui-nav  .nav-li a:hover{color: #3CB47B;border-bottom: 2px solid #3CB47B;}
 /* 底部 */
-.fly-footer {width:100%;margin: 50px 0 0; padding: 20px 0;  text-align: center; background: #fff;font-size: 12px;position: fixed;bottom: 0;left: 0;}
+.fly-footer {width:100%;margin: 50px 0 0; padding: 20px 0;  text-align: center; background: #fff;font-size: 12px;}
 .fly-footer a{padding:0 6px; font-weight: 300; color: #333;}
 .fly-footer a:hover{color: #777;}
 .fly-union{margin-top: 10px; color: #999;}
@@ -400,7 +401,7 @@ body .layui-edit-face  .layui-layer-content{padding:0; background-color:#fff; co
 
 
 /* 用户中心 */
-body .fly-user-main{position: relative; min-height: 600px;height: 100%;box-sizing: border-box;padding: 16px 0;margin-top: 0;}
+body .fly-user-main{position: relative; box-sizing: border-box;padding: 16px 0;margin-top: 0;height: calc(100% - 160px);}
 .fly-user-main>.layui-nav{position: absolute; left: 0; top: 16px; z-index: 1000; height: calc(100% - 32px); padding: 10px 0;overflow-y: auto;}
 .fly-user-main>.layui-nav .layui-icon{position: relative; top: 2px; font-size: 20px; margin-right: 10px;}
 .fly-user-main>.fly-panel{min-height: 575px; margin: 0 0 10px 215px;}
