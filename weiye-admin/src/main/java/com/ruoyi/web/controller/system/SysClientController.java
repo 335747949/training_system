@@ -105,9 +105,15 @@ public class SysClientController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     public AjaxResult addSave(SysUser user) {
+        // 客户
         user.setUserType(UserConstants.USER_VIP);
         if (StringUtils.isNotNull( user.getUserId() ) && SysUser.isAdmin( user.getUserId() )) {
             return error( "不允许修改超级管理员用户" );
+        }
+        String s = userService.checkLoginNameUnique(user.getLoginName(),user.getUserType());
+        //用户名不唯一
+        if (s.equals(UserConstants.USER_NAME_NOT_UNIQUE)) {
+            return error("登录名称不能重复！");
         }
         user.setSalt( ShiroUtils.randomSalt() );
         user.setPassword( passwordService.encryptPassword( user.getLoginName(), user.getPassword(), user.getSalt() ) );
@@ -135,10 +141,17 @@ public class SysClientController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     public AjaxResult editSave(SysUser user) {
+        // 客户
+        user.setUserType(UserConstants.USER_VIP);
         // 会员用户
         user.setUserType(UserConstants.USER_VIP);
         if (StringUtils.isNotNull( user.getUserId() ) && SysUser.isAdmin( user.getUserId() )) {
             return error( "不允许修改超级管理员用户" );
+        }
+        String s = userService.checkLoginNameUnique(user.getLoginName(),user.getUserType());
+        //用户名不唯一
+        if (s.equals(UserConstants.USER_NAME_NOT_UNIQUE)) {
+            return error("登录名称不能重复！");
         }
         user.setUpdateBy( ShiroUtils.getLoginName() );
         return toAjax( userService.updateUser( user ) );
