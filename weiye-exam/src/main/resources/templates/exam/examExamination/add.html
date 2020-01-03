@@ -267,12 +267,17 @@
 				},
                 passMark:{
                     required:true,
+					min: 0
                 },
                 timeLength:{
-                    required:true
+                    required:true,
+					min: 1,
+					max: 999
 				},
                 examNumber:{
-                    required:true
+                    required:true,
+					min: 1,
+					max: 99999
 				},
 				messages:{
 					"name":{
