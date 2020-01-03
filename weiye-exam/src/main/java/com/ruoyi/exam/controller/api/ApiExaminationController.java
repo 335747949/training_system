@@ -133,11 +133,11 @@ public class ApiExaminationController extends BaseController {
                 last = userExamination.get( 0 );
                 //最后一次考试已交卷，直接返回
                 if (last.getUpdateDate() != null && !last.getUpdateDate().equals( "" )) {
-                    return error( 1, "已超过" + examNumber + "次考试，" );
+                    return error( 1, "不能交卷，已超过" + examNumber + "次考试。" );
                 } else {
                     // 最后一次考试未交卷，但超过考试时长,直接返回
                     if (last.getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()) {
-                        return error( 1, "已超过" + examNumber + "次考试，" );
+                        return error( 1, "不能交卷，已超过" + examNumber + "次考试。" );
                     }
                 }
 
@@ -277,6 +277,39 @@ public class ApiExaminationController extends BaseController {
 
         //交卷后返回的数据
         ArrayList<Map<String, String>> data = new ArrayList<>();
+
+        ExamExamination examExaminationOld = examExaminationService.selectById( examinationId );
+        //最大考试次数
+        Integer examNumber = examExaminationOld.getExamNumber();
+        //考试时长
+        Integer timeLength = examExaminationOld.getTimeLength();
+
+        // 校驗用戶已完成次數，若超過最大提交次數不允許提交
+        if (examExaminationOld.getType().equals( "2" )) {
+            ExamUserExamination examUserExamination = new ExamUserExamination();
+            examUserExamination.setVipUserId(user.getUserId().intValue());
+            examUserExamination.setExamPaperId(paperId);
+            examUserExamination.setExamExaminationId(examinationId);
+            //考试记录集合
+            List<ExamUserExamination> userExamination = examUserExaminationService.selectLastOne(examUserExamination);
+            // 最后一次考试
+            ExamUserExamination last;
+
+            //超过考试次数
+            if (userExamination.size() >= examNumber) {
+                last = userExamination.get(0);
+                //最后一次考试已交卷，直接返回
+                if (last.getUpdateDate() != null && !last.getUpdateDate().equals("")) {
+                    return AjaxResult.error(1, "已超过" + examNumber + "次考试，");
+                } else {
+                    // 最后一次考试未交卷，但超过考试时长,直接返回
+                    if (last.getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()) {
+                        return AjaxResult.error(1, "已超过" + examNumber + "次考试，");
+                    }
+                }
+            }
+        }
+
 
         //如果是模拟考试，考试记录新增数据
         if (examUserExaminationId == -1) {

@@ -230,6 +230,39 @@ public class CmsExaminationController {
             AjaxResult fail = AjaxResult.error("请登录");
             return fail;
         }
+
+        ExamExamination examExamination = examExaminationService.selectById( examinationId );
+        //最大考试次数
+        Integer examNumber = examExamination.getExamNumber();
+        //考试时长
+        Integer timeLength = examExamination.getTimeLength();
+
+        // 校驗用戶已完成次數，若超過最大提交次數不允許提交
+        if (examExamination.getType().equals( "2" )) {
+            ExamUserExamination examUserExamination = new ExamUserExamination();
+            examUserExamination.setVipUserId(sysUser.getUserId().intValue());
+            examUserExamination.setExamPaperId(paperId);
+            examUserExamination.setExamExaminationId(examinationId);
+            //考试记录集合
+            List<ExamUserExamination> userExamination = examUserExaminationService.selectLastOne(examUserExamination);
+            // 最后一次考试
+            ExamUserExamination last;
+
+            //超过考试次数
+            if (userExamination.size() >= examNumber) {
+                last = userExamination.get(0);
+                //最后一次考试已交卷，直接返回
+                if (last.getUpdateDate() != null && !last.getUpdateDate().equals("")) {
+                    return AjaxResult.error(1, "已超过" + examNumber + "次考试，");
+                } else {
+                    // 最后一次考试未交卷，但超过考试时长,直接返回
+                    if (last.getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()) {
+                        return AjaxResult.error(1, "已超过" + examNumber + "次考试，");
+                    }
+                }
+            }
+        }
+
         //交卷然后返回考试记录id
         Integer id = examExaminationService.finshExamination(examUserExaminationQuestion,sysUser,examUserExaminationId,examinationId,paperId);
         ExamUserExaminationVO data = examUserExaminationService.selectDetailById( id );
