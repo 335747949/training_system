@@ -2,6 +2,7 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 
+import com.ruoyi.common.constant.UserConstants;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -92,8 +93,15 @@ public class SysUserController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     public AjaxResult addSave(SysUser user) {
+        // 系统用户
+        user.setUserType(UserConstants.USER_SYS);
         if (StringUtils.isNotNull( user.getUserId() ) && SysUser.isAdmin( user.getUserId() )) {
             return error( "不允许修改超级管理员用户" );
+        }
+        String s = userService.checkLoginNameUnique(user.getLoginName(),user.getUserType());
+        // 登录名不唯一
+        if (s.equals(UserConstants.USER_NAME_NOT_UNIQUE)) {
+            return error("登录名称不能重复！");
         }
         user.setSalt( ShiroUtils.randomSalt() );
         user.setPassword( passwordService.encryptPassword( user.getLoginName(), user.getPassword(), user.getSalt() ) );
@@ -121,8 +129,15 @@ public class SysUserController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     public AjaxResult editSave(SysUser user) {
+        // 系统用户
+        user.setUserType(UserConstants.USER_SYS);
         if (StringUtils.isNotNull( user.getUserId() ) && SysUser.isAdmin( user.getUserId() )) {
             return error( "不允许修改超级管理员用户" );
+        }
+        String s = userService.checkLoginNameUnique(user.getLoginName(),user.getUserType());
+        // 登录名不唯一
+        if (s.equals(UserConstants.USER_NAME_NOT_UNIQUE)) {
+            return error("登录名称不能重复！");
         }
         user.setUpdateBy( ShiroUtils.getLoginName() );
         return toAjax( userService.updateUser( user ) );
