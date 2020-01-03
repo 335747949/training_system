@@ -134,11 +134,6 @@ public class SysUserController extends BaseController {
         if (StringUtils.isNotNull( user.getUserId() ) && SysUser.isAdmin( user.getUserId() )) {
             return error( "不允许修改超级管理员用户" );
         }
-        String s = userService.checkLoginNameUnique(user.getLoginName(),user.getUserType());
-        // 登录名不唯一
-        if (s.equals(UserConstants.USER_NAME_NOT_UNIQUE)) {
-            return error("登录名称不能重复！");
-        }
         user.setUpdateBy( ShiroUtils.getLoginName() );
         return toAjax( userService.updateUser( user ) );
     }
