@@ -9,87 +9,193 @@
         bottom: 0;
         left: 0;
     }
+    html{
+        background: #EAFBF2;
+    }
+    body{
+        height: 100% !important;
+        padding: 0 !important;
+    }
+    .fly-footer{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+    }
+    .login-logo{
+        position: fixed;
+        left:60px;
+        top: 40px;
+    }
+    .login-wrap{
+        width: 758px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+    }
+    .login-form-wrap{
+        display: flex;
+        align-items: center;
+        /*border-radius: 8px;*/
+        /*overflow: hidden;*/
+    }
+    .login-right{
+        width: 708px;
+        background: #fff;
+        height: 516px;
+        border-radius: 0 8px 8px 0;
+        box-shadow: 0 4px 12px 0 rgba(82,202,144,0.13);
+        overflow: hidden;
+    }
+    .login-tab{
+        display: flex;
+        align-items: center;
+        /*width: 408px;*/
+    }
+    .nav-tab{
+        width: 204px;
+        background: #F5F5F5;
+        text-align: center;
+        line-height: 56px;
+        height: 56px;
+        font-size: 18px;
+        color: #979797;
+    }
+    .nav-tab a{
+        font-size: 18px;
+        color: #979797;
+    }
+    .nav-tab-active{
+        background: #fff;
+        color: #303131;
+    }
+    .login-form{
+        box-sizing: border-box;
+        width: 408px;
+        padding: 0 44px;
+    }
+    .login-label{
+        font-size: 14px;
+        color: #303131;
+        margin-top: 68px;
+    }
+    .login-label-2{
+        margin-top:36px;
+    }
 </style>
 <body>
-
-<div class="fly-header layui-bg-black" th:replace="web/index:: top">
-
+<a th:href="@{/web}" class="login-logo">
+    <img th:src="@{/img/logo.png}" alt="伟业医药" width="151px" height="46px">
+</a>
+<div style="width: 100%;">
+    <div class="login-wrap">
+        <div class="login-form-wrap">
+            <div class="login-left">
+                <img th:src="@{/web/res/images/login-bg.png}" alt="">
+            </div>
+            <div class="login-right">
+                <div class="login-tab">
+                    <div class="nav-tab"><a href="login.html">登录账号</a></div>
+                    <div class="nav-tab nav-tab-active">注册账号</div>
+                </div>
+                <div class="login-form">
+                    <div class="layui-input-inline" style="margin-top: 32px;width: 100%;">
+                        <input type="text" id="L_Mobile" name="phonenumber" required lay-verify="required|phone" autocomplete="off" class="layui-input"  placeholder = "请输入手机号">
+                    </div>
+                    <div class="layui-input-inline" style="margin-top: 12px;width: 100%;">
+                        <input type="text" id="L_username" name="userName" required lay-verify="required" autocomplete="off" class="layui-input" placeholder = "请输入姓名">
+                    </div>
+                    <div class="layui-input-inline" style="margin-top: 12px;width: 100%;">
+                        <input type="text" name="deptName" required lay-verify="required" onclick="selectDeptTree()" class="layui-input" style= "background-color: #dddddd" readonly="true" id="treeName" placeholder = "请选择部门">
+                    </div>
+                    <div class="layui-input-inline" style="margin-top: 12px;width: 100%;">
+                        <input type="text" id="L_email" name="email" required lay-verify="required|email" autocomplete="on" class="layui-input"  placeholder = "请输入邮箱">
+                    </div>
+                    <div class="layui-input-inline" style="margin-top: 12px;width: 100%;">
+                        <input type="password" id="L_pass" name="password" required lay-verify="required" autocomplete="off" class="layui-input" placeholder = "请输入密码">
+                    </div>
+                    <div class="layui-input-inline" style="margin-top: 12px;width: 100%;">
+                        <input type="password" id="L_repass" name="repassword" required lay-verify="required" autocomplete="off" class="layui-input" placeholder = "请再次输入密码">
+                    </div>
+                    <button class="layui-btn login-btn" style="margin-top: 48px;width: 100%;box-shadow: 0 9px 16px 0 rgba(46,175,113,0.18);" onclick="regAccount()">立即注册</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-<div class="layui-container">
-  <div class="fly-panel fly-panel-user" pad20>
-    <div class="layui-tab layui-tab-brief" lay-filter="user">
-      <ul class="layui-tab-title login-title-center">
-        <li style="margin-right: 40px;"><a href="login.html">登陆</a></li>
-        <li class="layui-this">注册</li>
-      </ul>
-      <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
-        <div class="layui-tab-item layui-show">
-          <div class="layui-form layui-form-pane flex-center">
-              <input name="deptId"  type="hidden" id="treeId"/>
-<!--              <div class="layui-form-item">-->
-<!--                  <label for="L_loginname" class="layui-form-label" >账号</label>-->
+<!--<div class="fly-header layui-bg-black" th:replace="web/index:: top"></div>-->
+<!--<div class="layui-container">-->
+<!--  <div class="fly-panel fly-panel-user" pad20>-->
+<!--    <div class="layui-tab layui-tab-brief" lay-filter="user">-->
+<!--      <ul class="layui-tab-title login-title-center">-->
+<!--        <li style="margin-right: 40px;"><a href="login.html">登陆</a></li>-->
+<!--        <li class="layui-this">注册</li>-->
+<!--      </ul>-->
+<!--      <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">-->
+<!--        <div class="layui-tab-item layui-show">-->
+<!--          <div class="layui-form layui-form-pane flex-center">-->
+<!--              <input name="deptId"  type="hidden" id="treeId"/>-->
+<!--&lt;!&ndash;              <div class="layui-form-item">&ndash;&gt;-->
+<!--&lt;!&ndash;                  <label for="L_loginname" class="layui-form-label" >账号</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                  <div class="layui-input-inline">&ndash;&gt;-->
+<!--&lt;!&ndash;                      <input type="text" id="L_loginname" name="loginName" required lay-verify="required" autocomplete="off" class="layui-input" placeholder = "请输入账号">&ndash;&gt;-->
+<!--&lt;!&ndash;                  </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                  <strong style="color: red">*</strong>&ndash;&gt;-->
+<!--&lt;!&ndash;              </div>&ndash;&gt;-->
+<!--              <div class="layui-form-item" style="margin-top: 30px;">-->
+<!--                  <label for="L_Mobile" class="layui-form-label">手机号</label>-->
 <!--                  <div class="layui-input-inline">-->
-<!--                      <input type="text" id="L_loginname" name="loginName" required lay-verify="required" autocomplete="off" class="layui-input" placeholder = "请输入账号">-->
+<!--                      <input type="text" id="L_Mobile" name="phonenumber" required lay-verify="required|phone" autocomplete="off" class="layui-input"  placeholder = "请输入手机号">-->
 <!--                  </div>-->
 <!--                  <strong style="color: red">*</strong>-->
 <!--              </div>-->
-              <div class="layui-form-item" style="margin-top: 30px;">
-                  <label for="L_Mobile" class="layui-form-label">手机号</label>
-                  <div class="layui-input-inline">
-                      <input type="text" id="L_Mobile" name="phonenumber" required lay-verify="required|phone" autocomplete="off" class="layui-input"  placeholder = "请输入手机号">
-                  </div>
-                  <strong style="color: red">*</strong>
-              </div>
-              <div class="layui-form-item">
-                  <label for="L_username" class="layui-form-label" >姓名</label>
-                  <div class="layui-input-inline">
-                      <input type="text" id="L_username" name="userName" required lay-verify="required" autocomplete="off" class="layui-input" placeholder = "请输入姓名">
-                  </div>
-                  <strong style="color: red">*</strong>
-              </div>
-              <div class="layui-form-item">
-                  <label  for="treeName" class="layui-form-label">部门名称</label>
-                  <div class="layui-input-inline">
-                      <input type="text" name="deptName" required lay-verify="required" onclick="selectDeptTree()" class="layui-input" style= "background-color: #dddddd" readonly="true" id="treeName">
-                  </div>
-                  <strong style="color: red">*</strong>
-              </div>
-              <div class="layui-form-item">
-                <label for="L_email" class="layui-form-label">邮箱</label>
-                <div class="layui-input-inline">
-                  <input type="text" id="L_email" name="email" required lay-verify="required|email" autocomplete="on" class="layui-input"  placeholder = "请输入邮箱">
-              </div>
-                  <strong style="color: red">*</strong>
-              </div>
-              <div class="layui-form-item">
-                <label for="L_pass" class="layui-form-label">密码</label>
-                <div class="layui-input-inline">
-                  <input type="password" id="L_pass" name="password" required lay-verify="required" autocomplete="off" class="layui-input" placeholder = "请输入密码">
-                </div>
-                  <strong style="color: red">*</strong>
-              </div>
-              <div class="layui-form-item">
-                <label for="L_repass" class="layui-form-label">确认密码</label>
-                <div class="layui-input-inline">
-                  <input type="password" id="L_repass" name="repassword" required lay-verify="required" autocomplete="off" class="layui-input" placeholder = "请再次输入密码">
-                </div>
-                  <strong style="color: red">*</strong>
-              </div>
-              <div class="layui-form-item" style="margin-bottom: 60px;margin-top: 60px;">
-                <button id="btnSubmit" class="layui-btn login-btn" style="width: 300px;margin-right: 12px;" lay-filter="*" onclick="regAccount()"> 立即注册</button>
-              </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<!--              <div class="layui-form-item">-->
+<!--                  <label for="L_username" class="layui-form-label" >姓名</label>-->
+<!--                  <div class="layui-input-inline">-->
+<!--                      <input type="text" id="L_username" name="userName" required lay-verify="required" autocomplete="off" class="layui-input" placeholder = "请输入姓名">-->
+<!--                  </div>-->
+<!--                  <strong style="color: red">*</strong>-->
+<!--              </div>-->
+<!--              <div class="layui-form-item">-->
+<!--                  <label  for="treeName" class="layui-form-label">部门名称</label>-->
+<!--                  <div class="layui-input-inline">-->
+<!--                      <input type="text" name="deptName" required lay-verify="required" onclick="selectDeptTree()" class="layui-input" style= "background-color: #dddddd" readonly="true" id="treeName">-->
+<!--                  </div>-->
+<!--                  <strong style="color: red">*</strong>-->
+<!--              </div>-->
+<!--              <div class="layui-form-item">-->
+<!--                <label for="L_email" class="layui-form-label">邮箱</label>-->
+<!--                <div class="layui-input-inline">-->
+<!--                  <input type="text" id="L_email" name="email" required lay-verify="required|email" autocomplete="on" class="layui-input"  placeholder = "请输入邮箱">-->
+<!--              </div>-->
+<!--                  <strong style="color: red">*</strong>-->
+<!--              </div>-->
+<!--              <div class="layui-form-item">-->
+<!--                <label for="L_pass" class="layui-form-label">密码</label>-->
+<!--                <div class="layui-input-inline">-->
+<!--                  <input type="password" id="L_pass" name="password" required lay-verify="required" autocomplete="off" class="layui-input" placeholder = "请输入密码">-->
+<!--                </div>-->
+<!--                  <strong style="color: red">*</strong>-->
+<!--              </div>-->
+<!--              <div class="layui-form-item">-->
+<!--                <label for="L_repass" class="layui-form-label">确认密码</label>-->
+<!--                <div class="layui-input-inline">-->
+<!--                  <input type="password" id="L_repass" name="repassword" required lay-verify="required" autocomplete="off" class="layui-input" placeholder = "请再次输入密码">-->
+<!--                </div>-->
+<!--                  <strong style="color: red">*</strong>-->
+<!--              </div>-->
+<!--              <div class="layui-form-item" style="margin-bottom: 60px;margin-top: 60px;">-->
+<!--                <button id="btnSubmit" class="layui-btn login-btn" style="width: 300px;margin-right: 12px;" lay-filter="*" onclick="regAccount()"> 立即注册</button>-->
+<!--              </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
 
-</div>
-
-
-<div class="fly-footer" th:replace="web/index::cmsBottom">
-</div>
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="fly-footer" th:replace="web/index::cmsBottom">&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
 </body>
 <script th:src="@{/ajax/libs/select/select2.js}"></script>
 <script>
