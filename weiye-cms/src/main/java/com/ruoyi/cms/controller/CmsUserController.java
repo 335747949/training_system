@@ -30,6 +30,7 @@ import com.ruoyi.vip.service.IVipUserOrdersService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.util.RedirectView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -368,7 +369,6 @@ public class CmsUserController {
                 cookie.setMaxAge(0);
                 cookie.setPath("/");
                 response.addCookie(cookie);
-                response.sendRedirect( "login.html");
             }
         }
         return AjaxResult.success();
@@ -414,7 +414,6 @@ public class CmsUserController {
                 cookie.setMaxAge(0);
                 cookie.setPath("/");
                 response.addCookie(cookie);
-                response.sendRedirect( "login.html");
             }
         }
     }

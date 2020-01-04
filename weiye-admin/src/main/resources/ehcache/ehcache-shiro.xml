@@ -15,7 +15,7 @@
             overflowToDisk="false">
     </defaultCache>
 
-    <!-- 登录记录缓存 锁定1小時，60分鐘未操作失效 -->
+    <!-- 登录记录缓存 锁定2小時，120分鐘未操作失效 -->
     <cache name="loginRecordCache"
            maxEntriesLocalHeap="2000"
            eternal="false"
