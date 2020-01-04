@@ -179,6 +179,8 @@ public class SysUserController extends BaseController {
     @PostMapping("/checkLoginNameUnique")
     @ResponseBody
     public String checkLoginNameUnique(SysUser user) {
+        // 系统用户
+        user.setUserType(UserConstants.USER_SYS);
         return userService.checkLoginNameUnique( user.getLoginName(),user.getUserType() );
     }
 
@@ -188,6 +190,8 @@ public class SysUserController extends BaseController {
     @PostMapping("/checkPhoneUnique")
     @ResponseBody
     public String checkPhoneUnique(SysUser user) {
+        // 系统用户
+        user.setUserType(UserConstants.USER_SYS);
         return userService.checkPhoneUnique( user );
     }
 
@@ -197,6 +201,8 @@ public class SysUserController extends BaseController {
     @PostMapping("/checkEmailUnique")
     @ResponseBody
     public String checkEmailUnique(SysUser user) {
+        // 系统用户
+        user.setUserType(UserConstants.USER_SYS);
         return userService.checkEmailUnique( user );
     }
 }
