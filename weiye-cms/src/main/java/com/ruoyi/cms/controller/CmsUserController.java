@@ -37,6 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -108,8 +109,12 @@ public class CmsUserController {
     @RequestMapping("/user/regaccount")
     @ResponseBody
     public AjaxResult reg(SysUser user) {
+        Assert.hasText(user.getPhonenumber(), "手机号码不能为空！");
+        Assert.hasText(user.getPassword(), "密码不能为空！");
+        if (!user.getPhonenumber().matches(UserConstants.MOBILE_PHONE_NUMBER_PATTERN)){
+            return AjaxResult.error("手机号码格式错误");
+        }
         String s = sysUserService.checkLoginNameUnique(user.getLoginName(),UserConstants.USER_VIP);
-
         //用户名不唯一
         if (s.equals(UserConstants.USER_NAME_NOT_UNIQUE)) {
             return AjaxResult.error("用户名已经注册");
