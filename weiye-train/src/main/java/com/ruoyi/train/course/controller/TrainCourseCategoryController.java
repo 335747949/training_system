@@ -2,6 +2,7 @@ package com.ruoyi.train.course.controller;
 
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.common.constant.ExamConstants;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.web.exception.base.BaseException;
@@ -13,6 +14,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -66,6 +68,12 @@ public class TrainCourseCategoryController extends BaseController {
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(TrainCourseCategory category) {
+        // 分类名称
+        Assert.hasText(category.getName(), "课程分类不能为空！");
+        String checkNameUnique = trainCourseCategoryService.checkNameUnique(category.getName(), category.getParentId());
+        if (checkNameUnique.equals(ExamConstants.TRAIN_COURSE_CATEGORY_NAME_NOT_UNIQUE)) {
+            return error("同一课程分类下分类名称不能重复！");
+        }
         String ids = category.getParentIds();
         String[] idsStr = ids.split(",");
         // 目前前台仅支持三级分类
@@ -94,7 +102,15 @@ public class TrainCourseCategoryController extends BaseController {
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(TrainCourseCategory category) {
+        Assert.notNull(category.getId(), "课程分类ID为必填项！");
+        Assert.hasText(category.getName(), "课程分类不能为空！");
         TrainCourseCategory categoryOld = trainCourseCategoryService.selectCategoryById(category.getId());
+        if(StringUtils.isNotNull(categoryOld) && !category.getName().equals(categoryOld.getName())) {
+            String checkNameUnique = trainCourseCategoryService.checkNameUnique(category.getName(), category.getParentId());
+            if (checkNameUnique.equals(ExamConstants.TRAIN_COURSE_CATEGORY_NAME_NOT_UNIQUE)) {
+                return error("同一课程分类下分类名称不能重复！");
+            }
+        }
         if (categoryOld.getStatus() != category.getStatus()){
             if (category.getStatus() == 0){
                 // 停用变为正常

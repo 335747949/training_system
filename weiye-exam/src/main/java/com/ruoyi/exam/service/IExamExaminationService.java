@@ -58,4 +58,12 @@ public interface IExamExaminationService extends AbstractBaseService<ExamExamina
     ExamExaminationVO selectExamExaminationById(Integer id);
 
     int countExamQuestion(Integer id);
+
+    /**
+     * 校验考试名称是否唯一
+     * @param name
+     * @param type
+     * @return
+     */
+    String checkNameUnique(String name, String type);
 }

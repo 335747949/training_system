@@ -1,18 +1,20 @@
 package com.ruoyi.exam.service.impl;
 
-import java.util.*;
-
 import cn.hutool.core.util.StrUtil;
+import com.ruoyi.common.constant.ExamConstants;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.exam.domain.*;
+import com.ruoyi.exam.mapper.ExamExaminationMapper;
 import com.ruoyi.exam.service.*;
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.exam.mapper.ExamExaminationMapper;
-import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+import org.springframework.util.CollectionUtils;
+
+import java.util.*;
 
 /**
  * 考试 服务层实现
@@ -299,5 +301,19 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
     @Override
     public int countExamQuestion(Integer id) {
         return examExaminationMapper.countExamQuestion(id);
+    }
+    /**
+     * 校验考试名称是否唯一
+     * @param name
+     * @param type
+     * @return
+     */
+    @Override
+    public String checkNameUnique(String name, String type) {
+        List<ExamExaminationVO> examExaminationVOList = examExaminationMapper.selectByNameAndType(name, type);
+        if (CollectionUtils.isEmpty(examExaminationVOList)) {
+            return ExamConstants.EXAM_NAME_UNIQUE;
+        }
+        return ExamConstants.EXAM_NAME_NOT_UNIQUE;
     }
 }

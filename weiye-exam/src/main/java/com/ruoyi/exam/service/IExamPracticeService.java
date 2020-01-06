@@ -40,4 +40,11 @@ public interface IExamPracticeService extends AbstractBaseService<ExamPractice>
     int update(ExamPractice examPractice);
 
     ExamPracticeVO selectExamPracticeById(Integer id);
+
+    /**
+     * 练习名称是否唯一
+     * @param name
+     * @return
+     */
+    String checkNameUnique(String name);
 }

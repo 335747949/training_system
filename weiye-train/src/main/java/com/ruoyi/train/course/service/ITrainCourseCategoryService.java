@@ -89,4 +89,12 @@ public interface ITrainCourseCategoryService extends AbstractBaseService<TrainCo
     List<TrainCourseCategory> selectAllCategoryList(TrainCourseCategory category);
 
     int updateCategoryByParentId(Long id, String updateBy);
+
+    /**
+     *
+     * @param name
+     * @param parentId
+     * @return
+     */
+    String checkNameUnique(String name, Long parentId);
 }

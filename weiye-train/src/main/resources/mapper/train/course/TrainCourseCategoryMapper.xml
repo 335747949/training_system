@@ -148,4 +148,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update train_course_category set del_flag = '1' where id = #{id}
 	</delete>
 
+	<select id="selectByNameAndParentId" resultMap="TrainCourseCategoryResult">
+		<include refid="selectCategoryVo"/>
+		where name = #{name} and parent_id = #{parentId} and del_flag = '0'
+	</select>
 </mapper> 

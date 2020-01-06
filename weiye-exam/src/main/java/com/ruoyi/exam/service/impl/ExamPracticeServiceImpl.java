@@ -1,14 +1,18 @@
 package com.ruoyi.exam.service.impl;
 
-import java.util.List;
-
-import com.ruoyi.exam.domain.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.ruoyi.common.constant.ExamConstants;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.exam.domain.ExamPractice;
+import com.ruoyi.exam.domain.ExamPracticeVO;
 import com.ruoyi.exam.mapper.ExamPracticeMapper;
 import com.ruoyi.exam.service.IExamPracticeService;
-import com.ruoyi.common.support.Convert;
 import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
+
 /**
  * 练习 服务层实现
  * 
@@ -62,5 +66,14 @@ public class ExamPracticeServiceImpl extends AbstractBaseServiceImpl<ExamPractic
     @Override
     public ExamPracticeVO selectExamPracticeById(Integer id) {
         return examPracticeMapper.selectExamPracticeById(id);
+    }
+
+    @Override
+    public String checkNameUnique(String name) {
+        List<ExamPracticeVO> examPracticeVOList = examPracticeMapper.selectByName(name);
+        if (CollectionUtils.isEmpty(examPracticeVOList)) {
+            return ExamConstants.EXAM_NAME_UNIQUE;
+        }
+        return ExamConstants.EXAM_NAME_NOT_UNIQUE;
     }
 }

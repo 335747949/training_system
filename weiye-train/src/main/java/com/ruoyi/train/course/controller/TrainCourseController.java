@@ -3,6 +3,8 @@ package com.ruoyi.train.course.controller;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.ruoyi.common.constant.ExamConstants;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.train.course.domain.TrainCourse;
 import com.ruoyi.train.course.domain.TrainCourseCategory;
 import com.ruoyi.train.course.domain.TrainCourseVO;
@@ -12,6 +14,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -91,6 +94,11 @@ public class TrainCourseController extends BaseController
 	@ResponseBody
 	public AjaxResult addSave(TrainCourse trainCourse)
 	{
+		Assert.hasText(trainCourse.getName(), "课程名称不能为空！");
+		String checkNameUnique = trainCourseService.checkNameUnique(trainCourse.getName(), trainCourse.getTrainCourseCategoryId());
+		if (checkNameUnique.equals(ExamConstants.TRAIN_COURSE_NAME_NOT_UNIQUE)) {
+			return error("同一课程分类下课程名称不能重复！");
+		}
 		trainCourse.setPrice(BigDecimal.ZERO);
 		trainCourse.setDelFlag("0");
 		return toAjax(trainCourseService.insert(trainCourse));
@@ -118,6 +126,17 @@ public class TrainCourseController extends BaseController
 	@ResponseBody
 	public AjaxResult editSave(TrainCourse trainCourse)
 	{
+		//
+		Assert.notNull(trainCourse.getId(), "课程ID为必填项！");
+		Assert.hasText(trainCourse.getName(), "课程名称不能为空！");
+		// 修改名称操作时判断
+		TrainCourse oldTrainCourse = trainCourseService.selectById(trainCourse.getId());
+		if (StringUtils.isNotNull(oldTrainCourse) && !trainCourse.getName().equals(oldTrainCourse.getName())) {
+			String checkNameUnique = trainCourseService.checkNameUnique(trainCourse.getName(), trainCourse.getTrainCourseCategoryId());
+			if (checkNameUnique.equals(ExamConstants.TRAIN_COURSE_NAME_NOT_UNIQUE)) {
+				return error("同一课程分类下课程名称不能重复！");
+			}
+		}
 		return toAjax(trainCourseService.updateSelectiveById(trainCourse));
 	}
 

@@ -3,6 +3,7 @@ package com.ruoyi.exam.mapper;
 import com.ruoyi.exam.domain.ExamPaperCategory;
 import java.util.List;
 import com.ruoyi.framework.web.base.MyMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 试卷分类 数据层
@@ -20,5 +21,7 @@ public interface ExamPaperCategoryMapper  extends MyMapper<ExamPaperCategory>
      * @return 试卷分类集合
      */
 	public List<ExamPaperCategory> selectExamPaperCategoryList(ExamPaperCategory examPaperCategory);
-	
+
+
+	List<ExamPaperCategory> selectByNameAndPid(@Param("name") String name, @Param("parentId") Integer parentId);
 }

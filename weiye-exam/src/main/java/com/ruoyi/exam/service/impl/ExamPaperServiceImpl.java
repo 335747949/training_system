@@ -1,17 +1,18 @@
 package com.ruoyi.exam.service.impl;
 
-import java.util.List;
-
+import com.ruoyi.common.constant.ExamConstants;
+import com.ruoyi.exam.domain.ExamPaper;
 import com.ruoyi.exam.domain.ExamQuestionVO;
-import com.ruoyi.exam.mapper.ExamPaperQuestionMapper;
+import com.ruoyi.exam.mapper.ExamPaperMapper;
 import com.ruoyi.exam.mapper.ExamQuestionMapper;
+import com.ruoyi.exam.service.IExamPaperService;
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.exam.mapper.ExamPaperMapper;
-import com.ruoyi.exam.domain.ExamPaper;
-import com.ruoyi.exam.service.IExamPaperService;
-import com.ruoyi.common.support.Convert;
-import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
+
 /**
  * 试卷 服务层实现
  * 
@@ -65,4 +66,18 @@ public class ExamPaperServiceImpl extends AbstractBaseServiceImpl<ExamPaperMappe
         return examPaperMapper.selectExamPaperList(examPaper);
     }
 
+    /**
+     *
+     * @param name
+     * @param type
+     * @return
+     */
+    @Override
+    public String checkNameUnique(String name, String type, Integer examCategoryId) {
+        List<ExamPaper> examPaperList = examPaperMapper.selectByNameAndType(name, type, examCategoryId);
+        if (CollectionUtils.isEmpty(examPaperList)) {
+            return ExamConstants.EXAM_PAPER_NAME_UNIQUE;
+        }
+        return ExamConstants.EXAM_PAPER_NAME_NOT_UNIQUE;
+    }
 }

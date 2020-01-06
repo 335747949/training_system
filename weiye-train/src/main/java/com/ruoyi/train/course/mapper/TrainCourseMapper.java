@@ -4,6 +4,7 @@ package com.ruoyi.train.course.mapper;
 import com.ruoyi.framework.web.base.MyMapper;
 import com.ruoyi.train.course.domain.TrainCourse;
 import com.ruoyi.train.course.domain.TrainCourseVO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -25,4 +26,12 @@ public interface TrainCourseMapper  extends MyMapper<TrainCourse>
 	public List<TrainCourseVO> selectTrainCourseList(TrainCourseVO trainCourse);
 
     List<TrainCourse> selectTrainCourseListForExcel(TrainCourseVO trainCourse);
+
+	/**
+	 *
+	 * @param name
+	 * @param trainCourseCategoryId
+	 * @return
+	 */
+    List<TrainCourse> selectByNameAndcategoryId(@Param("name") String name, @Param("trainCourseCategoryId") Integer trainCourseCategoryId);
 }

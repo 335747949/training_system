@@ -1,21 +1,21 @@
 package com.ruoyi.exam.service.impl;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
+import com.ruoyi.common.support.Convert;
+import com.ruoyi.exam.domain.ExamQuestion;
 import com.ruoyi.exam.domain.ExamQuestionItem;
 import com.ruoyi.exam.domain.ExamQuestionVO;
 import com.ruoyi.exam.domain.ExcelQuestion;
 import com.ruoyi.exam.mapper.ExamQuestionItemMapper;
+import com.ruoyi.exam.mapper.ExamQuestionMapper;
+import com.ruoyi.exam.service.IExamQuestionService;
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.exam.mapper.ExamQuestionMapper;
-import com.ruoyi.exam.domain.ExamQuestion;
-import com.ruoyi.exam.service.IExamQuestionService;
-import com.ruoyi.common.support.Convert;
-import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 /**
  * 问题 服务层实现
  *
@@ -180,5 +180,4 @@ public class ExamQuestionServiceImpl extends AbstractBaseServiceImpl<ExamQuestio
     public List<ExcelQuestion> selectExamQuestionListForExcel(ExamQuestion examQuestion) {
         return examQuestionMapper.selectExamQuestionListForExcel(examQuestion);
     }
-
 }

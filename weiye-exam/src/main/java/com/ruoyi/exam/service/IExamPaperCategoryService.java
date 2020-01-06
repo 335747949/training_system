@@ -30,4 +30,12 @@ public interface IExamPaperCategoryService extends AbstractBaseService<ExamPaper
 
 
     List<Map<String,Object>> selectDeptTree();
+
+    /**
+     *
+     * @param name
+     * @param parentId
+     * @return
+     */
+    String checkNameUnique(String name, Integer parentId);
 }

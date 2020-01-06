@@ -104,4 +104,12 @@ public interface TrainCourseCategoryMapper extends MyMapper<TrainCourseCategory>
     public List<String> selectRoleCategoryTree(Long roleId);
 
     int updateCategoryByParentId(@Param("id") Long id, @Param("updateBy")String updateBy);
+
+    /**
+     *
+     * @param name
+     * @param parentId
+     * @return
+     */
+    List<TrainCourseCategory> selectByNameAndParentId(@Param("name") String name, @Param("parentId") Long parentId);
 }

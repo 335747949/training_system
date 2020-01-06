@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.ruoyi.common.constant.ExamConstants;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.exam.domain.ExamPaperCategory;
 import com.ruoyi.exam.domain.ExamQuestion;
 import com.ruoyi.exam.service.IExamQuestionService;
@@ -13,6 +15,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -93,6 +96,12 @@ public class ExamQuestionCategoryController extends BaseController {
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(ExamQuestionCategory examQuestionCategory) {
+        // 试题分类名称
+        Assert.hasText(examQuestionCategory.getName(), "试题分类名称不能为空！");
+        String checkNameUnique = examQuestionCategoryService.checkNameUnique(examQuestionCategory.getName(), examQuestionCategory.getParentId());
+        if (checkNameUnique.equals(ExamConstants.EXAM_PAPER_CATEGORY_NAME_NOT_UNIQUE)) {
+            return error("同一试题分类下分类名称不能重复！");
+        }
         ExamQuestion examQuestion = new ExamQuestion();
         examQuestion.setCategoryId(examQuestionCategory.getParentId().toString());
         if (examQuestionService.selectList(examQuestion).size() > 0) {
@@ -126,6 +135,17 @@ public class ExamQuestionCategoryController extends BaseController {
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(ExamQuestionCategory examQuestionCategory) {
+        //
+        Assert.notNull(examQuestionCategory.getId(), "试题分类ID为必填项！");
+        Assert.hasText(examQuestionCategory.getName(), "试题分类名称不能为空！");
+        ExamQuestionCategory oldExamQuestionCategory = examQuestionCategoryService.selectExamQuestionCategoryById(examQuestionCategory.getId().toString());
+        // 试题分类名称不一致时判断
+        if (StringUtils.isNotNull(oldExamQuestionCategory) && !examQuestionCategory.getName().equals(oldExamQuestionCategory.getName())) {
+            String checkNameUnique = examQuestionCategoryService.checkNameUnique(examQuestionCategory.getName(), examQuestionCategory.getParentId());
+            if (checkNameUnique.equals(ExamConstants.EXAM_PAPER_CATEGORY_NAME_NOT_UNIQUE)) {
+                return error("同一试题分类下分类名称不能重复！");
+            }
+        }
         ExamQuestionCategory db = examQuestionCategoryService.selectById(examQuestionCategory.getId());
         ExamQuestion examQuestion = new ExamQuestion();
         examQuestion.setCategoryId(examQuestionCategory.getParentId().toString());
