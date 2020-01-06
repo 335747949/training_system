@@ -16,7 +16,9 @@
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
             <legend>我的错题</legend>
         </fieldset>
-
+        <div class="layui-card"  th:if="${data==null || data.size()==0}">
+            <p align="center" style="color: #909096">无数据</p>
+        </div>
         <div class="layui-card"  th:each="item:${data}">
             <div class="layui-card-header" style="color: #303133;font-size: 14px;">[[${itemStat.index+1}]]、<span
                     th:text="${item.question.title}"></span>

@@ -228,14 +228,16 @@
         var phonenumber = $.common.trim($("input[name='phonenumber']").val());
         var password = $.common.trim($("input[name='password']").val());
         var repassword = $.common.trim($("input[name='repassword']").val());
-        if(password.length < 5 || password.length > 20){
-            layer.msg("密码长度不正确,密码长度5-20位", {icon: 2});
-            return;
-        }
+
         if(!loginName.match("1[34857][\\d]{9}")){
             layer.msg("电话号码不正确", {icon: 2});
             return;
         }
+        if(password.length < 5 || password.length > 20){
+            layer.msg("密码长度不正确,密码长度5-20位", {icon: 2});
+            return;
+        }
+
         if(password != repassword){
             layer.msg("密码不一致", {icon: 2});
             return;
