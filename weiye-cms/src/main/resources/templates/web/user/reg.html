@@ -232,8 +232,8 @@
             layer.msg("密码长度不正确,密码长度5-20位", {icon: 2});
             return;
         }
-        if(loginName.length < 2 || loginName.length > 20){
-            layer.msg("用户名长度不正确,用户名长度5-20位", {icon: 2});
+        if(!loginName.match("1[34857][\\d]{9}")){
+            layer.msg("电话号码不正确", {icon: 2});
             return;
         }
         if(password != repassword){
