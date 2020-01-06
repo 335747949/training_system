@@ -36,7 +36,7 @@ public interface IExamExaminationService extends AbstractBaseService<ExamExamina
      * @param map
      * @return
      */
-    List<ExamExamination> selectListFromWeb(Map<String, Object> map);
+    List<ExamExamination> selectListFromWeb(Map<String, Object> map, Long userId);
 
     /**
      * 查询可以报名的列表

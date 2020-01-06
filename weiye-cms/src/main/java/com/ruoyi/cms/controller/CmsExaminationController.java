@@ -4,11 +4,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.constant.UserConstants;
+import com.ruoyi.common.utils.PaginUtil;
 import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.*;
 import com.ruoyi.exam.service.impl.ExamExaminationServiceImpl;
 import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.exception.base.BaseException;
+import com.ruoyi.framework.web.page.PageDomain;
+import com.ruoyi.framework.web.page.TableSupport;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
@@ -87,31 +90,17 @@ public class CmsExaminationController {
         Map<String, Object> map = new HashMap<>();
         map.put( "ination", examExamination );
         map.put( "userId", sysUser.getUserId() );
-        List<ExamExamination> list = examExaminationService.selectListFromWeb( map );
-
-        List<ExamExamination> resultList = new ArrayList<>();
-        for (ExamExamination exam : list) {
-           int count = examExaminationService.countExamQuestion(exam.getId());
-           if (count > 0){
-               int maxExamNumber = exam.getExamNumber();
-               // 根据用户id统计用户已参加考试次数
-               ExamUserExamination examUserExamination = new ExamUserExamination();
-               examUserExamination.setVipUserId(sysUser.getUserId().intValue());
-               examUserExamination.setExamPaperId(exam.getExamPaperId());
-               examUserExamination.setExamExaminationId(exam.getId());
-               //考试记录集合
-               List<ExamUserExamination> userExamination = examUserExaminationService.selectLastOne(examUserExamination);
-
-               //超过考试次数
-               if (userExamination.size() < maxExamNumber) {
-                   resultList.add(exam);
-               }
-            }
-        }
+        List<ExamExamination> list = examExaminationService.selectListFromWeb( map , sysUser.getUserId());
+        // 服务端分页
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        Map<String,Object> reslutMap = PaginUtil.getPagingResultMap(list,pageNum,pageSize);
 
         AjaxResult success = AjaxResult.success( "查询成功" );
-        success.put( "data", resultList );
-        success.put("total",new PageInfo(resultList).getTotal());
+        success.put( "data", reslutMap.get("result") );
+        success.put("pages",reslutMap.get("totalPageNum"));
+        success.put("total",reslutMap.get("totalRowNum"));
         return success;
     }
 

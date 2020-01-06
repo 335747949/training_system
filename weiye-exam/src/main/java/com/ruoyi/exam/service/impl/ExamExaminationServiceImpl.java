@@ -67,9 +67,29 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
     }
 
     @Override
-    public List<ExamExamination> selectListFromWeb(Map<String, Object> map) {
-        startPage();
-        return examExaminationMapper.selectListFromWeb(map);
+    public List<ExamExamination> selectListFromWeb(Map<String, Object> map, Long userId) {
+        List<ExamExamination> list = examExaminationMapper.selectListFromWeb(map);
+
+        List<ExamExamination> resultList = new ArrayList<>();
+        for (ExamExamination exam : list) {
+            int count = examExaminationService.countExamQuestion(exam.getId());
+            if (count > 0){
+                int maxExamNumber = exam.getExamNumber();
+                // 根据用户id统计用户已参加考试次数
+                ExamUserExamination examUserExamination = new ExamUserExamination();
+                examUserExamination.setVipUserId(userId.intValue());
+                examUserExamination.setExamPaperId(exam.getExamPaperId());
+                examUserExamination.setExamExaminationId(exam.getId());
+                //考试记录集合
+                List<ExamUserExamination> userExamination = examUserExaminationService.selectLastOne(examUserExamination);
+
+                //超过考试次数
+                if (userExamination.size() < maxExamNumber) {
+                    resultList.add(exam);
+                }
+            }
+        }
+        return resultList;
     }
 
     @Override
