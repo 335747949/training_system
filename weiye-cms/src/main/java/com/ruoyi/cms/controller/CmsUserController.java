@@ -419,6 +419,7 @@ public class CmsUserController {
                 cookie.setMaxAge(0);
                 cookie.setPath("/");
                 response.addCookie(cookie);
+                response.sendRedirect( "login.html");
             }
         }
     }
