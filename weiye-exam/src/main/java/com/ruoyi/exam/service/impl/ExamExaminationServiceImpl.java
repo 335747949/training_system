@@ -104,30 +104,25 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
 
             //超过考试次数
             if (userExamination.size() >= examNumber) {
-
-                last = userExamination.get(0);
-                //最后一次考试已交卷，直接返回
-                if (last.getUpdateDate() != null && !last.getUpdateDate().equals("")) {
-//                    throw new BaseException("401","已超过" + examNumber + "次考试，");
-//                    return error( 500, "已超过" + examNumber + "次考试，" );
+//
+//                last = userExamination.get(0);
+//                //最后一次考试已交卷，直接返回
+//                if (last.getUpdateDate() != null && !last.getUpdateDate().equals("")) {
                       result.put("fail","已超过" + examNumber + "次考试");
                       return result;
-                } else {
-                    // 最后一次考试未交卷，但超过考试时长,直接返回
-                    if (last.getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()) {
-//                        throw new BaseException("已超过" + examNumber + "次考试，");
-//                        throw new BaseException("401","已超过" + examNumber + "次考试，");
-                        result.put("fail","已超过" + examNumber + "次考试");
-                        return result;
-                    }
-                }
+//                }
+                // TODO  目前默认未交卷及未参加考试
+//                else {
+//                    // 最后一次考试未交卷，但超过考试时长,直接返回
+//                    if (last.getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()) {
+//                        result.put("fail","已超过" + examNumber + "次考试");
+//                        return result;
+//                    }
+//                }
 
             }
 
-            if (userExamination.size() <= 0 //考试次数小于0
-                    || userExamination.get(0).getUpdateDate() != null //最后一次考试已交卷
-                    || userExamination.get(0).getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()//最后一次考试，已超过考过时长
-                    ) {
+            if (userExamination.size() <= 0) {
                 eue.setExamExaminationId(Integer.parseInt(id));
                 eue.setVipUserId(userId);
                 eue.setCreateDate(new Date());
@@ -135,10 +130,7 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
                 eue.setDelFlag("0");
                 eue.setScore(0);
                 examUserExaminationService.insertOne(eue);
-            } else {
-                eue.setId(userExamination.get(0).getId());
             }
-
         }
         ExamPaper examPaper = examPaperService.selectById(examPaperId);
         List<ExamQuestionVO> data = new ArrayList<>();

@@ -130,24 +130,23 @@ public class ApiExaminationController extends BaseController {
             //超过考试次数
             if (userExamination.size() >= examNumber) {
 
-                last = userExamination.get( 0 );
-                //最后一次考试已交卷，直接返回
-                if (last.getUpdateDate() != null && !last.getUpdateDate().equals( "" )) {
+//                last = userExamination.get( 0 );
+//                //最后一次考试已交卷，直接返回
+//                if (last.getUpdateDate() != null && !last.getUpdateDate().equals( "" )) {
                     return error( 1, "不能交卷，已超过" + examNumber + "次考试。" );
-                } else {
-                    // 最后一次考试未交卷，但超过考试时长,直接返回
-                    if (last.getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()) {
-                        return error( 1, "不能交卷，已超过" + examNumber + "次考试。" );
-                    }
-                }
+//                }
+                // TODO  目前默认未交卷及未参加考试
+//                else {
+//                    // 最后一次考试未交卷，但超过考试时长,直接返回
+//                    if (last.getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()) {
+//                        return error( 1, "不能交卷，已超过" + examNumber + "次考试。" );
+//                    }
+//                }
 
             }
 
 
-            if (userExamination.size() <= 0 //考试次数小于0
-                    || userExamination.get( 0 ).getUpdateDate() != null //最后一次考试已交卷
-                    || userExamination.get( 0 ).getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()//最后一次考试，已超过考过时长
-                    ) {
+            if (userExamination.size() <= 0 ) {
                 insert.setExamExaminationId( Integer.parseInt( id ) );
                 insert.setVipUserId( userId );
                 insert.setCreateDate( new Date() );
@@ -156,10 +155,7 @@ public class ApiExaminationController extends BaseController {
                 insert.setScore( 0 );
                 examUserExaminationService.insertOne( insert );
                 examUserExaminationId = insert.getId();
-            } else {
-                examUserExaminationId = userExamination.get( 0 ).getId();
             }
-
         }
         ExamPaper examPaper = examPaperService.selectById(examPaperId);
         List<ExamQuestionVO> data = new ArrayList<>();
@@ -297,16 +293,18 @@ public class ApiExaminationController extends BaseController {
 
             //超过考试次数
             if (userExamination.size() >= examNumber) {
-                last = userExamination.get(0);
-                //最后一次考试已交卷，直接返回
-                if (last.getUpdateDate() != null && !last.getUpdateDate().equals("")) {
+//                last = userExamination.get(0);
+//                //最后一次考试已交卷，直接返回
+//                if (last.getUpdateDate() != null && !last.getUpdateDate().equals("")) {
                     return AjaxResult.error(1, "已超过" + examNumber + "次考试，");
-                } else {
-                    // 最后一次考试未交卷，但超过考试时长,直接返回
-                    if (last.getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()) {
-                        return AjaxResult.error(1, "已超过" + examNumber + "次考试，");
-                    }
-                }
+//                }
+                // TODO  目前默认未交卷及未参加考试
+//                else {
+//                    // 最后一次考试未交卷，但超过考试时长,直接返回
+//                    if (last.getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()) {
+//                        return AjaxResult.error(1, "已超过" + examNumber + "次考试，");
+//                    }
+//                }
             }
         }
 

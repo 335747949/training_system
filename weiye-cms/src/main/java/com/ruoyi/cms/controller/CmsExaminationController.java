@@ -250,16 +250,16 @@ public class CmsExaminationController {
 
             //超过考试次数
             if (userExamination.size() >= examNumber) {
-                last = userExamination.get(0);
-                //最后一次考试已交卷，直接返回
-                if (last.getUpdateDate() != null && !last.getUpdateDate().equals("")) {
+//                last = userExamination.get(0);
+//                //最后一次考试已交卷，直接返回
+//                if (last.getUpdateDate() != null && !last.getUpdateDate().equals("")) {
                     return AjaxResult.error(1, "已超过" + examNumber + "次考试，");
-                } else {
-                    // 最后一次考试未交卷，但超过考试时长,直接返回
-                    if (last.getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()) {
-                        return AjaxResult.error(1, "已超过" + examNumber + "次考试，");
-                    }
-                }
+//                } else {
+//                    // 最后一次考试未交卷，但超过考试时长,直接返回
+//                    if (last.getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()) {
+//                        return AjaxResult.error(1, "已超过" + examNumber + "次考试，");
+//                    }
+//                }
             }
         }
 
