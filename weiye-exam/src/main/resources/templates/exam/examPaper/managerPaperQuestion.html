@@ -221,6 +221,10 @@
 
     function defaultScore(type,obj) {
         obj.val(obj.val().replace(/\D/g,''));
+        if (obj.val() > 999){
+            obj.val(999)
+            layer.msg("单题目分数不能超过999");
+        }
         $(".questionItem").each(function(){
 
             var t = $(this).find(".itemType").eq(0).val()
