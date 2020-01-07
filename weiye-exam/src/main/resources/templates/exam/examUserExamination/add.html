@@ -72,9 +72,14 @@
 		var prefix = ctx + "exam/examUserExamination"
 		$("#form-examUserExamination-add").validate({
 			rules:{
-				xxxx:{
-					required:true,
+                remarks:{
+					maxlength: 250,
 				},
+                message:{
+                    "remark":{
+                        maxlength: "备注信息最长250字"
+                    }
+                }
 			}
 		});
 		

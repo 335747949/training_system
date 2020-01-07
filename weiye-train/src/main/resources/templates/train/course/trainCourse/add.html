@@ -82,6 +82,7 @@
                 },
 				description:{
 					required: true,
+                    maxlength: 250
 				},
 				// price:{
 				//     required:true,
@@ -90,6 +91,9 @@
 					"name": {
 						required: "名称最长30字"
 					},
+                    "description": {
+                        maxlength: "课程简介最长250字"
+                    },
 				}
 			}
 		});

@@ -139,11 +139,26 @@
         rules:{
             title:{
                 required:true,
+                maxlength: 200
             },
             content:{
                 required:true,
+                maxlength: 200
             },
-
+            remark:{
+                maxlength: 250
+            },
+            message:{
+                "title":{
+                    maxlength: "标题最长200字"
+                },
+                "content":{
+                    maxlength: "选项内容最长200字"
+                },
+                "remark":{
+                    maxlength: "答案解析最长250字"
+                }
+            }
         }
     });
 
