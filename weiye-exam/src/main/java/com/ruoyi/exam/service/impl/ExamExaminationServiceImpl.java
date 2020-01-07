@@ -94,8 +94,15 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
 
     @Override
     public List<ExamExamination> selectSignUpListFromWeb(Map<String, Object> map) {
-        startPage();
-        return examExaminationMapper.selectSignUpListFromWeb(map);
+        List<ExamExamination> list = examExaminationMapper.selectSignUpListFromWeb(map);
+        List<ExamExamination> resultList = new ArrayList<>();
+        for (ExamExamination exam : list) {
+            int count = examExaminationService.countExamQuestion(exam.getId());
+            if (count > 0){
+                resultList.add(exam);
+            }
+        }
+        return resultList;
     }
 
     @Override

@@ -215,11 +215,17 @@ public class ApiExaminationController extends BaseController {
         map.put( "examExamination", examExamination );
         map.put( "userId", sysUser.getUserId() );
         List<ExamExamination> list = examExaminationService.selectSignUpListFromWeb( map );
-        AjaxResult success = success( "查询成功" );
-        PageInfo pageInfo = new PageInfo(list);
-        success.put("data", list);
-        success.put("pages",pageInfo.getPages());
-        success.put("total",pageInfo.getTotal());
+
+        // 服务端分页
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        Map<String,Object> reslutMap = PaginUtil.getPagingResultMap(list,pageNum,pageSize);
+
+        AjaxResult success = AjaxResult.success( "查询成功" );
+        success.put( "data", reslutMap.get("result") );
+        success.put("pages",reslutMap.get("totalPageNum"));
+        success.put("total",reslutMap.get("totalRowNum"));
         return success;
     }
 

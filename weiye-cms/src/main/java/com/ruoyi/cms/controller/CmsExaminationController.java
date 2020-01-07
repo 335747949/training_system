@@ -122,17 +122,16 @@ public class CmsExaminationController {
         map.put( "ination", examExamination );
         map.put( "userId", sysUser.getUserId() );
         List<ExamExamination> list = examExaminationService.selectSignUpListFromWeb( map );
+        // 服务端分页
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        Map<String,Object> reslutMap = PaginUtil.getPagingResultMap(list,pageNum,pageSize);
 
-        List<ExamExamination> resultList = new ArrayList<>();
-        for (ExamExamination exam : list) {
-            int count = examExaminationService.countExamQuestion(exam.getId());
-            if (count > 0){
-                resultList.add(exam);
-            }
-        }
         AjaxResult success = AjaxResult.success( "查询成功" );
-        success.put("total",new PageInfo(resultList).getTotal());
-        success.put( "data", resultList );
+        success.put( "data", reslutMap.get("result") );
+        success.put("pages",reslutMap.get("totalPageNum"));
+        success.put("total",reslutMap.get("totalRowNum"));
         return success;
     }
 
