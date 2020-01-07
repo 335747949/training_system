@@ -589,3 +589,9 @@ body .fly-user-main{position: relative; box-sizing: border-box;padding: 16px 0;m
 .practice-type-3{
   background: #4F7AE1;
 }
+.question .ck{
+  word-break: break-all;
+}
+.question .layui-card-header span{
+  word-break: break-all;
+}

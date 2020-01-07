@@ -7356,3 +7356,6 @@ body.skin-yellow {
     color:#fff!important;
     border-color: #3377F0 !important;
 }
+.bootstrap-table .btn-xs{
+    margin-bottom: 5px;
+}

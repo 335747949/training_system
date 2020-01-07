@@ -20,6 +20,15 @@
     .practice-type-3{
         background: #4F7AE1;
     }
+    .layui-card-header{
+        height: auto;
+        line-height: normal;
+        min-height: 42px;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        flex-wrap: wrap;
+    }
 </style>
 <body  oncontextmenu="return false" onselectstart="return false">
 <div class="fly-header layui-bg-black" th:replace="web/index::top">
@@ -39,8 +48,8 @@
                         <span style="font-size: 16px;color: #626262;">[[${practice.name}]]</span>
                     </div>
 
-                    <div class="layui-card" th:each="question:${data}">
-                        <div class="layui-card-header" style="display: inline-block;font-size: 14px;color: #303133;width: 100%;">[[${questionStat.index+1}]]、<span
+                    <div class="layui-card question" th:each="question:${data}">
+                        <div class="layui-card-header" style="font-size: 14px;color: #303133;width: 100%;">[[${questionStat.index+1}]]、<span
                                 th:text="${question.title}"></span>
                             <span class="practice-type practice-type-1" th:if="${question.type=='1'}">单选</span>
                             <span class="practice-type practice-type-2" th:if="${question.type=='2'}">多选</span>
@@ -52,7 +61,7 @@
                             <input th:class="${question.id}+'useranswer'" th:if="${question.type != '2'}" type="radio"
                                    th:name="${question.id}" th:value="${item.number}">
                             [[${item.number}]]：
-                            <span th:text="${item.content}" onclick="checkbox(this)"></span>
+                            <span class="ck" th:text="${item.content}" onclick="checkbox(this)"></span>
                         </div>
                         <div class="layui-card-body">
                             <button class="layui-btn layui-btn-warm"
@@ -66,8 +75,10 @@
                         </div>
 
                         <div class="layui-card-body" hidden th:id="${question.id}+'answer'">
-                            解析:正确答案[[${question.answer}]]<br>
-                            [[${question.remarks}]]
+                            <span class="ck">解析:正确答案[[${question.answer}]]</span>
+                            <br>
+                            <span class="ck">[[${question.remarks}]]</span>
+
                         </div>
                     </div>
                 </div>

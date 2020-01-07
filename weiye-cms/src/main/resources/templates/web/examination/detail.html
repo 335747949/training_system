@@ -18,6 +18,15 @@
         color: #fff;
         border:1px solid #3CB47B;
     }
+    .layui-card-header{
+        height: auto;
+        line-height: normal;
+        min-height: 42px;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        flex-wrap: wrap;
+    }
 </style>
 <body oncontextmenu="return false" onselectstart="return false">
 
@@ -55,7 +64,7 @@
                     <div class="layui-col-md12" style="margin-top: 112px;">
                         <div class="layui-card question" th:each="question:${data}">
                             <input type="hidden" class="questionId" th:value="${question.id}">
-                            <div class="layui-card-header" style="display: inline-block;color: #303133;font-size: 14px;width: 100%;box-sizing: border-box;">[[${questionStat.index+1}]]、
+                            <div class="layui-card-header" style="color: #303133;font-size: 14px;width: 100%;box-sizing: border-box;">[[${questionStat.index+1}]]、
                                 <span th:text="${question.title}"></span>
                                 <span class="practice-type practice-type-1" th:if="${question.type=='1'}">单选</span>
                                 <span class="practice-type practice-type-2" th:if="${question.type=='2'}">多选</span>
