@@ -4,7 +4,7 @@
 <head th:include="web/index::cmsHeader">
 </head>
 <head>
-    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="shortcut icon" href="../../../favicon.ico">
 </head>
 <style>
     html{
@@ -95,6 +95,7 @@
                 <img th:src="@{/web/res/images/login-bg.png}" alt="">
             </div>
             <div class="login-right">
+                <form class="layui-form" action="">
                 <div class="login-tab">
                     <div class="nav-tab nav-tab-active">登录账号</div>
                     <div class="nav-tab">
@@ -103,15 +104,24 @@
                 </div>
                 <div class="login-form">
                     <div class="login-label">手机号</div>
-                    <div class="layui-input-inline" style="margin-top: 10px;width: 100%;">
-                        <input type="tel" id="L_loginName" placeholder="请输入手机号" name="loginName" required lay-verify="required" autocomplete="off" class="layui-input">
+                    <div class="layui-form-item">
+                        <div class="layui-input-inline" style="margin-top: 10px;width: 100%;">
+                            <input type="tel" id="L_loginName" placeholder="请输入手机号" name="loginName" required lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
                     </div>
+
                     <div class="login-label login-label-2">密码</div>
-                    <div class="layui-input-inline" style="margin-top: 10px;width: 100%;">
-                        <input type="password" id="L_pass" placeholder="请输入密码" name="password" required lay-verify="required" autocomplete="off" class="layui-input">
+                    <div class="layui-form-item">
+                        <div class="layui-input-inline" style="margin-top: 10px;width: 100%;">
+                            <input type="password" id="L_pass" placeholder="请输入密码" name="password" required lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
                     </div>
-                    <button class="layui-btn login-btn" style="margin-top: 48px;width: 100%;box-shadow: 0 9px 16px 0 rgba(46,175,113,0.18);" onclick="login()">立即登录</button>
+                    <div class="layui-form-item">
+                        <button class="layui-btn login-btn" style="margin-top: 48px;width: 100%;box-shadow: 0 9px 16px 0 rgba(46,175,113,0.18);" lay-submit lay-filter="*">立即登录</button>
+                    </div>
+
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -173,7 +183,14 @@
         });
 
     })
-
+    layui.use('form', function(){
+        var form = layui.form;
+        form.on('submit(*)', function(data){
+            login();
+            return false;
+        })
+        //各种基于事件的操作，下面会有进一步介绍
+    });
     function login() {
         var loginName = $.common.trim($("input[name='loginName']").val());
         var password = $.common.trim($("input[name='password']").val());
@@ -191,7 +208,7 @@
 
                 if (r.code == 200) {
                     layer.msg(r.msg, {icon: 1});
-                    location.href = ctx + "web/index"
+                    location.href = ctx + "web/index";
                 } else {
                     layer.msg(r.msg, {icon: 2});
                 }

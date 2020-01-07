@@ -4,7 +4,7 @@
 <head th:include="web/index::cmsHeader">
 </head>
 <head>
-    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="shortcut icon" href="../../../favicon.ico">
 </head>
 <style>
     .fly-footer{
@@ -105,26 +105,29 @@
                     <div class="nav-tab nav-tab-active">注册账号</div>
                 </div>
                 <div class="login-form">
-                    <div class="layui-input-inline" style="margin-top: 32px;width: 100%;">
-                        <input type="text" id="L_Mobile" name="phonenumber" required lay-verify="required|phone" autocomplete="off" class="layui-input"  placeholder = "请输入手机号">
-                    </div>
-                    <div class="layui-input-inline" style="margin-top: 12px;width: 100%;">
-                        <input type="text" id="L_username" name="userName" required lay-verify="required" autocomplete="off" class="layui-input" placeholder = "请输入姓名">
-                    </div>
-                    <div class="layui-input-inline" style="margin-top: 12px;width: 100%;">
-                        <input name="deptId"  type="hidden" id="treeId"/>
-                        <input type="text" name="deptName" required lay-verify="required" onclick="selectDeptTree()" class="layui-input" style= "background-color: #dddddd" readonly="true" id="treeName" placeholder = "请选择部门">
-                    </div>
-                    <div class="layui-input-inline" style="margin-top: 12px;width: 100%;">
-                        <input type="text" id="L_email" name="email" required lay-verify="required|email" autocomplete="on" class="layui-input"  placeholder = "请输入邮箱">
-                    </div>
-                    <div class="layui-input-inline" style="margin-top: 12px;width: 100%;">
-                        <input type="password" id="L_pass" name="password" required lay-verify="required" autocomplete="off" class="layui-input" placeholder = "请输入密码">
-                    </div>
-                    <div class="layui-input-inline" style="margin-top: 12px;width: 100%;">
-                        <input type="password" id="L_repass" name="repassword" required lay-verify="required" autocomplete="off" class="layui-input" placeholder = "请再次输入密码">
-                    </div>
-                    <button class="layui-btn login-btn" style="margin-top: 48px;width: 100%;box-shadow: 0 9px 16px 0 rgba(46,175,113,0.18);" onclick="regAccount()">立即注册</button>
+                    <form class="layui-form" action="">
+                        <div class="layui-input-inline" style="margin-top: 32px;width: 100%;">
+                            <input type="text" id="L_Mobile" name="phonenumber" required lay-verify="required|phone" autocomplete="off" class="layui-input"  placeholder = "请输入手机号">
+                        </div>
+                        <div class="layui-input-inline" style="margin-top: 12px;width: 100%;">
+                            <input type="text" id="L_username" name="userName" required lay-verify="required" autocomplete="off" class="layui-input" placeholder = "请输入姓名">
+                        </div>
+                        <div class="layui-input-inline" style="margin-top: 12px;width: 100%;">
+                            <input name="deptId"  type="hidden" id="treeId"/>
+                            <input type="text" name="deptName" required lay-verify="required" onclick="selectDeptTree()" class="layui-input" style= "background-color: #dddddd" readonly="true" id="treeName" placeholder = "请选择部门">
+                        </div>
+                        <div class="layui-input-inline" style="margin-top: 12px;width: 100%;">
+                            <input type="text" id="L_email" name="email" required lay-verify="required|email" autocomplete="on" class="layui-input"  placeholder = "请输入邮箱">
+                        </div>
+                        <div class="layui-input-inline" style="margin-top: 12px;width: 100%;">
+                            <input type="password" id="L_pass" name="password" required lay-verify="required" autocomplete="off" class="layui-input" placeholder = "请输入密码">
+                        </div>
+                        <div class="layui-input-inline" style="margin-top: 12px;width: 100%;">
+                            <input type="password" id="L_repass" name="repassword" required lay-verify="required" autocomplete="off" class="layui-input" placeholder = "请再次输入密码">
+                        </div>
+                        <button class="layui-btn login-btn" style="margin-top: 48px;width: 100%;box-shadow: 0 9px 16px 0 rgba(46,175,113,0.18);" lay-submit lay-filter="*">立即注册</button>
+                    </form>
+
                 </div>
             </div>
         </div>
@@ -223,7 +226,14 @@
         });
 
     })
-
+    layui.use('form', function(){
+        var form = layui.form;
+        form.on('submit(*)', function(data){
+            regAccount();
+            return false;
+        })
+        //各种基于事件的操作，下面会有进一步介绍
+    });
     function regAccount() {
         debugger
         var loginName = $.common.trim($("input[name='phonenumber']").val());
@@ -238,24 +248,11 @@
             layer.msg("电话号码不正确", {icon: 2});
             return;
         }
-        if(password == ""){
-            layer.msg("密码不正确", {icon: 2});
-            return;
-        }
         if(password.length < 5 || password.length > 20){
             layer.msg("密码长度不正确,密码长度5-20位", {icon: 2});
             return;
         }
 
-        if(deptId == ""){
-            layer.msg("请选择部门", {icon: 2});
-            return;
-        }
-
-        if(email == ""){
-            layer.msg("邮箱不能为空", {icon: 2});
-            return;
-        }
         if(password != repassword){
             layer.msg("两次密码不一致", {icon: 2});
             return;
