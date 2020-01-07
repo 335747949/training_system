@@ -77,7 +77,7 @@
                     <div class="input-group date enableControlTime"><span class="input-group-addon"><i
                             class="fa fa-calendar"></i></span>
                         <input type="text" th:value="*{#dates.format(startTime, 'yyyy-MM-dd HH:mm:ss')}" id="startTime"
-                               name="startTime" class="form-control">
+                               name="startTime" class="form-control" onfocus="this.blur()">
                     </div>
                 </div>
             </div>
@@ -87,7 +87,7 @@
                     <div class="input-group date enableControlTime"><span class="input-group-addon"><i
                             class="fa fa-calendar"></i></span>
                         <input type="text" th:value="*{#dates.format(endTime, 'yyyy-MM-dd HH:mm:ss')}" id="endTime"
-                               name="endTime" class="form-control">
+                               name="endTime" class="form-control" onfocus="this.blur()">
                     </div>
                 </div>
             </div>
@@ -171,6 +171,14 @@
     $.validator.addMethod("compareDate",function(value,element){
         var assigntime = $("#startTime").val();
         var deadlinetime = $("#endTime").val();
+        if (assigntime == ""){
+            layer.msg("结束日期必须大于开始日期");
+            return false;
+        }
+        if (deadlinetime == ""){
+            layer.msg("结束日期必须大于开始日期",{icon: 2});
+            return false;
+        }
         var reg = new RegExp('-','g');
         assigntime = assigntime.replace(reg,'/');//正则替换
         deadlinetime = deadlinetime.replace(reg,'/');
@@ -302,7 +310,7 @@
                 required: true,
                 digits:true,
                 min: 1,
-                max: 999
+                max: 99999
             },
             messages:{
                 "name":{
