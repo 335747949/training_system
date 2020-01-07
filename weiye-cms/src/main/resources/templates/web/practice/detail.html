@@ -54,7 +54,7 @@
                                    th:name="${question.id}" th:value="${item.number}">
                             <input th:class="${question.id}+'useranswer'" th:if="${question.type != '2'}" type="radio"
                                    th:name="${question.id}" th:value="${item.number}">
-                            [[${item.number}]]:
+                            [[${item.number}]]：
                             <span th:text="${item.content}" onclick="checkbox(this)"></span>
                         </div>
                         <div class="layui-card-body">
