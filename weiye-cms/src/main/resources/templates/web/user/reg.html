@@ -222,6 +222,7 @@
     })
 
     function regAccount() {
+        debugger
         var loginName = $.common.trim($("input[name='phonenumber']").val());
         var email = $.common.trim($("input[name='email']").val());
         var userName = $.common.trim($("input[name='userName']").val());
@@ -234,19 +235,29 @@
             layer.msg("电话号码不正确", {icon: 2});
             return;
         }
+        if(password == ""){
+            layer.msg("密码不正确", {icon: 2});
+            return;
+        }
         if(password.length < 5 || password.length > 20){
             layer.msg("密码长度不正确,密码长度5-20位", {icon: 2});
             return;
         }
 
+        if(deptId == ""){
+            layer.msg("请选择部门", {icon: 2});
+            return;
+        }
+
+        if(email == ""){
+            layer.msg("邮箱不能为空", {icon: 2});
+            return;
+        }
         if(password != repassword){
-            layer.msg("密码不一致", {icon: 2});
+            layer.msg("两次密码不一致", {icon: 2});
             return;
         }
-        if(!phonenumber.match("1[34857][\\d]{9}")){
-            layer.msg("电话号码不正确", {icon: 2});
-            return;
-        }
+
         $.ajax({
             type: "post",
             url: "/web/user/regaccount",
@@ -256,7 +267,8 @@
                 "email":email,
                 "deptId":deptId,
                 "password":password,
-                "phonenumber":phonenumber
+                "phonenumber":phonenumber,
+                "repassword":repassword
             },
             success: function(r) {
 

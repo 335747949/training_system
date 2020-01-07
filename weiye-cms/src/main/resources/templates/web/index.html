@@ -198,7 +198,7 @@
               <img th:src="@{/img/xiala.png}" alt="头像" width="11px" height="6px">
             </div>
             <div style="line-height: 1;margin-top: 4px;">
-              <span th:text="${session.user.dept.deptName}" style="font-size: 12px;"></span>
+              <span th:text="${session.user.dept == null ? '陕西伟业医药有限公司' : session.user.dept.deptName}" style="font-size: 12px;"></span>
             </div>
           </div>
 <!--          <cite class="layui-hide-xs" th:text="${session.user.userName}"></cite>-->

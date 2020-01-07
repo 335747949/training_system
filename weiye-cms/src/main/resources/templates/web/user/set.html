@@ -109,9 +109,9 @@
             </div>
 
             <div class="layui-form-item">
-              <label for="deptname" class="layui-form-label">部门名称</label>
+              <label for="deptName" class="layui-form-label">部门名称</label>
               <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="deptName" th:value="${user.dept.deptName}" readonly="true">
+                <input class="layui-input" type="text" name="deptName" th:value="${user.dept == null ? '陕西伟业医药有限公司' : user.dept.deptName}" readonly="true">
               </div>
             </div>
             <div class="layui-form-item">
@@ -244,6 +244,12 @@
         });
     }
     function updateUserInfo() {
+        var userName = $.common.trim($("input[name='userName']").val());
+
+        if(userName == ""){
+            layer.msg("用户名称不能为空", {icon: 2});
+            return;
+        }
         var data={
             userId:userId,
             loginName:$("#loginName").val(),
