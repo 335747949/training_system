@@ -266,8 +266,8 @@
     var flag=false;
     function checkPassword() {
         var data={
-            loginName:$("#loginName").val(),
-            password:$("#oldPassword").val()
+            loginName:$.common.trim($("#loginName").val()),
+            password:$.common.trim($("#oldPassword").val())
         }
         $.ajax({
             cache : true,
@@ -289,16 +289,24 @@
         });
     }
     function checkTwoPassword() {
-        var password=$("#password").val();
-        var confirm=$("#confirm").val();
+        var password = $.common.trim($("#password").val());
+        var confirm = $.common.trim($("#confirm").val());
+        if(password == '' || confirm == ''){
+            layer.msg('密码不能为空');
+            return false;
+        }
         if(password!==confirm){
             layer.msg('两次密码不一致');
             return false;
         }
     }
     function updateUserPassword() {
-        var password=$("#password").val();
-        var confirm=$("#confirm").val();
+        var password=$.common.trim($("#password").val());
+        var confirm=$.common.trim($("#confirm").val());
+        if(password == '' || confirm == ''){
+            layer.msg('密码不能为空');
+            return false;
+        }
         if(password!==confirm||!flag){
             layer.msg('两次密码不一致');
             return false;
