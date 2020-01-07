@@ -2,6 +2,11 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
+<style>
+	.bootstrap-table .btn-xs{
+		margin-bottom: 5px;
+	}
+</style>
 <body class="gray-bg">
     
      <div class="container-div">
@@ -175,7 +180,7 @@
 //				},
 		        {
 		            title: '操作',
-		            align: 'center',
+		            // align: 'center',
 		            formatter: function(value, row, index) {
 		            	var actions = [];
 						if(row.type=='2'){
