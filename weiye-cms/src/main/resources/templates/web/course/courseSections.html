@@ -2,10 +2,15 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head th:include="web/index::cmsHeader">
 </head>
+<head>
+    <link rel="shortcut icon" href="../../../favicon.ico">
+</head>
 <body onblur="stopActive()">
 <div class="fly-header layui-bg-black" th:replace="web/index:: top">
 </div>
-
+<script>
+    $('.course-li').addClass('layui-this');
+</script>
 <style type="text/css">
     .video-box {
         /*padding-top: 24px;*/
@@ -99,7 +104,7 @@
     }
 
 </style>
-<div class="container-fluid video-box layui-container" style="height: calc(100% - 128px);">
+<div class="container-fluid video-box layui-container" style="height: calc(100% - 128px);padding-top: 0;">
     <div class="layui-row">
         <div class="course-name" th:text="${trainCourseSection.name}"></div>
         <div class="course-content-wrap">

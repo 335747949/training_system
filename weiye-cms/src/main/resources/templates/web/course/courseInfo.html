@@ -2,9 +2,15 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head th:include="web/index::cmsHeader">
 </head>
+<head>
+    <link rel="shortcut icon" href="../../../favicon.ico">
+</head>
 <body>
 <div class="fly-header layui-bg-black" th:replace="web/index:: top">
 </div>
+<script>
+    $('.course-li').addClass('layui-this');
+</script>
 <style type="text/css">
     .courseView {
         background-size: auto auto;
@@ -178,7 +184,7 @@
         bottom: 0;
     }
 </style>
-<div class="layui-container">
+<div class="layui-container" style="padding-top: 0;">
     <div class="courseView">
         <div class="page-width">
                 <div class="box bd-all">

@@ -402,7 +402,7 @@ body .layui-edit-face  .layui-layer-content{padding:0; background-color:#fff; co
 
 /* 用户中心 */
 body .fly-user-main{position: relative; box-sizing: border-box;padding: 16px 0;margin-top: 0;height: calc(100% - 160px);}
-.fly-user-main>.layui-nav{position: absolute; left: 0; top: 16px; z-index: 1000; height: calc(100% - 32px); padding: 10px 0;overflow-y: auto;}
+.fly-user-main>.layui-nav{position: absolute; left: 0; top: 16px; z-index: 1000; height: 100%; padding: 10px 0;overflow-y: auto;}
 .fly-user-main>.layui-nav .layui-icon{position: relative; top: 2px; font-size: 20px; margin-right: 10px;}
 .fly-user-main>.fly-panel{min-height: 575px; margin: 0 0 10px 215px;}
 .fly-user-main .fly-none{min-height: 0;}

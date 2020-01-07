@@ -3,10 +3,23 @@
 <meta charset="utf-8">
 <head th:include="web/index::cmsHeader">
 </head>
+<head>
+    <link rel="shortcut icon" href="../../../favicon.ico">
+</head>
 <style>
     #count_down span{
         font-size: 22px;
         color: #F27F1F;
+    }
+    .layui-layer-btn .layui-layer-btn0{
+        background: #fff !important;
+        color: #333 !important;
+        border:1px solid #dedede !important;
+    }
+    .layui-layer-btn .layui-layer-btn1{
+        background: #3CB47B;
+        color: #fff;
+        border:1px solid #3CB47B;
     }
 </style>
 <body oncontextmenu="return false" onselectstart="return false">
@@ -16,41 +29,33 @@
     $('.nav-li').removeClass('layui-this');
     $('.exam-li').addClass('layui-this');
 </script>
-<div class="layui-container"  style="top:20px;height: calc(100% - 20px);">
-    <div class="layui-row layui-col-space15" style="height: 100%;">
+<div class="layui-container" style="padding-top: 0;">
+    <div class="layui-row layui-col-space15">
 
-        <div class="layui-col-md12" style="height: 100%;">
-            <div class="fly-panel" style="height: 100%;background: transparent;">
+        <div class="layui-col-md12">
+            <div class="fly-panel">
 
-                <div class="layui-col-md12" style="height: 100%;">
-
-                    <div class="layui-card" style="display: flex;align-items: center;position: absolute;top:0; left: 0;padding:14px 16px;box-sizing:border-box;width: 100%;  z-index:99;background: #fff;">
-                            <div style="flex: auto;font-size: 16px;color: #626262;">考试名称：[[${examExamination.name}]]</div>
-                            <div id="count_down" style="flex: auto;">
-                                <span>离考试结束：</span>
-                                <span class="day_num"></span>
-                                <span class="hour_num"></span>
-                                <span class="min_num"></span>
-                                <span class="sec_num"></span>
+                <div class="layui-col-md12">
+                    <div style="width: 1170px;position:fixed;z-index: 555;padding-top: 24px;background: #f4f4f4;">
+                            <div class="layui-card" style="display: flex;align-items: center;padding:14px 16px;box-sizing:border-box;width: 100%;  z-index:99;background: #fff;">
+                                <div style="flex: auto;font-size: 16px;color: #626262;">考试名称：[[${examExamination.name}]]</div>
+                                <div id="count_down" style="flex: auto;">
+                                    <span>离考试结束：</span>
+                                    <span class="day_num"></span>
+                                    <span class="hour_num"></span>
+                                    <span class="min_num"></span>
+                                    <span class="sec_num"></span>
+                                </div>
+                                <div style="flex: auto;text-align: right;">
+                                    <button style="width: 164px;" class="layui-btn layui-btn-warm"
+                                            onclick="endPaper()">交卷
+                                    </button>
+                                </div>
                             </div>
-                            <div style="flex: auto;text-align: right;">
-                                <button style="width: 164px;" class="layui-btn layui-btn-warm"
-                                        onclick="endPaper()">交卷
-                                </button>
-                            </div>
 
-<!--                        <span style="font-size: 16px;">[[${examExamination.name}]]</span><br>-->
-<!--                        <button style="width: 100px;margin-bottom: 20px" class="layui-btn layui-btn-warm"-->
-<!--                                onclick="endPaper()">交卷-->
-<!--                        </button>-->
-<!--                        <div id="count_down">-->
-<!--                            <span class="day_num"></span>-->
-<!--                            <span class="hour_num"></span>-->
-<!--                            <span class="min_num"></span>-->
-<!--                            <span class="sec_num"></span>-->
-<!--                        </div>-->
                     </div>
-                    <div class="layui-col-md12" style="margin-top: 82px;height: calc(100% - 66px);overflow-y: auto;">
+
+                    <div class="layui-col-md12" style="margin-top: 112px;">
                         <div class="layui-card question" th:each="question:${data}">
                             <input type="hidden" class="questionId" th:value="${question.id}">
                             <div class="layui-card-header" style="display: inline-block;color: #303133;font-size: 14px;width: 100%;box-sizing: border-box;">[[${questionStat.index+1}]]、

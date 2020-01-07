@@ -3,6 +3,12 @@
 <meta charset="utf-8">
 <head th:include="web/index::cmsHeader">
 </head>
+<head>
+  <link rel="shortcut icon" href="../favicon.ico">
+</head>
+<head>
+  <link rel="shortcut icon" href="../favicon.ico">
+</head>
 <style>
   .practice-title{
     padding: 20px 0 10px 0;
@@ -19,7 +25,7 @@
   $('.nav-li').removeClass('layui-this');
   $('.practice-li').addClass('layui-this');
 </script>
-<div class="layui-container" style="background: #fff;margin-top: 20px;min-height: calc(100% - 148px);">
+<div class="layui-container" style="background: #fff;margin-top: 20px;min-height: calc(100% - 148px);padding-top: 0;">
   <div class="practice-title">练习题</div>
   <div class="layui-row layui-col-space15">
     <div class="layui-col-md12">
@@ -51,8 +57,7 @@
             ,url:'/web/practice/list'
             ,title: '练习表'
             ,cols: [ [
-                 {checkbox: true}
-                ,{field: 'trainCourseName', title: '课程名称'}
+                {field: 'trainCourseName', title: '课程名称'}
                 ,{field: 'name', title: '考试名称'}
                 ,{title: '操作',toolbar: '#barDemo'}
             ] ]
