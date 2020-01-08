@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
@@ -153,7 +154,11 @@ public class ExamQuestionController extends BaseController
 	public AjaxResult addSave(ExamQuestion examQuestion,@RequestParam(value = "number", required = true) String[] number,
 							  @RequestParam(value = "content", required = true) String[] content)
 	{
-
+		for (String str : content){
+			if (StringUtils.isEmpty(str.trim())){
+				return AjaxResult.error("问题内容不能为空");
+			}
+		}
 		return toAjax(examQuestionService.insertQuestion(examQuestion,number,content));
 	}
 
@@ -165,7 +170,11 @@ public class ExamQuestionController extends BaseController
 	public AjaxResult update(ExamQuestion examQuestion,@RequestParam(value = "number", required = true) String[] number,
 							  @RequestParam(value = "content", required = true) String[] content)
 	{
-
+		for (String str : content){
+			if (StringUtils.isEmpty(str.trim())){
+				return AjaxResult.error("问题内容不能为空");
+			}
+		}
 		return toAjax(examQuestionService.updateQuestion(examQuestion,number,content));
 	}
 
