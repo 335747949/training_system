@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
@@ -251,7 +252,7 @@ public class ExamQuestionController extends BaseController
 		try {
 			insertExamQuertions(id, examQuestions);
 		}catch (Exception e){
-			return error("导入失败，请检查文件后重试");
+			return error("导入失败：" + e.getMessage());
 		}
 
 		return success("导入成功");
@@ -282,6 +283,9 @@ public class ExamQuestionController extends BaseController
 //			}
 			if (!"1".equals(item.getType()) && !"2".equals(item.getType()) && !"3".equals(item.getType())){
 				throw new RuntimeException("不支持这种试题类型");
+			}
+			if (ObjectUtils.isEmpty(item.getAnswer().trim())){
+				throw new RuntimeException("试题答案不允许为空");
 			}
 			insert.setType(item.getType());
 			examQuestionService.insertExamQuestion(insert);
