@@ -351,6 +351,7 @@ public class SysUserServiceImpl extends AbstractBaseServiceImpl<SysUserMapper, S
                 // 加密根据登录用户名 + 密码 + 盐
                 sysUser.setPassword(new Md5Hash(sysUser.getLoginName() + defaultPwd + salt).toHex());
                 sysUser.setCreateBy(ShiroUtils.getLoginName());
+                sysUser.setSex("2");
                 successList.add(sysUser);
             }
         }

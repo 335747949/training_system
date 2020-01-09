@@ -191,6 +191,12 @@
     function login() {
         var loginName = $.common.trim($("input[name='loginName']").val());
         var password = $.common.trim($("input[name='password']").val());
+
+        if(!loginName.match("1[348576][\\d]{9}")){
+            layer.msg("电话号码不正确", {icon: 2});
+            return;
+        }
+
         $.ajax({
             type: "post",
             url: ctx + "login",
