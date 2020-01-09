@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.ruoyi.common.constant.ExamConstants;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.exam.domain.ExamPaper;
 import com.ruoyi.exam.service.IExamPaperService;
 import com.ruoyi.framework.web.util.ShiroUtils;
@@ -12,6 +14,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -96,6 +99,12 @@ public class ExamPaperCategoryController extends BaseController
 	@ResponseBody
 	public AjaxResult addSave(ExamPaperCategory examPaperCategory)
 	{
+		// 分类名称
+		Assert.hasText(examPaperCategory.getName(), "试卷分类名称不能为空！");
+		String checkNameUnique = examPaperCategoryService.checkNameUnique(examPaperCategory.getName(), examPaperCategory.getParentId());
+		if (checkNameUnique.equals(ExamConstants.EXAM_PAPER_CATEGORY_NAME_NOT_UNIQUE)) {
+			return error("同一试卷分类下分类名称不能重复！");
+		}
 		ExamPaper examPaper = new ExamPaper();
 		examPaper.setExamPaperCategoryId(examPaperCategory.getParentId());
 		if(examPaperService.selectList(examPaper).size()>0){
@@ -133,6 +142,17 @@ public class ExamPaperCategoryController extends BaseController
 	@ResponseBody
 	public AjaxResult editSave(ExamPaperCategory examPaperCategory)
 	{
+		// 分类名称
+		Assert.notNull(examPaperCategory.getId(),"试卷分类ID为必填项！");
+		Assert.hasText(examPaperCategory.getName(), "试卷分类名称不能为空！");
+		ExamPaperCategory oldExamPaperCategory = examPaperCategoryService.selectById(examPaperCategory.getId());
+		// 修改名称变化时校验唯一性
+		if (StringUtils.isNotNull(oldExamPaperCategory) && !examPaperCategory.getName().equals(oldExamPaperCategory.getName())) {
+			String checkNameUnique = examPaperCategoryService.checkNameUnique(examPaperCategory.getName(), examPaperCategory.getParentId());
+			if (checkNameUnique.equals(ExamConstants.EXAM_PAPER_CATEGORY_NAME_NOT_UNIQUE)) {
+				return error("同一试卷分类下分类名称不能重复！");
+			}
+		}
 		ExamPaperCategory db = examPaperCategoryService.selectById(examPaperCategory.getId());
 		examPaperCategory.setUpdateBy(ShiroUtils.getLoginName());
 		examPaperCategory.setUpdateDate(new Date());

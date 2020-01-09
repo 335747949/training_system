@@ -78,9 +78,38 @@
 		var prefix = ctx + "exam/examQuestion"
 		$("#form-examQuestion-add").validate({
 			rules:{
-				xxxx:{
-					required:true,
+                remarks:{
+                    maxlength: 250
+                },
+                title:{
+                    required: true,
+					maxlength: 200
 				},
+                answer:{
+                    required: true,
+                    maxlength: 250
+                },
+                label:{
+                    required: true,
+                    maxlength: 200
+                },
+                messages: {
+                    "remarks": {
+                        maxlength: "练习说明最长250字"
+                    },
+                    "title": {
+                        required: "标题不能为空",
+                        maxlength: "练习说明最长200字"
+                    },
+                    "answer": {
+                        required: "答案不能为空",
+                        maxlength: "练习说明最长250字"
+                    },
+                    "label": {
+                        required: "标签不能为空",
+                        maxlength: "标签最长200字"
+                    }
+                }
 			}
 		});
 		

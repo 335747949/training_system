@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ruoyi.common.constant.ExamConstants;
 import com.ruoyi.exam.domain.ExamQuestionCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,8 @@ import com.ruoyi.exam.domain.ExamPaperCategory;
 import com.ruoyi.exam.service.IExamPaperCategoryService;
 import com.ruoyi.common.support.Convert;
 import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+import org.springframework.util.CollectionUtils;
+
 /**
  * 试卷分类 服务层实现
  * 
@@ -78,4 +81,18 @@ public class ExamPaperCategoryServiceImpl extends AbstractBaseServiceImpl<ExamPa
         return examPaperCategoryMapper.selectExamPaperCategoryList(examPaperCategory);
     }
 
+    /**
+     *
+     * @param name
+     * @param parentId
+     * @return
+     */
+    @Override
+    public String checkNameUnique(String name, Integer parentId) {
+        List<ExamPaperCategory> examPaperCategoryList = examPaperCategoryMapper.selectByNameAndPid(name, parentId);
+        if (CollectionUtils.isEmpty(examPaperCategoryList)) {
+            return ExamConstants.EXAM_PAPER_CATEGORY_NAME_UNIQUE;
+        }
+        return ExamConstants.EXAM_PAPER_CATEGORY_NAME_NOT_UNIQUE;
+    }
 }

@@ -42,7 +42,7 @@
 				<label class="col-sm-3 control-label ">开始时间：</label>
 				<div class="col-sm-8">
 					<div class="input-group date "> <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-						<input id="startTime" th:value="*{#dates.format(startTime, 'yyyy-MM-dd HH:mm:ss')}" name="startTime" class="form-control" type="text">
+						<input id="startTime" th:value="*{#dates.format(startTime, 'yyyy-MM-dd HH:mm:ss')}" name="startTime" class="form-control" type="text" onfocus="this.blur()">
 					</div>
 				</div>
 			</div>
@@ -50,7 +50,7 @@
 				<label class="col-sm-3 control-label">结束时间：</label>
 				<div class="col-sm-8 " >
 					<div class="input-group date "> <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-						<input id="endTime" th:value="*{#dates.format(endTime, 'yyyy-MM-dd HH:mm:ss')}" name="endTime" class="form-control" type="text">
+						<input id="endTime" th:value="*{#dates.format(endTime, 'yyyy-MM-dd HH:mm:ss')}" name="endTime" class="form-control" type="text" onfocus="this.blur()">
 					</div>
 				</div>
 			</div>
@@ -158,9 +158,15 @@
                     required: true,
 					compareDate:"startTime",
                 },
+                remarks:{
+                    maxlength: 250
+                },
 				messages:{
 					"name": {
 							required: "名称最长30字"
+					},
+					"remarks":{
+						maxlength:  "练习说明最长250字"
 					},
 					"startTime":{
 						required:  "开始时间不能为空"

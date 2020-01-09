@@ -109,9 +109,9 @@
             </div>
 
             <div class="layui-form-item">
-              <label for="deptname" class="layui-form-label">部门名称</label>
+              <label for="deptName" class="layui-form-label">部门名称</label>
               <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="deptName" th:value="${user.dept.deptName}" readonly="true">
+                <input class="layui-input" type="text" name="deptName" th:value="${user.dept == null ? '陕西伟业医药有限公司' : user.dept.deptName}" readonly="true">
               </div>
             </div>
             <div class="layui-form-item">
@@ -244,6 +244,12 @@
         });
     }
     function updateUserInfo() {
+        var userName = $.common.trim($("input[name='userName']").val());
+
+        if(userName == ""){
+            layer.msg("用户名称不能为空", {icon: 2});
+            return;
+        }
         var data={
             userId:userId,
             loginName:$("#loginName").val(),
@@ -257,8 +263,8 @@
     var flag=false;
     function checkPassword() {
         var data={
-            loginName:$("#loginName").val(),
-            password:$("#oldPassword").val()
+            loginName:$.common.trim($("#loginName").val()),
+            password:$.common.trim($("#oldPassword").val())
         }
         $.ajax({
             cache : true,
@@ -280,16 +286,24 @@
         });
     }
     function checkTwoPassword() {
-        var password=$("#password").val();
-        var confirm=$("#confirm").val();
+        var password = $.common.trim($("#password").val());
+        var confirm = $.common.trim($("#confirm").val());
+        if(password == '' || confirm == ''){
+            layer.msg('密码不能为空');
+            return false;
+        }
         if(password!==confirm){
             layer.msg('两次密码不一致');
             return false;
         }
     }
     function updateUserPassword() {
-        var password=$("#password").val();
-        var confirm=$("#confirm").val();
+        var password=$.common.trim($("#password").val());
+        var confirm=$.common.trim($("#confirm").val());
+        if(password == '' || confirm == ''){
+            layer.msg('密码不能为空');
+            return false;
+        }
         if(password!==confirm||!flag){
             layer.msg('两次密码不一致');
             return false;

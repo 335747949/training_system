@@ -5,6 +5,9 @@
 <body>
 <div class="fly-header layui-bg-black" th:replace="web/index:: top">
 </div>
+<script>
+    $('.course-li').addClass('layui-this');
+</script>
 <style type="text/css">
     .courseView {
         background-size: auto auto;
@@ -178,7 +181,7 @@
         bottom: 0;
     }
 </style>
-<div class="layui-container">
+<div class="layui-container" style="padding-top: 0;">
     <div class="courseView">
         <div class="page-width">
                 <div class="box bd-all">
@@ -207,7 +210,7 @@
 <!--                            </div>-->
                             <div class="button btn-study-group" th:if="${trainCourse.price==0||courseAuth}">
                                 <input type="button" onclick="goStudy()" class="hb-ui-btn" value="立即学习">
-                                <em>有效期:
+                                <em>有效期：
                                     <span id="shixian" th:if="${trainCourse.price==0}" th:text="永久"></span>
                                     <span id="shixian" th:if="${trainCourse.price>0}" th:text="${courseDays}+'(天)'"></span>
                                     </em>

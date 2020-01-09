@@ -2,6 +2,7 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 
+import com.ruoyi.common.constant.UserConstants;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -92,8 +93,20 @@ public class SysUserController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     public AjaxResult addSave(SysUser user) {
+        // 系统用户
+        user.setUserType(UserConstants.USER_SYS);
         if (StringUtils.isNotNull( user.getUserId() ) && SysUser.isAdmin( user.getUserId() )) {
             return error( "不允许修改超级管理员用户" );
+        }
+        // 登录名重复
+        String loginNameUnique = userService.checkLoginNameUnique(user.getLoginName(),user.getUserType());
+        if (loginNameUnique.equals(UserConstants.USER_NAME_NOT_UNIQUE)) {
+            return error("登录名称不能重复！");
+        }
+        // 手机号码重复
+        String phoneUnique = userService.checkPhoneUnique(user);
+        if (phoneUnique.equals(UserConstants.USER_PHONE_NOT_UNIQUE)) {
+            return error("手机号码不能重复！");
         }
         user.setSalt( ShiroUtils.randomSalt() );
         user.setPassword( passwordService.encryptPassword( user.getLoginName(), user.getPassword(), user.getSalt() ) );
@@ -121,6 +134,8 @@ public class SysUserController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     public AjaxResult editSave(SysUser user) {
+        // 系统用户
+        user.setUserType(UserConstants.USER_SYS);
         if (StringUtils.isNotNull( user.getUserId() ) && SysUser.isAdmin( user.getUserId() )) {
             return error( "不允许修改超级管理员用户" );
         }
@@ -164,6 +179,8 @@ public class SysUserController extends BaseController {
     @PostMapping("/checkLoginNameUnique")
     @ResponseBody
     public String checkLoginNameUnique(SysUser user) {
+        // 系统用户
+        user.setUserType(UserConstants.USER_SYS);
         return userService.checkLoginNameUnique( user.getLoginName(),user.getUserType() );
     }
 
@@ -173,6 +190,8 @@ public class SysUserController extends BaseController {
     @PostMapping("/checkPhoneUnique")
     @ResponseBody
     public String checkPhoneUnique(SysUser user) {
+        // 系统用户
+        user.setUserType(UserConstants.USER_SYS);
         return userService.checkPhoneUnique( user );
     }
 
@@ -182,6 +201,8 @@ public class SysUserController extends BaseController {
     @PostMapping("/checkEmailUnique")
     @ResponseBody
     public String checkEmailUnique(SysUser user) {
+        // 系统用户
+        user.setUserType(UserConstants.USER_SYS);
         return userService.checkEmailUnique( user );
     }
 }

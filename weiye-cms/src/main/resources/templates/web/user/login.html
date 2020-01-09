@@ -4,55 +4,164 @@
 <head th:include="web/index::cmsHeader">
 </head>
 <style>
+    html{
+        background: #EAFBF2;
+    }
+    body{
+        height: 100% !important;
+        padding: 0 !important;
+    }
     .fly-footer{
         position: fixed;
         bottom: 0;
         left: 0;
     }
+    .login-logo{
+        position: fixed;
+        left:60px;
+        top: 40px;
+    }
+    .login-wrap{
+        width: 758px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+    }
+    .login-form-wrap{
+        display: flex;
+        align-items: center;
+        /*border-radius: 8px;*/
+        /*overflow: hidden;*/
+    }
+    .login-right{
+        width: 708px;
+        background: #fff;
+        height: 516px;
+        border-radius: 0 8px 8px 0;
+        box-shadow: 0 4px 12px 0 rgba(82,202,144,0.13);
+        overflow: hidden;
+    }
+    .login-tab{
+        display: flex;
+        align-items: center;
+        /*width: 408px;*/
+    }
+    .nav-tab{
+        width: 204px;
+        background: #F5F5F5;
+        text-align: center;
+        line-height: 56px;
+        height: 56px;
+        font-size: 18px;
+        color: #979797;
+    }
+    .nav-tab a{
+        font-size: 18px;
+        color: #979797;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+    .nav-tab-active{
+        background: #fff;
+        color: #303131;
+    }
+    .login-form{
+        box-sizing: border-box;
+        width: 408px;
+        padding: 0 44px;
+    }
+    .login-label{
+        font-size: 14px;
+        color: #303131;
+        margin-top: 68px;
+    }
+    .login-label-2{
+        margin-top:36px;
+    }
 </style>
 <body>
-
-<div class="fly-header layui-bg-black" th:replace="web/index:: top">
-
-</div>
-
-<div class="layui-container">
-  <div class="fly-panel fly-panel-user" pad20>
-    <div class="layui-tab layui-tab-brief" lay-filter="user">
-      <ul class="layui-tab-title login-title-center">
-        <li class="layui-this" style="margin-right: 40px;">登陆</li>
-        <li><a th:href="@{/web/user/reg.html}">注册</a></li>
-      </ul>
-      <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
-        <div class="layui-tab-item layui-show">
-          <div class="layui-form layui-form-pane flex-center">
-              <div class="layui-form-item" style="margin-top: 120px;">
-                <label for="L_loginName" class="layui-form-label">手机号</label>
-                <div class="layui-input-inline">
-                  <input type="text" id="L_loginName" name="loginName" required lay-verify="required" autocomplete="off" class="layui-input">
+<a th:href="@{/web}" class="login-logo">
+    <img th:src="@{/img/logo.png}" alt="伟业医药" width="139px" height="44px">
+</a>
+<div style="width: 100%;">
+    <div class="login-wrap">
+        <div class="login-form-wrap">
+            <div class="login-left">
+                <img th:src="@{/web/res/images/login-bg.png}" alt="">
+            </div>
+            <div class="login-right">
+                <form class="layui-form" action="">
+                <div class="login-tab">
+                    <div class="nav-tab nav-tab-active">登录账号</div>
+                    <div class="nav-tab">
+                        <a th:href="@{/web/user/reg.html}">注册账号</a>
+                    </div>
                 </div>
-              </div>
-              <div class="layui-form-item" style="margin-top: 36px;">
-                <label for="L_pass" class="layui-form-label">密码</label>
-                <div class="layui-input-inline">
-                  <input type="password" id="L_pass" name="password" required lay-verify="required" autocomplete="off" class="layui-input">
+                <div class="login-form">
+                    <div class="login-label">手机号</div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-inline" style="margin-top: 10px;width: 100%;">
+                            <input type="tel" id="L_loginName" placeholder="请输入手机号" name="loginName" required lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="login-label login-label-2">密码</div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-inline" style="margin-top: 10px;width: 100%;">
+                            <input type="password" id="L_pass" placeholder="请输入密码" name="password" required lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <button class="layui-btn login-btn" style="margin-top: 48px;width: 100%;box-shadow: 0 9px 16px 0 rgba(46,175,113,0.18);" lay-submit lay-filter="*">立即登录</button>
+                    </div>
+
                 </div>
-              </div>
-              <div class="layui-form-item" style="margin-top: 100px;margin-bottom: 100px;">
-                <button id="btnSubmit" name="btnSubmit" class="layui-btn login-btn"  style="width: 300px;" lay-filter="*" onclick="login()" >立即登录</button>
-                <!--<span style="padding-left:20px;">-->
-                  <!--<a href="forget.html">忘记密码？</a>-->
-                <!--</span>-->
-              </div>
-          </div>
+                </form>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
+<!--<div class="fly-header layui-bg-black" th:replace="web/index:: top"></div>-->
 
-<div class="fly-footer" th:replace="web/index::cmsBottom">
-</div>
+<!--<div class="layui-container">-->
+<!--  <div class="fly-panel fly-panel-user" pad20>-->
+<!--    <div class="layui-tab layui-tab-brief" lay-filter="user">-->
+<!--      <ul class="layui-tab-title login-title-center">-->
+<!--        <li class="layui-this" style="margin-right: 40px;">登陆</li>-->
+<!--        <li><a th:href="@{/web/user/reg.html}">注册</a></li>-->
+<!--      </ul>-->
+<!--      <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">-->
+<!--        <div class="layui-tab-item layui-show">-->
+<!--          <div class="layui-form layui-form-pane flex-center">-->
+<!--              <div class="layui-form-item" style="margin-top: 120px;">-->
+<!--                <label for="L_loginName" class="layui-form-label"><i class="layui-icon">&#xe678;</i>  </label>-->
+<!--                <div class="layui-input-inline">-->
+<!--                  <input type="text" id="L_loginName" placeholder="请输入手机号" name="loginName" required lay-verify="required" autocomplete="off" class="layui-input">-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <div class="layui-form-item" style="margin-top: 36px;">-->
+<!--                <label for="L_pass" class="layui-form-label"><i class="layui-icon">&#xe673;</i></label>-->
+<!--                <div class="layui-input-inline">-->
+<!--                  <input type="password" id="L_pass" placeholder="请输入密码" name="password" required lay-verify="required" autocomplete="off" class="layui-input">-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <div class="layui-form-item" style="margin-top: 100px;margin-bottom: 100px;">-->
+<!--                <button id="btnSubmit" name="btnSubmit" class="layui-btn login-btn"  style="width: 300px;" lay-filter="*" onclick="login()" >立即登录</button>-->
+<!--                &lt;!&ndash;<span style="padding-left:20px;">&ndash;&gt;-->
+<!--                  &lt;!&ndash;<a href="forget.html">忘记密码？</a>&ndash;&gt;-->
+<!--                &lt;!&ndash;</span>&ndash;&gt;-->
+<!--              </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<div class="fly-footer" th:replace="web/index::cmsBottom">-->
+<!--</div>-->
 <script>
 
     document.onkeydown = function (e) { // 回车提交表单
@@ -71,10 +180,23 @@
         });
 
     })
-
+    layui.use('form', function(){
+        var form = layui.form;
+        form.on('submit(*)', function(data){
+            login();
+            return false;
+        })
+        //各种基于事件的操作，下面会有进一步介绍
+    });
     function login() {
         var loginName = $.common.trim($("input[name='loginName']").val());
         var password = $.common.trim($("input[name='password']").val());
+
+        if(!loginName.match("1[348576][\\d]{9}")){
+            layer.msg("电话号码不正确", {icon: 2});
+            return;
+        }
+
         $.ajax({
             type: "post",
             url: ctx + "login",
@@ -89,7 +211,7 @@
 
                 if (r.code == 200) {
                     layer.msg(r.msg, {icon: 1});
-                    location.href = ctx + "web/index"
+                    location.href = ctx + "web/index";
                 } else {
                     layer.msg(r.msg, {icon: 2});
                 }

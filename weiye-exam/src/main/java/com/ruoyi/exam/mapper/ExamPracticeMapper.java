@@ -34,4 +34,11 @@ public interface ExamPracticeMapper  extends MyMapper<ExamPractice>
     int update(ExamPractice examPractice);
 
     ExamPracticeVO selectExamPracticeById(@Param("id") Integer id);
+
+	/**
+	 *
+	 * @param name
+	 * @return
+	 */
+	List<ExamPracticeVO> selectByName(@Param("name") String name);
 }

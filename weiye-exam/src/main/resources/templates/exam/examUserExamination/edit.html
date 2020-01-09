@@ -72,11 +72,16 @@
     <script type="text/javascript">
 		var prefix = ctx + "exam/examUserExamination"
 		$("#form-examUserExamination-edit").validate({
-			rules:{
-				xxxx:{
-					required:true,
-				},
-			}
+            rules:{
+                remarks:{
+                    maxlength: 250,
+                },
+                message:{
+                    "remark":{
+                        maxlength: "备注信息最长250字"
+                    }
+                }
+            }
 		});
 		
 		function submitHandler() {

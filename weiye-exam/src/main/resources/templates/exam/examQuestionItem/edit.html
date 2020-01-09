@@ -66,11 +66,23 @@
     <script type="text/javascript">
 		var prefix = ctx + "exam/examQuestionItem"
 		$("#form-examQuestionItem-edit").validate({
-			rules:{
-				xxxx:{
-					required:true,
-				},
-			}
+            rules:{
+                content:{
+                    required:true,
+                    maxlength: 200
+                },
+                remark:{
+                    maxlength: 250
+                },
+                message:{
+                    "content":{
+                        maxlength: "选项内容最长200字"
+                    },
+                    "remark":{
+                        maxlength: "备注信息最长250字"
+                    }
+                }
+            }
 		});
 		
 		function submitHandler() {

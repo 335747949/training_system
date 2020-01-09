@@ -1,18 +1,20 @@
 package com.ruoyi.exam.service.impl;
 
-import java.util.*;
-
 import cn.hutool.core.util.StrUtil;
+import com.ruoyi.common.constant.ExamConstants;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.exam.domain.*;
+import com.ruoyi.exam.mapper.ExamExaminationMapper;
 import com.ruoyi.exam.service.*;
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.exam.mapper.ExamExaminationMapper;
-import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+import org.springframework.util.CollectionUtils;
+
+import java.util.*;
 
 /**
  * 考试 服务层实现
@@ -65,15 +67,42 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
     }
 
     @Override
-    public List<ExamExamination> selectListFromWeb(Map<String, Object> map) {
-        startPage();
-        return examExaminationMapper.selectListFromWeb(map);
+    public List<ExamExamination> selectListFromWeb(Map<String, Object> map, Long userId) {
+        List<ExamExamination> list = examExaminationMapper.selectListFromWeb(map);
+
+        List<ExamExamination> resultList = new ArrayList<>();
+        for (ExamExamination exam : list) {
+            int count = examExaminationService.countExamQuestion(exam.getId());
+            if (count > 0){
+                int maxExamNumber = exam.getExamNumber();
+                // 根据用户id统计用户已参加考试次数
+                ExamUserExamination examUserExamination = new ExamUserExamination();
+                examUserExamination.setVipUserId(userId.intValue());
+                examUserExamination.setExamPaperId(exam.getExamPaperId());
+                examUserExamination.setExamExaminationId(exam.getId());
+                //考试记录集合
+                List<ExamUserExamination> userExamination = examUserExaminationService.selectLastOne(examUserExamination);
+
+                //超过考试次数
+                if (userExamination.size() < maxExamNumber) {
+                    resultList.add(exam);
+                }
+            }
+        }
+        return resultList;
     }
 
     @Override
     public List<ExamExamination> selectSignUpListFromWeb(Map<String, Object> map) {
-        startPage();
-        return examExaminationMapper.selectSignUpListFromWeb(map);
+        List<ExamExamination> list = examExaminationMapper.selectSignUpListFromWeb(map);
+        List<ExamExamination> resultList = new ArrayList<>();
+        for (ExamExamination exam : list) {
+            int count = examExaminationService.countExamQuestion(exam.getId());
+            if (count > 0){
+                resultList.add(exam);
+            }
+        }
+        return resultList;
     }
 
     @Override
@@ -104,30 +133,25 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
 
             //超过考试次数
             if (userExamination.size() >= examNumber) {
-
-                last = userExamination.get(0);
-                //最后一次考试已交卷，直接返回
-                if (last.getUpdateDate() != null && !last.getUpdateDate().equals("")) {
-//                    throw new BaseException("401","已超过" + examNumber + "次考试，");
-//                    return error( 500, "已超过" + examNumber + "次考试，" );
+//
+//                last = userExamination.get(0);
+//                //最后一次考试已交卷，直接返回
+//                if (last.getUpdateDate() != null && !last.getUpdateDate().equals("")) {
                       result.put("fail","已超过" + examNumber + "次考试");
                       return result;
-                } else {
-                    // 最后一次考试未交卷，但超过考试时长,直接返回
-                    if (last.getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()) {
-//                        throw new BaseException("已超过" + examNumber + "次考试，");
-//                        throw new BaseException("401","已超过" + examNumber + "次考试，");
-                        result.put("fail","已超过" + examNumber + "次考试");
-                        return result;
-                    }
-                }
+//                }
+                // TODO  目前默认未交卷及未参加考试
+//                else {
+//                    // 最后一次考试未交卷，但超过考试时长,直接返回
+//                    if (last.getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()) {
+//                        result.put("fail","已超过" + examNumber + "次考试");
+//                        return result;
+//                    }
+//                }
 
             }
 
-            if (userExamination.size() <= 0 //考试次数小于0
-                    || userExamination.get(0).getUpdateDate() != null //最后一次考试已交卷
-                    || userExamination.get(0).getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()//最后一次考试，已超过考过时长
-                    ) {
+            if (userExamination.size() <= 0) {
                 eue.setExamExaminationId(Integer.parseInt(id));
                 eue.setVipUserId(userId);
                 eue.setCreateDate(new Date());
@@ -135,10 +159,7 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
                 eue.setDelFlag("0");
                 eue.setScore(0);
                 examUserExaminationService.insertOne(eue);
-            } else {
-                eue.setId(userExamination.get(0).getId());
             }
-
         }
         ExamPaper examPaper = examPaperService.selectById(examPaperId);
         List<ExamQuestionVO> data = new ArrayList<>();
@@ -307,5 +328,19 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
     @Override
     public int countExamQuestion(Integer id) {
         return examExaminationMapper.countExamQuestion(id);
+    }
+    /**
+     * 校验考试名称是否唯一
+     * @param name
+     * @param type
+     * @return
+     */
+    @Override
+    public String checkNameUnique(String name, String type) {
+        List<ExamExaminationVO> examExaminationVOList = examExaminationMapper.selectByNameAndType(name, type);
+        if (CollectionUtils.isEmpty(examExaminationVOList)) {
+            return ExamConstants.EXAM_NAME_UNIQUE;
+        }
+        return ExamConstants.EXAM_NAME_NOT_UNIQUE;
     }
 }

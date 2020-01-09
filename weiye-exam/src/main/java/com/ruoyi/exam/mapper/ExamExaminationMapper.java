@@ -34,4 +34,12 @@ public interface ExamExaminationMapper  extends MyMapper<ExamExamination>
     ExamExaminationVO selectExamExaminationById(@Param("id") Integer id);
 
     int countExamQuestion(@Param("id") Integer id);
+
+    /**
+     *
+     * @param name
+     * @param type
+     * @return
+     */
+    List<ExamExaminationVO> selectByNameAndType(@Param("name") String name, @Param("type") String type);
 }

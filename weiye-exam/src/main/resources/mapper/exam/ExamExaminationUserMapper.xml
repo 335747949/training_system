@@ -63,6 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             AND ep.del_flag = 0
             AND su.del_flag = 0
             AND eue.exam_examination_id = #{examId}
+            AND ee.update_date IS NOT NULL
         GROUP BY
             eue.vip_user_id
         ORDER BY

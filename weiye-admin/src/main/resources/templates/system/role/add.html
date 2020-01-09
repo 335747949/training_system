@@ -68,6 +68,8 @@
 			rules:{
 				roleName:{
 					required:true,
+                    minlength: 1,
+                    maxlength: 20,
 					remote: {
 		                url: ctx + "system/role/checkRoleNameUnique",
 		                type: "post",
@@ -100,12 +102,15 @@
 				},
 				roleSort:{
 					required:true,
-					digits:true
+					digits:true,
+                    min:1,
+                    max:99999
 				},
 			},
 			messages: {
 		        "roleName": {
-		            remote: "角色名称已经存在"
+		            remote: "角色名称已经存在",
+                    maxlength: "角色名称不能多于20字"
 		        },
 		        "roleKey": {
 		            remote: "角色权限已经存在"

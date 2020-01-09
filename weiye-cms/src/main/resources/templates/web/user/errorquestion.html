@@ -3,6 +3,17 @@
 <meta charset="utf-8">
 <head th:include="web/index::cmsHeader">
 </head>
+<style>
+    .layui-card-header{
+        height: auto;
+        line-height: normal;
+        min-height: 42px;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        flex-wrap: wrap;
+    }
+</style>
 <body>
 
 <div class="fly-header layui-bg-black" th:replace="web/index::top">
@@ -16,8 +27,10 @@
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
             <legend>我的错题</legend>
         </fieldset>
-
-        <div class="layui-card"  th:each="item:${data}">
+        <div class="layui-card"  th:if="${data==null || data.size()==0}">
+            <p align="center" style="color: #909096">无数据</p>
+        </div>
+        <div class="layui-card question"  th:each="item:${data}">
             <div class="layui-card-header" style="color: #303133;font-size: 14px;">[[${itemStat.index+1}]]、<span
                     th:text="${item.question.title}"></span>
                 <span class="practice-type practice-type-1" th:if="${item.question.type=='1'}">单选</span>
@@ -30,7 +43,7 @@
                 <input th:class="${item.question.id}+'useranswer'" th:if="${item.question.type != '2'}" type="radio"
                        th:name="${item.question.id}" th:value="${qitem.number}">
                 [[${qitem.number}]]:
-                <span th:text="${qitem.content}" onclick="checkbox(this)"></span>
+                <span class="ck" th:text="${qitem.content}" onclick="checkbox(this)"></span>
             </div>
             <div class="layui-card-body" >
                 <button class="layui-btn layui-btn-warm" style="border-radius: 4px;"
@@ -41,8 +54,10 @@
             </div>
 
             <div class="layui-card-body"  hidden th:id="${item.question.id}+'answer'">
-                解析:正确答案[[${item.question.answer}]]<br>
-                [[${item.question.remarks}]]
+                <span class="ck">解析:正确答案[[${item.question.answer}]]</span>
+                <br>
+                <span class="ck">[[${item.question.remarks}]]</span>
+
             </div>
         </div>
 

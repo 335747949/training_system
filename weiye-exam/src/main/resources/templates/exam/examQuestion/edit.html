@@ -78,11 +78,39 @@
     <script type="text/javascript">
 		var prefix = ctx + "exam/examQuestion"
 		$("#form-examQuestion-edit").validate({
-			rules:{
-				xxxx:{
-					required:true,
-				},
-			}
+            rules:{
+                remarks:{
+                    maxlength: 250
+                },
+                title:{
+                    required: true,
+                    maxlength: 200
+                },
+                answer:{
+                    required: true,
+                    maxlength: 250
+                },
+                label:{
+                    required: true,
+                    maxlength: 200
+                },
+                messages: {
+                    "remarks": {
+                        maxlength: "备注信息最长250字"
+                    },
+                    "title": {
+                        required: "标题不能为空",
+                        maxlength: "标题最长200字"
+                    },
+                    "answer": {
+                        required: "答案不能为空",
+                        maxlength: "答案最长250字"
+                    },
+                    "label": {
+                        required: "标签不能为空",
+                        maxlength: "标签最长200字"
+                    }
+                }
 		});
 		
 		function submitHandler() {

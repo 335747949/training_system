@@ -77,7 +77,7 @@
                     <div class="input-group date enableControlTime"><span class="input-group-addon"><i
                             class="fa fa-calendar"></i></span>
                         <input type="text" th:value="*{#dates.format(startTime, 'yyyy-MM-dd HH:mm:ss')}" id="startTime"
-                               name="startTime" class="form-control">
+                               name="startTime" class="form-control" onfocus="this.blur()">
                     </div>
                 </div>
             </div>
@@ -87,7 +87,7 @@
                     <div class="input-group date enableControlTime"><span class="input-group-addon"><i
                             class="fa fa-calendar"></i></span>
                         <input type="text" th:value="*{#dates.format(endTime, 'yyyy-MM-dd HH:mm:ss')}" id="endTime"
-                               name="endTime" class="form-control">
+                               name="endTime" class="form-control" onfocus="this.blur()">
                     </div>
                 </div>
             </div>
@@ -100,7 +100,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">及格分数：</label>
                 <div class="col-sm-8">
-                    <input id="passMark" name="passMark" th:field="*{passMark}" class="form-control" type="number" min="0">
+                    <input id="passMark" name="passMark" th:field="*{passMark}" class="form-control" type="number" min="0" step="1">
                 </div>
             </div>
             <div class="form-group">
@@ -171,6 +171,14 @@
     $.validator.addMethod("compareDate",function(value,element){
         var assigntime = $("#startTime").val();
         var deadlinetime = $("#endTime").val();
+        if (assigntime == ""){
+            layer.msg("结束日期必须大于开始日期");
+            return false;
+        }
+        if (deadlinetime == ""){
+            layer.msg("结束日期必须大于开始日期",{icon: 2});
+            return false;
+        }
         var reg = new RegExp('-','g');
         assigntime = assigntime.replace(reg,'/');//正则替换
         deadlinetime = deadlinetime.replace(reg,'/');
@@ -288,16 +296,31 @@
             },
             passMark: {
                 required: true,
+                digits:true,
+                min: 0,
+                max: 999,
             },
             timeLength: {
-                required: true
+                required: true,
+                digits:true,
+                min: 1,
+                max: 999
             },
             examNumber: {
-                required: true
+                required: true,
+                digits:true,
+                min: 1,
+                max: 99999
+            },
+            remarks:{
+                maxlength: 250
             },
             messages:{
                 "name":{
                     required:  "名称最长30字"
+                },
+                "remarks":{
+                    maxlength:  "说明最长250字"
                 },
                 "startTime":{
                     required:  "开始时间不能为空"
@@ -305,6 +328,9 @@
                 "endTime":{
                     required:  "结束时间不能为空",
                     compareDate: "结束日期必须大于开始日期!"
+                },
+                "passMark":{
+                    digits: "只能为正整数"
                 }
             }
 

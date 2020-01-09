@@ -57,6 +57,9 @@ public class SysLoginController extends BaseController {
         if (isAdmin){
             sysUser = userService.selectUserByLoginName(username, UserConstants.USER_SYS);
         }else {
+            if (!username.matches(UserConstants.MOBILE_PHONE_NUMBER_PATTERN)) {
+                return error("手机号码格式错误！");
+            }
             sysUser = userService.selectUserByLoginName(username, UserConstants.USER_VIP);
         }
         if (!ObjectUtils.isEmpty(sysUser)){

@@ -1,14 +1,21 @@
 package com.ruoyi.exam.service.impl;
 
-import java.util.List;
-
-import com.ruoyi.exam.domain.*;
+import com.ruoyi.common.constant.ExamConstants;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.exam.domain.ExamPractice;
+import com.ruoyi.exam.domain.ExamPracticeQuestionVO;
+import com.ruoyi.exam.domain.ExamPracticeVO;
+import com.ruoyi.exam.mapper.ExamPracticeMapper;
+import com.ruoyi.exam.service.IExamPracticeQuestionService;
+import com.ruoyi.exam.service.IExamPracticeService;
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.exam.mapper.ExamPracticeMapper;
-import com.ruoyi.exam.service.IExamPracticeService;
-import com.ruoyi.common.support.Convert;
-import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 练习 服务层实现
  * 
@@ -20,7 +27,8 @@ public class ExamPracticeServiceImpl extends AbstractBaseServiceImpl<ExamPractic
 {
 	@Autowired
 	private ExamPracticeMapper examPracticeMapper;
-
+    @Autowired
+    private IExamPracticeQuestionService examPracticeQuestionService;
 	
 	/**
      * 查询练习列表
@@ -36,8 +44,16 @@ public class ExamPracticeServiceImpl extends AbstractBaseServiceImpl<ExamPractic
 
     @Override
     public List<ExamPracticeVO> selectListFromWeb(ExamPractice examPractice) {
-        startPage();
-        return examPracticeMapper.selectListFromWeb(examPractice);
+        List<ExamPracticeVO> list = examPracticeMapper.selectListFromWeb(examPractice);
+        List<ExamPracticeVO> resultList = new ArrayList<>();
+        // 若练习中不包含题目时，不做展示
+        for (ExamPracticeVO practice : list) {
+            List<ExamPracticeQuestionVO> examPracticeQuestionList = examPracticeQuestionService.selectQuestionForPracticeId(practice.getId());
+            if (examPracticeQuestionList.size() > 0){
+                resultList.add(practice);
+            }
+        }
+        return resultList;
     }
 
 
@@ -62,5 +78,14 @@ public class ExamPracticeServiceImpl extends AbstractBaseServiceImpl<ExamPractic
     @Override
     public ExamPracticeVO selectExamPracticeById(Integer id) {
         return examPracticeMapper.selectExamPracticeById(id);
+    }
+
+    @Override
+    public String checkNameUnique(String name) {
+        List<ExamPracticeVO> examPracticeVOList = examPracticeMapper.selectByName(name);
+        if (CollectionUtils.isEmpty(examPracticeVOList)) {
+            return ExamConstants.EXAM_NAME_UNIQUE;
+        }
+        return ExamConstants.EXAM_NAME_NOT_UNIQUE;
     }
 }

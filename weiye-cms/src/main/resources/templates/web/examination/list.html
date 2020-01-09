@@ -92,13 +92,12 @@ document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Csc
             , url: '/web/examination/list'
             , title: '用户数据表'
             , cols: [ [
-                {checkbox: true}
-                , {field: 'name', title: '考试名称'}
+                 {field: 'name', title: '考试名称'}
                 , {field: 'trainCourseName', title: '课程名称'}
-                ,{field: 'type', title: '考试类型',templet: '#type'}
-                , {field: 'timeLength', title: '考试时长'}
-                , {field: 'passMark', title: '及格分数'}
-                , {title: '操作', toolbar: '#barDemo'}
+                ,{field: 'type', title: '考试类型',templet: '#type', align:'center'}
+                , {field: 'timeLength', title: '考试时长（分钟）', align:'center'}
+                , {field: 'passMark', title: '及格分数', align:'center'}
+                , {title: '操作', toolbar: '#barDemo', align:'center'}
             ] ]
             , request: {
                 pageName: 'pageNum' //页码的参数名称，默认：page
@@ -171,13 +170,12 @@ document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Csc
             , url: '/web/examination/signuplist'
             , title: '用户数据表'
             , cols: [ [
-                {checkbox: true}
-                , {field: 'name', title: '考试名称'}
+                 {field: 'name', title: '考试名称'}
                 , {field: 'trainCourseName', title: '课程名称'}
-                ,{field: 'type', title: '考试类型',templet: '#type'}
-                , {field: 'timeLength', title: '考试时长'}
-                , {field: 'passMark', title: '及格分数'}
-                , {title: '操作', toolbar: '#signup'}
+                ,{field: 'type', title: '考试类型',templet: '#type', align:'center'}
+                , {field: 'timeLength', title: '考试时长（分钟）', align:'center'}
+                , {field: 'passMark', title: '及格分数', align:'center'}
+                , {title: '操作', toolbar: '#signup', align:'center'}
             ] ]
             , request: {
                 pageName: 'pageNum' //页码的参数名称，默认：page

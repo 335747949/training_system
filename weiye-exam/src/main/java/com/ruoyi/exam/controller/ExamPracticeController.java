@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import cn.hutool.json.JSONObject;
+import com.ruoyi.common.constant.ExamConstants;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.IExamPracticeQuestionService;
 import com.ruoyi.framework.web.util.ShiroUtils;
@@ -13,6 +15,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
@@ -91,6 +94,12 @@ public class ExamPracticeController extends BaseController
 	@ResponseBody
 	public AjaxResult addSave(ExamPractice examPractice)
 	{
+		// 名称校验
+		Assert.hasText(examPractice.getName(), "练习名称不能为空！");
+		String examNameUnique = examPracticeService.checkNameUnique(examPractice.getName());
+		if (examNameUnique.equals(ExamConstants.EXAM_NAME_NOT_UNIQUE)) {
+			return error("练习名称不能重复！");
+		}
 		examPractice.setDelFlag("0");
 		examPractice.setCreateBy(ShiroUtils.getLoginName());
 		examPractice.setCreateDate(new Date());
@@ -122,6 +131,17 @@ public class ExamPracticeController extends BaseController
 	@ResponseBody
 	public AjaxResult editSave(ExamPractice examPractice)
 	{
+		// 名称校验
+		Assert.notNull(examPractice.getId(), "练习ID为必填项！");
+		Assert.hasText(examPractice.getName(), "练习名称不能为空！");
+		ExamPracticeVO uexamPracticeVo = examPracticeService.selectExamPracticeById(examPractice.getId());
+		// 修改名称变化是校验唯一性
+		if (StringUtils.isNotNull(uexamPracticeVo) && !uexamPracticeVo.getName().equals(examPractice.getName())) {
+			String examNameUnique = examPracticeService.checkNameUnique(examPractice.getName());
+			if (examNameUnique.equals(ExamConstants.EXAM_NAME_NOT_UNIQUE)) {
+				return error("练习名称不能重复！");
+			}
+		}
 		examPractice.setDelFlag("0");
 		examPractice.setUpdateBy(ShiroUtils.getLoginName());
 		examPractice.setUpdateDate(new Date());
@@ -259,6 +279,16 @@ public class ExamPracticeController extends BaseController
 	}
 
 
+	/**
+	 * 校验开始名称是否唯一
+	 * @param name
+	 * @return
+	 */
+	@PostMapping("/checkNameUnique")
+	@ResponseBody
+	public String checkNameUnique(String name) {
+		return examPracticeService.checkNameUnique(name);
+	}
 
 	
 }

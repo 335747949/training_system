@@ -3,10 +3,13 @@ package com.ruoyi.exam.controller.api;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.constant.UserConstants;
+import com.ruoyi.common.utils.PaginUtil;
 import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.*;
 import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.base.BaseController;
+import com.ruoyi.framework.web.page.PageDomain;
+import com.ruoyi.framework.web.page.TableSupport;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
 import io.swagger.annotations.Api;
@@ -46,9 +49,16 @@ public class ApiPracticeController extends BaseController {
         SysUser sysUser = sysUserService.selectUserByLoginName(JwtUtil.getLoginName(), UserConstants.USER_VIP);
         examPractice.setVipUserId(sysUser.getUserId().toString());
         List<ExamPracticeVO> list = examPracticeService.selectListFromWeb(examPractice);
-        AjaxResult success = success("查询成功");
-        success.put("data", list);
-        success.put("total", new PageInfo(list).getTotal());
+        // 服务端分页
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        Map<String,Object> reslutMap = PaginUtil.getPagingResultMap(list,pageNum,pageSize);
+
+        AjaxResult success = AjaxResult.success( "查询成功" );
+        success.put( "data", reslutMap.get("result") );
+        success.put("pages",reslutMap.get("totalPageNum"));
+        success.put("total",reslutMap.get("totalRowNum"));
         return success;
     }
 

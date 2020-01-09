@@ -63,13 +63,11 @@ document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Csc
             elem: '#test'
             ,url:'/web/user/myuserexamination/list'
             ,title: '练习表'
-            ,cols: [ [
-                {checkbox: true}
-                ,{field: 'trainCourseName', title: '课程名称',templet: '#trainCourseName'}
+            ,cols: [ [{field: 'trainCourseName', title: '课程名称',templet: '#trainCourseName'}
                 ,{field: 'name', title: '考试名称',templet: '#examinationName'}
                 ,{field: 'examPaperName', title: '试卷名称'}
-                ,{field: 'type', title: '考试类型',templet: '#type'}
-                ,{title: '操作',toolbar: '#barDemo'}
+                ,{field: 'type', title: '考试类型',templet: '#type', align:'center'}
+                ,{title: '操作',toolbar: '#barDemo', align:'center'}
             ] ]
             ,request: {
                 pageName: 'pageNum' //页码的参数名称，默认：page

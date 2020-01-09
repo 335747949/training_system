@@ -3,6 +3,7 @@ package com.ruoyi.exam.mapper;
 import com.ruoyi.exam.domain.ExamQuestionCategory;
 import java.util.List;
 import com.ruoyi.framework.web.base.MyMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 试题分类 数据层
@@ -60,4 +61,11 @@ public interface ExamQuestionCategoryMapper  extends MyMapper<ExamQuestionCatego
      */
 	public int deleteExamQuestionCategoryByIds(String[] ids);
 
+	/**
+	 *
+	 * @param name
+	 * @param parentId
+	 * @return
+	 */
+	List<ExamQuestionCategory> selectByNameAndParentId(@Param("name") String name, @Param("parentId") Long parentId);
 }

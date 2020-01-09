@@ -1,19 +1,19 @@
 package com.ruoyi.exam.service.impl;
 
+import com.ruoyi.common.constant.ExamConstants;
+import com.ruoyi.common.support.Convert;
+import com.ruoyi.exam.domain.ExamQuestionCategory;
+import com.ruoyi.exam.mapper.ExamQuestionCategoryMapper;
+import com.ruoyi.exam.service.IExamQuestionCategoryService;
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.ruoyi.common.constant.UserConstants;
-import com.ruoyi.system.domain.SysDept;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.ruoyi.exam.mapper.ExamQuestionCategoryMapper;
-import com.ruoyi.exam.domain.ExamQuestionCategory;
-import com.ruoyi.exam.service.IExamQuestionCategoryService;
-import com.ruoyi.common.support.Convert;
-import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
 
 /**
  * 试题分类 服务层实现
@@ -109,4 +109,18 @@ public class ExamQuestionCategoryServiceImpl extends AbstractBaseServiceImpl<Exa
         return trees;
     }
 
+    /**
+     *
+     * @param name
+     * @param parentId
+     * @return
+     */
+    @Override
+    public String checkNameUnique(String name, Long parentId) {
+        List<ExamQuestionCategory> examQuestionCategoryList = examQuestionCategoryMapper.selectByNameAndParentId(name, parentId);
+        if (CollectionUtils.isEmpty(examQuestionCategoryList)) {
+            return ExamConstants.EXAM_CATEGORY_NAME_UNIQUE;
+        }
+        return ExamConstants.EXAM_CATEGORY_NAME_NOT_UNIQUE;
+    }
 }

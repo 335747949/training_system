@@ -105,9 +105,20 @@ public class SysClientController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     public AjaxResult addSave(SysUser user) {
+        // 客户
         user.setUserType(UserConstants.USER_VIP);
         if (StringUtils.isNotNull( user.getUserId() ) && SysUser.isAdmin( user.getUserId() )) {
             return error( "不允许修改超级管理员用户" );
+        }
+        //用户名重复
+        String loginNameUnique = userService.checkLoginNameUnique(user.getLoginName(),user.getUserType());
+        if (loginNameUnique.equals(UserConstants.USER_NAME_NOT_UNIQUE)) {
+            return error("登录名称不能重复！");
+        }
+        // 手机号码重复
+        String phoneUnique = userService.checkPhoneUnique(user);
+        if (phoneUnique.equals(UserConstants.USER_PHONE_NOT_UNIQUE)) {
+            return error("手机号码不能重复！");
         }
         user.setSalt( ShiroUtils.randomSalt() );
         user.setPassword( passwordService.encryptPassword( user.getLoginName(), user.getPassword(), user.getSalt() ) );
@@ -135,7 +146,7 @@ public class SysClientController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     public AjaxResult editSave(SysUser user) {
-        // 会员用户
+        // 客户
         user.setUserType(UserConstants.USER_VIP);
         if (StringUtils.isNotNull( user.getUserId() ) && SysUser.isAdmin( user.getUserId() )) {
             return error( "不允许修改超级管理员用户" );
@@ -180,6 +191,7 @@ public class SysClientController extends BaseController {
     @PostMapping("/checkLoginNameUnique")
     @ResponseBody
     public String checkLoginNameUnique(SysUser user) {
+        user.setUserType(UserConstants.USER_VIP);
         return userService.checkLoginNameUnique( user.getLoginName(),user.getUserType() );
     }
 
@@ -189,6 +201,7 @@ public class SysClientController extends BaseController {
     @PostMapping("/checkPhoneUnique")
     @ResponseBody
     public String checkPhoneUnique(SysUser user) {
+        user.setUserType(UserConstants.USER_VIP);
         return userService.checkPhoneUnique( user );
     }
 
@@ -198,6 +211,7 @@ public class SysClientController extends BaseController {
     @PostMapping("/checkEmailUnique")
     @ResponseBody
     public String checkEmailUnique(SysUser user) {
+        user.setUserType(UserConstants.USER_VIP);
         return userService.checkEmailUnique( user );
     }
 }

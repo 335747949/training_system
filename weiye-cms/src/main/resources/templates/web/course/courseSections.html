@@ -5,7 +5,9 @@
 <body onblur="stopActive()">
 <div class="fly-header layui-bg-black" th:replace="web/index:: top">
 </div>
-
+<script>
+    $('.course-li').addClass('layui-this');
+</script>
 <style type="text/css">
     .video-box {
         /*padding-top: 24px;*/
@@ -99,18 +101,18 @@
     }
 
 </style>
-<div class="container-fluid video-box layui-container" style="height: calc(100% - 128px);">
+<div class="container-fluid video-box layui-container" style="height: calc(100% - 128px);padding-top: 0;">
     <div class="layui-row">
         <div class="course-name" th:text="${trainCourseSection.name}"></div>
         <div class="course-content-wrap">
             <div class="course-left">
                 <div style="width:100%;height: 100%;" th:if="${trainCourseSection.type} == 1">
-                    <video id="myVideo" onplay="playVideo()" onpause="stop()" th:src="${trainCourseSection.courseware}" autoplay="autoplay"
+                    <video id="myVideo" controlslist="nodownload" onplay="playVideo()" onpause="stop()" oncontextmenu="return false" th:src="${trainCourseSection.courseware}" autoplay="autoplay"
                            controls="controls">
                     </video>
                 </div>
                 <div style="width:100%;height: 100%;" th:if="${trainCourseSection.type} == 2">
-                    <embed th:src="${trainCourseSection.courseware}" width="100%" height="100%" type="application/pdf">
+                    <embed th:src="${trainCourseSection.courseware}"  width="100%" height="100%" type="application/pdf">
                 </div>
             </div>
             <div class="course-right">

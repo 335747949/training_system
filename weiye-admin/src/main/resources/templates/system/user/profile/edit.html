@@ -47,6 +47,10 @@
 						<input type="radio" id="radio2" th:field="*{sex}" name="sex" value="1">
 						<label for="radio2">女</label>
 					</div>
+					<div class="radio-box">
+						<input type="radio" id="radio3" th:field="*{sex}" name="sex" value="2">
+						<label for="radio3">未知</label>
+					</div>
 				</div>
 			</div>
 			
@@ -58,6 +62,7 @@
 			rules:{
 				userName:{
 					required:true,
+                    maxlength: 20,
 				},
 				email:{
 					required:true,

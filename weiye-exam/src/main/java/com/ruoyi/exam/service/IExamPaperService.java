@@ -32,4 +32,13 @@ public interface IExamPaperService extends AbstractBaseService<ExamPaper>
     List<ExamPaper> selectListByCategory(ExamPaper examPaper);
 
     List<ExamQuestionVO> selectQuestionAndItemByPaperId(Integer examPaperId);
+
+    /**
+     *
+     * @param name
+     * @param type
+     * @param examCategoryId
+     * @return
+     */
+    String checkNameUnique(String name, String type, Integer examCategoryId);
 }

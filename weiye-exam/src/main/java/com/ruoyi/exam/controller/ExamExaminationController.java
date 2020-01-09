@@ -6,20 +6,21 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.pagehelper.PageInfo;
+import com.ruoyi.common.constant.ExamConstants;
+import com.ruoyi.common.constant.UserConstants;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.exam.domain.ExamExaminationResultVo;
 import com.ruoyi.exam.domain.ExamExaminationVO;
+import com.ruoyi.exam.domain.ExamPracticeVO;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.exam.domain.ExamExamination;
@@ -95,6 +96,12 @@ public class ExamExaminationController extends BaseController
 	@ResponseBody
 	public AjaxResult addSave(ExamExamination examExamination)
 	{
+		// 名称校验
+		Assert.hasText(examExamination.getName(),"考试名称不能为空！");
+		String examNameUnique = examExaminationService.checkNameUnique(examExamination.getName(), examExamination.getType());
+		if (examNameUnique.equals(ExamConstants.EXAM_NAME_NOT_UNIQUE)) {
+			return error("相同考试类型下的考试名称不能重复！");
+		}
 		examExamination.setDelFlag("0");
 		examExamination.setCreateDate(new Date());
 		examExamination.setCreateBy(ShiroUtils.getLoginName());
@@ -126,6 +133,17 @@ public class ExamExaminationController extends BaseController
 	@ResponseBody
 	public AjaxResult editSave(ExamExamination examExamination)
 	{
+		// 名称校验
+		Assert.notNull(examExamination.getId(), "考试ID为必填项！");
+		Assert.hasText(examExamination.getName(),"考试名称不能为空！");
+		ExamExaminationVO examExaminationVO = examExaminationService.selectExamExaminationById(examExamination.getId());
+		// 修改名称变化时校验唯一性
+		if (StringUtils.isNotNull(examExaminationVO) && !examExamination.getName().equals(examExaminationVO.getName())) {
+			String examNameUnique = examExaminationService.checkNameUnique(examExamination.getName(), examExamination.getType());
+			if (examNameUnique.equals(ExamConstants.EXAM_NAME_NOT_UNIQUE)) {
+				return error("相同考试类型下的考试名称不能重复！");
+			}
+		}
 		examExamination.setDelFlag("0");
 		examExamination.setUpdateDate(new Date());
 		examExamination.setUpdateBy(ShiroUtils.getLoginName());
@@ -187,6 +205,18 @@ public class ExamExaminationController extends BaseController
 		List<ExamExaminationResultVo> list = examExaminationService.selectExamExaminationResultById(examId);
 		ExcelUtil<ExamExaminationResultVo> util = new ExcelUtil<ExamExaminationResultVo>(ExamExaminationResultVo.class);
 		return util.exportExcel(list, "examExaminationResult");
+	}
+
+	/**
+	 * 校验开始名称是否唯一
+	 * @param name
+	 * @param type
+	 * @return
+	 */
+	@PostMapping("/checkNameUnique")
+	@ResponseBody
+	public String checkNameUnique(String name, String type) {
+		return examExaminationService.checkNameUnique(name, type);
 	}
 
 }

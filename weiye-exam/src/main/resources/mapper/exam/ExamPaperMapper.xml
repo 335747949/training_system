@@ -72,5 +72,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
 
+    <select id="selectByNameAndType" resultMap="ExamPaperResult">
+        select
+        <include refid="selectExamPaperVo"/>
+        from exam_paper
+        where name = #{name} and type = #{type} and exam_paper_category_id = #{categoryId} and del_flag = '0'
+    </select>
 
 </mapper>

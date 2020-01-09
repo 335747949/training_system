@@ -4,11 +4,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.constant.UserConstants;
+import com.ruoyi.common.utils.PaginUtil;
 import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.*;
 import com.ruoyi.exam.service.impl.ExamExaminationServiceImpl;
 import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.exception.base.BaseException;
+import com.ruoyi.framework.web.page.PageDomain;
+import com.ruoyi.framework.web.page.TableSupport;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
@@ -87,31 +90,17 @@ public class CmsExaminationController {
         Map<String, Object> map = new HashMap<>();
         map.put( "ination", examExamination );
         map.put( "userId", sysUser.getUserId() );
-        List<ExamExamination> list = examExaminationService.selectListFromWeb( map );
-
-        List<ExamExamination> resultList = new ArrayList<>();
-        for (ExamExamination exam : list) {
-           int count = examExaminationService.countExamQuestion(exam.getId());
-           if (count > 0){
-               int maxExamNumber = exam.getExamNumber();
-               // 根据用户id统计用户已参加考试次数
-               ExamUserExamination examUserExamination = new ExamUserExamination();
-               examUserExamination.setVipUserId(sysUser.getUserId().intValue());
-               examUserExamination.setExamPaperId(exam.getExamPaperId());
-               examUserExamination.setExamExaminationId(exam.getId());
-               //考试记录集合
-               List<ExamUserExamination> userExamination = examUserExaminationService.selectLastOne(examUserExamination);
-
-               //超过考试次数
-               if (userExamination.size() < maxExamNumber) {
-                   resultList.add(exam);
-               }
-            }
-        }
+        List<ExamExamination> list = examExaminationService.selectListFromWeb( map , sysUser.getUserId());
+        // 服务端分页
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        Map<String,Object> reslutMap = PaginUtil.getPagingResultMap(list,pageNum,pageSize);
 
         AjaxResult success = AjaxResult.success( "查询成功" );
-        success.put( "data", resultList );
-        success.put("total",new PageInfo(resultList).getTotal());
+        success.put( "data", reslutMap.get("result") );
+        success.put("pages",reslutMap.get("totalPageNum"));
+        success.put("total",reslutMap.get("totalRowNum"));
         return success;
     }
 
@@ -133,17 +122,16 @@ public class CmsExaminationController {
         map.put( "ination", examExamination );
         map.put( "userId", sysUser.getUserId() );
         List<ExamExamination> list = examExaminationService.selectSignUpListFromWeb( map );
+        // 服务端分页
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        Map<String,Object> reslutMap = PaginUtil.getPagingResultMap(list,pageNum,pageSize);
 
-        List<ExamExamination> resultList = new ArrayList<>();
-        for (ExamExamination exam : list) {
-            int count = examExaminationService.countExamQuestion(exam.getId());
-            if (count > 0){
-                resultList.add(exam);
-            }
-        }
         AjaxResult success = AjaxResult.success( "查询成功" );
-        success.put("total",new PageInfo(resultList).getTotal());
-        success.put( "data", resultList );
+        success.put( "data", reslutMap.get("result") );
+        success.put("pages",reslutMap.get("totalPageNum"));
+        success.put("total",reslutMap.get("totalRowNum"));
         return success;
     }
 
@@ -230,6 +218,39 @@ public class CmsExaminationController {
             AjaxResult fail = AjaxResult.error("请登录");
             return fail;
         }
+
+        ExamExamination examExamination = examExaminationService.selectById( examinationId );
+        //最大考试次数
+        Integer examNumber = examExamination.getExamNumber();
+        //考试时长
+        Integer timeLength = examExamination.getTimeLength();
+
+        // 校驗用戶已完成次數，若超過最大提交次數不允許提交
+        if (examExamination.getType().equals( "2" )) {
+            ExamUserExamination examUserExamination = new ExamUserExamination();
+            examUserExamination.setVipUserId(sysUser.getUserId().intValue());
+            examUserExamination.setExamPaperId(paperId);
+            examUserExamination.setExamExaminationId(examinationId);
+            //考试记录集合
+            List<ExamUserExamination> userExamination = examUserExaminationService.selectLastOne(examUserExamination);
+            // 最后一次考试
+            ExamUserExamination last;
+
+            //超过考试次数
+            if (userExamination.size() >= examNumber) {
+//                last = userExamination.get(0);
+//                //最后一次考试已交卷，直接返回
+//                if (last.getUpdateDate() != null && !last.getUpdateDate().equals("")) {
+                    return AjaxResult.error(1, "已超过" + examNumber + "次考试，");
+//                } else {
+//                    // 最后一次考试未交卷，但超过考试时长,直接返回
+//                    if (last.getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()) {
+//                        return AjaxResult.error(1, "已超过" + examNumber + "次考试，");
+//                    }
+//                }
+            }
+        }
+
         //交卷然后返回考试记录id
         Integer id = examExaminationService.finshExamination(examUserExaminationQuestion,sysUser,examUserExaminationId,examinationId,paperId);
         ExamUserExaminationVO data = examUserExaminationService.selectDetailById( id );

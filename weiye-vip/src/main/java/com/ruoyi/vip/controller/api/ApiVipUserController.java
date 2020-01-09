@@ -10,6 +10,7 @@ import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.shiro.service.SysLoginService;
 import com.ruoyi.framework.shiro.service.SysPasswordService;
 import com.ruoyi.framework.web.base.BaseController;
+import com.ruoyi.framework.web.exception.user.AuthExpireException;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
@@ -79,6 +80,10 @@ public class ApiVipUserController extends BaseController {
     public AjaxResult get() {
         AjaxResult success = success("获取用户信息成功");
         SysUser sysUser = sysUserService.selectUserByLoginName(JwtUtil.getLoginName(),UserConstants.USER_VIP);
+        // 无效用户
+        if (null == sysUser) {
+            throw new AuthExpireException();
+        }
         success.put("data", sysUser);
         return success;
     }

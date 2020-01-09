@@ -31,4 +31,12 @@ public interface ITrainCourseService extends AbstractBaseService<TrainCourse>
 
 
     List<TrainCourse> selectTrainCourseListForExcel(TrainCourseVO trainCourse);
+
+    /**
+     *
+     * @param name
+     * @param trainCourseCategoryId
+     * @return
+     */
+    String checkNameUnique(String name, Integer trainCourseCategoryId);
 }

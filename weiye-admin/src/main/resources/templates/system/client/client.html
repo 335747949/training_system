@@ -5,7 +5,11 @@
 <head th:include="include :: header"></head>
 <link th:href="@{/ajax/libs/jquery-layout/jquery.layout-latest.css}" rel="stylesheet"/>
 <link th:href="@{/ajax/libs/jquery-ztree/3.5/css/metro/zTreeStyle.css}" rel="stylesheet"/>
-
+<style>
+	.bootstrap-table .btn-xs{
+		margin-bottom: 5px;
+	}
+</style>
 <body class="gray-bg">
 	<div class="ui-layout-west">
 		<div class="main-content">
@@ -52,9 +56,9 @@
 							</li>
 							<li class="select-time">
 								<label>创建时间： </label>
-								<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
+								<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]" onfocus="this.blur()"/>
 								<span>-</span>
-								<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+								<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]" onfocus="this.blur()"/>
 							</li>
 							<li>
 								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -66,7 +70,7 @@
 			</div>
 			
 	        <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
-				<a class="btn btn-primary btn-lg" data-toggle="modal"  data-target="#myModal" shiro:hasPermission="system:client:remove">
+				<a class="btn btn-primary btn-lg" data-toggle="modal"  data-target="#myModal" shiro:hasPermission="system:client:import">
 					<i class="fa "></i> 导入
 				</a>
 	        	<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:client:add">
@@ -112,9 +116,9 @@
 	<script th:src="@{/ajax/libs/jquery-layout/jquery.layout-latest.js}"></script>
 	<script th:src="@{/ajax/libs/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js}"></script>
 	<script th:inline="javascript">
-		var editFlag = [[${@permission.hasPermi('system:user:edit')}]];
-		var removeFlag = [[${@permission.hasPermi('system:user:remove')}]];
-		var resetPwdFlag = [[${@permission.hasPermi('system:user:resetPwd')}]];
+		var editFlag = [[${@permission.hasPermi('system:client:edit')}]];
+		var removeFlag = [[${@permission.hasPermi('system:client:remove')}]];
+		var resetPwdFlag = [[${@permission.hasPermi('system:client:resetPwd')}]];
 		var datas = [[${@dict.getType('sys_normal_disable')}]];
 		var prefix = ctx + "system/client";
 
@@ -134,7 +138,7 @@
 		        importUrl: prefix + "/import",
 		        sortName: "createTime",
 		        sortOrder: "desc",
-		        modalName: "用户",
+		        modalName: "客户",
 		        search: false,
 		        showExport: false,
 		        columns: [{
@@ -148,11 +152,11 @@
 		        {
 		            field: 'loginName',
 		            title: '登录名称',
-					visible: false
+					//visible: false
 		        },
 		        {
 		            field: 'userName',
-		            title: '客户姓名'
+		            title: '客户名称'
 		        },
 		        {
 		            field: 'dept.deptName',
@@ -165,7 +169,7 @@
 		        },
 		        {
 		            field: 'phonenumber',
-		            title: '手机'
+		            title: '手机号码'
 		        },
 		        {
 		            field: 'status',
@@ -182,7 +186,7 @@
 		        },
 		        {
 		            title: '操作',
-		            align: 'center',
+		            // align: 'center',
 		            formatter: function(value, row, index) {
 		                var actions = [];
 		                actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.userId + '\')"><i class="fa fa-edit"></i>编辑</a> ');

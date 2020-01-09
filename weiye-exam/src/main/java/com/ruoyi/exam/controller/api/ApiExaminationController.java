@@ -4,10 +4,13 @@ import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.constant.UserConstants;
+import com.ruoyi.common.utils.PaginUtil;
 import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.*;
 import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.base.BaseController;
+import com.ruoyi.framework.web.page.PageDomain;
+import com.ruoyi.framework.web.page.TableSupport;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
@@ -66,29 +69,17 @@ public class ApiExaminationController extends BaseController {
         ExamExamination examExamination = new ExamExamination();
         map.put( "examExamination", examExamination );
         map.put( "userId", sysUser.getUserId() );
-        List<ExamExamination> list = examExaminationService.selectListFromWeb( map );
-        List<ExamExamination> resultList = new ArrayList<>();
-        for (ExamExamination exam : list) {
-            int maxExamNumber = exam.getExamNumber();
-            // 根据用户id统计用户已参加考试次数
-            ExamUserExamination examUserExamination = new ExamUserExamination();
-            examUserExamination.setVipUserId(sysUser.getUserId().intValue());
-            examUserExamination.setExamPaperId(exam.getExamPaperId());
-            examUserExamination.setExamExaminationId(exam.getId());
-            //考试记录集合
-            List<ExamUserExamination> userExamination = examUserExaminationService.selectLastOne(examUserExamination);
-
-            //超过考试次数
-            if (userExamination.size() < maxExamNumber) {
-                resultList.add(exam);
-            }
-        }
+        List<ExamExamination> list = examExaminationService.selectListFromWeb( map ,sysUser.getUserId());
+        // 服务端分页
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        Map<String,Object> reslutMap = PaginUtil.getPagingResultMap(list,pageNum,pageSize);
 
         AjaxResult success = success( "查询成功" );
-        PageInfo pageInfo = new PageInfo(resultList);
-        success.put( "data", resultList );
-        success.put("pages",pageInfo.getPages());
-        success.put("total",pageInfo.getTotal());
+        success.put( "data", reslutMap.get("result") );
+        success.put("pages",reslutMap.get("totalPageNum"));
+        success.put("total",reslutMap.get("totalRowNum"));
         return success;
     }
 
@@ -130,24 +121,23 @@ public class ApiExaminationController extends BaseController {
             //超过考试次数
             if (userExamination.size() >= examNumber) {
 
-                last = userExamination.get( 0 );
-                //最后一次考试已交卷，直接返回
-                if (last.getUpdateDate() != null && !last.getUpdateDate().equals( "" )) {
-                    return error( 1, "已超过" + examNumber + "次考试，" );
-                } else {
-                    // 最后一次考试未交卷，但超过考试时长,直接返回
-                    if (last.getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()) {
-                        return error( 1, "已超过" + examNumber + "次考试，" );
-                    }
-                }
+//                last = userExamination.get( 0 );
+//                //最后一次考试已交卷，直接返回
+//                if (last.getUpdateDate() != null && !last.getUpdateDate().equals( "" )) {
+                    return error( 1, "不能交卷，已超过" + examNumber + "次考试。" );
+//                }
+                // TODO  目前默认未交卷及未参加考试
+//                else {
+//                    // 最后一次考试未交卷，但超过考试时长,直接返回
+//                    if (last.getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()) {
+//                        return error( 1, "不能交卷，已超过" + examNumber + "次考试。" );
+//                    }
+//                }
 
             }
 
 
-            if (userExamination.size() <= 0 //考试次数小于0
-                    || userExamination.get( 0 ).getUpdateDate() != null //最后一次考试已交卷
-                    || userExamination.get( 0 ).getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()//最后一次考试，已超过考过时长
-                    ) {
+            if (userExamination.size() <= 0 ) {
                 insert.setExamExaminationId( Integer.parseInt( id ) );
                 insert.setVipUserId( userId );
                 insert.setCreateDate( new Date() );
@@ -156,10 +146,7 @@ public class ApiExaminationController extends BaseController {
                 insert.setScore( 0 );
                 examUserExaminationService.insertOne( insert );
                 examUserExaminationId = insert.getId();
-            } else {
-                examUserExaminationId = userExamination.get( 0 ).getId();
             }
-
         }
         ExamPaper examPaper = examPaperService.selectById(examPaperId);
         List<ExamQuestionVO> data = new ArrayList<>();
@@ -228,11 +215,17 @@ public class ApiExaminationController extends BaseController {
         map.put( "examExamination", examExamination );
         map.put( "userId", sysUser.getUserId() );
         List<ExamExamination> list = examExaminationService.selectSignUpListFromWeb( map );
-        AjaxResult success = success( "查询成功" );
-        PageInfo pageInfo = new PageInfo(list);
-        success.put("data", list);
-        success.put("pages",pageInfo.getPages());
-        success.put("total",pageInfo.getTotal());
+
+        // 服务端分页
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        Map<String,Object> reslutMap = PaginUtil.getPagingResultMap(list,pageNum,pageSize);
+
+        AjaxResult success = AjaxResult.success( "查询成功" );
+        success.put( "data", reslutMap.get("result") );
+        success.put("pages",reslutMap.get("totalPageNum"));
+        success.put("total",reslutMap.get("totalRowNum"));
         return success;
     }
 
@@ -277,6 +270,41 @@ public class ApiExaminationController extends BaseController {
 
         //交卷后返回的数据
         ArrayList<Map<String, String>> data = new ArrayList<>();
+
+        ExamExamination examExaminationOld = examExaminationService.selectById( examinationId );
+        //最大考试次数
+        Integer examNumber = examExaminationOld.getExamNumber();
+        //考试时长
+        Integer timeLength = examExaminationOld.getTimeLength();
+
+        // 校驗用戶已完成次數，若超過最大提交次數不允許提交
+        if (examExaminationOld.getType().equals( "2" )) {
+            ExamUserExamination examUserExamination = new ExamUserExamination();
+            examUserExamination.setVipUserId(user.getUserId().intValue());
+            examUserExamination.setExamPaperId(paperId);
+            examUserExamination.setExamExaminationId(examinationId);
+            //考试记录集合
+            List<ExamUserExamination> userExamination = examUserExaminationService.selectLastOne(examUserExamination);
+            // 最后一次考试
+            ExamUserExamination last;
+
+            //超过考试次数
+            if (userExamination.size() >= examNumber) {
+//                last = userExamination.get(0);
+//                //最后一次考试已交卷，直接返回
+//                if (last.getUpdateDate() != null && !last.getUpdateDate().equals("")) {
+                    return AjaxResult.error(1, "已超过" + examNumber + "次考试，");
+//                }
+                // TODO  目前默认未交卷及未参加考试
+//                else {
+//                    // 最后一次考试未交卷，但超过考试时长,直接返回
+//                    if (last.getCreateDate().getTime() + timeLength * 60 * 1000 < System.currentTimeMillis()) {
+//                        return AjaxResult.error(1, "已超过" + examNumber + "次考试，");
+//                    }
+//                }
+            }
+        }
+
 
         //如果是模拟考试，考试记录新增数据
         if (examUserExaminationId == -1) {

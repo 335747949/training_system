@@ -1,6 +1,7 @@
 package com.ruoyi.train.course.service.impl;
 
 import com.ruoyi.common.annotation.DataScope;
+import com.ruoyi.common.constant.ExamConstants;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.train.course.domain.TrainCourseCategory;
@@ -9,6 +10,7 @@ import com.ruoyi.train.course.service.ITrainCourseCategoryService;
 import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -199,5 +201,20 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
     @Override
     public int updateCategoryByParentId(Long id, String updateBy) {
         return trainCourseCategoryMapper.updateCategoryByParentId(id,updateBy);
+    }
+
+    /**
+     *
+     * @param name
+     * @param parentId
+     * @return
+     */
+    @Override
+    public String checkNameUnique(String name, Long parentId) {
+        List<TrainCourseCategory> trainCourseCategoryList = trainCourseCategoryMapper.selectByNameAndParentId(name, parentId);
+        if (CollectionUtils.isEmpty(trainCourseCategoryList)) {
+            return ExamConstants.TRAIN_COURSE_CATEGORY_NAME_UNIQUE;
+        }
+        return ExamConstants.TRAIN_COURSE_CATEGORY_NAME_NOT_UNIQUE;
     }
 }

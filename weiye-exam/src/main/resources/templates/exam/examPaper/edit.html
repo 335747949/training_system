@@ -70,16 +70,31 @@
             },
             choiceNumber:{
                 required:true,
+                digits:true,
+                min:0,
+                max:999
             },
             moreChoiceNumber:{
                 required:true,
+                digits:true,
+                min:0,
+                max:999
             },
-            moreChoiceNumber:{
+            judgeNumber:{
                 required:true,
+                digits:true,
+                min:0,
+                max:999
+            },
+            remarks:{
+                maxlength:250
             },
             messages: {
                 "name": {
                     required: "名称最长30字"
+                },
+                "remarks": {
+                    maxlength: "备注信息最长250字"
                 }
             }
         }

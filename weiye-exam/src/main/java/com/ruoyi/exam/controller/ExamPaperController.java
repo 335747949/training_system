@@ -1,27 +1,25 @@
 package com.ruoyi.exam.controller;
 
-import java.awt.*;
-import java.util.*;
-import java.util.List;
-
-import cn.hutool.core.lang.*;
-import cn.hutool.json.JSON;
-import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
+import com.ruoyi.common.annotation.Log;
+import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.common.constant.ExamConstants;
+import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.ExcelUtil;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.*;
+import com.ruoyi.framework.web.base.BaseController;
+import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
-import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.framework.web.base.BaseController;
-import com.ruoyi.framework.web.page.TableDataInfo;
-import com.ruoyi.common.base.AjaxResult;
-import com.ruoyi.common.utils.ExcelUtil;
+
+import java.util.*;
 
 /**
  * 试卷 信息操作处理
@@ -119,13 +117,18 @@ public class ExamPaperController extends BaseController {
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(ExamPaperVO examPaper) {
+        // 试卷名称
+        Assert.hasText(examPaper.getName(), "试卷名称不能为空！");
+        String examPaperNameUnique = examPaperService.checkNameUnique(examPaper.getName(), examPaper.getType(), examPaper.getExamPaperCategoryId());
+        if (examPaperNameUnique.equals(ExamConstants.EXAM_PAPER_NAME_NOT_UNIQUE)) {
+            return error("相同试卷分类和试卷类型下的试卷名称不能重复！");
+        }
         examPaper.setCreateBy(ShiroUtils.getLoginName());
         examPaper.setCreateDate(new Date());
         examPaper.setScore(0);
         examPaper.setQuestionNumber(0);
         examPaper.setDelFlag("0");
         int insert = examPaperService.insert((ExamPaper) examPaper);
-
 
         ExamPaperTypeNumber examPaperTypeNumber1 = new ExamPaperTypeNumber();
         examPaperTypeNumber1.setDelFlag("0");
@@ -191,7 +194,16 @@ public class ExamPaperController extends BaseController {
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(ExamPaperVO examPaper) {
-
+        Assert.notNull(examPaper.getId(), "试卷ID为必填项！");
+        Assert.hasText(examPaper.getName(), "试卷名称不能为空！");
+        ExamPaper oldExamPaper = examPaperService.selectById(examPaper.getId());
+        // 修改名称变化时校验唯一性
+        if (StringUtils.isNotNull(oldExamPaper) && !examPaper.getName().equals(oldExamPaper.getName())) {
+            String examPaperNameUnique = examPaperService.checkNameUnique(examPaper.getName(), examPaper.getType(), oldExamPaper.getExamPaperCategoryId());
+            if (examPaperNameUnique.equals(ExamConstants.EXAM_PAPER_NAME_NOT_UNIQUE)) {
+                return error("相同试卷分类和试卷类型下的试卷名称不能重复！");
+            }
+        }
         ExamPaperTypeNumber delete = new ExamPaperTypeNumber();
         delete.setExamPaperId(examPaper.getId());
         examPaperTypeNumberService.delete(delete);

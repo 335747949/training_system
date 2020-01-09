@@ -90,7 +90,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectListFromWeb" resultMap="ExamExaminationResult">
         select
         DISTINCT <include refid="selectExamExaminationVo"/>
-        ,tc.name as traincourse_name,eeu.vip_user_id examExaminationUserVipUserId
+        ,tc.name as traincourse_name
+        ,eeu.vip_user_id examExaminationUserVipUserId
+        ,eeu.create_date examExaminationCreateDate
         from exam_examination exam_examination
         INNER JOIN train_course tc ON exam_examination.train_course_id = tc.id
         LEFT JOIN exam_examination_user eeu ON eeu.exam_examination_id = exam_examination.id
@@ -225,5 +227,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-
+    <select id="selectByNameAndType" resultMap="ExamExaminationResult">
+        select
+        <include refid="selectExamExaminationVo"/>
+        from exam_examination where name = #{name} and type = #{type} and del_flag = '0'
+    </select>
 </mapper>
