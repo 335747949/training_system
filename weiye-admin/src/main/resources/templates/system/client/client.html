@@ -70,7 +70,7 @@
 			</div>
 			
 	        <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
-				<a class="btn btn-primary btn-lg" data-toggle="modal"  data-target="#myModal" shiro:hasPermission="system:client:remove">
+				<a class="btn btn-primary btn-lg" data-toggle="modal"  data-target="#myModal" shiro:hasPermission="system:client:import">
 					<i class="fa "></i> 导入
 				</a>
 	        	<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:client:add">
@@ -138,7 +138,7 @@
 		        importUrl: prefix + "/import",
 		        sortName: "createTime",
 		        sortOrder: "desc",
-		        modalName: "用户",
+		        modalName: "客户",
 		        search: false,
 		        showExport: false,
 		        columns: [{
@@ -152,11 +152,11 @@
 		        {
 		            field: 'loginName',
 		            title: '登录名称',
-					visible: false
+					//visible: false
 		        },
 		        {
 		            field: 'userName',
-		            title: '客户姓名'
+		            title: '客户名称'
 		        },
 		        {
 		            field: 'dept.deptName',
@@ -169,7 +169,7 @@
 		        },
 		        {
 		            field: 'phonenumber',
-		            title: '手机'
+		            title: '手机号码'
 		        },
 		        {
 		            field: 'status',
