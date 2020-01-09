@@ -341,6 +341,7 @@ public class SysUserServiceImpl extends AbstractBaseServiceImpl<SysUserMapper, S
                 errorPhoneNumList.add(sysUser.getPhonenumber());
                 continue;
             } else {
+                sysUser.setUserName(StringUtils.isNotNull(sysUser.getUserName()) ? sysUser.getUserName() : "");
                 sysUser.setLoginName(sysUser.getPhonenumber());
                 // 默认部门id-269
                 sysUser.setDeptId(UserConstants.DEFAULT_DEPT_ID);
@@ -369,6 +370,7 @@ public class SysUserServiceImpl extends AbstractBaseServiceImpl<SysUserMapper, S
         // 校验不通过的账号提示信息
         if (!CollectionUtils.isEmpty(errorPhoneNumList)) {
             message.append(errorPhoneNumList.toString()).append("手机号码已存在或号码格式异常，请检查后再次导入！");
+            return AjaxResult.error(message.toString());
         }
         return AjaxResult.success(message.toString());
     }
