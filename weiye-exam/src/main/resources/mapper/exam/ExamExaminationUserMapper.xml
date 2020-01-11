@@ -44,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             su.user_name AS vipUserName,
             su.phonenumber AS vipUserMobile,
             MAX( eue.score ) AS score,
-            eue.create_date AS finshTime,
+            eue.update_date AS finshTime,
             ep.id AS examPaperId,
             ep.`name` AS examPaperName,
             ee.`name` AS examName,
@@ -63,7 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             AND ep.del_flag = 0
             AND su.del_flag = 0
             AND eue.exam_examination_id = #{examId}
-            AND ee.update_date IS NOT NULL
+            AND eue.update_date IS NOT NULL
         GROUP BY
             eue.vip_user_id
         ORDER BY
