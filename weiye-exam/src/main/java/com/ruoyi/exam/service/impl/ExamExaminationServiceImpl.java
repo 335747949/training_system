@@ -312,7 +312,12 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
 
     @Override
     public List<ExamExaminationResultVo> selectExamExaminationResultById(Integer examId) {
-        return examExaminationUserService.selectExamExaminationResultByExamId(examId);
+        List<ExamExaminationResultVo> examExaminationResultVoList = examExaminationUserService.selectExamExaminationResultByExamId(examId);
+        for (ExamExaminationResultVo resultVo : examExaminationResultVoList) {
+           ExamUserExamination userExamination = examUserExaminationService.selectById(resultVo.getUserExamId());
+            resultVo.setFinshTime(userExamination.getUpdateDate());
+        }
+        return examExaminationResultVoList;
     }
 
     @Override
