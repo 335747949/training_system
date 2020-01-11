@@ -132,6 +132,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         INNER JOIN sys_user su ON exam_user_examination.vip_user_id = su.user_id
         INNER JOIN exam_paper ep ON ep.id = exam_user_examination.exam_paper_id
         <where>
+            exam_user_examination.update_date is not null
             <if test="id != null "> and exam_user_examination.id = #{id}</if>
             <if test="vipUserId != null "> and exam_user_examination.vip_user_id = #{vipUserId}</if>
             <if test="examExaminationId != null "> and exam_user_examination.exam_examination_id = #{examExaminationId}</if>
