@@ -159,14 +159,14 @@
       <img th:src="@{/img/logo.png}" alt="伟业医药" width="139px" height="44px">
     </a>
     <ul class="layui-nav fly-nav layui-hide-xs nav-header">
-      <li class="layui-nav-item nav-li course-li" th:if="${session.user!=null and session.userType!='10'}">
-        <a th:href="@{/web}">课程</a>
+      <li class="layui-nav-item nav-li course-li" style="margin-right: 50px;" th:if="${session.user!=null and session.userType!='10'}">
+        <a th:href="@{/web}" style="margin-right: 0;">课程</a>
       </li>
-      <li class="layui-nav-item nav-li practice-li" th:if="${session.user!=null and session.userType!='10'}">
-        <a th:href="@{/web/practice}">练习</a>
+      <li class="layui-nav-item nav-li practice-li" style="margin-right: 50px;" th:if="${session.user!=null and session.userType!='10'}">
+        <a th:href="@{/web/practice}" style="margin-right: 0;">练习</a>
       </li>
       <li class="layui-nav-item nav-li exam-li"  th:if="${session.user!=null and session.userType!='10'}">
-        <a th:href="@{/web/examination}">考试</a>
+        <a th:href="@{/web/examination}" style="margin-right: 0;">考试</a>
       </li>
     </ul>
 
