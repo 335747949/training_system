@@ -13,7 +13,10 @@ import com.ruoyi.framework.web.base.BaseController;
 import com.ruoyi.framework.web.exception.user.AuthExpireException;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
+import com.ruoyi.system.mapper.SysConfigMapper;
+import com.ruoyi.system.service.ISysUserOnlineService;
 import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.vip.domain.vo.ApiVipUserUpdatePwdVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.Date;
 
 /**
@@ -44,6 +48,12 @@ public class ApiVipUserController extends BaseController {
     private SysPasswordService passwordService;
     @Autowired
     private SysLoginService loginService;
+
+    @Resource
+    private SysConfigMapper sysConfigMapper;
+
+    @Autowired
+    private ISysUserOnlineService sysUserOnlineService;
 
     @Log(title = "用户登陆", businessType = BusinessType.EXPORT)
     @RequestMapping(value = "/user/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
@@ -134,15 +144,59 @@ public class ApiVipUserController extends BaseController {
     @ResponseBody
     public AjaxResult resetPwdSave(@RequestBody SysUser user) {
         Assert.hasText(user.getLoginName(), "登录账号不能为空！");
-        Assert.hasText(user.getPassword(), "密码不能为空！");
         Assert.notNull(user.getUserId(), "用户ID不能为空！");
         String loginName = JwtUtil.getLoginName();
         if (!loginName.equals(user.getLoginName())) {
             return error("您无权修改其他用户密码！");
         }
+        // 默认密码
+        String defaultPwd = sysConfigMapper.checkConfigKeyUnique("sys.user.initPassword").getConfigValue();
+        user.setPassword(defaultPwd);
         user.setSalt(ShiroUtils.randomSalt());
         user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
         return toAjax(sysUserService.resetUserPwd(user));
+    }
+
+
+    @Log(title = "修改密码", businessType = BusinessType.UPDATE)
+    @PostMapping("/member/user/updatePwd")
+    @ResponseBody
+    public AjaxResult updatePwd(@RequestBody ApiVipUserUpdatePwdVO vo) {
+        Assert.hasText(vo.getLoginName(), "登录账号不能为空！");
+        Assert.hasText(vo.getPassword(), "原密码不能为空！");
+        Assert.hasText(vo.getNewPassword(), "新密码不能为空！");
+        Assert.notNull(vo.getUserId(), "用户ID不能为空！");
+        SysUser sysUser = sysUserService.selectUserByLoginName(JwtUtil.getLoginName(), UserConstants.USER_VIP);
+        // 无效用户
+        if (null == sysUser) {
+            throw new AuthExpireException();
+        }
+        // 校验填写的原密码是否与原密码一直
+        String inputPassword = passwordService.encryptPassword(vo.getLoginName(), vo.getPassword(), sysUser.getSalt());
+        if (!sysUser.getPassword().equals(inputPassword)) {
+            return error("原密码错误！");
+        }
+        String loginName = JwtUtil.getLoginName();
+        if (!loginName.equals(vo.getLoginName()) || !vo.getUserId().equals(sysUser.getUserId())) {
+            return error("您无权修改其他用户密码！");
+        }
+        if (vo.getPassword().equals(vo.getNewPassword())) {
+            return error("新密码不能和原密码相同！");
+        }
+        // 更新对象
+        SysUser user = new SysUser();
+        user.setUserId(vo.getUserId());
+        user.setLoginName(vo.getLoginName());
+        user.setSalt(ShiroUtils.randomSalt());
+        user.setPassword(passwordService.encryptPassword(user.getLoginName(), vo.getNewPassword(), user.getSalt()));
+        user.setAvatar(sysUser.getAvatar());
+        user.setUpdateBy(sysUser.getUserName());
+//        // 退出登录,刪除session和cookie
+//        Subject subject = SecurityUtils.getSubject();
+//        subject.logout();
+//        ShiroUtils.clearCachedAuthorizationInfo();
+//        sysUserOnlineService.deleteOnlineById(ShiroUtils.getSessionId());
+        return toAjax(sysUserService.updateUserInfo(user));
     }
 
     /**
