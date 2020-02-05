@@ -1,9 +1,13 @@
 package com.ruoyi.vip.domain.vo;
 
+import java.io.Serializable;
+
 /**
  * 用户密码修改
  */
-public class ApiVipUserUpdatePwdVO {
+public class ApiVipUserUpdatePwdVO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 用户ID
@@ -55,5 +59,15 @@ public class ApiVipUserUpdatePwdVO {
 
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
+    }
+
+    @Override
+    public String toString() {
+        return "ApiVipUserUpdatePwdVO{" +
+                "userId=" + userId +
+                ", loginName='" + loginName + '\'' +
+                ", password='" + password + '\'' +
+                ", newPassword='" + newPassword + '\'' +
+                '}';
     }
 }

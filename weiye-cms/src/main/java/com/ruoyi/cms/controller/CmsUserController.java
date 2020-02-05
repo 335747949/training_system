@@ -9,11 +9,10 @@ import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.exam.domain.*;
-
-import com.ruoyi.exam.domain.ExamUserErrorQuestion;
-import com.ruoyi.exam.domain.ExamUserErrorQuestionVO;
-import com.ruoyi.exam.service.*;
-
+import com.ruoyi.exam.service.IExamExaminationService;
+import com.ruoyi.exam.service.IExamUserCollectionQuestionService;
+import com.ruoyi.exam.service.IExamUserErrorQuestionService;
+import com.ruoyi.exam.service.IExamUserExaminationService;
 import com.ruoyi.framework.manager.AsyncManager;
 import com.ruoyi.framework.manager.factory.AsyncFactory;
 import com.ruoyi.framework.shiro.service.SysPasswordService;
@@ -26,11 +25,6 @@ import com.ruoyi.vip.domain.vo.VipUserCertificateVO;
 import com.ruoyi.vip.domain.vo.VipUserOrdersVO;
 import com.ruoyi.vip.service.IVipUserCertificateService;
 import com.ruoyi.vip.service.IVipUserOrdersService;
-
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.session.Session;
-import org.apache.shiro.subject.Subject;
-import org.apache.shiro.web.util.RedirectView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +33,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
-
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -212,7 +205,8 @@ public class CmsUserController {
     @ResponseBody
     public AjaxResult addErrorquestion(String questionId) {
         SysUser sysUser = ShiroUtils.getSysUser();
-        examUserErrorQuestionService.insertError(questionId, sysUser);
+        // web加入错题本，暂时无需进行错题和考试关联，故examinationId参数传null
+        examUserErrorQuestionService.insertError(questionId, null, sysUser);
         AjaxResult success = AjaxResult.success("插入成功");
         return success;
     }

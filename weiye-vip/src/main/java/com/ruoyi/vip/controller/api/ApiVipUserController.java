@@ -190,7 +190,7 @@ public class ApiVipUserController extends BaseController {
         user.setSalt(ShiroUtils.randomSalt());
         user.setPassword(passwordService.encryptPassword(user.getLoginName(), vo.getNewPassword(), user.getSalt()));
         user.setAvatar(sysUser.getAvatar());
-        user.setUpdateBy(sysUser.getUserName());
+        user.setUpdateBy(sysUser.getPhonenumber());
 //        // 退出登录,刪除session和cookie
 //        Subject subject = SecurityUtils.getSubject();
 //        subject.logout();
