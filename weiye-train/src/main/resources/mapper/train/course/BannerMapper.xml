@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.train.course.mapper.BannerMapper">
+
+    <resultMap type="com.ruoyi.train.course.domain.Banner" id="BannerResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="openType"    column="open_type"    />
+        <result property="link"    column="link"    />
+        <result property="imageUrl"    column="image_url"    />
+        <result property="sort"    column="sort"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="enabled"    column="enabled"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+	
+	<sql id="selectBannerVo">
+         id, name, open_type, link, image_url, sort, start_time, end_time, enabled, create_by, create_date, update_by, update_date, remarks, del_flag    </sql>
+	
+    <select id="selectBannerList" parameterType="com.ruoyi.train.course.domain.Banner" resultMap="BannerResult">
+        select
+        <include refid="selectBannerVo"/>
+        from banner
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="name != null  and name.trim() != '' "> and name like concat('%', #{name} ,'%')</if>
+             <if test="openType != null "> and open_type = #{openType}</if>
+             <if test="link != null  and link != '' "> and link = #{link}</if>
+             <if test="imageUrl != null  and imageUrl != '' "> and image_url = #{imageUrl}</if>
+             <if test="sort != null "> and sort = #{sort}</if>
+             <if test="startTime != null "> and start_time = #{startTime}</if>
+             <if test="endTime != null "> and end_time = #{endTime}</if>
+             <if test="enabled != null "> and enabled = #{enabled}</if>
+             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+             <if test="createDate != null "> and create_date = #{createDate}</if>
+             <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+             <if test="updateDate != null "> and update_date = #{updateDate}</if>
+             <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+             <if test="delFlag != null "> and del_flag = #{delFlag}</if>
+         </where>
+         order by sort
+    </select>
+    <select id="checkBannerNameUnique" resultType="com.ruoyi.train.course.domain.Banner">
+        select id, name from banner where name=#{name} and del_flag = '0'
+    </select>
+
+
+</mapper>
