@@ -2,9 +2,9 @@ package com.ruoyi.exam.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.ruoyi.common.base.BaseEntity;
-					    import javax.persistence.Id;
-    import java.util.Date;
+
+import javax.persistence.Id;
+import java.util.Date;
 		
 /**
  * 我的错题表 exam_user_error_question
@@ -23,6 +23,10 @@ private static final long serialVersionUID = 1L;
 	    private Integer vipUserId;
 	        /** 练习题代码 */
 	    private Integer examQuestionId;
+    /**
+     * 考试ID
+     */
+    private Integer examinationId;
 	        /** 创建者 */
 	    private String createBy;
 	        /** 创建时间 */
@@ -135,8 +139,16 @@ private static final long serialVersionUID = 1L;
             {
             return delFlag;
             }
-	
-public String toString() {
+
+    public Integer getExaminationId() {
+        return examinationId;
+    }
+
+    public void setExaminationId(Integer examinationId) {
+        this.examinationId = examinationId;
+    }
+
+    public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
 	            .append("id", getId())
 	            .append("vipUserId", getVipUserId())
