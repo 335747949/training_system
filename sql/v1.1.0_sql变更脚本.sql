@@ -36,7 +36,6 @@ INSERT INTO `exam`.`sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`,
 CREATE TABLE `train_course_search_history` (
 `id`  int(11) NOT NULL AUTO_INCREMENT COMMENT '主键' ,
 `keyword`  char(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '关键字' ,
-`add_time`  int(11) NOT NULL DEFAULT 0 COMMENT '搜索时间' ,
 `user_id`  varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户Id' ,
 `del_flag`  tinyint(4) NOT NULL DEFAULT 0 COMMENT '0正常 1删除' ,
 `create_time`  timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' ,

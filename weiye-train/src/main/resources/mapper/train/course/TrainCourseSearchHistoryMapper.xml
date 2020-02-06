@@ -7,7 +7,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="com.ruoyi.train.course.domain.TrainCourseSearchHistory" id="TrainCourseSearchHistoryResult">
         <result property="id"    column="id"    />
         <result property="keyword"    column="keyword"    />
-        <result property="addTime"    column="add_time"    />
         <result property="userId"    column="user_id"    />
         <result property="delFlag"    column="del_flag"    />
         <result property="createTime"    column="create_time"    />
@@ -15,7 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTrainCourseSearchHistoryVo">
-         id, keyword, add_time, user_id, del_flag, create_time, update_time    </sql>
+         id, keyword, user_id, del_flag, create_time, update_time    </sql>
 
     <select id="selectTrainCourseSearchHistoryList" parameterType="com.ruoyi.train.course.domain.TrainCourseSearchHistory" resultMap="TrainCourseSearchHistoryResult">
         select
@@ -24,7 +23,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="id != null "> and id = #{id}</if>
              <if test="keyword != null  and keyword != '' "> and keyword = #{keyword}</if>
-             <if test="addTime != null "> and add_time = #{addTime}</if>
              <if test="userId != null  and userId != '' "> and user_id = #{userId}</if>
              <if test="delFlag != null "> and del_flag = #{delFlag}</if>
              <if test="createTime != null "> and create_time = #{createTime}</if>
@@ -36,8 +34,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectTrainCourseSearchHistoryVo"/>
         from train_course_search_history
         where
-        userId = #{userId}
-        order by createTime desc
+        user_id = #{userId}
+        order by create_time desc
         limit 20
     </select>
 

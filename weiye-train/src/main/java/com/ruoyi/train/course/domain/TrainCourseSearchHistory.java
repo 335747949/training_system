@@ -21,8 +21,6 @@ private static final long serialVersionUID = 1L;
     private Integer id;
 	        /** 关键字 */
 	    private String keyword;
-	        /** 搜索时间 */
-	    private Integer addTime;
 	        /** 用户Id */
 	    private String userId;
 	        /** 0正常 1删除 */
@@ -53,17 +51,6 @@ private static final long serialVersionUID = 1L;
     public String getKeyword()
             {
             return keyword;
-            }
-	    /** 设置搜索时间 */
-    public void setAddTime(Integer addTime)
-            {
-            this.addTime = addTime;
-            }
-
-    /** 获取搜索时间 */
-    public Integer getAddTime()
-            {
-            return addTime;
             }
 	    /** 设置用户Id */
     public void setUserId(String userId)
@@ -114,7 +101,6 @@ public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
 	            .append("id", getId())
 	            .append("keyword", getKeyword())
-	            .append("addTime", getAddTime())
 	            .append("userId", getUserId())
 	            .append("delFlag", getDelFlag())
 	            .append("createTime", getCreateTime())

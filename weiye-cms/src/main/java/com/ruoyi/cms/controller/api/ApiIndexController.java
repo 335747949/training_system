@@ -16,6 +16,7 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 import static com.ruoyi.common.base.AjaxResult.success;
@@ -27,7 +28,7 @@ import static com.ruoyi.common.base.AjaxResult.success;
  */
 @Api("首页相关API")
 @RestController
-@RequestMapping("/api/v1/index")
+@RequestMapping("/api/v1")
 public class ApiIndexController {
     @Autowired
     private IExamExaminationService examExaminationService;
@@ -69,7 +70,7 @@ public class ApiIndexController {
         success.put("data",list);
 
         //搜索成功后增加搜索记录
-        SysUser user = ShiroUtils.getSysUser();
+        SysUser user = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(), UserConstants.USER_VIP );
         TrainCourseSearchHistory searchHistory = new TrainCourseSearchHistory();
         searchHistory.setKeyword(name.trim());
         searchHistory.setDelFlag(0);
@@ -87,7 +88,7 @@ public class ApiIndexController {
      */
     @GetMapping("/searchHistory")
     public AjaxResult searchHistory() {
-        SysUser user = ShiroUtils.getSysUser();
+        SysUser user = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(), UserConstants.USER_VIP );
         List<TrainCourseSearchHistory> list = trainCourseSearchHistoryService.searchHistory(user.getUserId().toString());
         AjaxResult success = success( "查询成功" );
         success.put("data",list);
@@ -102,7 +103,7 @@ public class ApiIndexController {
      */
     @PostMapping("/cleanSearchHistory")
     public AjaxResult cleanSearchHistory() {
-        SysUser user = ShiroUtils.getSysUser();
+        SysUser user = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(), UserConstants.USER_VIP );
         TrainCourseSearchHistory searchHistory = new TrainCourseSearchHistory();
         searchHistory.setUserId(user.getUserId().toString());
         trainCourseSearchHistoryService.delete(searchHistory);
