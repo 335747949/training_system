@@ -1,14 +1,18 @@
 package com.ruoyi.train.course.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.constant.ExamConstants;
 import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
 import com.ruoyi.train.course.domain.TrainCourse;
 import com.ruoyi.train.course.domain.TrainCourseVO;
+import com.ruoyi.train.course.domain.vo.ApiCourseListByCategoryVO;
 import com.ruoyi.train.course.mapper.TrainCourseMapper;
 import com.ruoyi.train.course.service.ITrainCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -62,5 +66,30 @@ public class TrainCourseServiceImpl extends AbstractBaseServiceImpl<TrainCourseM
             return ExamConstants.TRAIN_COURSE_NAME_UNIQUE;
         }
         return ExamConstants.TRAIN_COURSE_NAME_NOT_UNIQUE;
+    }
+
+
+    /**
+     * 根据课程分类分页查询课程列表
+     * v1.1.0
+     * @param apiCourseListByCategoryVO
+     * @return
+     */
+    @Override
+    public PageInfo<TrainCourseVO> selectTrainCourseListByCategory(ApiCourseListByCategoryVO apiCourseListByCategoryVO){
+        StringBuffer buffer = new StringBuffer();
+        if (!StringUtils.isEmpty(apiCourseListByCategoryVO.getCategoryId1()) && !"-1".equals(apiCourseListByCategoryVO.getCategoryId1())) {
+            buffer.append("0").append(",").append(apiCourseListByCategoryVO.getCategoryId1());
+        }
+        if (!StringUtils.isEmpty(apiCourseListByCategoryVO.getCategoryId2()) && !"-1".equals(apiCourseListByCategoryVO.getCategoryId2())) {
+            buffer.append(",").append(apiCourseListByCategoryVO.getCategoryId2());
+        }
+        // 三级分类选择全部时，只按一级二级分类进行查询
+        if ("-1".equals(apiCourseListByCategoryVO.getCategoryId3())) {
+            apiCourseListByCategoryVO.setCategoryId3(null);
+        }
+        PageHelper.startPage(apiCourseListByCategoryVO.getPageNum(), apiCourseListByCategoryVO.getPageSize());
+        List<TrainCourseVO> list = trainCourseMapper.selectTrainCourseListByCategory(buffer.toString(), apiCourseListByCategoryVO.getCategoryId3());
+        return new PageInfo<>(list);
     }
 }

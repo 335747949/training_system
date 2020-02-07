@@ -1,4 +1,4 @@
-package com.ruoyi.train.course.domain;
+package com.ruoyi.train.course.domain.vo;
 
 import java.util.List;
 
@@ -11,12 +11,12 @@ public class ApiCourseCategoryVO {
     /**
      * 课程分类id
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 父id
      */
-    private Integer pid;
+    private Long pid;
 
     /**
      * 课程分类名称
@@ -26,26 +26,26 @@ public class ApiCourseCategoryVO {
     /**
      * 顺序
      */
-    private Integer orderNum;
+    private String orderNum;
 
     /**
      * 子分类
      */
     private List<ApiCourseCategoryVO> children;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getPid() {
+    public Long getPid() {
         return pid;
     }
 
-    public void setPid(Integer pid) {
+    public void setPid(Long pid) {
         this.pid = pid;
     }
 
@@ -57,11 +57,11 @@ public class ApiCourseCategoryVO {
         this.name = name;
     }
 
-    public Integer getOrderNum() {
+    public String getOrderNum() {
         return orderNum;
     }
 
-    public void setOrderNum(Integer orderNum) {
+    public void setOrderNum(String orderNum) {
         this.orderNum = orderNum;
     }
 
