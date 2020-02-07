@@ -52,6 +52,18 @@ public class TrainCourse {
      */
     @Excel(name="课程介绍",order = 2,readConverterExp = "1=公开,2=不公开")
     private String state;
+
+    /**
+     *  最新推荐  0.否  1.是
+     */
+    @Excel(name="最新推荐",order = 3,readConverterExp = "0=否,1=是")
+    private Integer isNew;
+    /**
+     * 精品推荐   0. 否  1.是
+     */
+    @Excel(name="精品推荐",order = 4,readConverterExp = "0=否,1=是")
+    private Integer isGood;
+
     /**
      * 删除标记 0.正常 1.删除
      */
@@ -59,12 +71,12 @@ public class TrainCourse {
     /**
      * 创建者
      */
-    @Excel(name="课程介绍",order = 3)
+    @Excel(name="课程介绍",order = 5)
     private String createBy;
     /**
      * 创建时间
      */
-    @Excel(name="课程介绍",order = 3,dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name="创建时间",order = 6,dateFormat = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
     /**
@@ -271,6 +283,23 @@ public class TrainCourse {
         return remark;
     }
 
+    public Integer getIsNew() {
+        return isNew;
+    }
+
+    public void setIsNew(Integer isNew) {
+        this.isNew = isNew;
+    }
+
+    public Integer getIsGood() {
+        return isGood;
+    }
+
+    public void setIsGood(Integer isGood) {
+        this.isGood = isGood;
+    }
+
+
     public String toString() {
         return new ToStringBuilder( this, ToStringStyle.MULTI_LINE_STYLE )
                 .append( "id", getId() )
@@ -280,6 +309,8 @@ public class TrainCourse {
                 .append( "cover", getCover() )
                 .append( "description", getDescription() )
                 .append( "state", getState() )
+                .append( "isNew", getIsNew() )
+                .append( "isGood", getIsGood() )
                 .append( "delFlag", getDelFlag() )
                 .append( "createBy", getCreateBy() )
                 .append( "createTime", getCreateTime() )
