@@ -1,23 +1,29 @@
-package com.ruoyi.train.course.controller;
+package com.ruoyi.train.course.controller.api;
 
-import cn.hutool.json.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.base.BaseController;
-import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
-import com.ruoyi.train.course.domain.*;
+import com.ruoyi.train.course.domain.TrainCourse;
+import com.ruoyi.train.course.domain.TrainCourseCategory;
+import com.ruoyi.train.course.domain.TrainCourseSection;
+import com.ruoyi.train.course.domain.TrainCourseVO;
+import com.ruoyi.train.course.domain.vo.ApiCourseCategoryVO;
+import com.ruoyi.train.course.domain.vo.ApiCourseListByCategoryVO;
 import com.ruoyi.train.course.service.ITrainCourseCategoryService;
 import com.ruoyi.train.course.service.ITrainCourseSectionService;
 import com.ruoyi.train.course.service.ITrainCourseService;
 import com.ruoyi.train.course.service.ITrainCourseUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -54,6 +60,31 @@ public class ApiTrainCourseController extends BaseController {
         success.put( "data", trainCourseCategories );
         return success;
     }
+
+    /**
+     * 查询课程分类列表树
+     * v1.1.0
+     */
+    @GetMapping("/trainCourse/category/tree")
+    public AjaxResult CourseCategoryTree() {
+        List<ApiCourseCategoryVO> categoryTree = trainCourseCategoryService.selectCategoryTreeList();
+        AjaxResult success = success( "查询课程分类树成功" );
+        success.put( "data", categoryTree);
+        return success;
+    }
+
+    /**
+     * 根据课程分类查询课程列表
+     * v1.1.0
+     */
+    @GetMapping("/train/course/list")
+    public AjaxResult trainCourseByCategory(ApiCourseListByCategoryVO apiCourseListByCategoryVO) {
+        PageInfo<TrainCourseVO> pageInfo = trainCourseService.selectTrainCourseListByCategory(apiCourseListByCategoryVO);
+        AjaxResult success = success( "查询课程列表成功" );
+        success.put( "data", pageInfo);
+        return success;
+    }
+
 
     /**
      * 查询课程列表

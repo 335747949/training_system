@@ -1,8 +1,10 @@
 package com.ruoyi.train.course.service;
 
+import com.github.pagehelper.PageInfo;
 import com.ruoyi.framework.web.base.AbstractBaseService;
 import com.ruoyi.train.course.domain.TrainCourse;
 import com.ruoyi.train.course.domain.TrainCourseVO;
+import com.ruoyi.train.course.domain.vo.ApiCourseListByCategoryVO;
 
 import java.util.List;
 
@@ -39,4 +41,13 @@ public interface ITrainCourseService extends AbstractBaseService<TrainCourse>
      * @return
      */
     String checkNameUnique(String name, Integer trainCourseCategoryId);
+
+
+    /**
+     * 根据课程分类分页查询课程列表
+     * v1.1.0
+     * @param apiCourseListByCategoryVO
+     * @return
+     */
+    PageInfo<TrainCourseVO> selectTrainCourseListByCategory(ApiCourseListByCategoryVO apiCourseListByCategoryVO);
 }

@@ -4,10 +4,12 @@ import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.ExamConstants;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
 import com.ruoyi.train.course.domain.TrainCourseCategory;
+import com.ruoyi.train.course.domain.vo.ApiCourseCategoryVO;
 import com.ruoyi.train.course.mapper.TrainCourseCategoryMapper;
 import com.ruoyi.train.course.service.ITrainCourseCategoryService;
-import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -216,5 +218,98 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
             return ExamConstants.TRAIN_COURSE_CATEGORY_NAME_UNIQUE;
         }
         return ExamConstants.TRAIN_COURSE_CATEGORY_NAME_NOT_UNIQUE;
+    }
+
+    /**
+     * api查询课程分类树
+     * @return
+     */
+
+    @Override
+    public List<ApiCourseCategoryVO> selectCategoryTreeList() {
+        List<TrainCourseCategory> trainCourseCategoryList = trainCourseCategoryMapper.selectCategoryList(new TrainCourseCategory());
+        return buildCategoryTreeData(trainCourseCategoryList);
+    }
+
+    /**
+     * 构建课程分类树结构
+     * 备注：
+     *  1、只展示三级树结构
+     *  2、默认的一级分类parent_id为100
+     *  3、默认所有分类均增加项【全部】，其id为-1，name为全部
+     * @param trainCourseCategoryList
+     * @return
+     */
+    private List<ApiCourseCategoryVO> buildCategoryTreeData(List<TrainCourseCategory> trainCourseCategoryList) {
+        List<ApiCourseCategoryVO> categoryVOTree = new ArrayList<>();
+        // 默认每级的全部
+        ApiCourseCategoryVO baseApiCategoryVO = new ApiCourseCategoryVO();
+        baseApiCategoryVO.setId(-1L);
+        baseApiCategoryVO.setPid(100L);
+        baseApiCategoryVO.setName("全部");
+        baseApiCategoryVO.setOrderNum("0");
+        // 添加默认全部
+        categoryVOTree.add(baseApiCategoryVO);
+        // 一级分类
+        for (TrainCourseCategory trainCourseCategory : trainCourseCategoryList) {
+            // 其他一级分类，父亲id为100
+            if (trainCourseCategory.getParentId().equals(100L)) {
+                ApiCourseCategoryVO apiCourseCategoryVO1 = new ApiCourseCategoryVO();
+                BeanUtils.copyProperties(trainCourseCategory, apiCourseCategoryVO1);
+                apiCourseCategoryVO1.setPid(trainCourseCategory.getParentId());
+                categoryVOTree.add(apiCourseCategoryVO1);
+            }
+        }
+//        // 不存在其他分类项时不再需要显示【全部】
+//        if (categoryVOTree.size() == 1) {
+//            categoryVOTree.clear();
+//        }
+        // 二级分类
+        for (ApiCourseCategoryVO apiCourseCategoryVO1 : categoryVOTree) {
+            if (null != apiCourseCategoryVO1.getId()) {
+                List<ApiCourseCategoryVO> secondCourseCategoryVOList = getListByParentId(trainCourseCategoryList, apiCourseCategoryVO1.getId());
+                // 三级分类
+                for (ApiCourseCategoryVO apiCourseCategoryVO2 : secondCourseCategoryVOList) {
+                    if (null != apiCourseCategoryVO2.getId()) {
+                        List<ApiCourseCategoryVO> thirdCourseCategoryVOList = getListByParentId(trainCourseCategoryList, apiCourseCategoryVO2.getId());
+                        apiCourseCategoryVO2.setChildren(thirdCourseCategoryVOList);
+                    }
+                }
+                apiCourseCategoryVO1.setChildren(secondCourseCategoryVOList);
+            }
+        }
+        return categoryVOTree;
+    }
+
+    /**
+     *
+     * @param trainCourseCategoryList
+     * @param parentId
+     * @return
+     */
+    private List<ApiCourseCategoryVO> getListByParentId(List<TrainCourseCategory> trainCourseCategoryList , Long parentId) {
+        List<ApiCourseCategoryVO> list = new ArrayList<>();
+        // 默认每级的全部
+        ApiCourseCategoryVO baseApiCategoryVO = new ApiCourseCategoryVO();
+        baseApiCategoryVO.setId(-1L);
+        baseApiCategoryVO.setName("全部");
+        baseApiCategoryVO.setOrderNum("0");
+        baseApiCategoryVO.setPid(parentId);
+        // 默认全部
+        list.add(baseApiCategoryVO);
+        for (TrainCourseCategory trainCourseCategory : trainCourseCategoryList) {
+            // 其他一级分类，父亲id为100
+            if (trainCourseCategory.getParentId().equals(parentId)) {
+                ApiCourseCategoryVO apiCourseCategoryVO = new ApiCourseCategoryVO();
+                BeanUtils.copyProperties(trainCourseCategory, apiCourseCategoryVO);
+                apiCourseCategoryVO.setPid(trainCourseCategory.getParentId());
+                list.add(apiCourseCategoryVO);
+            }
+        }
+//        // 不存在其他分类项时不再需要显示【全部】
+//        if (list.size() == 1) {
+//            list.clear();
+//        }
+        return list;
     }
 }
