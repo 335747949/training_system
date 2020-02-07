@@ -1,4 +1,3 @@
--- banner 相关表 start
 CREATE TABLE `banner` (
 `id`  int(11) NOT NULL AUTO_INCREMENT COMMENT 'id' ,
 `name`  varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'banner名称' ,
@@ -52,4 +51,17 @@ ROW_FORMAT=DYNAMIC
 
 ALTER TABLE `exam_user_error_question` ADD COLUMN `examination_id` int(11) NULL COMMENT '考试id' AFTER `exam_question_id`;
 
--- end
+ALTER TABLE `train_course`
+ADD COLUMN `is_new`  tinyint(4) NULL DEFAULT 0 COMMENT '最新推荐  0.否  1.是' AFTER `state`,
+ADD COLUMN `is_good`  tinyint(4) NULL DEFAULT 0 COMMENT '精品推荐   0. 否  1.是' AFTER `is_new`;
+
+
+UPDATE sys_dict_data
+SET dict_label = '展示',
+remark = '课程展示状态'
+WHERE dict_code = 100;
+
+UPDATE sys_dict_data
+SET dict_label = '隐藏',
+remark = '课程展示状态'
+WHERE dict_code = 101;

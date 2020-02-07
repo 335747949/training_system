@@ -26,9 +26,12 @@ spring:
     druid:
       # 主库数据源
       master:
-        url: jdbc:mysql://192.168.3.115:3306/exam?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=Asia/Shanghai
-        username: root
-        password: 123456
+#        url: jdbc:mysql://192.168.3.115:3306/exam?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=Asia/Shanghai
+#        username: root
+#        password: 123456
+         url: jdbc:mysql://rm-m5e5905g322yqnjm90o.mysql.rds.aliyuncs.com:3306/exam?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=Asia/Shanghai
+         username: gm_exam
+         password: B5Qwheb1IdAiM
       # 从库数据源
       slave:
         # 从数据源开关/默认关闭
