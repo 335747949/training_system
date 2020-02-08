@@ -63,4 +63,16 @@ public class TrainCourseServiceImpl extends AbstractBaseServiceImpl<TrainCourseM
         }
         return ExamConstants.TRAIN_COURSE_NAME_NOT_UNIQUE;
     }
+
+    @Override
+    public List<TrainCourseVO> selectGoodsCourses() {
+        return trainCourseMapper.selectGoodsCourses();
+    }
+
+    @Override
+    public List<TrainCourseVO> selectNewCourses() {
+        return trainCourseMapper.selectNewCourses();
+    }
+
+
 }

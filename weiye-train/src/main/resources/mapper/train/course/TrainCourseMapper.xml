@@ -82,4 +82,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from train_course
         where name = #{name} and train_course_category_id = #{trainCourseCategoryId} and del_flag = '0'
     </select>
+    <select id="selectGoodsCourses" resultType="com.ruoyi.train.course.domain.TrainCourseVO">
+        select
+        <include refid="selectTrainCourseVo"/>
+        from train_course
+        where state = '1' and is_good = 1 and del_flag = '0'
+        limit 6
+    </select>
+    <select id="selectNewCourses" resultType="com.ruoyi.train.course.domain.TrainCourseVO">
+        select
+        <include refid="selectTrainCourseVo"/>
+        from train_course
+        where state = '1' and is_new = 1 and del_flag = '0'
+        limit 6
+    </select>
 </mapper>

@@ -34,4 +34,8 @@ public interface TrainCourseMapper  extends MyMapper<TrainCourse>
 	 * @return
 	 */
     List<TrainCourse> selectByNameAndcategoryId(@Param("name") String name, @Param("trainCourseCategoryId") Integer trainCourseCategoryId);
+
+    List<TrainCourseVO> selectGoodsCourses();
+
+	List<TrainCourseVO> selectNewCourses();
 }

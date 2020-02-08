@@ -51,6 +51,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="checkBannerNameUnique" resultType="com.ruoyi.train.course.domain.Banner">
         select id, name from banner where name=#{name} and del_flag = '0'
     </select>
-
-
+    <select id="selectBanners" resultType="com.ruoyi.train.course.domain.Banner">
+        select
+        <include refid="selectBannerVo"/>
+        from banner
+        where
+        del_flag = 0
+        and
+        NOW() between start_time and end_time
+        and enabled = 1
+        order by sort
+    </select>
 </mapper>

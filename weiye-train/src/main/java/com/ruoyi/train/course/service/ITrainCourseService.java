@@ -39,4 +39,16 @@ public interface ITrainCourseService extends AbstractBaseService<TrainCourse>
      * @return
      */
     String checkNameUnique(String name, Integer trainCourseCategoryId);
+
+    /**
+     * 首页精品推荐课程（最多6个）
+     * @return
+     */
+    List<TrainCourseVO> selectGoodsCourses();
+
+    /**
+     * 首页最新推荐课程（最多6个）
+     * @return
+     */
+    List<TrainCourseVO> selectNewCourses();
 }
