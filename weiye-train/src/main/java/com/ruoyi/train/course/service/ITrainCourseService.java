@@ -7,6 +7,7 @@ import com.ruoyi.train.course.domain.TrainCourseVO;
 import com.ruoyi.train.course.domain.vo.ApiCourseListByCategoryVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 课程 服务层
@@ -62,4 +63,6 @@ public interface ITrainCourseService extends AbstractBaseService<TrainCourse>
      * @return
      */
     List<TrainCourseVO> selectNewCourses();
+
+    Map<String, Object> selectMoreTrainCourses(TrainCourseVO trainCourseVO);
 }
