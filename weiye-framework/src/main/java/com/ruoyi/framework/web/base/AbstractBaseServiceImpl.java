@@ -1,5 +1,6 @@
 package com.ruoyi.framework.web.base;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.web.util.EntityUtils;
@@ -111,7 +112,7 @@ public abstract class AbstractBaseServiceImpl<M extends MyMapper<T>, T> implemen
      * 设置请求分页数据
      */
     @Override
-    public void startPage()
+    public Page startPage()
     {
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Integer pageNum = pageDomain.getPageNum();
@@ -119,7 +120,9 @@ public abstract class AbstractBaseServiceImpl<M extends MyMapper<T>, T> implemen
         if (StringUtils.isNotNull(pageNum) && StringUtils.isNotNull(pageSize))
         {
             String orderBy = pageDomain.getOrderBy();
-            PageHelper.startPage(pageNum, pageSize, orderBy);
+            return PageHelper.startPage(pageNum, pageSize, orderBy);
         }
+
+        return null;
     }
 }

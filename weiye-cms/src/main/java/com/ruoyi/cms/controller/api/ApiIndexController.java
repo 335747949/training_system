@@ -1,5 +1,6 @@
 package com.ruoyi.cms.controller.api;
 
+import com.github.pagehelper.Page;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.exam.service.IExamExaminationService;
@@ -138,9 +139,12 @@ public class ApiIndexController {
         }else if ("2".equals(type)){
             trainCourseVO.setIsNew(1);
         }
-        List<TrainCourseVO> list = trainCourseService.selectTrainCoursePage( trainCourseVO );
+        Map<String, Object> map = trainCourseService.selectMoreTrainCourses( trainCourseVO );
+        List<TrainCourseVO> list = (List<TrainCourseVO>) map.get("list");
+        Page page = (Page) map.get("page");
         AjaxResult success = success( "查询成功" );
         success.put("data",list);
+        success.put("pages",page.getPages());
         return success;
     }
 }

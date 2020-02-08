@@ -1,5 +1,6 @@
 package com.ruoyi.train.course.service.impl;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.constant.ExamConstants;
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 课程 服务层实现
@@ -101,6 +104,16 @@ public class TrainCourseServiceImpl extends AbstractBaseServiceImpl<TrainCourseM
     @Override
     public List<TrainCourseVO> selectNewCourses() {
         return trainCourseMapper.selectNewCourses();
+    }
+
+    @Override
+    public Map<String, Object> selectMoreTrainCourses(TrainCourseVO trainCourseVO) {
+        Page page = startPage();
+        List<TrainCourseVO> trainCourseVOList = trainCourseMapper.selectTrainCourseList(trainCourseVO);
+        Map<String, Object> map = new HashMap<>();
+        map.put("page",page);
+        map.put("list",trainCourseVOList);
+        return map;
     }
 
 
