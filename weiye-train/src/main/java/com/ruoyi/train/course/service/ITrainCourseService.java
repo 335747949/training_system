@@ -50,4 +50,16 @@ public interface ITrainCourseService extends AbstractBaseService<TrainCourse>
      * @return
      */
     PageInfo<TrainCourseVO> selectTrainCourseListByCategory(ApiCourseListByCategoryVO apiCourseListByCategoryVO);
+
+    /**
+     * 首页精品推荐课程（最多6个）
+     * @return
+     */
+    List<TrainCourseVO> selectGoodsCourses();
+
+    /**
+     * 首页最新推荐课程（最多6个）
+     * @return
+     */
+    List<TrainCourseVO> selectNewCourses();
 }

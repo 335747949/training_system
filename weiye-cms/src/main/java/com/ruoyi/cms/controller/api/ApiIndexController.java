@@ -7,9 +7,11 @@ import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.train.course.domain.Banner;
 import com.ruoyi.train.course.domain.TrainCourse;
 import com.ruoyi.train.course.domain.TrainCourseSearchHistory;
 import com.ruoyi.train.course.domain.TrainCourseVO;
+import com.ruoyi.train.course.service.IBannerService;
 import com.ruoyi.train.course.service.ITrainCourseSearchHistoryService;
 import com.ruoyi.train.course.service.ITrainCourseService;
 import io.swagger.annotations.Api;
@@ -17,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.ruoyi.common.base.AjaxResult.success;
 
@@ -31,7 +35,7 @@ import static com.ruoyi.common.base.AjaxResult.success;
 @RequestMapping("/api/v1")
 public class ApiIndexController {
     @Autowired
-    private IExamExaminationService examExaminationService;
+    private IBannerService bannerService;
     @Autowired
     private ISysUserService sysUserService;
     @Autowired
@@ -46,8 +50,18 @@ public class ApiIndexController {
      */
     @GetMapping("/index")
     public AjaxResult index() {
-        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(), UserConstants.USER_VIP );
+        // banner 列表
+        List<Banner> banners = bannerService.selectBanners();
+        // 精选推荐课程列表
+        List<TrainCourseVO> goodCourses = trainCourseService.selectGoodsCourses();
+        // 最新推荐课程列表
+        List<TrainCourseVO> newCourses = trainCourseService.selectNewCourses();
+        Map<String, Object> data = new HashMap<>();
+        data.put("banners",banners);
+        data.put("goodCourses",goodCourses);
+        data.put("newCourses",newCourses);
         AjaxResult success = success( "查询成功" );
+        success.put("data",data);
         return success;
     }
 
@@ -110,4 +124,23 @@ public class ApiIndexController {
         return AjaxResult.success("清除成功");
     }
 
+    /**
+     * 更多最新推荐
+     * @param type 1、精选课程  2、最新推荐
+     * @return
+     */
+    @GetMapping("/moreCourses")
+    public AjaxResult moreGoodsCourses(@RequestParam("type") String type) {
+        TrainCourseVO trainCourseVO = new TrainCourseVO();
+        trainCourseVO.setState("1");
+        if ("1".equals(type)){
+            trainCourseVO.setIsGood(1);
+        }else if ("2".equals(type)){
+            trainCourseVO.setIsNew(1);
+        }
+        List<TrainCourseVO> list = trainCourseService.selectTrainCoursePage( trainCourseVO );
+        AjaxResult success = success( "查询成功" );
+        success.put("data",list);
+        return success;
+    }
 }

@@ -41,4 +41,8 @@ public interface TrainCourseMapper  extends MyMapper<TrainCourse>
 	 * @return
 	 */
 	List<TrainCourseVO> selectTrainCourseListByCategory(@Param("parentIds") String parentIds, @Param("courseCategoryId") String courseCategoryId);
+
+    List<TrainCourseVO> selectGoodsCourses();
+
+	List<TrainCourseVO> selectNewCourses();
 }

@@ -22,4 +22,6 @@ public interface BannerMapper  extends MyMapper<Banner>
 	public List<Banner> selectBannerList(Banner banner);
 
 	Banner checkBannerNameUnique(String name);
+
+	List<Banner> selectBanners();
 }

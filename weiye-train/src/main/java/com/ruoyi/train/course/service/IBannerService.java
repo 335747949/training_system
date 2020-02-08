@@ -29,4 +29,6 @@ public interface IBannerService extends AbstractBaseService<Banner>
 
 
     String checkBannerNameUnique(Banner banner);
+
+    List<Banner> selectBanners();
 }

@@ -92,4 +92,16 @@ public class TrainCourseServiceImpl extends AbstractBaseServiceImpl<TrainCourseM
         List<TrainCourseVO> list = trainCourseMapper.selectTrainCourseListByCategory(buffer.toString(), apiCourseListByCategoryVO.getCategoryId3());
         return new PageInfo<>(list);
     }
+
+    @Override
+    public List<TrainCourseVO> selectGoodsCourses() {
+        return trainCourseMapper.selectGoodsCourses();
+    }
+
+    @Override
+    public List<TrainCourseVO> selectNewCourses() {
+        return trainCourseMapper.selectNewCourses();
+    }
+
+
 }

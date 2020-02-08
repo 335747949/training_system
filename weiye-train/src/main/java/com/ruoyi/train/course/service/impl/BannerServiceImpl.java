@@ -60,4 +60,9 @@ public class BannerServiceImpl extends AbstractBaseServiceImpl<BannerMapper, Ban
         return "0";
     }
 
+    @Override
+    public List<Banner> selectBanners() {
+        return bannerMapper.selectBanners();
+    }
+
 }
