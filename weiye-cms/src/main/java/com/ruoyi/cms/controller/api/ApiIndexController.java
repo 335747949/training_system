@@ -126,31 +126,18 @@ public class ApiIndexController {
 
     /**
      * 更多最新推荐
-     *
+     * @param type 1、精选课程  2、最新推荐
      * @return
      */
-    @GetMapping("/moreGoodsCourses")
-    public AjaxResult moreGoodsCourses() {
+    @GetMapping("/moreCourses")
+    public AjaxResult moreGoodsCourses(@RequestParam("type") String type) {
         TrainCourseVO trainCourseVO = new TrainCourseVO();
         trainCourseVO.setState("1");
-        trainCourseVO.setIsGood(1);
-        List<TrainCourseVO> list = trainCourseService.selectTrainCoursePage( trainCourseVO );
-        AjaxResult success = success( "查询成功" );
-        success.put("data",list);
-        return success;
-    }
-
-    /**
-     * 更多最新推荐
-     *
-     * @return
-     */
-    @GetMapping("/moreNewCourses")
-    public AjaxResult moreNewCourses() {
-
-        TrainCourseVO trainCourseVO = new TrainCourseVO();
-        trainCourseVO.setState("1");
-        trainCourseVO.setIsNew(1);
+        if ("1".equals(type)){
+            trainCourseVO.setIsGood(1);
+        }else if ("2".equals(type)){
+            trainCourseVO.setIsNew(1);
+        }
         List<TrainCourseVO> list = trainCourseService.selectTrainCoursePage( trainCourseVO );
         AjaxResult success = success( "查询成功" );
         success.put("data",list);

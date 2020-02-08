@@ -82,6 +82,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from train_course
         where name = #{name} and train_course_category_id = #{trainCourseCategoryId} and del_flag = '0'
     </select>
+
+    <select id="selectTrainCourseListByCategory" resultMap="TrainCourseResultVO">
+        select
+        <include refid="selectTrainCourseVo"/>,
+        tcc.name AS trainCourseCategoryName,
+        tcc.parent_ids
+        from train_course
+        left join train_course_category tcc on tcc.id = train_course.train_course_category_id
+        <where>
+            train_course.`del_flag` = '0'
+            <if test="parentIds != null and parentIds != '' "> and tcc.`parent_ids` like CONCAT(#{parentIds},'%')</if>
+            <if test="courseCategoryId != null and courseCategoryId != '' "> and train_course.train_course_category_id = #{courseCategoryId}</if>
+            ORDER BY train_course.update_time DESC
+        </where>
+    </select>
     <select id="selectGoodsCourses" resultType="com.ruoyi.train.course.domain.TrainCourseVO">
         select
         <include refid="selectTrainCourseVo"/>

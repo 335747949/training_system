@@ -35,6 +35,13 @@ public interface TrainCourseMapper  extends MyMapper<TrainCourse>
 	 */
     List<TrainCourse> selectByNameAndcategoryId(@Param("name") String name, @Param("trainCourseCategoryId") Integer trainCourseCategoryId);
 
+	/**
+	 * 根据课程分类模糊查询课程列表
+	 * @param parentIds
+	 * @return
+	 */
+	List<TrainCourseVO> selectTrainCourseListByCategory(@Param("parentIds") String parentIds, @Param("courseCategoryId") String courseCategoryId);
+
     List<TrainCourseVO> selectGoodsCourses();
 
 	List<TrainCourseVO> selectNewCourses();
