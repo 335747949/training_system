@@ -85,6 +85,30 @@ public class ApiExaminationController extends BaseController {
 
 
     /**
+     * 获取考试列表
+     * @param type 1.模拟考试  2.正式考试
+     * @return
+     */
+    @GetMapping("/examination/examList")
+    public AjaxResult examList(@RequestParam("type") String type) {
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(), UserConstants.USER_VIP );
+        Map<String, Object> map = new HashMap<>();
+        List<ExamExamination> list = examExaminationService.selectExamList(type, sysUser.getUserId());
+
+        // 服务端分页
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        Map<String,Object> reslutMap = PaginUtil.getPagingResultMap(list,pageNum,pageSize);
+
+        AjaxResult success = success( "查询成功" );
+        success.put( "data", reslutMap.get("result") );
+        success.put("pages",reslutMap.get("totalPageNum"));
+        success.put("total",reslutMap.get("totalRowNum"));
+        return success;
+    }
+
+    /**
      * 开始考试
      *
      * @param id 考试id
@@ -109,6 +133,17 @@ public class ApiExaminationController extends BaseController {
         ExamUserExamination insert = new ExamUserExamination();
         //正式考试
         if (type.equals( "2" )) {
+            // 若为正式考试，先将考试相关信息入到用户考试表中
+            ExamExaminationUser examExaminationUser = new ExamExaminationUser();
+            examExaminationUser.setVipUserId( Integer.parseInt( userId.toString() ) );
+            examExaminationUser.setDelFlag( "0" );
+            examExaminationUser.setCreateDate( new Date() );
+            examExaminationUser.setCreateBy( sysUser.getLoginName() );
+            examExaminationUser.setExamExaminationId( Integer.parseInt( id ) );
+            if (examExaminationUserService.insertOne( examExaminationUser ) == 0){
+                return AjaxResult.error("请重新考试");
+            }
+
             ExamUserExamination examUserExamination = new ExamUserExamination();
             examUserExamination.setVipUserId( userId );
             examUserExamination.setExamPaperId( examPaperId );
