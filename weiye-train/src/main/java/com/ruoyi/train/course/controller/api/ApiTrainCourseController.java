@@ -6,6 +6,7 @@ import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.base.BaseController;
+import com.ruoyi.framework.web.exception.user.AuthExpireException;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
@@ -20,10 +21,7 @@ import com.ruoyi.train.course.service.ITrainCourseSectionService;
 import com.ruoyi.train.course.service.ITrainCourseService;
 import com.ruoyi.train.course.service.ITrainCourseUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -85,6 +83,19 @@ public class ApiTrainCourseController extends BaseController {
         return success;
     }
 
+    /**
+     * 小程序api根据课程id推荐相关课程
+     * @param courseId 课程id
+     * @param size 需要推荐的课程数量
+     * @return
+     */
+    @GetMapping("/train/course/recommend")
+    public AjaxResult trainCourseRecommend(@RequestParam Integer courseId, @RequestParam Integer size) {
+        List<TrainCourseVO> list = trainCourseService.recommendCourseByCategory(courseId, size);
+        AjaxResult success = success( "查询成功" );
+        success.put( "data", list);
+        return success;
+    }
 
     /**
      * 查询课程列表
@@ -124,6 +135,8 @@ public class ApiTrainCourseController extends BaseController {
             SysUser sysUser = sysUserService.selectUserByLoginName( loginName,UserConstants.USER_VIP );
             if (sysUser != null) {
                 courseAuth = trainCourseUserService.authority( sysUser.getUserId(), id );
+            } else {
+                throw new AuthExpireException();
             }
         }
         AjaxResult success = success( "查询成功" );

@@ -19,6 +19,11 @@ public class ExamUserExaminationVO extends ExamUserExamination{
     @Excel(name = "试卷名称",order = 2)
     private String examPaperName;
 
+    /**
+     * 考试类型(1-模拟考试；2-正式考试)
+     */
+    private Integer examinationType;
+
     private Integer nullAnswer = 0;
 
     private Integer right = 0;
@@ -91,5 +96,13 @@ public class ExamUserExaminationVO extends ExamUserExamination{
 
     public void setError(Integer error) {
         this.error = error;
+    }
+
+    public Integer getExaminationType() {
+        return examinationType;
+    }
+
+    public void setExaminationType(Integer examinationType) {
+        this.examinationType = examinationType;
     }
 }
