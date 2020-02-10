@@ -28,7 +28,10 @@ public class ExamUserExaminationFinishVO {
      */
     private Integer paperId;
 
-    List<ExamUserExaminationQuestion> examUserExaminationQuestion;
+    /**
+     *
+     */
+    private List<ExamUserExaminationQuestion> examUserExaminationQuestion;
 
     public Integer getExamUserExaminationId() {
         return examUserExaminationId;

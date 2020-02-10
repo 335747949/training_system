@@ -65,4 +65,12 @@ public interface ITrainCourseService extends AbstractBaseService<TrainCourse>
     List<TrainCourseVO> selectNewCourses();
 
     Map<String, Object> selectMoreTrainCourses(TrainCourseVO trainCourseVO);
+
+    /**
+     * 小程序api根据课程id推荐相关课程
+     * @param courseId 课程id
+     * @param size 需要推荐的课程数量
+     * @return
+     */
+    List<TrainCourseVO> recommendCourseByCategory(Integer courseId, Integer size);
 }

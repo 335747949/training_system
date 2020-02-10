@@ -6,8 +6,10 @@ import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.constant.ExamConstants;
 import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
 import com.ruoyi.train.course.domain.TrainCourse;
+import com.ruoyi.train.course.domain.TrainCourseCategory;
 import com.ruoyi.train.course.domain.TrainCourseVO;
 import com.ruoyi.train.course.domain.vo.ApiCourseListByCategoryVO;
+import com.ruoyi.train.course.mapper.TrainCourseCategoryMapper;
 import com.ruoyi.train.course.mapper.TrainCourseMapper;
 import com.ruoyi.train.course.service.ITrainCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +34,8 @@ public class TrainCourseServiceImpl extends AbstractBaseServiceImpl<TrainCourseM
     @Autowired
     private TrainCourseMapper trainCourseMapper;
 
+    @Autowired
+    private TrainCourseCategoryMapper trainCourseCategoryMapper;
 
     /**
      * 查询课程列表
@@ -80,19 +85,12 @@ public class TrainCourseServiceImpl extends AbstractBaseServiceImpl<TrainCourseM
      */
     @Override
     public PageInfo<TrainCourseVO> selectTrainCourseListByCategory(ApiCourseListByCategoryVO apiCourseListByCategoryVO){
-        StringBuffer buffer = new StringBuffer();
-        if (!StringUtils.isEmpty(apiCourseListByCategoryVO.getCategoryId1()) && !"-1".equals(apiCourseListByCategoryVO.getCategoryId1())) {
-            buffer.append("0").append(",").append(apiCourseListByCategoryVO.getCategoryId1());
-        }
-        if (!StringUtils.isEmpty(apiCourseListByCategoryVO.getCategoryId2()) && !"-1".equals(apiCourseListByCategoryVO.getCategoryId2())) {
-            buffer.append(",").append(apiCourseListByCategoryVO.getCategoryId2());
-        }
         // 三级分类选择全部时，只按一级二级分类进行查询
         if ("-1".equals(apiCourseListByCategoryVO.getCategoryId3())) {
             apiCourseListByCategoryVO.setCategoryId3(null);
         }
         PageHelper.startPage(apiCourseListByCategoryVO.getPageNum(), apiCourseListByCategoryVO.getPageSize());
-        List<TrainCourseVO> list = trainCourseMapper.selectTrainCourseListByCategory(buffer.toString(), apiCourseListByCategoryVO.getCategoryId3());
+        List<TrainCourseVO> list = trainCourseMapper.selectTrainCourseListByCategory(buildCategoryParentIds(apiCourseListByCategoryVO), apiCourseListByCategoryVO.getCategoryId3());
         return new PageInfo<>(list);
     }
 
@@ -115,6 +113,72 @@ public class TrainCourseServiceImpl extends AbstractBaseServiceImpl<TrainCourseM
         map.put("list",trainCourseVOList);
         return map;
     }
+    /**
+     *
+     * @param apiCourseListByCategoryVO
+     * @return
+     */
+    private String buildCategoryParentIds (ApiCourseListByCategoryVO apiCourseListByCategoryVO) {
+        StringBuffer buffer = new StringBuffer();
+        if (!StringUtils.isEmpty(apiCourseListByCategoryVO.getCategoryId1()) && !"-1".equals(apiCourseListByCategoryVO.getCategoryId1())) {
+            buffer.append("0").append(",").append(apiCourseListByCategoryVO.getCategoryId1());
+        }
+        if (!StringUtils.isEmpty(apiCourseListByCategoryVO.getCategoryId2()) && !"-1".equals(apiCourseListByCategoryVO.getCategoryId2())) {
+            buffer.append(",").append(apiCourseListByCategoryVO.getCategoryId2());
+        }
+        return buffer.toString();
+    }
 
+    /**
+     * 小程序api根据课程id推荐相关课程
+     * @param courseId 课程id
+     * @param size 需要推荐的课程数量
+     * @return
+     */
+    @Override
+    public List<TrainCourseVO> recommendCourseByCategory(Integer courseId, Integer size) {
+        // 出参，推荐的六个课程
+        HashMap<Integer,TrainCourseVO> resultMap = new HashMap<>();
+        TrainCourse condition = new TrainCourse();
+        condition.setId(courseId);
+        TrainCourse trainCourse = trainCourseMapper.selectByPrimaryKey(condition);
+        // 获取课程分类信息
+        Long trainCourseCategoryId = trainCourse.getTrainCourseCategoryId().longValue();
+        TrainCourseCategory trainCourseCategory = trainCourseCategoryMapper.selectCategoryById(trainCourseCategoryId);
+        String parentIds = trainCourseCategory.getParentIds();
+        // 查询相同第三级分类下的6个推荐课程，排除本课程
+        ApiCourseListByCategoryVO apiCourseListByCategoryVO = new ApiCourseListByCategoryVO();
+        apiCourseListByCategoryVO.setCategoryId1(parentIds.split(",")[1]);
+        apiCourseListByCategoryVO.setCategoryId2(parentIds.split(",")[2]);
+        apiCourseListByCategoryVO.setPageSize(size + 1);
+        PageHelper.startPage(apiCourseListByCategoryVO.getPageNum(), apiCourseListByCategoryVO.getPageSize());
+        List<TrainCourseVO> list3 = trainCourseMapper.selectTrainCourseListByCategory(buildCategoryParentIds(apiCourseListByCategoryVO), trainCourseCategoryId.toString());
+        //
+        for (TrainCourseVO trainCourseVO: list3) {
+            // 相同课程不在推荐
+            if (!courseId.equals(trainCourseVO.getId()) && resultMap.size() < size) {
+                resultMap.put(trainCourseVO.getId(), trainCourseVO);
+            }
+            if (resultMap.size() == size) {
+                return new ArrayList(resultMap.values());
+            }
+        }
+        // 不够6个时随机推荐课程
+        apiCourseListByCategoryVO.setCategoryId1("-1");
+        apiCourseListByCategoryVO.setCategoryId2("-1");
+        apiCourseListByCategoryVO.setPageSize(size + 1);
+        PageHelper.startPage(apiCourseListByCategoryVO.getPageNum(), apiCourseListByCategoryVO.getPageSize());
+        List<TrainCourseVO> list = trainCourseMapper.selectTrainCourseListByCategory(buildCategoryParentIds(apiCourseListByCategoryVO), null);
+        for (TrainCourseVO trainCourseVO: list) {
+            // 相同课程不在推荐
+            if (!courseId.equals(trainCourseVO.getId()) && resultMap.size() < size) {
+                resultMap.put(trainCourseVO.getId(), trainCourseVO);
+            }
+            if (resultMap.size() == size) {
+                return new ArrayList(resultMap.values());
+            }
+        }
+        return new ArrayList(resultMap.values());
+    }
 
 }
