@@ -134,15 +134,19 @@ public class ApiExaminationController extends BaseController {
         ExamUserExamination insert = new ExamUserExamination();
         //正式考试
         if (type.equals( "2" )) {
-            // 若为正式考试，先将考试相关信息入到用户考试表中
+
+            // 若为正式考试，如果未报名先将考试相关信息入到用户考试表中
             ExamExaminationUser examExaminationUser = new ExamExaminationUser();
             examExaminationUser.setVipUserId( Integer.parseInt( userId.toString() ) );
-            examExaminationUser.setDelFlag( "0" );
-            examExaminationUser.setCreateDate( new Date() );
-            examExaminationUser.setCreateBy( sysUser.getLoginName() );
             examExaminationUser.setExamExaminationId( Integer.parseInt( id ) );
-            if (examExaminationUserService.insertOne( examExaminationUser ) == 0){
-                return AjaxResult.error("请重新考试");
+            List<ExamExaminationUser> list = examExaminationUserService.selectList(examExaminationUser);
+            if (list.isEmpty()){
+                examExaminationUser.setDelFlag( "0" );
+                examExaminationUser.setCreateDate( new Date() );
+                examExaminationUser.setCreateBy( sysUser.getLoginName() );
+                if (examExaminationUserService.insertOne( examExaminationUser ) == 0){
+                    return AjaxResult.error("请重新考试");
+                }
             }
 
             ExamUserExamination examUserExamination = new ExamUserExamination();
