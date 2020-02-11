@@ -166,7 +166,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     </select>
     <select id="selectQuestionListByPaperId" resultMap="ExamQuestionResultVO">
-          select eq.id, eq.title, eq.answer, eq.type, eq.label, eq.category_id,
+--           select eq.id, eq.title, eq.answer, eq.type, eq.label, eq.category_id,
+           select eq.id, eq.title, eq.type, eq.label, eq.category_id,
           eq.create_by, eq.create_date, eq.update_by, eq.update_date, eq.remarks, eq.del_flag ,
           eqi.id AS item_id,
           eqi.content AS item_content,
