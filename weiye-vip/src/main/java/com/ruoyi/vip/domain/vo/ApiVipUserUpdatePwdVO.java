@@ -10,11 +10,6 @@ public class ApiVipUserUpdatePwdVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 用户ID
-     */
-    private Long userId;
-
-    /**
      * 登录名称
      */
     private String loginName;
@@ -28,14 +23,6 @@ public class ApiVipUserUpdatePwdVO implements Serializable {
      * 新密码
      */
     private String newPassword;
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
     public String getLoginName() {
         return loginName;
@@ -64,7 +51,6 @@ public class ApiVipUserUpdatePwdVO implements Serializable {
     @Override
     public String toString() {
         return "ApiVipUserUpdatePwdVO{" +
-                "userId=" + userId +
                 ", loginName='" + loginName + '\'' +
                 ", password='" + password + '\'' +
                 ", newPassword='" + newPassword + '\'' +

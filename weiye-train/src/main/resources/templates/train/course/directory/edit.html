@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<form class="form-horizontal m" id="form-directory-edit" th:object="${directory}">
+			<input name="id" type="hidden" th:field="*{id}" />
+			<input id="treeId" name="parentId" type="hidden" th:field="*{parentId}" />
+			<div class="form-group">
+				<label class="col-sm-3 control-label ">上级目录：</label>
+				<div class="col-sm-8">
+<!--					<input class="form-control" type="text" id="treeName" onclick="selectDirectoryTree()" readonly="true" th:field="*{parentName}"/>-->
+					<input class="form-control" type="text" id="treeName" readonly="true" th:field="*{parentName}"/>
+				</div>
+			</div>
+			<div class="form-group" hidden>
+				<label class="col-sm-3 control-label ">目录节点：</label>
+				<div class="col-sm-8">
+					<!--					<input class="form-control" type="text" onclick="selectDirectoryTree()" id="treeName" readonly="true" th:value="${category.name}"/>-->
+					<input class="form-control" type="text" id="parentIds" name="parentIds" readonly="true" th:value="${directory.parentIds}"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">目录名称：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="name" th:field="*{name}" id="name">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">显示排序：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="orderNum" th:field="*{orderNum}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">状态：</label>
+				<div class="col-sm-8">
+					<div class="radio-box" th:each="dict : ${@dict.getType('sys_normal_disable')}">
+						<input type="radio" th:id="${dict.dictCode}" name="status" th:value="${dict.dictValue}" th:field="*{status}">
+						<label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript">
+		var prefix = ctx + "train/course/directory";
+
+		$("#form-category-edit").validate({
+			rules:{
+				name:{
+					required:true,
+					remote: {
+		                url: prefix + "/checkDirectoryNameUnique",
+		                type: "post",
+		                dataType: "json",
+		                data: {
+		                	"id": function() {
+		                        return $("#id").val();
+		                    },
+		                    "parentId": function() {
+		                        return $("input[name='parentId']").val();
+		                    },
+		        			"name": function() {
+		                        return $.common.trim($("#name").val());
+		                    },
+							"parentIds" : function() {
+								return $("input[name='parentIds']").val();
+							}
+		                },
+		                dataFilter: function(data, type) {
+		                	return $.validate.unique(data);
+		                }
+		            }
+				},
+				name:{
+					required:true,
+					minlength: 1,
+					maxlength: 30
+				},
+				orderNum:{
+					required:true,
+					digits:true,
+                    min:1,
+                    max:99999
+				},
+				email:{
+                    email:true,
+        		},
+        		phone:{
+        			isPhone:true,
+        		},
+				status:{
+					required:true
+				},
+			},
+			messages: {
+		        "name": {
+		            remote: "目录已经存在"
+		        }
+		    }
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	        	$.operate.save(prefix + "/edit", $('#form-directory-edit').serialize());
+	        }
+	    }
+	
+		/*分类管理-修改-选择分类树*/
+		function selectDirectoryTree() {
+			var id = $("#treeId").val();
+			if(id > 0) {
+			    var options = {
+					title: '目录选择',
+					width: "380",
+					url: prefix + "/selectDirectoryTree/" + $("#treeId").val(),
+					callBack: doSubmit
+				};
+				$.modal.openOptions(options);
+			} else {
+        		$.modal.alertError("父目录不能选择");
+        	}
+		}
+		
+		function doSubmit(index, layero){
+   			var body = layer.getChildFrame('body', index);
+   			$("#treeId").val(body.find('#treeId').val());
+   			$("#treeName").val(body.find('#treeName').val());
+   			layer.close(index);
+		}
+	</script>
+</body>
+</html>
