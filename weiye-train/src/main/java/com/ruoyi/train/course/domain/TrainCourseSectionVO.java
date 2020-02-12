@@ -7,12 +7,9 @@ import javax.persistence.Id;
 import java.util.Date;
 
 /**
- * 课程章节表 train_course_section
- *
- * @author zhujj
- * @date 2018-12-23
+ * 课程内容vo
  */
-public class TrainCourseSection
+public class TrainCourseSectionVO
 {
     private static final long serialVersionUID = 1L;
 
@@ -28,6 +25,11 @@ public class TrainCourseSection
      * 课程目录ID
      */
     private Integer directoryId;
+
+    /**
+     * 课程目录名称
+     */
+    private String directoryName;
 
     /** 显示顺序 */
     private Integer orderNum;
@@ -183,6 +185,14 @@ public class TrainCourseSection
 
     public void setDirectoryId(Integer directoryId) {
         this.directoryId = directoryId;
+    }
+
+    public String getDirectoryName() {
+        return directoryName;
+    }
+
+    public void setDirectoryName(String directoryName) {
+        this.directoryName = directoryName;
     }
 
     @Override

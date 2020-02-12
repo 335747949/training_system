@@ -132,11 +132,30 @@ public class ApiVipUserController extends BaseController {
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @PostMapping("/member/user/edit")
     @Transactional(rollbackFor = Exception.class)
-    @ResponseBody
-    public AjaxResult editSave(SysUser user) {
-        Assert.notNull(user.getUserId(), "用户ID不能为空！");
-        user.setUpdateBy(ShiroUtils.getLoginName());
-        return toAjax(sysUserService.updateUser(user));
+    public AjaxResult editSave(@RequestBody SysUser sysUser) {
+        Assert.hasText(sysUser.getLoginName(), "登录账号不能为空！");
+        Assert.hasText(sysUser.getUserName(), "用户姓名不能为空！");
+        // 原用户信息
+        SysUser userInfo = sysUserService.selectUserByLoginName(JwtUtil.getLoginName(), UserConstants.USER_VIP);
+        // 无效用户
+        if (null == userInfo) {
+            throw new AuthExpireException();
+        }
+        String loginName = JwtUtil.getLoginName();
+        if (!loginName.equals(sysUser.getLoginName())) {
+            return error("您无权修改其他用户姓名！");
+        }
+        if (userInfo.getUserName().equals(sysUser.getUserName())) {
+            return success();
+        }
+        // 更新对象
+        SysUser updateUser = new SysUser();
+        updateUser.setUserId(userInfo.getUserId());
+        updateUser.setAvatar(userInfo.getAvatar());
+        // 修改用户姓名
+        updateUser.setUserName(sysUser.getUserName());
+        updateUser.setUpdateBy(userInfo.getPhonenumber());
+        return toAjax(sysUserService.updateUserInfo(updateUser));
     }
 
     @Log(title = "重置密码", businessType = BusinessType.UPDATE)
@@ -165,7 +184,6 @@ public class ApiVipUserController extends BaseController {
         Assert.hasText(vo.getLoginName(), "登录账号不能为空！");
         Assert.hasText(vo.getPassword(), "原密码不能为空！");
         Assert.hasText(vo.getNewPassword(), "新密码不能为空！");
-        Assert.notNull(vo.getUserId(), "用户ID不能为空！");
         SysUser sysUser = sysUserService.selectUserByLoginName(JwtUtil.getLoginName(), UserConstants.USER_VIP);
         // 无效用户
         if (null == sysUser) {
@@ -177,7 +195,7 @@ public class ApiVipUserController extends BaseController {
             return error("原密码错误！");
         }
         String loginName = JwtUtil.getLoginName();
-        if (!loginName.equals(vo.getLoginName()) || !vo.getUserId().equals(sysUser.getUserId())) {
+        if (!loginName.equals(vo.getLoginName())) {
             return error("您无权修改其他用户密码！");
         }
         if (vo.getPassword().equals(vo.getNewPassword())) {
@@ -185,7 +203,7 @@ public class ApiVipUserController extends BaseController {
         }
         // 更新对象
         SysUser user = new SysUser();
-        user.setUserId(vo.getUserId());
+        user.setUserId(sysUser.getUserId());
         user.setLoginName(vo.getLoginName());
         user.setSalt(ShiroUtils.randomSalt());
         user.setPassword(passwordService.encryptPassword(user.getLoginName(), vo.getNewPassword(), user.getSalt()));

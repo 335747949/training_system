@@ -6,6 +6,13 @@
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-trainCourseSection-add">
+			<input name="trainCourseDirectoryId"  type="hidden" id="treeId"/>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">课程目录：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="treeName" onclick="selectDirectoryTree()" readonly="true" id="treeName">
+				</div>
+			</div>
 			<div class="form-group">	
 				<label class="col-sm-3 control-label">课程名称：</label>
 				<div class="col-sm-8">
@@ -129,6 +136,30 @@
 	            $.operate.save(prefix + "/add",formData );
 	        }
 	    }
+
+		/*课程章节-新增-选择目录树*/
+		function selectDirectoryTree() {
+			var treeId = $("#treeId").val();
+			var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+			var url = ctx + "train/course/directory/selectDirectoryTree/" + deptId;
+			var options = {
+				title: '选择目录',
+				width: "380",
+				url: url,
+				callBack: doSubmit
+			};
+			$.modal.openOptions(options);
+		}
+
+		function doSubmit(index, layero){
+			var tree = layero.find("iframe")[0].contentWindow.$._tree;
+			if ($.tree.notAllowParents(tree)) {
+				var body = layer.getChildFrame('body', index);
+				$("#treeId").val(body.find('#treeId').val());
+				$("#treeName").val(body.find('#treeName').val());
+				layer.close(index);
+			}
+		}
 
         var fileList=new Array();
         layui.use(['upload',"element"], function() {

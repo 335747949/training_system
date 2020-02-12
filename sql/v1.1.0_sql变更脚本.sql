@@ -65,3 +65,23 @@ UPDATE sys_dict_data
 SET dict_label = '隐藏',
 remark = '课程展示状态'
 WHERE dict_code = 101;
+
+CREATE TABLE `train_course_directory` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键，课程目录表id',
+  `parent_id` int(11) DEFAULT NULL COMMENT '父目录ID',
+  `parent_ids` varchar(200) DEFAULT NULL COMMENT '祖级列表',
+  `name` varchar(200) DEFAULT NULL COMMENT '课程目录名称',
+  `order_num` int(11) DEFAULT NULL COMMENT '显示顺序',
+  `status` tinyint(4) DEFAULT '0' COMMENT '状态0.正常 1.停用',
+  `create_by` varchar(100) DEFAULT NULL COMMENT '创建者',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(100) DEFAULT NULL COMMENT '更新者',
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remarks` varchar(500) DEFAULT NULL COMMENT '备注',
+  `del_flag` tinyint(4) DEFAULT '0' COMMENT '删除标记 0.正常 1.删除',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='课程目录表';
+
+insert into `train_course_directory` (`id`, `parent_id`, `parent_ids`, `name`, `order_num`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remarks`, `del_flag`) values('100','0','0','默认全部','1','0',NULL,'2020-02-10 14:56:32','admin','2020-02-10 23:45:17',NULL,'0');
+
+ALTER TABLE `train_course_section` ADD COLUMN `directory_id` int(11) NULL COMMENT '课程目录ID' AFTER `name`;
