@@ -5,6 +5,7 @@ import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.exam.service.IExamExaminationService;
 import com.ruoyi.framework.jwt.JwtUtil;
+import com.ruoyi.framework.web.exception.user.AuthExpireException;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
@@ -17,12 +18,10 @@ import com.ruoyi.train.course.service.ITrainCourseSearchHistoryService;
 import com.ruoyi.train.course.service.ITrainCourseService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.ruoyi.common.base.AjaxResult.success;
 
@@ -51,6 +50,11 @@ public class ApiIndexController {
      */
     @GetMapping("/index")
     public AjaxResult index() {
+        SysUser user = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(), UserConstants.USER_VIP );
+        if (ObjectUtils.isEmpty(user)){
+            throw new AuthExpireException();
+        }
+
         // banner 列表
         List<Banner> banners = bannerService.selectBanners();
         // 精选推荐课程列表
@@ -86,11 +90,13 @@ public class ApiIndexController {
 
         //搜索成功后增加搜索记录
         SysUser user = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(), UserConstants.USER_VIP );
-        TrainCourseSearchHistory searchHistory = new TrainCourseSearchHistory();
-        searchHistory.setKeyword(name.trim());
-        searchHistory.setDelFlag(0);
-        searchHistory.setUserId(user.getUserId().toString());
-        trainCourseSearchHistoryService.insert(searchHistory);
+        if (!ObjectUtils.isEmpty(user)){
+            TrainCourseSearchHistory searchHistory = new TrainCourseSearchHistory();
+            searchHistory.setKeyword(name.trim());
+            searchHistory.setDelFlag(0);
+            searchHistory.setUserId(user.getUserId().toString());
+            trainCourseSearchHistoryService.insert(searchHistory);
+        }
 
         return success;
     }
@@ -104,8 +110,12 @@ public class ApiIndexController {
     @GetMapping("/searchHistory")
     public AjaxResult searchHistory() {
         SysUser user = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(), UserConstants.USER_VIP );
-        List<TrainCourseSearchHistory> list = trainCourseSearchHistoryService.searchHistory(user.getUserId().toString());
         AjaxResult success = success( "查询成功" );
+
+        if (!ObjectUtils.isEmpty(user)){
+            success.put("data",new ArrayList<>());
+        }
+        List<TrainCourseSearchHistory> list = trainCourseSearchHistoryService.searchHistory(user.getUserId().toString());
         success.put("data",list);
 
         return success;
@@ -119,6 +129,10 @@ public class ApiIndexController {
     @PostMapping("/cleanSearchHistory")
     public AjaxResult cleanSearchHistory() {
         SysUser user = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(), UserConstants.USER_VIP );
+        if (ObjectUtils.isEmpty(user)){
+            throw new AuthExpireException();
+        }
+
         TrainCourseSearchHistory searchHistory = new TrainCourseSearchHistory();
         searchHistory.setUserId(user.getUserId().toString());
         trainCourseSearchHistoryService.delete(searchHistory);
@@ -132,6 +146,11 @@ public class ApiIndexController {
      */
     @GetMapping("/moreCourses")
     public AjaxResult moreGoodsCourses(@RequestParam("type") String type) {
+        SysUser user = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(), UserConstants.USER_VIP );
+        if (ObjectUtils.isEmpty(user)){
+            throw new AuthExpireException();
+        }
+
         TrainCourseVO trainCourseVO = new TrainCourseVO();
         trainCourseVO.setState("1");
         if ("1".equals(type)){
