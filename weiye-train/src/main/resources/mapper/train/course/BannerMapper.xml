@@ -46,7 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
              <if test="delFlag != null "> and del_flag = #{delFlag}</if>
          </where>
-         order by sort
+         order by sort asc
     </select>
     <select id="checkBannerNameUnique" resultType="com.ruoyi.train.course.domain.Banner">
         select id, name from banner where name=#{name} and del_flag = '0'
@@ -60,6 +60,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         and
         NOW() between start_time and end_time
         and enabled = 1
-        order by sort
+        order by sort asc
     </select>
 </mapper>

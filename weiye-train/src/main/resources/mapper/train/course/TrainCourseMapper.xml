@@ -103,6 +103,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from train_course
         where state = '1' and is_good = 1 and del_flag = '0'
         limit 6
+        order by update_time desc
     </select>
     <select id="selectNewCourses" resultType="com.ruoyi.train.course.domain.TrainCourseVO">
         select
@@ -110,5 +111,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from train_course
         where state = '1' and is_new = 1 and del_flag = '0'
         limit 6
+        order by update_time desc
     </select>
 </mapper>
