@@ -99,5 +99,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="id != null ">  tcs.`id` = #{id}</if>
         </where>
     </select>
-    
+
+    <select id="apiSelectTrainCourseVOListByCourseId" resultType="com.ruoyi.train.course.domain.vo.ApiTrainCourseSectionVO">
+        select
+          tcs.`id` as id,
+          tcs.`name` as name,
+          tcs.`train_course_id` as trainCourseId,
+          tcs.`directory_id` as directoryId,
+          tcs.`type` as type,
+          tcs.`courseware` as courseWare,
+          tcs.`remark` as remark,
+          tcd.`name` AS directoryName,
+          tcd.`order_num` AS directoryOrderNum,
+          tcd.`parent_id` as directoryParentId,
+          tcd.`parent_ids` as directoryParentIds
+        from
+          `train_course_section` tcs
+          inner join `train_course_directory` tcd on tcs.`directory_id` = tcd.`id`
+        where tcs.`train_course_id` = #{courseId}
+          and tcs.`del_flag` = 0
+          and tcd.`del_flag` = 0
+    </select>
 </mapper>

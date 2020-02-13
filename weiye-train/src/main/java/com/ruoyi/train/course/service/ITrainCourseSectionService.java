@@ -3,6 +3,7 @@ package com.ruoyi.train.course.service;
 import com.ruoyi.framework.web.base.AbstractBaseService;
 import com.ruoyi.train.course.domain.TrainCourseSection;
 import com.ruoyi.train.course.domain.TrainCourseSectionVO;
+import com.ruoyi.train.course.domain.vo.ApiTrainCourseSectionVO;
 
 import java.util.List;
 
@@ -35,6 +36,13 @@ public interface ITrainCourseSectionService extends AbstractBaseService<TrainCou
      * @return
      */
     TrainCourseSectionVO selectTrainCourseVOById(Integer id);
+
+    /**
+     *
+     * @param courseId
+     * @return
+     */
+    List<ApiTrainCourseSectionVO> apiSelectTrainCourseVOTreeByCourseId(Integer courseId);
 
 	
 }
