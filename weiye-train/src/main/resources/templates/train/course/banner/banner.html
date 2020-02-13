@@ -75,9 +75,11 @@
 					title : '跳转类型',
 					formatter: function(value, row, index) {
 						if(row.openType=='1'){
+							return "小程序页面";
+						}else if(row.openType=='2'){
+							return "小程序tab页";
+						}else{
 							return "h5页面";
-						}else {
-							return "小程序";
 						}
 					},
 					//sortable: true
