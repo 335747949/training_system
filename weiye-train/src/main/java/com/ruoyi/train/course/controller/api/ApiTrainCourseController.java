@@ -16,10 +16,13 @@ import com.ruoyi.train.course.domain.TrainCourseSection;
 import com.ruoyi.train.course.domain.TrainCourseVO;
 import com.ruoyi.train.course.domain.vo.ApiCourseCategoryVO;
 import com.ruoyi.train.course.domain.vo.ApiCourseListByCategoryVO;
+import com.ruoyi.train.course.domain.vo.ApiTrainCourseSectionVO;
+import com.ruoyi.train.course.domain.vo.ApiTrainCourseVO;
 import com.ruoyi.train.course.service.ITrainCourseCategoryService;
 import com.ruoyi.train.course.service.ITrainCourseSectionService;
 import com.ruoyi.train.course.service.ITrainCourseService;
 import com.ruoyi.train.course.service.ITrainCourseUserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -127,9 +130,7 @@ public class ApiTrainCourseController extends BaseController {
      */
     @GetMapping("/trainCourse/{id}")
     public AjaxResult get(@PathVariable("id") Integer id) {
-        TrainCourse trainCourse = trainCourseService.selectById( id );
         boolean courseAuth = false;
-        String courseDays = configService.selectConfigByKey( "course.days" );
         String loginName = JwtUtil.getLoginName();
         if (StringUtils.isNotEmpty( loginName )) {
             SysUser sysUser = sysUserService.selectUserByLoginName( loginName,UserConstants.USER_VIP );
@@ -139,8 +140,17 @@ public class ApiTrainCourseController extends BaseController {
                 throw new AuthExpireException();
             }
         }
+        // 课程信息
+        TrainCourse trainCourse = trainCourseService.selectById( id );
+        ApiTrainCourseVO trainCourseVO = new ApiTrainCourseVO();
+        BeanUtils.copyProperties(trainCourse,trainCourseVO);
+        // 课程内容目录
+        List<ApiTrainCourseSectionVO> apiTrainCourseSectionVOList = trainCourseSectionService.apiSelectTrainCourseVOTreeByCourseId(id);
+        trainCourseVO.setDirectory(apiTrainCourseSectionVOList);
+        //
+        String courseDays = configService.selectConfigByKey( "course.days" );
         AjaxResult success = success( "查询成功" );
-        success.put( "data", trainCourse );
+        success.put( "data", trainCourseVO );
         success.put( "courseAuth", courseAuth );
         success.put( "courseDays", courseDays );
         return success;
