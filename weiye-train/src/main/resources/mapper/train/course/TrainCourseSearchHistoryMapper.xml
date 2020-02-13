@@ -35,7 +35,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from train_course_search_history
         where
         user_id = #{userId}
-        order by create_time desc
+        group by keyword
+        order by max(create_time) desc
         limit 20
     </select>
 
