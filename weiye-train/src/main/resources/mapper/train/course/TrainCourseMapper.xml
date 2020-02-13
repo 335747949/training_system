@@ -59,7 +59,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="updateTime != null "> and train_course.update_time = #{updateTime}</if>
              <if test="remark != null  and remark != '' "> and train_course.remark = #{remark}</if>
          </where>
-
         ORDER BY train_course.update_time desc
     </select>
     <select id="selectTrainCourseListForExcel" resultType="com.ruoyi.train.course.domain.TrainCourse">
@@ -102,15 +101,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectTrainCourseVo"/>
         from train_course
         where state = '1' and is_good = 1 and del_flag = '0'
-        limit 6
         order by update_time desc
+        limit 6
     </select>
     <select id="selectNewCourses" resultType="com.ruoyi.train.course.domain.TrainCourseVO">
         select
         <include refid="selectTrainCourseVo"/>
         from train_course
         where state = '1' and is_new = 1 and del_flag = '0'
-        limit 6
         order by update_time desc
+        limit 6
     </select>
 </mapper>

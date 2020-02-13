@@ -21,7 +21,7 @@ private static final long serialVersionUID = 1L;
     private Integer id;
 	        /** banner名称 */
 	    private String name;
-	        /** 跳转类型：1.跳转页面  2.跳转table页  3.跳转其他小程序 */
+	        /** 跳转类型：1.小程序页面  2.小程序tab页  3.h5页面*/
 	    private Integer openType;
 	        /** 跳转路径 */
 	    private String link;

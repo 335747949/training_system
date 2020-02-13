@@ -1,7 +1,7 @@
 CREATE TABLE `banner` (
 `id`  int(11) NOT NULL AUTO_INCREMENT COMMENT 'id' ,
 `name`  varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'banner名称' ,
-`open_type`  tinyint(4) NULL DEFAULT 1 COMMENT '跳转类型：1.h5页面 2..小程序' ,
+`open_type`  tinyint(4) NULL DEFAULT 1 COMMENT '跳转类型：1.小程序页面  2.小程序tab页  3.h5页面' ,
 `link`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '跳转路径' ,
 `image_url`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'banner图片地址' ,
 `sort`  int(11) NULL DEFAULT NULL COMMENT '排序' ,

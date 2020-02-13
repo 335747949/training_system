@@ -20,11 +20,15 @@
 				<div class="col-sm-8">
 					<div class="radio-box">
 						<input type="radio" id="openType1" name="openType" value="1" th:checked= "true">
-						<label for="openType1">h5页面</label>
+						<label for="openType1">小程序页面</label>
 					</div>
 					<div class="radio-box">
 						<input type="radio" id="openType2" name="openType" value="2">
-						<label for="openType2">小程序</label>
+						<label for="openType2">小程序tab页</label>
+					</div>
+					<div class="radio-box">
+						<input type="radio" id="openType3" name="openType" value="3">
+						<label for="openType3">h5页面</label>
 					</div>
 				</div>
 			</div>
@@ -42,7 +46,7 @@
 					<input id="imageUrl" name="imageUrl" class="form-control" type="hidden">
 					<div class="layui-upload">
 						<button type="button" class="layui-btn layui-btn-normal" id="test1">上传图片</button>
-						<span style="margin-left: 12px;"></span>
+						<span style="margin-left: 12px;">图片尺寸：702px*300px</span>
 						<div class="layui-upload-list">
 							<img class="layui-upload-img" style="width: 200px;height: auto;max-height: 150px;" id="demo1" name="demo1">
 							<p id="demoText"></p>
