@@ -181,7 +181,6 @@ public class ApiVipUserController extends BaseController {
     @PostMapping("/member/user/updatePwd")
     @ResponseBody
     public AjaxResult updatePwd(@RequestBody ApiVipUserUpdatePwdVO vo) {
-        Assert.hasText(vo.getLoginName(), "登录账号不能为空！");
         Assert.hasText(vo.getPassword(), "原密码不能为空！");
         Assert.hasText(vo.getNewPassword(), "新密码不能为空！");
         SysUser sysUser = sysUserService.selectUserByLoginName(JwtUtil.getLoginName(), UserConstants.USER_VIP);
@@ -189,14 +188,11 @@ public class ApiVipUserController extends BaseController {
         if (null == sysUser) {
             throw new AuthExpireException();
         }
+        String loginName = JwtUtil.getLoginName();
         // 校验填写的原密码是否与原密码一直
-        String inputPassword = passwordService.encryptPassword(vo.getLoginName(), vo.getPassword(), sysUser.getSalt());
+        String inputPassword = passwordService.encryptPassword(loginName, vo.getPassword(), sysUser.getSalt());
         if (!sysUser.getPassword().equals(inputPassword)) {
             return error("原密码错误！");
-        }
-        String loginName = JwtUtil.getLoginName();
-        if (!loginName.equals(vo.getLoginName())) {
-            return error("您无权修改其他用户密码！");
         }
         if (vo.getPassword().equals(vo.getNewPassword())) {
             return error("新密码不能和原密码相同！");
@@ -209,11 +205,6 @@ public class ApiVipUserController extends BaseController {
         user.setPassword(passwordService.encryptPassword(user.getLoginName(), vo.getNewPassword(), user.getSalt()));
         user.setAvatar(sysUser.getAvatar());
         user.setUpdateBy(sysUser.getPhonenumber());
-//        // 退出登录,刪除session和cookie
-//        Subject subject = SecurityUtils.getSubject();
-//        subject.logout();
-//        ShiroUtils.clearCachedAuthorizationInfo();
-//        sysUserOnlineService.deleteOnlineById(ShiroUtils.getSessionId());
         return toAjax(sysUserService.updateUserInfo(user));
     }
 
