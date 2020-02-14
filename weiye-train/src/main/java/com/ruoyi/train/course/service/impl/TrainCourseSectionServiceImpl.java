@@ -80,10 +80,18 @@ public class TrainCourseSectionServiceImpl extends AbstractBaseServiceImpl<Train
         return CourseSectionVOList1;
     }
 
+    /**
+     * 根据父级id获取子列表
+     * @param list
+     * @param pid
+     * @return
+     */
     private List<ApiTrainCourseSectionVO> getChildrenByPid(List<ApiTrainCourseSectionVO> list, Integer pid) {
         List<ApiTrainCourseSectionVO> children = new ArrayList<>();
         for (ApiTrainCourseSectionVO apiTrainCourseSectionVO : list) {
-            if (pid.equals(apiTrainCourseSectionVO.getDirectoryParentId())) {
+            if (100 == pid && pid.equals(apiTrainCourseSectionVO.getDirectoryParentId())) {
+                children.add(apiTrainCourseSectionVO);
+            } else if (pid.equals(apiTrainCourseSectionVO.getDirectoryParentId()) && null != apiTrainCourseSectionVO.getCourseWare()) {
                 children.add(apiTrainCourseSectionVO);
             }
         }

@@ -425,7 +425,7 @@ public class ApiExaminationController extends BaseController {
                 error++;
                 // v1.1.0修改：模拟考试错题，加入错题记录
                 if ("1".equals(examExaminationOld.getType())){
-                    examUserErrorQuestionService.insertError(question.getId().toString(), examUserExaminationFinishVO.getExaminationId().toString(), user);
+                    examUserErrorQuestionService.insertError(question.getExamQuestionId().toString(), examUserExaminationFinishVO.getExaminationId().toString(), user);
                 }
             }
         }

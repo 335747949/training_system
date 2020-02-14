@@ -27,39 +27,42 @@
 				</div>
 			</div>
 
-			<div class="form-group">
-				<label class="col-sm-3 control-label" title="课件类型（1-视频，2-附件）">课件类型：</label>
-				<div class="col-sm-8">
-					<select id="type"  name="type" th:with="type=${@dict.getType('train_course_section_type')}" class="form-control" >
-						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-					</select>
+			<div id="courseFile">
+				<div class="form-group">
+					<label class="col-sm-3 control-label" title="课件类型（1-视频，2-附件）">课件类型：</label>
+					<div class="col-sm-8">
+						<select id="type"  name="type" th:with="type=${@dict.getType('train_course_section_type')}" class="form-control" >
+							<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+						</select>
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label">上传课件：</label>
-<!--				<span id="upload_explain" class="fa fa-question-circle" aria-hidden="true"/>-->
-				<div class="col-sm-8">
-					<input id="courseware" name="courseware" class="form-control" type="hidden">
-					<div class="layui-upload">
-						<button type="button" class="layui-btn layui-btn-normal" id="testList">选择文件</button>
-							<span style="font-size: smaller"><br>视频仅支持mp4格式，单文件最大限制100mb，总大小不能超过2G。若文件过大，请对视频进行压缩/转码后上传。<br>可<a href="https://trainpics.weiye360.cn/test/20191227/707df6acbf424b8ab93e541f57a5228f.exe" style="color: blue">下载工具</a>进行视频处理</span>
-						<div class="layui-upload-list">
-							<table class="layui-table">
-								<thead>
-								<tr><th>文件名</th>
-									<th>大小</th>
-									<th>状态</th>
-									<th>操作</th>
-								</tr></thead>
-								<tbody id="demoList"></tbody>
-							</table>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">上传课件：</label>
+	<!--				<span id="upload_explain" class="fa fa-question-circle" aria-hidden="true"/>-->
+					<div class="col-sm-8">
+						<input id="courseware" name="courseware" class="form-control" type="hidden">
+						<div class="layui-upload">
+							<button type="button" class="layui-btn layui-btn-normal" id="testList">选择文件</button>
+								<span style="font-size: smaller"><br>视频仅支持mp4格式，单文件最大限制100mb，总大小不能超过2G。若文件过大，请对视频进行压缩/转码后上传。<br>可<a href="https://trainpics.weiye360.cn/test/20191227/707df6acbf424b8ab93e541f57a5228f.exe" style="color: blue">下载工具</a>进行视频处理</span>
+							<div class="layui-upload-list">
+								<table class="layui-table">
+									<thead>
+									<tr><th>文件名</th>
+										<th>大小</th>
+										<th>状态</th>
+										<th>操作</th>
+									</tr></thead>
+									<tbody id="demoList"></tbody>
+								</table>
+							</div>
+						</div>
+						<div class="layui-progress layui-progress-big" lay-showPercent="yes" lay-filter="progressBar">
+							<div class="layui-progress-bar layui-bg-red" lay-percent="0%"></div>
 						</div>
 					</div>
-					<div class="layui-progress layui-progress-big" lay-showPercent="yes" lay-filter="progressBar">
-						<div class="layui-progress-bar layui-bg-red" lay-percent="0%"></div>
-					</div>
 				</div>
 			</div>
+
 			<div class="form-group">	
 				<label class="col-sm-3 control-label">显示顺序：</label>
 				<div class="col-sm-8">
@@ -88,7 +91,7 @@
 			})
 		})
 
-
+		var uploadFlag = true;
 		var prefix = ctx + "train/trainCourseSection"
 		$("#form-trainCourseSection-add").validate({
 			rules:{
@@ -127,7 +130,7 @@
 		
 		function submitHandler() {
 	        if ($.validate.form()) {
-	            if(fileList.length==0){
+	            if(uploadFlag && fileList.length==0){
                     layer.msg('附件不能为空，请选择文件...');
 	                return false;
 				}
@@ -154,6 +157,16 @@
 
 		function doSubmit(index, layero){
 			var tree = layero.find("iframe")[0].contentWindow.$._tree;
+			var nodes = tree.getSelectedNodes();
+			if(nodes[0].pId === 100){
+				$("#courseFile").hide();
+				$("#type").val(2);
+				uploadFlag = false;
+			} else {
+				$("#courseFile").show();
+				uploadFlag = true;
+			}
+
 			if ($.tree.notAllowRoot(tree)) {
 				var body = layer.getChildFrame('body', index);
 				$("#treeId").val(body.find('#treeId').val());

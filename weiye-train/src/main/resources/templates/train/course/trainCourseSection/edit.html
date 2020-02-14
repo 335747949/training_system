@@ -7,9 +7,9 @@
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-trainCourseSection-edit" th:object="${trainCourseSection}">
             <input id="id" name="id" th:field="*{id}"  type="hidden">
-
 			<input id="trainCourseId" name="trainCourseId" th:value="${trainCourse.id}" class="form-control" type="hidden">
 			<input id="directoryId" name="directoryId" th:field="*{directoryId}" type="hidden"/>
+			<input id="directoryParentId" name="directoryParentId" th:field="*{directoryParentId}" type="hidden"/>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">课程目录：</label>
 				<div class="col-sm-8">
@@ -29,26 +29,28 @@
 					<input id="name" name="name" th:field="*{name}" class="form-control" type="text">
 				</div>
 			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label" title="课件类型（1-视频，2-附件）">课件类型：</label>
-				<div class="col-sm-8">
-					<select id="type"  name="type" th:with="type=${@dict.getType('train_course_section_type')}" class="form-control"  disabled>
-						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{type}"></option>
-					</select>
+			<div id="courseFile">
+				<div class="form-group">
+					<label class="col-sm-3 control-label" title="课件类型（1-视频，2-附件）">课件类型：</label>
+					<div class="col-sm-8">
+						<select id="type"  name="type" th:with="type=${@dict.getType('train_course_section_type')}" class="form-control"  disabled>
+							<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{type}"></option>
+						</select>
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label">课件：</label>
-				<div class="col-sm-8">
-					<input id="courseware" name="courseware" th:field="*{courseware}" class="form-control" type="text" readonly>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">课件：</label>
+					<div class="col-sm-8">
+						<input id="courseware" name="courseware" th:field="*{courseware}" class="form-control" type="text" readonly>
+					</div>
 				</div>
+				<!--			<div class="form-group">-->
+				<!--				<label class="col-sm-3 control-label">课件源地址：</label>-->
+				<!--				<div class="col-sm-8">-->
+				<!--					<input id="coursewareOriginUrl" name="coursewareOriginUrl" th:field="*{coursewareOriginUrl}" class="form-control" type="text" readonly>-->
+				<!--				</div>-->
+				<!--			</div>-->
 			</div>
-<!--			<div class="form-group">-->
-<!--				<label class="col-sm-3 control-label">课件源地址：</label>-->
-<!--				<div class="col-sm-8">-->
-<!--					<input id="coursewareOriginUrl" name="coursewareOriginUrl" th:field="*{coursewareOriginUrl}" class="form-control" type="text" readonly>-->
-<!--				</div>-->
-<!--			</div>-->
 			<div class="form-group">	
 				<label class="col-sm-3 control-label">显示顺序：</label>
 				<div class="col-sm-8">
@@ -106,6 +108,18 @@
 	            $.operate.save(prefix + "/edit", $('#form-trainCourseSection-edit').serialize());
 	        }
 	    }
+
+		$(document).ready(function(){
+			var pid = $("#directoryParentId").val();
+			console.log(pid);
+			if(pid == 100) {
+				console.log("hide");
+				$("#courseFile").hide();
+			} else {
+				console.log("show");
+				$("#courseFile").show();
+			}
+		});
 	</script>
 </body>
 </html>
