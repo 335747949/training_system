@@ -31,6 +31,12 @@ public class TrainCourseSectionVO
      */
     private String directoryName;
 
+
+    /**
+     * 课程目录父级ID
+     */
+    private Integer directoryParentId;
+
     /** 显示顺序 */
     private Integer orderNum;
     /** 课件类型 (1、音/視頻 2、課件)*/
@@ -193,6 +199,14 @@ public class TrainCourseSectionVO
 
     public void setDirectoryName(String directoryName) {
         this.directoryName = directoryName;
+    }
+
+    public Integer getDirectoryParentId() {
+        return directoryParentId;
+    }
+
+    public void setDirectoryParentId(Integer directoryParentId) {
+        this.directoryParentId = directoryParentId;
     }
 
     @Override

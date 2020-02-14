@@ -91,7 +91,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         tcs.update_by,
         tcs.update_time,
         tcs.remark,
-        tcd.`name` AS directoryName
+        tcd.`name` AS directoryName,
+        tcd.`parent_id` AS directoryParentId
         FROM
         train_course_section tcs
         LEFT JOIN `train_course_directory` tcd ON tcs.`directory_id` = tcd.`id`
