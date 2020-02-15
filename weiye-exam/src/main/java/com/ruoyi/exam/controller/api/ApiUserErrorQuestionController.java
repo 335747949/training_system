@@ -123,7 +123,7 @@ public class ApiUserErrorQuestionController extends BaseController {
      * @param id
      * @return
      */
-    @DeleteMapping("/error/question/delete/{id}")
+    @GetMapping("/error/question/delete/{id}")
     public AjaxResult deleteErrorQuestion(@PathVariable("id") String id) {
         SysUser sysUser = sysUserService.selectUserByLoginName(JwtUtil.getLoginName(), UserConstants.USER_VIP);
         // 无效用户
