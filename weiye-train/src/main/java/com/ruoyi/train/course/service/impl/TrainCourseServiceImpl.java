@@ -95,8 +95,9 @@ public class TrainCourseServiceImpl extends AbstractBaseServiceImpl<TrainCourseM
         TrainCourseVO trainCourseVO = new TrainCourseVO();
         // 用户端仅展示公开课程
         trainCourseVO.setState("1");
+        trainCourseVO.setDelFlag("0");
         trainCourseVO.setTrainCourseCategoryId(getTrainCourseVOCategoryId(apiCourseListByCategoryVO));
-        List<TrainCourseVO> list = trainCourseMapper.selectTrainCourseList(trainCourseVO);
+        List<TrainCourseVO> list = trainCourseMapper.ApiSelectTrainCourseList(trainCourseVO);
         return new PageInfo<>(list);
     }
 
@@ -172,9 +173,10 @@ public class TrainCourseServiceImpl extends AbstractBaseServiceImpl<TrainCourseM
         TrainCourseVO trainCourseVOCondition = new TrainCourseVO();
         // 用户端仅展示公开课程
         trainCourseVOCondition.setState("1");
+        trainCourseVOCondition.setDelFlag("0");
         trainCourseVOCondition.setTrainCourseCategoryId(trainCourse.getTrainCourseCategoryId());
         PageHelper.startPage(1, size + 1);
-        List<TrainCourseVO> list3 = trainCourseMapper.selectTrainCourseList(trainCourseVOCondition);
+        List<TrainCourseVO> list3 = trainCourseMapper.ApiSelectTrainCourseList(trainCourseVOCondition);
         // 第一次去重并组装出参
         for (TrainCourseVO trainCourseVO: list3) {
             // 相同课程不再推荐
@@ -189,7 +191,7 @@ public class TrainCourseServiceImpl extends AbstractBaseServiceImpl<TrainCourseM
         // 不够推荐数量size个时,再从全部课程中随机推荐课程
         trainCourseVOCondition.setTrainCourseCategoryId(null);
         PageHelper.startPage(1, size + 1);
-        List<TrainCourseVO> list = trainCourseMapper.selectTrainCourseList(trainCourseVOCondition);
+        List<TrainCourseVO> list = trainCourseMapper.ApiSelectTrainCourseList(trainCourseVOCondition);
         // 第二次去重并组装出参
         for (TrainCourseVO trainCourseVO: list) {
             // 相同课程不在推荐
