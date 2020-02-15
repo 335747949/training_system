@@ -133,7 +133,6 @@ public class ApiVipUserController extends BaseController {
     @PostMapping("/member/user/edit")
     @Transactional(rollbackFor = Exception.class)
     public AjaxResult editSave(@RequestBody SysUser sysUser) {
-        Assert.hasText(sysUser.getLoginName(), "登录账号不能为空！");
         Assert.hasText(sysUser.getUserName(), "用户姓名不能为空！");
         // 原用户信息
         SysUser userInfo = sysUserService.selectUserByLoginName(JwtUtil.getLoginName(), UserConstants.USER_VIP);
@@ -142,9 +141,6 @@ public class ApiVipUserController extends BaseController {
             throw new AuthExpireException();
         }
         String loginName = JwtUtil.getLoginName();
-        if (!loginName.equals(sysUser.getLoginName())) {
-            return error("您无权修改其他用户姓名！");
-        }
         if (userInfo.getUserName().equals(sysUser.getUserName())) {
             return success();
         }
@@ -161,18 +157,20 @@ public class ApiVipUserController extends BaseController {
     @Log(title = "重置密码", businessType = BusinessType.UPDATE)
     @PostMapping("/member/user/resetPwd")
     @ResponseBody
-    public AjaxResult resetPwdSave(@RequestBody SysUser user) {
-        Assert.hasText(user.getLoginName(), "登录账号不能为空！");
-        Assert.notNull(user.getUserId(), "用户ID不能为空！");
-        String loginName = JwtUtil.getLoginName();
-        if (!loginName.equals(user.getLoginName())) {
-            return error("您无权修改其他用户密码！");
+    public AjaxResult resetPwdSave() {
+        SysUser userInfo = sysUserService.selectUserByLoginName(JwtUtil.getLoginName(), UserConstants.USER_VIP);
+        // 无效用户
+        if (null == userInfo) {
+            throw new AuthExpireException();
         }
+        SysUser user = new SysUser();
+        user.setUserId(userInfo.getUserId());
         // 默认密码
         String defaultPwd = sysConfigMapper.checkConfigKeyUnique("sys.user.initPassword").getConfigValue();
+        user.setAvatar(userInfo.getAvatar());
         user.setPassword(defaultPwd);
         user.setSalt(ShiroUtils.randomSalt());
-        user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
+        user.setPassword(passwordService.encryptPassword(userInfo.getLoginName(), user.getPassword(), user.getSalt()));
         return toAjax(sysUserService.resetUserPwd(user));
     }
 
@@ -200,9 +198,8 @@ public class ApiVipUserController extends BaseController {
         // 更新对象
         SysUser user = new SysUser();
         user.setUserId(sysUser.getUserId());
-        user.setLoginName(vo.getLoginName());
         user.setSalt(ShiroUtils.randomSalt());
-        user.setPassword(passwordService.encryptPassword(user.getLoginName(), vo.getNewPassword(), user.getSalt()));
+        user.setPassword(passwordService.encryptPassword(loginName, vo.getNewPassword(), user.getSalt()));
         user.setAvatar(sysUser.getAvatar());
         user.setUpdateBy(sysUser.getPhonenumber());
         return toAjax(sysUserService.updateUserInfo(user));
