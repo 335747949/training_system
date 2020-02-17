@@ -348,4 +348,43 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
         }
         return ExamConstants.EXAM_NAME_NOT_UNIQUE;
     }
+
+    /**
+     * 获取考试列表
+     * @param type  1.模拟考试  2.正式考试
+     * @param userId 用户id
+     * @return
+     */
+    @Override
+    public List<ExamExamination> selectExamList(String type, Long userId) {
+        List<ExamExamination> list = new ArrayList<>();
+        Map<String, Object> map = new HashMap<>();
+        map.put("delFlag",0);
+        if ("1".equals(type)){
+            list = examExaminationMapper.selectMockListFromWeb(map);
+        }else if ("2".equals(type)){
+            list = examExaminationMapper.selectFormalListFromWeb(map);
+        }
+
+        List<ExamExamination> resultList = new ArrayList<>();
+        for (ExamExamination exam : list) {
+            int count = examExaminationService.countExamQuestion(exam.getId());
+            if (count > 0){
+                int maxExamNumber = exam.getExamNumber();
+                // 根据用户id统计用户已参加考试次数
+                ExamUserExamination examUserExamination = new ExamUserExamination();
+                examUserExamination.setVipUserId(userId.intValue());
+                examUserExamination.setExamPaperId(exam.getExamPaperId());
+                examUserExamination.setExamExaminationId(exam.getId());
+                //考试记录集合
+                List<ExamUserExamination> userExamination = examUserExaminationService.selectLastOne(examUserExamination);
+
+                //超过考试次数
+                if (userExamination.size() < maxExamNumber) {
+                    resultList.add(exam);
+                }
+            }
+        }
+        return resultList;
+    }
 }

@@ -11,7 +11,6 @@ import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.base.BaseController;
 import com.ruoyi.framework.web.page.PageDomain;
 import com.ruoyi.framework.web.page.TableSupport;
-import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
 import io.swagger.annotations.Api;
@@ -57,6 +56,8 @@ public class ApiExaminationController extends BaseController {
     @Autowired
     private IExamPaperTypeNumberService examPaperTypeNumberService;
 
+    @Autowired
+    private IExamUserErrorQuestionService examUserErrorQuestionService;
 
     /**
      * 获取考试列表
@@ -85,6 +86,30 @@ public class ApiExaminationController extends BaseController {
 
 
     /**
+     * 获取考试列表
+     * @param type 1.模拟考试  2.正式考试
+     * @return
+     */
+    @GetMapping("/examination/examList")
+    public AjaxResult examList(@RequestParam("type") String type) {
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(), UserConstants.USER_VIP );
+        Map<String, Object> map = new HashMap<>();
+        List<ExamExamination> list = examExaminationService.selectExamList(type, sysUser.getUserId());
+
+        // 服务端分页
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        Map<String,Object> reslutMap = PaginUtil.getPagingResultMap(list,pageNum,pageSize);
+
+        AjaxResult success = success( "查询成功" );
+        success.put( "data", reslutMap.get("result") );
+        success.put("pages",reslutMap.get("totalPageNum"));
+        success.put("total",reslutMap.get("totalRowNum"));
+        return success;
+    }
+
+    /**
      * 开始考试
      *
      * @param id 考试id
@@ -109,6 +134,21 @@ public class ApiExaminationController extends BaseController {
         ExamUserExamination insert = new ExamUserExamination();
         //正式考试
         if (type.equals( "2" )) {
+
+            // 若为正式考试，如果未报名先将考试相关信息入到用户考试表中
+            ExamExaminationUser examExaminationUser = new ExamExaminationUser();
+            examExaminationUser.setVipUserId( Integer.parseInt( userId.toString() ) );
+            examExaminationUser.setExamExaminationId( Integer.parseInt( id ) );
+            List<ExamExaminationUser> list = examExaminationUserService.selectList(examExaminationUser);
+            if (list.isEmpty()){
+                examExaminationUser.setDelFlag( "0" );
+                examExaminationUser.setCreateDate( new Date() );
+                examExaminationUser.setCreateBy( sysUser.getLoginName() );
+                if (examExaminationUserService.insertOne( examExaminationUser ) == 0){
+                    return AjaxResult.error("请重新考试");
+                }
+            }
+
             ExamUserExamination examUserExamination = new ExamUserExamination();
             examUserExamination.setVipUserId( userId );
             examUserExamination.setExamPaperId( examPaperId );
@@ -255,7 +295,10 @@ public class ApiExaminationController extends BaseController {
 
 
     /**
-     * 交卷
+     * 提交试卷
+     * v1.1.0
+     * 1、增加：模拟开始错题加入错题模拟考试记录，错题本；模拟考试及格分数
+     * 2、模拟考试，展示分数，及格分数，正确、错误，漏答个数
      * @return
      */
     @PostMapping("/examination/finish")
@@ -306,6 +349,7 @@ public class ApiExaminationController extends BaseController {
         }
 
 
+        // v1.1.0修改：模拟考试正常增加考试记录，避免下方逻辑错误，在考试记录查询时过滤掉处理
         //如果是模拟考试，考试记录新增数据
         if (examUserExaminationId == -1) {
             ExamUserExamination insert = new ExamUserExamination();
@@ -355,6 +399,8 @@ public class ApiExaminationController extends BaseController {
             examUserExaminationQuestionService.insertOne(item);
             data.add(returnItem);
         }
+
+        // v1.1.0修改：模拟考试正常增加考试记录，避免下方逻辑错误，在考试记录查询时过滤掉处理
         ExamUserExamination examUserExamination = examUserExaminationService.selectById(examUserExaminationId);
         examUserExamination.setScore(score);
         examUserExamination.setUpdateDate(new Date());
@@ -377,6 +423,10 @@ public class ApiExaminationController extends BaseController {
                 right++;
             } else {
                 error++;
+                // v1.1.0修改：模拟考试错题，加入错题记录
+                if ("1".equals(examExaminationOld.getType())){
+                    examUserErrorQuestionService.insertError(question.getExamQuestionId().toString(), examUserExaminationFinishVO.getExaminationId().toString(), user);
+                }
             }
         }
 
@@ -393,7 +443,8 @@ public class ApiExaminationController extends BaseController {
 
 
     /**
-     * 考试记录列表
+     * 小程序考试记录列表
+     * v1.1.0修改：只查询正式考试记录列表
      * @return
      */
     @GetMapping("/user/examination/page")
@@ -401,6 +452,8 @@ public class ApiExaminationController extends BaseController {
         SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName(),UserConstants.USER_VIP );
         ExamUserExaminationVO bean = new ExamUserExaminationVO();
         bean.setVipUserId( sysUser.getUserId().intValue() );
+        // 只查询【正式考试】记录列表
+        bean.setExaminationType(2);
         List<ExamUserExaminationVO> data = examUserExaminationService.selectMyExamUserExamination( bean );
         for (ExamUserExaminationVO userExaminationVO : data) {
             if (userExaminationVO.getUpdateDate() == null){

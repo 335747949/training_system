@@ -42,4 +42,8 @@ public interface ExamExaminationMapper  extends MyMapper<ExamExamination>
      * @return
      */
     List<ExamExaminationVO> selectByNameAndType(@Param("name") String name, @Param("type") String type);
+
+    List<ExamExamination> selectMockListFromWeb(Map<String, Object> map);
+
+    List<ExamExamination> selectFormalListFromWeb(Map<String, Object> map);
 }

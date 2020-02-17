@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="id"    />
         <result property="vipUserId"    column="vip_user_id"    />
         <result property="examQuestionId"    column="exam_question_id"    />
+        <result property="examinationId"    column="examination_id"    />
         <result property="createBy"    column="create_by"    />
         <result property="createDate"    column="create_date"    />
         <result property="updateBy"    column="update_by"    />
@@ -45,6 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="id"    />
         <result property="vipUserId"    column="vip_user_id"    />
         <result property="examQuestionId"    column="exam_question_id"    />
+        <result property="examinationId"    column="examination_id"    />
         <result property="createBy"    column="create_by"    />
         <result property="createDate"    column="create_date"    />
         <result property="updateBy"    column="update_by"    />
@@ -126,6 +128,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectExamUserErrorQuestionDetailList" resultMap="ExamUserErrorQuestionResultDetailVO">
         select
         <include refid="selectExamUserErrorQuestionVo"/>,
+        euq.examination_id as examination_id,
         eq.id as eq_id,
         eq.title as eq_title,
         eq.answer as eq_answer,
@@ -156,6 +159,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateDate != null "> and update_date = #{updateDate}</if>
             <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
             <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+            <if test="examinationId != null  and examinationId != '' "> and examination_id = #{examinationId}</if>
         </where>
     </select>
+
+    <select id="selectErrorQuestionExaminationList" parameterType="java.lang.Integer" resultType="com.ruoyi.exam.domain.ExamApiUserErrorExaminationVO">
+        SELECT
+            eueq.`examination_id` AS examinationId,
+            ee.`name` AS examinationName,
+            COUNT(eueq.`examination_id`) AS errorQuestionNum,
+            eueq.`create_date` AS create_date
+        FROM
+            `exam_user_error_question` eueq
+             INNER JOIN `exam_examination` ee ON eueq.`examination_id` = ee.`id`
+        where
+            eueq.`vip_user_id` = #{userId}
+            AND ee.`type` = 1
+            GROUP BY eueq.`examination_id`
+            ORDER BY create_date DESC
+    </select>
+
 </mapper>

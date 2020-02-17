@@ -1,16 +1,19 @@
 package com.ruoyi.exam.service.impl;
 
-import java.util.Date;
-import java.util.List;
-
-import com.ruoyi.exam.domain.ExamUserErrorQuestionVO;
-import com.ruoyi.system.domain.SysUser;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.ruoyi.exam.mapper.ExamUserErrorQuestionMapper;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.exam.domain.ExamApiUserErrorExaminationVO;
 import com.ruoyi.exam.domain.ExamUserErrorQuestion;
+import com.ruoyi.exam.domain.ExamUserErrorQuestionVO;
+import com.ruoyi.exam.mapper.ExamUserErrorQuestionMapper;
 import com.ruoyi.exam.service.IExamUserErrorQuestionService;
 import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+import com.ruoyi.system.domain.SysUser;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
 /**
  * 我的错题 服务层实现
  *
@@ -47,11 +50,15 @@ public class ExamUserErrorQuestionServiceImpl extends AbstractBaseServiceImpl<Ex
     public List<ExamUserErrorQuestionVO> selectExamUserErrorQuestionDetailList(ExamUserErrorQuestion examUserErrorQuestion) {
         return examUserErrorQuestionMapper.selectExamUserErrorQuestionDetailList(examUserErrorQuestion);
     }
+
     @Override
-    public int insertError(String questionId, SysUser sysUser) {
+    public int insertError(String questionId, String examinationId, SysUser sysUser) {
 
         ExamUserErrorQuestion examUserErrorQuestion = new ExamUserErrorQuestion();
         examUserErrorQuestion.setExamQuestionId(Integer.parseInt(questionId));
+        if (!StringUtils.isEmpty(examinationId)) {
+            examUserErrorQuestion.setExaminationId(Integer.parseInt(examinationId));
+        }
         examUserErrorQuestion.setVipUserId(sysUser.getUserId().intValue());
         List<ExamUserErrorQuestion> db = examUserErrorQuestionService.selectList(examUserErrorQuestion);
         if(db.size()>0){
@@ -79,4 +86,13 @@ public class ExamUserErrorQuestionServiceImpl extends AbstractBaseServiceImpl<Ex
         return examUserErrorQuestionMapper.selectExamUserErrorQuestionList(examUserErrorQuestion);
     }
 
+    /**
+     * 查询存在错题的模拟考试的列表
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<ExamApiUserErrorExaminationVO> selectErrorQuestionExaminationList(@Param("userId") Integer userId) {
+        return examUserErrorQuestionMapper.selectErrorQuestionExaminationList(userId);
+    }
 }

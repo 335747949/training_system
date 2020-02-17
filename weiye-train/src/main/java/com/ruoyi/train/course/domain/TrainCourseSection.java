@@ -2,7 +2,7 @@ package com.ruoyi.train.course.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.ruoyi.common.base.BaseEntity;
+
 import javax.persistence.Id;
 import java.util.Date;
 
@@ -23,6 +23,12 @@ public class TrainCourseSection
     private Integer trainCourseId;
     /** 章节名称 */
     private String name;
+
+    /**
+     * 课程目录ID
+     */
+    private Integer directoryId;
+
     /** 显示顺序 */
     private Integer orderNum;
     /** 课件类型 (1、音/視頻 2、課件)*/
@@ -169,6 +175,14 @@ public class TrainCourseSection
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Integer getDirectoryId() {
+        return directoryId;
+    }
+
+    public void setDirectoryId(Integer directoryId) {
+        this.directoryId = directoryId;
     }
 
     @Override

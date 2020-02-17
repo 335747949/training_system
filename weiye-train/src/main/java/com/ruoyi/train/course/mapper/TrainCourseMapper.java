@@ -25,6 +25,14 @@ public interface TrainCourseMapper  extends MyMapper<TrainCourse>
      */
 	public List<TrainCourseVO> selectTrainCourseList(TrainCourseVO trainCourse);
 
+	/**
+	 * api接口查询课程列表
+	 *
+	 * @param trainCourse 课程信息
+	 * @return 课程集合
+	 */
+	List<TrainCourseVO> ApiSelectTrainCourseList(TrainCourseVO trainCourse);
+
     List<TrainCourse> selectTrainCourseListForExcel(TrainCourseVO trainCourse);
 
 	/**
@@ -34,4 +42,15 @@ public interface TrainCourseMapper  extends MyMapper<TrainCourse>
 	 * @return
 	 */
     List<TrainCourse> selectByNameAndcategoryId(@Param("name") String name, @Param("trainCourseCategoryId") Integer trainCourseCategoryId);
+
+	/**
+	 * 根据课程分类模糊查询课程列表
+	 * @param parentIds
+	 * @return
+	 */
+	List<TrainCourseVO> selectTrainCourseListByCategory(@Param("parentIds") String parentIds, @Param("courseCategoryId") String courseCategoryId);
+
+    List<TrainCourseVO> selectGoodsCourses();
+
+	List<TrainCourseVO> selectNewCourses();
 }
