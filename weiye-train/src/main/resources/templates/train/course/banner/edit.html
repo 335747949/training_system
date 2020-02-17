@@ -95,7 +95,7 @@
 			<div class="form-group">	
 				<label class="col-sm-3 control-label">备注：</label>
 				<div class="col-sm-8">
-					<input id="remarks" name="remarks" th:field="*{remarks}" class="form-control" type="text">
+					<textarea id="remarks" name="remarks" class="layui-textarea"></textarea>
 				</div>
 			</div>
 		</form>
@@ -112,7 +112,7 @@
 			rules:{
 				name:{
 					required: true,
-					maxlength: 50,
+					maxlength: 30,
 					remote: {
 						url: ctx + "train/course/banner/checkBannerNameUnique",
 						type: "post",
@@ -147,6 +147,7 @@
 				},
 				endTime:{
 					required: true,
+					compareDate:"startTime",
 				},
 				enabled:{
 					required: true,

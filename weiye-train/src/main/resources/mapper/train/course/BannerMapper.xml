@@ -46,7 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
              <if test="delFlag != null "> and del_flag = #{delFlag}</if>
          </where>
-         order by sort asc
+         order by update_date desc
     </select>
     <select id="checkBannerNameUnique" resultType="com.ruoyi.train.course.domain.Banner">
         select id, name from banner where name=#{name} and del_flag = '0'
