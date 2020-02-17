@@ -112,7 +112,7 @@
 			rules:{
 				name:{
 					required: true,
-					maxlength: 50,
+					maxlength: 30,
 					remote: {
 						url: ctx + "train/course/banner/checkBannerNameUnique",
 						type: "post",
@@ -147,6 +147,7 @@
 				},
 				endTime:{
 					required: true,
+					compareDate:"startTime",
 				},
 				enabled:{
 					required: true,
