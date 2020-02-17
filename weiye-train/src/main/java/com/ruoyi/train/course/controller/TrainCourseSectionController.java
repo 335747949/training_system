@@ -1,10 +1,14 @@
 package com.ruoyi.train.course.controller;
 
-import java.util.Arrays;
-import java.util.List;
-
+import com.ruoyi.common.annotation.Log;
+import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.ExcelUtil;
+import com.ruoyi.framework.web.base.BaseController;
+import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.train.course.domain.TrainCourse;
 import com.ruoyi.train.course.domain.TrainCourseSection;
+import com.ruoyi.train.course.domain.TrainCourseSectionVO;
 import com.ruoyi.train.course.service.ITrainCourseSectionService;
 import com.ruoyi.train.course.service.ITrainCourseService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -14,12 +18,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.framework.web.base.BaseController;
-import com.ruoyi.framework.web.page.TableDataInfo;
-import com.ruoyi.common.base.AjaxResult;
-import com.ruoyi.common.utils.ExcelUtil;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 课程章节 信息操作处理
@@ -54,7 +55,7 @@ public class TrainCourseSectionController extends BaseController
 	@ResponseBody
 	public TableDataInfo list(TrainCourseSection trainCourseSection)
 	{
-		List<TrainCourseSection> list = trainCourseSectionService.selectTrainCourseSectionPage(trainCourseSection);
+		List<TrainCourseSectionVO> list = trainCourseSectionService.selectTrainCourseSectionPage(trainCourseSection);
 		return getDataTable(list);
 	}
 
@@ -123,11 +124,11 @@ public class TrainCourseSectionController extends BaseController
 	@GetMapping("/edit/{id}")
 	public String edit(@PathVariable("id") Integer id, ModelMap mmap)
 	{
-		TrainCourseSection trainCourseSection = trainCourseSectionService.selectById(id);
+		TrainCourseSectionVO trainCourseSectionVO = trainCourseSectionService.selectTrainCourseVOById(id);
 
-		TrainCourse trainCourse = trainCourseService.selectById( trainCourseSection.getTrainCourseId() );
+		TrainCourse trainCourse = trainCourseService.selectById( trainCourseSectionVO.getTrainCourseId() );
 		mmap.put( "trainCourse", trainCourse );
-		mmap.put("trainCourseSection", trainCourseSection);
+		mmap.put("trainCourseSection", trainCourseSectionVO);
 		return prefix + "/edit";
 	}
 

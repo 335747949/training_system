@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.train.course.mapper.TrainCourseMapper">
     
-    <resultMap type="TrainCourseVO" id="TrainCourseResultVO">
+    <resultMap type="com.ruoyi.train.course.domain.TrainCourseVO" id="TrainCourseResultVO">
         <result property="id"    column="id"    />
         <result property="deptId"    column="dept_id"    />
         <result property="trainCourseCategoryId"    column="train_course_category_id"    />
@@ -13,6 +13,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="cover"    column="cover"    />
         <result property="description"    column="description"    />
         <result property="state"    column="state"    />
+        <result property="isNew"    column="is_new"    />
+        <result property="isGood"    column="is_good"    />
         <result property="delFlag"    column="del_flag"    />
         <result property="createBy"    column="create_by"    />
         <result property="createTime"    column="create_time"    />
@@ -23,10 +25,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<sql id="selectTrainCourseVo">
          train_course.id, train_course.dept_id, train_course.train_course_category_id, train_course.name,train_course.price,
-          train_course.cover, train_course.description, train_course.state, train_course.del_flag, train_course.create_by,
+          train_course.cover, train_course.description, train_course.state, train_course.is_new, train_course.is_good,train_course.del_flag, train_course.create_by,
           train_course.create_time, train_course.update_by, train_course.update_time, train_course.remark    </sql>
 	
-    <select id="selectTrainCourseList" parameterType="TrainCourseVO" resultMap="TrainCourseResultVO">
+    <select id="selectTrainCourseList" parameterType="com.ruoyi.train.course.domain.TrainCourseVO" resultMap="TrainCourseResultVO">
         select
         <include refid="selectTrainCourseVo"/>,
         tcc.name AS trainCourseCategoryName
@@ -48,6 +50,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="cover != null  and cover != '' "> and train_course.cover = #{cover}</if>
              <if test="description != null  and description != '' "> and train_course.description = #{description}</if>
              <if test="state != null  and state != '' "> and train_course.state = #{state}</if>
+             <if test="isNew != null  and isNew != '' "> and train_course.is_new = #{isNew}</if>
+             <if test="isGood != null  and isGood != '' "> and train_course.is_good = #{isGood}</if>
              <if test="delFlag != null  and delFlag != '' "> and train_course.del_flag = #{delFlag}</if>
              <if test="createBy != null  and createBy != '' "> and train_course.create_by = #{createBy}</if>
              <if test="createTime != null "> and train_course.create_time = #{createTime}</if>
@@ -55,9 +59,48 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="updateTime != null "> and train_course.update_time = #{updateTime}</if>
              <if test="remark != null  and remark != '' "> and train_course.remark = #{remark}</if>
          </where>
-
         ORDER BY train_course.update_time desc
     </select>
+
+    <!-- api接口查询课程列表，条件：课程内容不为空 v1.1.0 2020.02.15 -->
+    <select id="ApiSelectTrainCourseList" parameterType="com.ruoyi.train.course.domain.TrainCourseVO" resultMap="TrainCourseResultVO">
+        select
+        <include refid="selectTrainCourseVo"/>,
+        tcc.name AS trainCourseCategoryName
+        from train_course
+        left join train_course_category tcc on tcc.id = train_course.train_course_category_id
+        <if test="userId != null ">
+            left join train_course_user tcu on tcu.train_course_id =train_course.id
+        </if>
+        <where>
+            /* v1.1.0  课程内容不能为空 2020.2.15*/
+            train_course.id IN (SELECT DISTINCT(train_course_id) FROM `train_course_section` WHERE directory_id IS NOT NULL AND del_flag = 0)
+            /* */
+
+            <if test="userId != null "> and tcu.vip_user_id = #{userId}</if>
+            <if test="id != null "> and train_course.id = #{id}</if>
+            <if test="deptId != null "> and train_course.dept_id = #{deptId}</if>
+            <if test="trainCourseCategoryId != null ">
+                and (train_course.train_course_category_id in
+                (select id from train_course_category where (FIND_IN_SET(#{trainCourseCategoryId},parent_ids))
+                or train_course_category_id = #{trainCourseCategoryId} AND status = 0 AND del_flag = '0'))
+            </if>
+            <if test="name != null  and name != '' "> and train_course.name like CONCAT('%', #{name},'%')</if>
+            <if test="cover != null  and cover != '' "> and train_course.cover = #{cover}</if>
+            <if test="description != null  and description != '' "> and train_course.description = #{description}</if>
+            <if test="state != null  and state != '' "> and train_course.state = #{state}</if>
+            <if test="isNew != null  and isNew != '' "> and train_course.is_new = #{isNew}</if>
+            <if test="isGood != null  and isGood != '' "> and train_course.is_good = #{isGood}</if>
+            <if test="delFlag != null  and delFlag != '' "> and train_course.del_flag = #{delFlag}</if>
+            <if test="createBy != null  and createBy != '' "> and train_course.create_by = #{createBy}</if>
+            <if test="createTime != null "> and train_course.create_time = #{createTime}</if>
+            <if test="updateBy != null  and updateBy != '' "> and train_course.update_by = #{updateBy}</if>
+            <if test="updateTime != null "> and train_course.update_time = #{updateTime}</if>
+            <if test="remark != null  and remark != '' "> and train_course.remark = #{remark}</if>
+        </where>
+        ORDER BY train_course.update_time desc
+    </select>
+
     <select id="selectTrainCourseListForExcel" resultType="com.ruoyi.train.course.domain.TrainCourse">
         select
         <include refid="selectTrainCourseVo"/>
@@ -77,5 +120,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectTrainCourseVo"/>
         from train_course
         where name = #{name} and train_course_category_id = #{trainCourseCategoryId} and del_flag = '0'
+    </select>
+
+    <select id="selectTrainCourseListByCategory" resultMap="TrainCourseResultVO">
+        select
+        <include refid="selectTrainCourseVo"/>,
+        tcc.name AS trainCourseCategoryName,
+        tcc.parent_ids
+        from train_course
+        left join train_course_category tcc on tcc.id = train_course.train_course_category_id
+        <where>
+            train_course.`del_flag` = '0'
+            <if test="parentIds != null and parentIds != '' "> and tcc.`parent_ids` like CONCAT(#{parentIds},'%')</if>
+            <if test="courseCategoryId != null and courseCategoryId != '' "> and train_course.train_course_category_id = #{courseCategoryId}</if>
+            ORDER BY train_course.update_time DESC
+        </where>
+    </select>
+    <select id="selectGoodsCourses" resultType="com.ruoyi.train.course.domain.TrainCourseVO">
+        select
+        <include refid="selectTrainCourseVo"/>
+        from train_course
+        where state = '1' and is_good = 1 and del_flag = '0'
+        order by update_time desc
+        limit 6
+    </select>
+    <select id="selectNewCourses" resultType="com.ruoyi.train.course.domain.TrainCourseVO">
+        select
+        <include refid="selectTrainCourseVo"/>
+        from train_course
+        where state = '1' and is_new = 1 and del_flag = '0'
+        order by update_time desc
+        limit 6
     </select>
 </mapper>
