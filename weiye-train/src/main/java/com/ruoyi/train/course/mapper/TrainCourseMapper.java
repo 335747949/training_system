@@ -25,6 +25,14 @@ public interface TrainCourseMapper  extends MyMapper<TrainCourse>
      */
 	public List<TrainCourseVO> selectTrainCourseList(TrainCourseVO trainCourse);
 
+	/**
+	 * api接口查询课程列表
+	 *
+	 * @param trainCourse 课程信息
+	 * @return 课程集合
+	 */
+	List<TrainCourseVO> ApiSelectTrainCourseList(TrainCourseVO trainCourse);
+
     List<TrainCourse> selectTrainCourseListForExcel(TrainCourseVO trainCourse);
 
 	/**
