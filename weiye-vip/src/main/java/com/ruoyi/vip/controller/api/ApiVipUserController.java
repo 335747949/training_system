@@ -141,6 +141,7 @@ public class ApiVipUserController extends BaseController {
             throw new AuthExpireException();
         }
         String loginName = JwtUtil.getLoginName();
+        // 用户姓名未做修改是直接返回成功
         if (userInfo.getUserName().equals(sysUser.getUserName())) {
             return success();
         }
@@ -192,8 +193,9 @@ public class ApiVipUserController extends BaseController {
         if (!sysUser.getPassword().equals(inputPassword)) {
             return error("原密码错误！");
         }
+        // 密码未做修改是直接返回成功
         if (vo.getPassword().equals(vo.getNewPassword())) {
-            return error("新密码不能和原密码相同！");
+            return success();
         }
         // 更新对象
         SysUser user = new SysUser();
