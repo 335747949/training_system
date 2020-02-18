@@ -64,7 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="id != null "> and id = #{id}</if>
             <if test="trainCourseId != null "> and train_course_id = #{trainCourseId}</if>
-            <if test="name != null  and name != '' "> and name = #{name}</if>
+            <if test="name != null  and name != '' "> and tcs.name = #{name}</if>
             <if test="orderNum != null "> and order_num = #{orderNum}</if>
             <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>

@@ -94,7 +94,7 @@
 			<div class="form-group">	
 				<label class="col-sm-3 control-label">备注：</label>
 				<div class="col-sm-8">
-					<input id="remarks" name="remarks" class="form-control" type="text">
+					<textarea id="remarks" name="remarks" class="layui-textarea"></textarea>
 				</div>
 			</div>
 		</form>
@@ -134,6 +134,9 @@
 				},
 				openType:{
 					required: true,
+				},
+				link:{
+					max:250
 				},
 				imageUrl:{
 					required: true,
