@@ -97,6 +97,7 @@ public class TrainCourseServiceImpl extends AbstractBaseServiceImpl<TrainCourseM
         trainCourseVO.setState("1");
         trainCourseVO.setDelFlag("0");
         trainCourseVO.setTrainCourseCategoryId(getTrainCourseVOCategoryId(apiCourseListByCategoryVO));
+        PageHelper.startPage(apiCourseListByCategoryVO.getPageNum(), apiCourseListByCategoryVO.getPageSize());
         List<TrainCourseVO> list = trainCourseMapper.ApiSelectTrainCourseList(trainCourseVO);
         return new PageInfo<>(list);
     }
