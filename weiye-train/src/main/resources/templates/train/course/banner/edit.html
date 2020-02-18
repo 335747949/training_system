@@ -242,11 +242,6 @@
 
 		function submitHandler() {
 	        if ($.validate.form()) {
-				var imgSrc = document.getElementById("demo1").getAttribute("src");
-				if (!imgSrc){
-					layer.msg("请上传banner图片",{icon: 2});
-					return;
-				}
 	            $.operate.save(prefix + "/edit", $('#form-banner-edit').serialize());
 	        }
 	    }
