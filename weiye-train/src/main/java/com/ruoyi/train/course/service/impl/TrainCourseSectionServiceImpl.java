@@ -37,6 +37,19 @@ public class TrainCourseSectionServiceImpl extends AbstractBaseServiceImpl<Train
 	{
         return trainCourseSectionMapper.selectTrainCourseSectionList(trainCourseSection);
 	}
+
+    /**
+     * 查询课程章节VO列表
+     *
+     * @param trainCourseSection 课程章节信息
+     * @return 课程章节集合
+     */
+    @Override
+    public List<TrainCourseSectionVO> selectTrainCourseSectionVOList(TrainCourseSection trainCourseSection)
+    {
+        return trainCourseSectionMapper.selectTrainCourseSectionVOList2(trainCourseSection);
+    }
+
     /**
      * 查询课程章节分页列表
      *
