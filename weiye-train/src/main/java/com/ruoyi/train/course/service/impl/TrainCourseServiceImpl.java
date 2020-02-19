@@ -98,7 +98,7 @@ public class TrainCourseServiceImpl extends AbstractBaseServiceImpl<TrainCourseM
         trainCourseVO.setDelFlag("0");
         trainCourseVO.setTrainCourseCategoryId(getTrainCourseVOCategoryId(apiCourseListByCategoryVO));
         PageHelper.startPage(apiCourseListByCategoryVO.getPageNum(), apiCourseListByCategoryVO.getPageSize());
-        List<TrainCourseVO> list = trainCourseMapper.ApiSelectTrainCourseList(trainCourseVO);
+        List<TrainCourseVO> list = trainCourseMapper.apiSelectTrainCourseList(trainCourseVO);
         return new PageInfo<>(list);
     }
 
@@ -115,7 +115,7 @@ public class TrainCourseServiceImpl extends AbstractBaseServiceImpl<TrainCourseM
     @Override
     public Map<String, Object> selectMoreTrainCourses(TrainCourseVO trainCourseVO) {
         Page page = startPage();
-        List<TrainCourseVO> trainCourseVOList = trainCourseMapper.selectTrainCourseList(trainCourseVO);
+        List<TrainCourseVO> trainCourseVOList = trainCourseMapper.apiSelectTrainCourseList(trainCourseVO);
         Map<String, Object> map = new HashMap<>();
         map.put("page",page);
         map.put("list",trainCourseVOList);
@@ -177,7 +177,7 @@ public class TrainCourseServiceImpl extends AbstractBaseServiceImpl<TrainCourseM
         trainCourseVOCondition.setDelFlag("0");
         trainCourseVOCondition.setTrainCourseCategoryId(trainCourse.getTrainCourseCategoryId());
         PageHelper.startPage(1, size + 1);
-        List<TrainCourseVO> list3 = trainCourseMapper.ApiSelectTrainCourseList(trainCourseVOCondition);
+        List<TrainCourseVO> list3 = trainCourseMapper.apiSelectTrainCourseList(trainCourseVOCondition);
         // 第一次去重并组装出参
         for (TrainCourseVO trainCourseVO: list3) {
             // 相同课程不再推荐
@@ -192,7 +192,7 @@ public class TrainCourseServiceImpl extends AbstractBaseServiceImpl<TrainCourseM
         // 不够推荐数量size个时,再从全部课程中随机推荐课程
         trainCourseVOCondition.setTrainCourseCategoryId(null);
         PageHelper.startPage(1, size + 1);
-        List<TrainCourseVO> list = trainCourseMapper.ApiSelectTrainCourseList(trainCourseVOCondition);
+        List<TrainCourseVO> list = trainCourseMapper.apiSelectTrainCourseList(trainCourseVOCondition);
         // 第二次去重并组装出参
         for (TrainCourseVO trainCourseVO: list) {
             // 相同课程不在推荐

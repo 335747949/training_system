@@ -76,6 +76,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by order_num asc
     </select>
 
+    <select id="selectTrainCourseSectionVOList2" parameterType="TrainCourseSection" resultType="com.ruoyi.train.course.domain.TrainCourseSectionVO">
+        SELECT
+        tcs.id,
+        tcs.train_course_id,
+        tcs.name,
+        tcs.type,
+        tcs.courseware,
+        tcs.order_num,
+        tcs.directory_id,
+        tcs.del_flag,
+        tcs.create_by,
+        tcs.create_time,
+        tcs.update_by,
+        tcs.update_time,
+        tcs.remark,
+        tcd.`name` AS directoryName
+        FROM
+        train_course_section tcs
+        INNER JOIN `train_course_directory` tcd ON tcs.`directory_id` = tcd.`id`
+        <where>
+            <if test="trainCourseId != null "> and train_course_id = #{trainCourseId}</if>
+        </where>
+        ORDER BY tcd.id ASC
+    </select>
+
     <select id="selectTrainCourseVOById" resultType="com.ruoyi.train.course.domain.TrainCourseSectionVO">
         SELECT
         tcs.id,
