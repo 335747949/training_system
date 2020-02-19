@@ -16,10 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 课程 服务层实现
@@ -165,7 +162,7 @@ public class TrainCourseServiceImpl extends AbstractBaseServiceImpl<TrainCourseM
     @Override
     public List<TrainCourseVO> recommendCourseByCategory(Integer courseId, Integer size) {
         // 出参，推荐的六个课程
-        HashMap<Integer,TrainCourseVO> resultMap = new HashMap<>();
+        HashMap<Integer,TrainCourseVO> resultMap = new LinkedHashMap<>();
         // 查询此课程的分类
         TrainCourse condition = new TrainCourse();
         condition.setId(courseId);
