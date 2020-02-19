@@ -7,6 +7,7 @@
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-trainCourseSection-add">
 			<input name="directoryId"  type="hidden" id="treeId"/>
+			<input name="directoryParentId"  type="hidden" id="treePId"/>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">课程目录：</label>
 				<div class="col-sm-8">
@@ -171,6 +172,7 @@
 				var body = layer.getChildFrame('body', index);
 				$("#treeId").val(body.find('#treeId').val());
 				$("#treeName").val(body.find('#treeName').val());
+				$("#treePId").val(nodes[0].pId);
 				layer.close(index);
 			}
 		}

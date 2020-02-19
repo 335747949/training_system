@@ -9,6 +9,7 @@ import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.train.course.domain.TrainCourse;
 import com.ruoyi.train.course.domain.TrainCourseSection;
 import com.ruoyi.train.course.domain.TrainCourseSectionVO;
+import com.ruoyi.train.course.service.ITrainCourseDirectoryService;
 import com.ruoyi.train.course.service.ITrainCourseSectionService;
 import com.ruoyi.train.course.service.ITrainCourseService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -36,6 +37,9 @@ public class TrainCourseSectionController extends BaseController
 
 	@Autowired
 	private ITrainCourseSectionService trainCourseSectionService;
+
+	@Autowired
+	private ITrainCourseDirectoryService trainCourseDirectoryService;
 
 	@Autowired
 	private ITrainCourseService trainCourseService;
@@ -92,18 +96,32 @@ public class TrainCourseSectionController extends BaseController
 	@PostMapping("/add")
 	@ResponseBody
 	@Transactional(rollbackFor = Exception.class)
-	public AjaxResult addSave(TrainCourseSection trainCourseSection)
+	public AjaxResult addSave(TrainCourseSectionVO trainCourseSectionVO)
 	{
-		String courseware = trainCourseSection.getCourseware();
+		// 添加章节是校验是否已添加父章节，大章节无需校验
+		if (100 != trainCourseSectionVO.getDirectoryParentId()) {
+			TrainCourseSection condition = new TrainCourseSection();
+			condition.setTrainCourseId(trainCourseSectionVO.getTrainCourseId());
+			condition.setDirectoryId(trainCourseSectionVO.getDirectoryParentId());
+			condition.setDelFlag("0");
+			List<TrainCourseSection> list = trainCourseSectionService.selectList(condition);
+			if (list.isEmpty()) {
+				return error("请先添加父章节课程内容！");
+			}
+		} else {
+			trainCourseSectionVO.setCourseware("");
+		}
+		//
+		String courseware = trainCourseSectionVO.getCourseware();
 		String[] coursewares = courseware.split(",");
 		List<String> coursewareList = Arrays.asList(coursewares);
-		int orderNum = trainCourseSection.getOrderNum();
-		String courseName = trainCourseSection.getName();
+		int orderNum = trainCourseSectionVO.getOrderNum();
+		String courseName = trainCourseSectionVO.getName();
 		int count = 1;
 		if (coursewareList.size()>1){
 			for (String item : coursewares){
 				TrainCourseSection courseSection = new TrainCourseSection();
-				BeanUtils.copyProperties(trainCourseSection,courseSection);
+				BeanUtils.copyProperties(trainCourseSectionVO,courseSection);
 				courseSection.setOrderNum(orderNum);
 				courseSection.setCourseware(item);
 				courseSection.setName(courseName + "("+ count +")");
@@ -113,6 +131,8 @@ public class TrainCourseSectionController extends BaseController
 			}
 			return AjaxResult.success(courseware.length());
 		}else {
+			TrainCourseSection trainCourseSection = new TrainCourseSection();
+			BeanUtils.copyProperties(trainCourseSectionVO,trainCourseSection);
 			return toAjax(trainCourseSectionService.insertSelective(trainCourseSection));
 		}
 
