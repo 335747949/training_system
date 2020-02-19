@@ -35,6 +35,14 @@ public interface TrainCourseSectionMapper  extends MyMapper<TrainCourseSection>
 	public List<TrainCourseSectionVO> selectTrainCourseSectionVOList(TrainCourseSection trainCourseSection);
 
 	/**
+	 * pc端查询课程内容列表
+	 *
+	 * @param trainCourseSection 课程章节信息
+	 * @return 课程章节集合
+	 */
+	public List<TrainCourseSectionVO> selectTrainCourseSectionVOList2(TrainCourseSection trainCourseSection);
+
+	/**
 	 *
 	 * @param id
 	 * @return
