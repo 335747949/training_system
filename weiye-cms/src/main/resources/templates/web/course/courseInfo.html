@@ -234,7 +234,7 @@
                 <ul style="padding-bottom: 24px;">
                     <li style="margin-top: 24px;" th:if="trainCourseSections" th:each="sections,obj:${trainCourseSections}" >
                         <a th:if="${trainCourse.price==0 || courseAuth}" th:id="'section'+${obj.index+1}" th:href="@{'/web/course/courseSections.html/'+${sections.id}}">
-                        <span th:text="${sections.name}"> </span>
+                        <span th:text="${sections.directoryName}  + '  '  + ${sections.name}"> </span>
                         </a>
 <!--                        <a th:if="!${courseAuth}" onclick="shop()">-->
 <!--                            <span th:text="${sections.name}"> </span>-->

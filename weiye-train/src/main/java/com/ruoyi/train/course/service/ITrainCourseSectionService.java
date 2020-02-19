@@ -31,6 +31,14 @@ public interface ITrainCourseSectionService extends AbstractBaseService<TrainCou
     public List<TrainCourseSection> selectTrainCourseSectionList(TrainCourseSection trainCourseSection);
 
     /**
+     * 查询课程章节VO列表
+     *
+     * @param trainCourseSection 课程章节信息
+     * @return 课程章节集合
+     */
+    List<TrainCourseSectionVO> selectTrainCourseSectionVOList(TrainCourseSection trainCourseSection);
+
+    /**
      *
      * @param id
      * @return
