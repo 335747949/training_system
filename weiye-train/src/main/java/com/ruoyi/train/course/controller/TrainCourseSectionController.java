@@ -111,6 +111,15 @@ public class TrainCourseSectionController extends BaseController
 		} else {
 			trainCourseSectionVO.setCourseware("");
 		}
+		// 相同章节重复性校验
+		TrainCourseSection condition = new TrainCourseSection();
+		condition.setTrainCourseId(trainCourseSectionVO.getTrainCourseId());
+		condition.setDirectoryId(trainCourseSectionVO.getDirectoryId());
+		condition.setDelFlag("0");
+		List<TrainCourseSection> list = trainCourseSectionService.selectList(condition);
+		if (!list.isEmpty()) {
+			return error("此目录下已添加课程内容，请重新选择目录！");
+		}
 		//
 		String courseware = trainCourseSectionVO.getCourseware();
 		String[] coursewares = courseware.split(",");
