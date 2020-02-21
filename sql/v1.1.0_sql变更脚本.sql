@@ -101,3 +101,27 @@ insert into `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `url`,
 insert into `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `url`, `menu_type`, `visible`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) values('2096','课程目录修改','2094','2','#','F','0','train:course:directory:edit','#','admin','2020-02-10 12:37:24','',NULL,'');
 insert into `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `url`, `menu_type`, `visible`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) values('2097','课程目录删除','2094','3','#','F','0','train:course:directory:remove','#','admin','2020-02-10 12:37:57','',NULL,'');
 insert into `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `url`, `menu_type`, `visible`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) values('2098','课程目录搜索','2094','4','#','F','0','train:course:directory:list','#','admin','2020-02-10 12:38:50','',NULL,'');
+
+insert into `train_course_section` (`train_course_id`, `name`, `directory_id`, `type`, `courseware`, `order_num`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`, `del_flag`) values('5','企业文化','101','2','','1','admin','2020-02-14 21:07:41','admin','2020-02-14 21:07:41','企业文化','0');
+update `train_course_section` set `directory_id` = 102 where `id` = 10;
+
+insert into `train_course_section` (`train_course_id`, `name`, `directory_id`, `type`, `courseware`, `order_num`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`, `del_flag`) values('6','人事规章制度','101','2','','1','admin','2020-02-14 21:07:41','admin','2020-02-14 21:07:41','人事规章制度','0');
+update `train_course_section` set `directory_id` = 102 where `id` = 6;
+
+insert into `train_course_section` (`train_course_id`, `name`, `directory_id`, `type`, `courseware`, `order_num`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`, `del_flag`) values('8','行政规章制度','101','2','','1','admin','2020-02-14 21:07:41','admin','2020-02-14 21:07:41','行政规章制度','0');
+update `train_course_section` set `directory_id` = 102 where `id` = 9;
+
+insert into `train_course_section` (`train_course_id`, `name`, `directory_id`, `type`, `courseware`, `order_num`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`, `del_flag`) values('7','财务制度','101','2','','1','admin','2020-02-14 21:07:41','admin','2020-02-14 21:07:41','财务制度','0');
+update `train_course_section` set `directory_id` = 102 where `id` = 12;
+
+insert into `train_course_section` (`train_course_id`, `name`, `directory_id`, `type`, `courseware`, `order_num`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`, `del_flag`) values('9','GSP管理知识','101','2','','1','admin','2020-02-14 21:07:41','admin','2020-02-14 21:07:41','GSP管理知识','0');
+update `train_course_section` set `directory_id` = 102 where `id` = 11;
+
+insert into `train_course_section` (`train_course_id`, `name`, `directory_id`, `type`, `courseware`, `order_num`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`, `del_flag`) values('3','代码提交规范','101','2','','1','admin','2020-02-14 21:07:41','admin','2020-02-14 21:07:41','代码提交规范','0');
+update `train_course_section` set `directory_id` = 102 where `id` = 3;
+
+insert into `train_course_section` (`train_course_id`, `name`, `directory_id`, `type`, `courseware`, `order_num`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`, `del_flag`) values('2','接口开发规范','101','2','','1','admin','2020-02-14 21:07:41','admin','2020-02-14 21:07:41','接口开发规范','0');
+update `train_course_section` set `directory_id` = 102 where `id` = 1;
+
+insert into `train_course_section` (`train_course_id`, `name`, `directory_id`, `type`, `courseware`, `order_num`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`, `del_flag`) values('1','Mysql数据库规范','101','2','','1','admin','2020-02-14 21:07:41','admin','2020-02-14 21:07:41','Mysql数据库规范','0');
+update `train_course_section` set `directory_id` = 102 where `id` = 2;
