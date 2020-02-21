@@ -2,45 +2,30 @@ package com.ruoyi.cms.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.ruoyi.common.base.AjaxResult;
-import com.ruoyi.common.config.Global;
-import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.constant.UserConstants;
-import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.exam.domain.ExamPractice;
 import com.ruoyi.exam.service.IExamPracticeService;
-import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.base.BaseController;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
-import com.ruoyi.train.course.domain.TrainCourse;
-import com.ruoyi.train.course.domain.TrainCourseCategory;
-import com.ruoyi.train.course.domain.TrainCourseSection;
-import com.ruoyi.train.course.domain.TrainCourseVO;
+import com.ruoyi.train.course.domain.*;
 import com.ruoyi.train.course.service.ITrainCourseCategoryService;
 import com.ruoyi.train.course.service.ITrainCourseSectionService;
 import com.ruoyi.train.course.service.ITrainCourseService;
 import com.ruoyi.train.course.service.ITrainCourseUserService;
 import com.ruoyi.vip.domain.VipUserCourseSection;
-import com.ruoyi.vip.domain.vo.VipUserCourseSectionVO;
 import com.ruoyi.vip.service.IVipUserCourseSectionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -133,7 +118,7 @@ public class CmsController  extends BaseController {
         TrainCourse trainCourse = trainCourseService.selectById( id );
         TrainCourseSection trainCourseSection = new TrainCourseSection();
         trainCourseSection.setTrainCourseId( id );
-        List<TrainCourseSection> trainCourseSections = trainCourseSectionService.selectTrainCourseSectionList( trainCourseSection );
+        List<TrainCourseSectionVO> trainCourseSections = trainCourseSectionService.selectTrainCourseSectionVOList( trainCourseSection );
         ExamPractice examPractice = new ExamPractice();
         examPractice.setTrainCourseId( id );
         List<ExamPractice> examPractices = examPracticeService.selectExamPracticeList( examPractice );
@@ -162,7 +147,7 @@ public class CmsController  extends BaseController {
             TrainCourseSection tcs = trainCourseSectionService.selectById( id );
         TrainCourseSection trainCourseSection = new TrainCourseSection();
         trainCourseSection.setTrainCourseId( tcs.getTrainCourseId() );
-        List<TrainCourseSection> trainCourseSections = trainCourseSectionService.selectTrainCourseSectionList( trainCourseSection );
+        List<TrainCourseSectionVO> trainCourseSections = trainCourseSectionService.selectTrainCourseSectionVOList( trainCourseSection );
         ExamPractice examPractice = new ExamPractice();
         examPractice.setTrainCourseId( id );
         map.put( "trainCourseSection", tcs );

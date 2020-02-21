@@ -117,12 +117,34 @@
                     },
                     {
                         field : 'state',
-                        title : '是否公开',
+                        title : '是否展示',
                         formatter: function(value, row, index) {
                             return $.table.selectDictLabel(datasState, value);
                         }
                     },
-                    {
+					{
+						field : 'isNew',
+						title : '最新推荐',
+						formatter: function(value, row, index) {
+							if(row.isNew=='1'){
+								return "是";
+							}else{
+								return "否";
+							}
+						},
+						//sortable: true
+					},{
+						field : 'isGood',
+						title : '精品推荐',
+						formatter: function(value, row, index) {
+							if(row.isGood=='1'){
+								return "是";
+							}else{
+								return "否";
+							}
+						},
+						//sortable: true
+					},{
                         field : 'createBy',
                         title : '创建者',
                     },

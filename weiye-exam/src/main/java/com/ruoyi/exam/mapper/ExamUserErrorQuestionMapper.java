@@ -1,10 +1,11 @@
 package com.ruoyi.exam.mapper;
 
+import com.ruoyi.exam.domain.ExamApiUserErrorExaminationVO;
 import com.ruoyi.exam.domain.ExamUserErrorQuestion;
-import java.util.List;
-
 import com.ruoyi.exam.domain.ExamUserErrorQuestionVO;
 import com.ruoyi.framework.web.base.MyMapper;
+
+import java.util.List;
 
 /**
  * 我的错题 数据层
@@ -36,5 +37,12 @@ public interface ExamUserErrorQuestionMapper  extends MyMapper<ExamUserErrorQues
 	 * @return
 	 */
 	List<ExamUserErrorQuestionVO> selectExamUserErrorQuestionDetailList(ExamUserErrorQuestion examUserErrorQuestion);
+
+	/**
+	 * 查询存在错题的模拟考试的列表
+	 * @param userId
+	 * @return
+	 */
+	List<ExamApiUserErrorExaminationVO> selectErrorQuestionExaminationList(Integer userId);
 
 }

@@ -42,4 +42,10 @@ public class ExamConstants {
      */
     public final static String TRAIN_COURSE_NAME_UNIQUE = "0";
     public final static String TRAIN_COURSE_NAME_NOT_UNIQUE = "1";
+
+    /**
+     * 试题课程目录名称是否唯一的返回结果码
+     */
+    public final static String TRAIN_COURSE_DIRECTORY_NAME_UNIQUE = "0";
+    public final static String TRAIN_COURSE_DIRECTORY_NAME_NOT_UNIQUE = "1";
 }

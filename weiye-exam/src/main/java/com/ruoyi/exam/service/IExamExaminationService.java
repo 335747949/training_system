@@ -66,4 +66,6 @@ public interface IExamExaminationService extends AbstractBaseService<ExamExamina
      * @return
      */
     String checkNameUnique(String name, String type);
+
+    List<ExamExamination> selectExamList(String type, Long userId);
 }

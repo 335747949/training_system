@@ -1,7 +1,8 @@
 package com.ruoyi.train.course.service;
 
-import com.ruoyi.train.course.domain.TrainCourseCategory;
 import com.ruoyi.framework.web.base.AbstractBaseService;
+import com.ruoyi.train.course.domain.TrainCourseCategory;
+import com.ruoyi.train.course.domain.vo.ApiCourseCategoryVO;
 
 import java.util.List;
 import java.util.Map;
@@ -97,4 +98,11 @@ public interface ITrainCourseCategoryService extends AbstractBaseService<TrainCo
      * @return
      */
     String checkNameUnique(String name, Long parentId);
+
+    /**
+     * api查询课程分类树
+     * v1.1.0
+     * @return
+     */
+    List<ApiCourseCategoryVO> selectCategoryTreeList();
 }

@@ -122,7 +122,7 @@
                         <li class="list-item" th:classappend="${section.id}==${trainCourseSection.id} ? 'list-item-active' : 'list-item'">
                             <div class="list-item-left hover-text" th:text="${obj.index+1}"></div>
                             <div class="list-item-right">
-                                <div class="list-item-name hover-text" th:text="${section.name}"></div>
+                                <div class="list-item-name hover-text" th:text="${section.directoryName} + '  ' + ${section.name}"></div>
                                 <div class="list-item-date" th:text="'创建于：'+*{#dates.format(section.createTime,'yyyy-MM-dd HH:mm:ss')}"></div>
                             </div>
                         </li>

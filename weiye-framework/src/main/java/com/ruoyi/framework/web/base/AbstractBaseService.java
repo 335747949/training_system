@@ -1,5 +1,7 @@
 package com.ruoyi.framework.web.base;
 
+import com.github.pagehelper.Page;
+
 import java.util.List;
 
 /**
@@ -119,5 +121,5 @@ public abstract interface AbstractBaseService<T> {
     /**
      * 设置请求分页数据
      */
-    public void startPage();
+    public Page startPage();
 }

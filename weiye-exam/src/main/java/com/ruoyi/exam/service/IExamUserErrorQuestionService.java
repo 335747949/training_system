@@ -1,11 +1,12 @@
 package com.ruoyi.exam.service;
 
+import com.ruoyi.exam.domain.ExamApiUserErrorExaminationVO;
 import com.ruoyi.exam.domain.ExamUserErrorQuestion;
-import java.util.List;
-
 import com.ruoyi.exam.domain.ExamUserErrorQuestionVO;
 import com.ruoyi.framework.web.base.AbstractBaseService;
 import com.ruoyi.system.domain.SysUser;
+
+import java.util.List;
 
 /**
  * 我的错题 服务层
@@ -46,5 +47,12 @@ public interface IExamUserErrorQuestionService extends AbstractBaseService<ExamU
     List<ExamUserErrorQuestionVO> selectExamUserErrorQuestionDetailList(ExamUserErrorQuestion examUserErrorQuestion);
 
 
-    int insertError(String questionId, SysUser sysUser);
+    int insertError(String questionId, String examinationId, SysUser sysUser);
+
+    /**
+     * 查询存在错题的模拟考试的列表
+     * @param userId
+     * @return
+     */
+    List<ExamApiUserErrorExaminationVO> selectErrorQuestionExaminationList(Integer userId);
 }

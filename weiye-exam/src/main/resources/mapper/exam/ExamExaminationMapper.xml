@@ -233,4 +233,84 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectExamExaminationVo"/>
         from exam_examination where name = #{name} and type = #{type} and del_flag = '0'
     </select>
+
+    <select id="selectMockListFromWeb" resultType="com.ruoyi.exam.domain.ExamExamination">
+        select
+        DISTINCT <include refid="selectExamExaminationVo"/>
+        ,tc.name as traincourse_name
+        ,eeu.vip_user_id examExaminationUserVipUserId
+        ,eeu.create_date examExaminationCreateDate
+        from exam_examination exam_examination
+        INNER JOIN train_course tc ON exam_examination.train_course_id = tc.id
+        LEFT JOIN exam_examination_user eeu ON eeu.exam_examination_id = exam_examination.id
+        LEFT join train_course_user tcu on tcu.train_course_id=exam_examination.train_course_id
+        <where>
+            exam_examination.type = '1'
+            and
+            <![CDATA[((enable_control_time = '1' and end_time > NOW() and start_time < NOW())
+            or enable_control_time = '0')]]>
+            <if test="id != null "> and exam_examination.id = #{id}</if>
+            <if test="deptId != null "> and exam_examination.dept_id = #{deptId}</if>
+            <if test="examPaperId != null "> and exam_examination.exam_paper_id = #{examPaperId}</if>
+            <if test="name != null  and name != '' "> and exam_examination.name like concat('%', #{name}, '%')</if>
+            <if test="type != null  and type != '' "> and exam_examination.type = #{type}</if>
+            <if test="enableControlTime != null  and enableControlTime != '' "> and exam_examination.enable_control_time = #{enableControlTime}</if>
+            <if test="startTime != null "> and exam_examination.start_time = #{startTime}</if>
+            <if test="endTime != null "> and exam_examination.end_time = #{endTime}</if>
+            <if test="timeLength != null "> and exam_examination.time_length = #{timeLength}</if>
+            <if test="examNumber != null "> and exam_examination.exam_number = #{examNumber}</if>
+            <if test="passMark != null "> and exam_examination.pass_mark = #{passMark}</if>
+            <if test="questionDisorder != null  and questionDisorder != '' "> and exam_examination.question_disorder = #{questionDisorder}</if>
+            <if test="finishedPaper != null  and finishedPaper != '' "> and exam_examination.finished_paper = #{finishedPaper}</if>
+            <if test="examEnd != null  and examEnd != '' "> and exam_examination.exam_end = #{examEnd}</if>
+            <if test="examinationUserLimit != null  and examinationUserLimit != '' "> and exam_examination.examination_user_limit = #{examinationUserLimit}</if>
+            <if test="createBy != null  and createBy != '' "> and exam_examination.create_by = #{createBy}</if>
+            <if test="createDate != null "> and exam_examination.create_date = #{createDate}</if>
+            <if test="updateBy != null  and updateBy != '' "> and exam_examination.update_by = #{updateBy}</if>
+            <if test="updateDate != null "> and exam_examination.update_date = #{updateDate}</if>
+            <if test="remarks != null  and remarks != '' "> and exam_examination.remarks = #{remarks}</if>
+            <if test="delFlag != null  and delFlag != '' "> and exam_examination.del_flag = #{delFlag}</if>
+        </where>
+        ORDER BY exam_examination.update_date desc
+    </select>
+
+    <select id="selectFormalListFromWeb" resultType="com.ruoyi.exam.domain.ExamExamination">
+        select
+        DISTINCT <include refid="selectExamExaminationVo"/>
+        ,tc.name as traincourse_name
+        ,eeu.vip_user_id examExaminationUserVipUserId
+        ,eeu.create_date examExaminationCreateDate
+        from exam_examination exam_examination
+        INNER JOIN train_course tc ON exam_examination.train_course_id = tc.id
+        LEFT JOIN exam_examination_user eeu ON eeu.exam_examination_id = exam_examination.id
+        LEFT join train_course_user tcu on tcu.train_course_id=exam_examination.train_course_id
+        <where>
+            exam_examination.type = '2'
+            and
+            <![CDATA[((enable_control_time = '1' and end_time > NOW() and start_time < NOW())
+            or enable_control_time = '0')]]>
+            <if test="id != null "> and exam_examination.id = #{id}</if>
+            <if test="deptId != null "> and exam_examination.dept_id = #{deptId}</if>
+            <if test="examPaperId != null "> and exam_examination.exam_paper_id = #{examPaperId}</if>
+            <if test="name != null  and name != '' "> and exam_examination.name like concat('%', #{name}, '%')</if>
+            <if test="type != null  and type != '' "> and exam_examination.type = #{type}</if>
+            <if test="enableControlTime != null  and enableControlTime != '' "> and exam_examination.enable_control_time = #{enableControlTime}</if>
+            <if test="startTime != null "> and exam_examination.start_time = #{startTime}</if>
+            <if test="endTime != null "> and exam_examination.end_time = #{endTime}</if>
+            <if test="timeLength != null "> and exam_examination.time_length = #{timeLength}</if>
+            <if test="examNumber != null "> and exam_examination.exam_number = #{examNumber}</if>
+            <if test="passMark != null "> and exam_examination.pass_mark = #{passMark}</if>
+            <if test="questionDisorder != null  and questionDisorder != '' "> and exam_examination.question_disorder = #{questionDisorder}</if>
+            <if test="finishedPaper != null  and finishedPaper != '' "> and exam_examination.finished_paper = #{finishedPaper}</if>
+            <if test="examEnd != null  and examEnd != '' "> and exam_examination.exam_end = #{examEnd}</if>
+            <if test="examinationUserLimit != null  and examinationUserLimit != '' "> and exam_examination.examination_user_limit = #{examinationUserLimit}</if>
+            <if test="createBy != null  and createBy != '' "> and exam_examination.create_by = #{createBy}</if>
+            <if test="createDate != null "> and exam_examination.create_date = #{createDate}</if>
+            <if test="updateBy != null  and updateBy != '' "> and exam_examination.update_by = #{updateBy}</if>
+            <if test="updateDate != null "> and exam_examination.update_date = #{updateDate}</if>
+            <if test="remarks != null  and remarks != '' "> and exam_examination.remarks = #{remarks}</if>
+            <if test="delFlag != null  and delFlag != '' "> and exam_examination.del_flag = #{delFlag}</if>
+        </where>
+        ORDER BY exam_examination.update_date desc
+    </select>
 </mapper>

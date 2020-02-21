@@ -26,7 +26,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-3 control-label" title="（默认 1-公开，2-不公开）">是否公开：</label>
+				<label class="col-sm-3 control-label" title="（默认 1-展示，2-不展示）">是否展示：</label>
 				<div class="col-sm-8">
 					<select id="state"  name="state" th:with="type=${@dict.getType('train_open_state')}" class="form-control" >
 						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
@@ -55,12 +55,41 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label">最新推荐：</label>
+				<div class="col-sm-8">
+					<div class="radio-box">
+						<input type="radio" id="isNew1" name="isNew" value="0" th:checked= "true">
+						<label for="isNew1">否</label>
+					</div>
+					<div class="radio-box">
+						<input type="radio" id="isNew2" name="isNew" value="1">
+						<label for="isNew2">是</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">精品推荐：</label>
+				<div class="col-sm-8">
+					<div class="radio-box">
+						<input type="radio" id="isGood1" name="isGood" value="0" th:checked= "true">
+						<label for="isGood1">否</label>
+					</div>
+					<div class="radio-box">
+						<input type="radio" id="isGood2" name="isGood" value="1">
+						<label for="isGood2">是</label>
+					</div>
+				</div>
+			</div>
+
 			<div class="form-group">
 				<label class="col-sm-3 control-label">课程简介：</label>
 				<div class="col-sm-8">
 					<textarea id="description" name="description" placeholder="请输入章节介绍" class="layui-textarea"></textarea>
 				</div>
 			</div>
+
 		</form>
 	</div>
     <div th:include="include::footer"></div>
@@ -115,7 +144,7 @@
             var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
             var url = ctx + "train/course/category/selectCategoryTree/" + deptId;
             var options = {
-                title: '选择部门',
+                title: '选择课程分类',
                 width: "380",
                 url: url,
                 callBack: doSubmit

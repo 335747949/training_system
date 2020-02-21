@@ -1,10 +1,15 @@
 package com.ruoyi.train.course.controller;
 
-import java.util.Arrays;
-import java.util.List;
-
+import com.ruoyi.common.annotation.Log;
+import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.ExcelUtil;
+import com.ruoyi.framework.web.base.BaseController;
+import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.train.course.domain.TrainCourse;
 import com.ruoyi.train.course.domain.TrainCourseSection;
+import com.ruoyi.train.course.domain.TrainCourseSectionVO;
+import com.ruoyi.train.course.service.ITrainCourseDirectoryService;
 import com.ruoyi.train.course.service.ITrainCourseSectionService;
 import com.ruoyi.train.course.service.ITrainCourseService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -14,12 +19,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.framework.web.base.BaseController;
-import com.ruoyi.framework.web.page.TableDataInfo;
-import com.ruoyi.common.base.AjaxResult;
-import com.ruoyi.common.utils.ExcelUtil;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 课程章节 信息操作处理
@@ -35,6 +37,9 @@ public class TrainCourseSectionController extends BaseController
 
 	@Autowired
 	private ITrainCourseSectionService trainCourseSectionService;
+
+	@Autowired
+	private ITrainCourseDirectoryService trainCourseDirectoryService;
 
 	@Autowired
 	private ITrainCourseService trainCourseService;
@@ -54,7 +59,7 @@ public class TrainCourseSectionController extends BaseController
 	@ResponseBody
 	public TableDataInfo list(TrainCourseSection trainCourseSection)
 	{
-		List<TrainCourseSection> list = trainCourseSectionService.selectTrainCourseSectionPage(trainCourseSection);
+		List<TrainCourseSectionVO> list = trainCourseSectionService.selectTrainCourseSectionPage(trainCourseSection);
 		return getDataTable(list);
 	}
 
@@ -91,18 +96,41 @@ public class TrainCourseSectionController extends BaseController
 	@PostMapping("/add")
 	@ResponseBody
 	@Transactional(rollbackFor = Exception.class)
-	public AjaxResult addSave(TrainCourseSection trainCourseSection)
+	public AjaxResult addSave(TrainCourseSectionVO trainCourseSectionVO)
 	{
-		String courseware = trainCourseSection.getCourseware();
+		// 添加章节是校验是否已添加父章节，大章节无需校验
+		if (100 != trainCourseSectionVO.getDirectoryParentId()) {
+			TrainCourseSection condition = new TrainCourseSection();
+			condition.setTrainCourseId(trainCourseSectionVO.getTrainCourseId());
+			condition.setDirectoryId(trainCourseSectionVO.getDirectoryParentId());
+			condition.setDelFlag("0");
+			List<TrainCourseSection> list = trainCourseSectionService.selectList(condition);
+			if (list.isEmpty()) {
+				return error("请先添加父章节课程内容！");
+			}
+		} else {
+			trainCourseSectionVO.setCourseware("");
+		}
+		// 相同章节重复性校验
+		TrainCourseSection condition = new TrainCourseSection();
+		condition.setTrainCourseId(trainCourseSectionVO.getTrainCourseId());
+		condition.setDirectoryId(trainCourseSectionVO.getDirectoryId());
+		condition.setDelFlag("0");
+		List<TrainCourseSection> list = trainCourseSectionService.selectList(condition);
+		if (!list.isEmpty()) {
+			return error("此目录下已添加课程内容，请重新选择目录！");
+		}
+		//
+		String courseware = trainCourseSectionVO.getCourseware();
 		String[] coursewares = courseware.split(",");
 		List<String> coursewareList = Arrays.asList(coursewares);
-		int orderNum = trainCourseSection.getOrderNum();
-		String courseName = trainCourseSection.getName();
+		int orderNum = trainCourseSectionVO.getOrderNum();
+		String courseName = trainCourseSectionVO.getName();
 		int count = 1;
 		if (coursewareList.size()>1){
 			for (String item : coursewares){
 				TrainCourseSection courseSection = new TrainCourseSection();
-				BeanUtils.copyProperties(trainCourseSection,courseSection);
+				BeanUtils.copyProperties(trainCourseSectionVO,courseSection);
 				courseSection.setOrderNum(orderNum);
 				courseSection.setCourseware(item);
 				courseSection.setName(courseName + "("+ count +")");
@@ -112,6 +140,8 @@ public class TrainCourseSectionController extends BaseController
 			}
 			return AjaxResult.success(courseware.length());
 		}else {
+			TrainCourseSection trainCourseSection = new TrainCourseSection();
+			BeanUtils.copyProperties(trainCourseSectionVO,trainCourseSection);
 			return toAjax(trainCourseSectionService.insertSelective(trainCourseSection));
 		}
 
@@ -123,11 +153,11 @@ public class TrainCourseSectionController extends BaseController
 	@GetMapping("/edit/{id}")
 	public String edit(@PathVariable("id") Integer id, ModelMap mmap)
 	{
-		TrainCourseSection trainCourseSection = trainCourseSectionService.selectById(id);
+		TrainCourseSectionVO trainCourseSectionVO = trainCourseSectionService.selectTrainCourseVOById(id);
 
-		TrainCourse trainCourse = trainCourseService.selectById( trainCourseSection.getTrainCourseId() );
+		TrainCourse trainCourse = trainCourseService.selectById( trainCourseSectionVO.getTrainCourseId() );
 		mmap.put( "trainCourse", trainCourse );
-		mmap.put("trainCourseSection", trainCourseSection);
+		mmap.put("trainCourseSection", trainCourseSectionVO);
 		return prefix + "/edit";
 	}
 

@@ -28,7 +28,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-3 control-label" title="（默认 1-公开，2-不公开）">是否公开：</label>
+				<label class="col-sm-3 control-label" title="（默认 1-展示，2-不展示）">是否展示：</label>
 				<div class="col-sm-8">
 					<select id="state"  name="state" th:with="type=${@dict.getType('train_open_state')}" class="form-control" >
 						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{state}"></option>
@@ -46,7 +46,7 @@
 				<div class="col-sm-8">
 					<input id="cover" name="cover" th:field="*{cover}" class="form-control" type="hidden">
 					<div class="layui-upload">
-						<button type="button" class="layui-btn layui-btn-normal" id="test1">上传图片</button>
+						<button type="button" class="layui-btn layui-btn-normal" id="test1">重新上传</button>
 						<span style="margin-left: 12px;">图片尺寸：600px*338px</span>
 						<div class="layui-upload-list">
 							<img class="layui-upload-img" style="width: 200px;height: auto;max-height: 150px;" id="demo1" th:src="*{cover}">
@@ -54,6 +54,32 @@
 						</div>
 					</div>
 
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">最新推荐：</label>
+				<div class="col-sm-8">
+					<div class="radio-box">
+						<input type="radio" id="isNew1" th:field="*{isNew}" name="isNew" value="0">
+						<label for="isNew1">否</label>
+					</div>
+					<div class="radio-box">
+						<input type="radio" id="isNew2" th:field="*{isNew}" name="isNew" value="1">
+						<label for="isNew2">是</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">精品推荐：</label>
+				<div class="col-sm-8">
+					<div class="radio-box">
+						<input type="radio" id="isGood1" th:field="*{isGood}" name="isGood" value="0">
+						<label for="isGood1">否</label>
+					</div>
+					<div class="radio-box">
+						<input type="radio" id="isGood2" th:field="*{isGood}" name="isGood" value="1">
+						<label for="isGood2">是</label>
+					</div>
 				</div>
 			</div>
 			<div class="form-group">

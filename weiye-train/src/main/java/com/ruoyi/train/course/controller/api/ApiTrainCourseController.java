@@ -1,21 +1,28 @@
-package com.ruoyi.train.course.controller;
+package com.ruoyi.train.course.controller.api;
 
-import cn.hutool.json.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.base.BaseController;
-import com.ruoyi.framework.web.util.ShiroUtils;
+import com.ruoyi.framework.web.exception.user.AuthExpireException;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
-import com.ruoyi.train.course.domain.*;
+import com.ruoyi.train.course.domain.TrainCourse;
+import com.ruoyi.train.course.domain.TrainCourseCategory;
+import com.ruoyi.train.course.domain.TrainCourseSection;
+import com.ruoyi.train.course.domain.TrainCourseVO;
+import com.ruoyi.train.course.domain.vo.ApiCourseCategoryVO;
+import com.ruoyi.train.course.domain.vo.ApiCourseListByCategoryVO;
+import com.ruoyi.train.course.domain.vo.ApiTrainCourseSectionVO;
+import com.ruoyi.train.course.domain.vo.ApiTrainCourseVO;
 import com.ruoyi.train.course.service.ITrainCourseCategoryService;
 import com.ruoyi.train.course.service.ITrainCourseSectionService;
 import com.ruoyi.train.course.service.ITrainCourseService;
 import com.ruoyi.train.course.service.ITrainCourseUserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,6 +63,44 @@ public class ApiTrainCourseController extends BaseController {
     }
 
     /**
+     * 查询课程分类列表树
+     * v1.1.0
+     */
+    @GetMapping("/trainCourse/category/tree")
+    public AjaxResult CourseCategoryTree() {
+        List<ApiCourseCategoryVO> categoryTree = trainCourseCategoryService.selectCategoryTreeList();
+        AjaxResult success = success( "查询课程分类树成功" );
+        success.put( "data", categoryTree);
+        return success;
+    }
+
+    /**
+     * 根据课程分类查询课程列表
+     * v1.1.0
+     */
+    @GetMapping("/train/course/list")
+    public AjaxResult trainCourseByCategory(ApiCourseListByCategoryVO apiCourseListByCategoryVO) {
+        PageInfo<TrainCourseVO> pageInfo = trainCourseService.selectTrainCourseListByCategory(apiCourseListByCategoryVO);
+        AjaxResult success = success( "查询课程列表成功" );
+        success.put( "data", pageInfo);
+        return success;
+    }
+
+    /**
+     * 小程序api根据课程id推荐相关课程
+     * @param courseId 课程id
+     * @param size 需要推荐的课程数量
+     * @return
+     */
+    @GetMapping("/train/course/recommend")
+    public AjaxResult trainCourseRecommend(@RequestParam Integer courseId, @RequestParam Integer size) {
+        List<TrainCourseVO> list = trainCourseService.recommendCourseByCategory(courseId, size);
+        AjaxResult success = success( "查询成功" );
+        success.put( "data", list);
+        return success;
+    }
+
+    /**
      * 查询课程列表
      */
     @GetMapping("/trainCourse/list")
@@ -85,18 +130,27 @@ public class ApiTrainCourseController extends BaseController {
      */
     @GetMapping("/trainCourse/{id}")
     public AjaxResult get(@PathVariable("id") Integer id) {
-        TrainCourse trainCourse = trainCourseService.selectById( id );
         boolean courseAuth = false;
-        String courseDays = configService.selectConfigByKey( "course.days" );
         String loginName = JwtUtil.getLoginName();
         if (StringUtils.isNotEmpty( loginName )) {
             SysUser sysUser = sysUserService.selectUserByLoginName( loginName,UserConstants.USER_VIP );
             if (sysUser != null) {
                 courseAuth = trainCourseUserService.authority( sysUser.getUserId(), id );
+            } else {
+                throw new AuthExpireException();
             }
         }
+        // 课程信息
+        TrainCourse trainCourse = trainCourseService.selectById( id );
+        ApiTrainCourseVO trainCourseVO = new ApiTrainCourseVO();
+        BeanUtils.copyProperties(trainCourse,trainCourseVO);
+        // 课程内容目录
+        List<ApiTrainCourseSectionVO> apiTrainCourseSectionVOList = trainCourseSectionService.apiSelectTrainCourseVOTreeByCourseId(id);
+        trainCourseVO.setDirectory(apiTrainCourseSectionVOList);
+        //
+        String courseDays = configService.selectConfigByKey( "course.days" );
         AjaxResult success = success( "查询成功" );
-        success.put( "data", trainCourse );
+        success.put( "data", trainCourseVO );
         success.put( "courseAuth", courseAuth );
         success.put( "courseDays", courseDays );
         return success;

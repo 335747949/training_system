@@ -79,6 +79,11 @@
 					//sortable: true
 				},
 				{
+					field : 'directoryName',
+					title : '课程目录',
+					//sortable: true
+				},
+				{
 					field : 'orderNum', 
 					title : '显示顺序',
 					//sortable: true
@@ -108,7 +113,7 @@
         });
         function toAdd() {
             var url =prefix + "/add/"+$("#trainCourseId").val();
-            $.operate.jumpModeltoUrl("课程章节添加",url,1000,600);
+            $.operate.jumpModeltoUrl("课程章节添加",url,800,500);
         }
     </script>
 </body>
