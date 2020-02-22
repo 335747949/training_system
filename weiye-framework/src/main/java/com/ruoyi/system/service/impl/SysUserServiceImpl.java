@@ -191,6 +191,11 @@ public class SysUserServiceImpl extends AbstractBaseServiceImpl<SysUserMapper, S
      */
     @Override
     public int resetUserPwd(SysUser user) {
+        SysUser userInfo = selectUserById(user.getUserId());
+        // 个人头像不变
+        if (null != userInfo && null != userInfo.getAvatar()) {
+            user.setAvatar(userInfo.getAvatar());
+        }
         return updateUserInfo( user );
     }
 
