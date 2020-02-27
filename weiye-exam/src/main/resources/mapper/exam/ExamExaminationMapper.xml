@@ -238,11 +238,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select
         DISTINCT <include refid="selectExamExaminationVo"/>
         ,tc.name as traincourse_name
-        ,eeu.vip_user_id examExaminationUserVipUserId
-        ,eeu.create_date examExaminationCreateDate
         from exam_examination exam_examination
         INNER JOIN train_course tc ON exam_examination.train_course_id = tc.id
-        LEFT JOIN exam_examination_user eeu ON eeu.exam_examination_id = exam_examination.id
         LEFT join train_course_user tcu on tcu.train_course_id=exam_examination.train_course_id
         <where>
             exam_examination.type = '1'
@@ -278,11 +275,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select
         DISTINCT <include refid="selectExamExaminationVo"/>
         ,tc.name as traincourse_name
-        ,eeu.vip_user_id examExaminationUserVipUserId
-        ,eeu.create_date examExaminationCreateDate
         from exam_examination exam_examination
         INNER JOIN train_course tc ON exam_examination.train_course_id = tc.id
-        LEFT JOIN exam_examination_user eeu ON eeu.exam_examination_id = exam_examination.id
         LEFT join train_course_user tcu on tcu.train_course_id=exam_examination.train_course_id
         <where>
             exam_examination.type = '2'
